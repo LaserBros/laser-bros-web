@@ -12,6 +12,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+
   const [loading, setLoading] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
