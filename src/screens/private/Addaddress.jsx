@@ -91,6 +91,7 @@ export default function AddAddress() {
         );
         console.log(response);
         toast.success("Address added sucessfully");
+
         setLoading(false);
         navigate("/my-addresses");
       } catch (error) {
