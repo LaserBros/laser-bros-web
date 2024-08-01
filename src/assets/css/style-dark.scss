@@ -1,0 +1,948 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import "./variables";
+
+body {
+    &.dark {
+        background-color: $black-color !important;
+        min-height      : 100vh;
+
+        .modal {
+            .modal-dialog {
+                .modal-content {
+                    background: $dark-color;
+
+                    .modal-header {
+                        .modal-title {
+                            color: $white-color;
+                        }
+                    }
+
+                    .modal-body {
+                        .notesmain{
+                            .notescont{
+                                border-color: rgba($white-color, 0.2);
+                                h4{
+                                    color:$white-color;
+                                }
+                                p{
+                                  color:rgba($white-color, 0.70)
+                                }
+                                a{
+                                    svg{
+                                        color:$white-color;
+                                    }
+                                }
+                            }
+                        }
+                        .bend-img-main {
+                            p {
+                                color: rgba($white-color, 0.5);
+                                span{
+                                    color:$white-color
+                                }
+                            }
+                        }
+                        .bend-content{
+                            .bend-title {
+                                 h2 {
+                                    color:$white-color
+                                }
+                            }
+                             .bends-upload-file {
+                                background: rgba($white-color, 0.03);
+                                border-color: rgba($white-color, 0.25);
+                                svg{
+                                    color:$white-color
+                                }
+                                p{
+                                    span{
+                                        color:$white-color
+                                    }
+                                }
+                                small {
+                                    color:rgba($white-color, 0.75);
+                                }
+                            }
+                             .bend-quantity {
+                                h5{
+                                    color:$white-color
+                                }
+                                .input-group {
+                                    .form-control {
+                                        background: transparent;
+                                        color     : $white-color;
+                                    }
+                    
+                                    button {
+                                        border-color: rgba($white-color, 0.2);
+                    
+                                        svg {
+                                            color: $white-color
+                                        }
+                    
+                                        &:hover {
+                                            border-color: $white-color;
+                                            background  : $white-color;
+                    
+                                            svg {
+                                                color: $black-color;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .form-control {
+                            background  : transparent;
+                            border-color: rgba($white-color, 0.2);
+                            color       : rgba($white-color, 0.75);
+
+                            &::placeholder {
+                                color: rgba($white-color, 0.50)
+                            }
+                        }
+                        h2 {
+                            color: $white-color
+                        }
+                    }
+                }
+            }
+        }
+
+        .login-main {
+            .loginform {
+                background: $dark-color;
+
+                .headlogin_div {
+                    h2 {
+                        color: $white-color;
+                    }
+                }
+
+                .form-group {
+                    label {
+                        color: $white-color;
+                    }
+
+                    .form-control {
+                        background  : transparent;
+                        border-color: rgba($white-color, 0.2);
+                        color       : rgba($white-color, 0.75);
+
+                        &::placeholder {
+                            color: rgba($white-color, 0.50)
+                        }
+                    }
+
+                    &.forgotpassword {
+                        a {
+                            color: $white-color
+                        }
+                    }
+
+                    .password-input-group {
+                        svg {
+                            color: $white-color
+                        }
+                    }
+                }
+
+                .formfooter {
+                    color: $white-color;
+                }
+            }
+        }
+
+        .btn-outline-primary {
+            background: transparent !important;
+        }
+
+        .header {
+            .navbar {
+                background-color: $black-color;
+                border-bottom   : 1px solid rgba($white-color, 0.2);
+               .navbar-toggler{
+                border-color: $white-color;
+                background: $white-color;
+               }
+                .navbar-collapse {
+                    .navbar-nav {
+                        .nav-link {
+                            color: $white-color;
+
+                            &:hover,
+                            &.active {
+                                color: $primary-color
+                            }
+
+                            &.header-search {
+                                .form-control {
+                                    border-color: rgba($white-color, 0.2);
+                                    color       : rgba($white-color, 0.75);
+                                    background: $dark-color;
+                                    &::placeholder {
+                                        color: rgba($white-color, 0.50)
+                                    }
+                                }
+
+                                &.search-expanded {
+                                    &.form-control {
+                                        background: $black-color;
+
+                                    }
+                                }
+                            }
+                        }
+
+                        .form-switch {
+                            .form-check-input {
+                                border-color: rgba($white-color, 0.35)
+                            }
+                        }
+
+                        .dropdown {
+                            .dropdown-menu {
+                                background: $dark-color;
+
+                                .dropdown-item {
+                                    color: rgba($white-color, 0.50);
+
+                                    img {
+                                        filter : brightness(0) invert(1);
+                                        opacity: 0.5;
+                                    }
+
+                                    &:hover {
+                                        color: $primary-color;
+
+                                        img {
+                                            filter : brightness(1) invert(0);
+                                            opacity: 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .banner-upload-file {
+            border-color    : rgba($white-color, 0.25);
+            background-color: rgba($white-color, 0.12);
+
+            p {
+                color: $white-color
+            }
+
+            svg {
+                color: $white-color
+            }
+
+            small {
+                color: rgba($white-color, 0.75);
+            }
+        }
+
+        .banner-home {
+            .banner-service-img {
+                &:after {
+                    border-color: rgba($white-color, 0.2)
+                }
+            }
+
+            .banner-content {
+                h1 {
+                    color: $white-color;
+                }
+
+                p {
+                    color: $white-color
+                }
+
+                ul {
+                    li {
+                        color       : $white-color;
+                        border-color: rgba($white-color, 0.3)
+                    }
+                }
+
+            }
+        }
+
+        .our-services {
+            .services-img {
+                &:before {
+                    opacity: 1;
+                }
+            }
+
+            .services-grid {
+                background: rgba($white-color, 0.1);
+
+                h2 {
+                    color: $white-color
+                }
+
+                &:hover {
+                    background: $primary-color
+                }
+            }
+        }
+
+        .heading {
+            h2 {
+                color: $white-color;
+            }
+        }
+
+        .materials-grid {
+            background  : rgba($white-color, 0.1);
+            border-color: rgba($white-color, 0.1);
+
+            .materials-info {
+                h2 {
+                    color: $white-color
+                }
+            }
+
+            .material-grade {
+                span {
+                    border-color: rgba($white-color, 0.1);
+                    color       : $white-color
+                }
+            }
+        }
+
+        .get-instant-quote {
+            .get-quote-img {
+                .portal-inner {
+                    border-color: rgba($white-color, 0.2);
+
+                    .top-portal {
+                        background  : $dark-color;
+                        border-color: rgba($white-color, 0.3);
+
+                        &:after {
+                            background: rgba($white-color, 0.5);
+                        }
+                    }
+                }
+            }
+
+            .features-content-box {
+                background  : rgba($white-color, 0.1);
+                border-color: rgba($white-color, 0.1);
+
+                .content {
+                    h3 {
+                        color: $white-color;
+                    }
+                }
+            }
+
+            .get-parts-img {
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .our-testimonials {
+            .testimonials-grid {
+                background: rgba($white-color, 0.1);
+
+                .userinfo {
+                    h3 {
+                        color: $white-color
+                    }
+
+                    p {
+                        color: rgba($white-color, 0.75)
+                    }
+                }
+            }
+        }
+
+        footer {
+            &.footer {
+                .copyright-area {
+                    border-color: rgba($white-color, 0.2);
+                }
+
+                .footer-top-area {
+                    border-color: rgba($white-color, 0.2);
+
+                    .right-area {
+                        a {
+                            border-color: rgba($white-color, 0.2);
+
+                            svg {
+                                color: $white-color;
+                            }
+
+                            &.mailtext {
+                                color: $white-color
+                            }
+                        }
+                    }
+                }
+
+                .footer-heading {
+                    color: $white-color
+                }
+            }
+        }
+
+        .our-history {
+            .history-grid {
+                border-color: rgba($white-color, 0.2);
+
+                h3 {
+                    color: $white-color
+                }
+
+                p {
+                    color: rgba($white-color, 0.5)
+                }
+            }
+        }
+
+        .our-mission {
+            .mission-img {
+                &:after {
+                    background: rgba($white-color, 0.2);
+                }
+            }
+
+            .mission-content {
+                h4 {
+                    color: $paragraph-color
+                }
+            }
+        }
+
+        .values-grid {
+            background  : rgba($white-color, 0.1);
+            border-color: rgba($white-color, 0.1);
+
+            h3 {
+                color: $white-color
+            }
+
+        }
+
+        .resources-main {
+            .resources-search-field {
+                svg {
+                    color: $white-color
+                }
+
+                .form-control {
+                    background: rgba($white-color, 0.1);
+                    color     : rgba($white-color, 0.75);
+
+                    &::placeholder {
+                        color: rgba($white-color, 0.50)
+                    }
+                }
+            }
+
+            .accordion {
+                .accordion-item {
+                    background: rgba($white-color, 0.1);
+
+                    .accordion-header {
+                        button {
+                            &.accordion-button {
+                                background: transparent;
+                                color     : $white-color;
+
+                                .accordion-icon {
+                                    background: rgba($primary-color, 0.06);
+                                    border    : 1px solid rgba($primary-color, 0.13);
+
+                                    svg {
+                                        color    : $primary-color;
+                                        font-size: 18px;
+                                    }
+                                }
+
+                                &::after {
+                                    background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
+                                }
+                            }
+                        }
+                    }
+
+                    .accordion-body {
+
+                        a {
+                            color: $paragraph-color;
+
+                            &.active,
+                            &:hover {
+                                color: $primary-color;
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            .resources-body {
+                hr {
+                    border-color: $white-color;
+                }
+
+                .resources-pagination {
+                    border-color: rgba($white-color, 0.2);
+                }
+
+                .resources-heading {
+                    h1 {
+                        color: $white-color;
+                    }
+                }
+
+                .searchfield,
+                .searchfaq {
+                    svg {
+                        color: $white-color
+                    }
+
+                    .form-control {
+                        border-color: rgba($white-color, 0.2);
+                        background  : transparent;
+                        color       : rgba($white-color, 0.75);
+
+                        &::placeholder {
+                            color: rgba($white-color, 0.50)
+                        }
+                    }
+                }
+
+                .resources-content {
+                    .map-resources {
+                        background: rgba($white-color, 0.1);
+                    }
+
+                    .custom-table {
+                        .rdt_Table {
+                            background: transparent;
+                        }
+
+                        .rdt_TableHead {
+                            .rdt_TableHeadRow {
+                                background  : rgba($white-color, 0.1);
+                                border-color: rgba($white-color, 0.2);
+
+                                .rdt_TableCol {
+                                    color: $white-color
+                                }
+                            }
+                        }
+
+                        .rdt_TableBody {
+                            .rdt_TableRow {
+                                background  : transparent;
+                                border-color: rgba($white-color, 0.2);
+
+                                .rdt_TableCell {
+                                    color: rgba($white-color, 0.50);
+                                }
+                            }
+                        }
+                    }
+
+                    h2 {
+                        color: $white-color;
+                    }
+
+                    .resources-alerts {
+                        p {
+                            color: rgba($white-color, 0.50);
+
+                            span {
+                                color: $white-color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .btnshare {
+            border-color: rgba($white-color, 0.2);
+            color       : $white-color;
+
+            &:hover {
+                background: $white-color;
+                color     : $black-color
+            }
+        }
+
+        .btnsavelater {
+            border-color: rgba($white-color, 0.2);
+            background  : $white-color;
+            color       : $black-color;
+
+            &:hover {
+                background: transparent;
+                color     : $white-color
+            }
+        }
+
+        .btnicon {
+            border-color: rgba($white-color, 0.2);
+
+            svg {
+                color: $white-color
+            }
+
+            &:hover {
+                border-color: $white-color;
+                background  : $white-color;
+
+                svg {
+                    color: $black-color;
+                }
+            }
+        }
+
+        .list-quotes-main {
+            border-color: rgba($white-color, 0.2);
+
+            .input-group {
+                .form-control {
+                    background: transparent;
+                    color     : $white-color;
+                }
+
+                button {
+                    border-color: rgba($white-color, 0.2);
+
+                    svg {
+                        color: $white-color
+                    }
+
+                    &:hover {
+                        border-color: $white-color;
+                        background  : $white-color;
+
+                        svg {
+                            color: $black-color;
+                        }
+                    }
+                }
+            }
+
+            .list-quotes {
+                .right-quote {
+                    p {
+                        color: rgba($white-color, 0.5);
+                    }
+
+                    .quote-off {
+                        border-color: rgba($white-color, 0.2);
+                        color       : rgba($white-color, 0.5);
+                    }
+                }
+
+                .content-quotes {
+                    h2 {
+                        color: $white-color
+                    }
+                    .quotes-services  {
+                        label{
+                            color:rgba($white-color, 0.5)
+                        }
+                    }
+                    p {
+                        color: $white-color;
+                        .num-dim-indicator{
+                            color: rgba($white-color, 0.5)
+                         }
+                        &.num-dim-main {
+                            span {
+                                &.num-dim {
+                                    span {
+                                        color: rgba($white-color, 0.5)
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    .quotes-services {
+                        h4 {
+                            color: $white-color;
+                        }
+
+                        .form-check {
+                            label {
+                                color: rgba($white-color, 0.5);
+                            }
+
+                            .form-check-input {
+                                --bs-form-check-bg: transparent
+                            }
+                        }
+                    }
+
+                    .quotes-dropdown {
+                        .selectdropdown {
+                            span+div {
+                                background  : transparent !important;
+                                border-color: rgba($white-color, 0.2) !important;
+
+                                div {
+                                    color: rgba($white-color, 0.75);
+
+                                    div {
+                                        &:before {
+                                            display: none;
+                                        }
+                                    }
+                                }
+                            }
+
+                            span+div+div {
+                                background: $dark-color !important;
+                                color     : rgba($white-color, 0.5) !important;
+
+                                &:hover {
+                                    color: $white-color !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .quotes-sidebar{
+           .customtabs li.nav-item button.nav-link {
+                border-color: rgba($white-color, 0.1);
+                background: rgba($white-color, 0.1);
+                color: $white-color;
+                &.active{
+                    background: $primary-color;
+                }
+            }
+             .quotes-inner {
+                background:rgba($white-color, 0.1);
+                .head-quotes{
+                    h2{
+                        color:$white-color;
+                    }
+                }
+                .accountform {
+                   .react-tel-input {
+                    .country-list{
+                        background: $dark-color;
+                        .search{
+                            background  : $dark-color;
+                            border-bottom: 1px solid rgba($white-color, 0.2);
+                            .search-box{
+                                background  : transparent;
+                            border-color: rgba($white-color, 0.2);
+                            color       : rgba($white-color, 0.75);
+                            &::placeholder {
+                                color: rgba($white-color, 0.50)
+                            }
+                            }
+                        }
+                        li{
+                            color:$white-color;
+                            background: transparent;
+                        }
+                    }
+                    .flag-dropdown{
+                        .selected-flag{
+                            background: transparent;
+                        }
+                    }
+                    }
+                  .form-check  {
+                    .form-check-input{
+                        --bs-form-check-bg:transparent;
+                        border-color:rgba($white-color, 0.2)
+                    }
+                    label {
+                        color:rgba($white-color, 0.5)
+                    }
+                    }
+                    .form-group{
+                        .form-label{
+                            color:$white-color;
+                        }
+                        .form-control , .form-select{
+                            background  : transparent;
+                            border-color: rgba($white-color, 0.2);
+                            color       : rgba($white-color, 0.75);
+                            &::placeholder {
+                                color: rgba($white-color, 0.50)
+                            }
+                        }
+                    }
+                    small{
+                        color:rgba($white-color, 0.5)
+                    }
+                    .freeshipping {
+                        border-color: rgba($white-color, 0.2);
+                        b{
+                            color:$white-color
+                        }
+                        span{
+                            color:rgba($white-color, 0.5);
+                        }
+                    }
+                }
+                .quotes-separator{
+                    border-color:rgba($white-color, 0.2)
+                }
+            }
+        }
+        .quotes-list{
+            border-color:rgba($white-color, 0.2);
+            .quotes-content {
+               h2{
+                color:$white-color;
+               }
+              .quotes-date {
+                color:$white-color;
+               }            
+               p{
+                color:rgba($white-color, 0.5);
+                span{
+                    color:$white-color;
+                }
+            }
+        }
+    }
+    .accountform{
+        .form-group{
+            .form-label{
+                color:$white-color;
+            }
+            .form-control, .form-select{
+                background  : transparent;
+                border-color: rgba($white-color, 0.2);
+                color       : rgba($white-color, 0.75);
+                option{
+                    color:rgba($black-color, 0.75)
+                }
+                &::placeholder {
+                    color: rgba($white-color, 0.50)
+                }
+            }
+            .form-select{
+                background-image : url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e');
+                background-repeat: no-repeat;
+                background-size: 14px;
+                background-position: calc(100% - 15px) center;
+            }
+        }
+    }
+            .card{
+                background: $dark-color;
+                .card-header{
+                    background: $dark-color!important;
+                    border-color: rgba($white-color, 0.2);
+                    h5{
+                        color:$white-color
+                    }
+                }
+                .no-cart{
+                    h3{
+                        color:$white-color
+                    }
+                }
+                .card-body{
+                    .tablelist{
+                        li{
+                            border-color: rgba($white-color, 0.1);
+                        }
+                    }
+                    .addresses-grid{
+                        background: rgba($white-color, 0.1);
+                        h2{
+                            color:$white-color
+                        }
+                        p{
+                            color:rgba($white-color, 0.50)
+                        }
+                        .btn-bottom{
+                            .btn-address , .btn-set-default{
+                                border-color: rgba($white-color, 0.2);
+                                color: $white-color;
+                            &:hover{
+                                border-color:$white-color;
+                                background: $white-color;
+                                color:$black-color;
+                            }
+                            }
+                        }
+                        &.payment-grids{
+                            .card-actions{
+                                .card-info{
+                                    strong{
+                                        color:$white-color;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .profile_user_main{
+                        background: rgba($white-color, 0.1);
+                        .user_info {
+                            img{
+                                border-color: rgba($white-color, 0.1);;
+                            }
+                        }
+                        h4{
+                            color:$white-color
+                        }
+                    } 
+                    .rdt_Pagination{
+                        background  : rgba($white-color, 0.1);
+                        border-color: rgba($white-color, 0.2);
+                        color:rgba($white-color, 0.5);
+                        button{
+                            color: rgba($white-color, 0.5);
+                            fill: rgba($white-color, 0.5);
+                        }
+                    }
+                    .custom-table.custom-table2 {
+                        .rdt_Table {
+                            background: transparent;
+                        }
+
+                        .rdt_TableHead {
+                            .rdt_TableHeadRow {
+                                background  : rgba($white-color, 0.1);
+                                border-color: rgba($white-color, 0.2);
+
+                                .rdt_TableCol {
+                                    color: $white-color
+                                }
+                            }
+                        }
+
+                        .rdt_TableBody {
+                            .rdt_TableRow {
+                                background  : transparent;
+                                border-color: rgba($white-color, 0.2);
+
+                                .rdt_TableCell {
+                                    color: rgba($white-color, 0.50);
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+    }
+}
