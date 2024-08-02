@@ -11,9 +11,13 @@ body,
 * {
     font-family: $font-family;
 }
-.error-text {
+.error-text,.error-feedback {
     color: red;
     font-size: 14px;
+  }
+  .profile_user_main .user_info img {
+    -o-object-fit: scale-down;
+       object-fit: scale-down;
   }
 html,
 body {
@@ -2733,7 +2737,7 @@ textarea.form-control {
         img {
             width     : 124px;
             height    : 124px;
-            object-fit: cover;
+            object-fit: scale-down;
             border    : 5px solid $white-color;
             box-shadow: 0px 0px 10px rgba($black-color, 0.15);
         }

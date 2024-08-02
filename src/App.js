@@ -142,7 +142,10 @@ function App() {
                     path="/orders/orders-detail"
                     element={<OrdersDetail />}
                   />
-                  <Route path="/my-profile" element={<MyProfile />} />
+                  <Route
+                    path="/my-profile"
+                    element={<PrivateRoute element={<MyProfile />} />}
+                  />
                   <Route
                     path="/my-addresses"
                     element={<PrivateRoute element={<MyAddresses />} />}
@@ -152,10 +155,13 @@ function App() {
                     element={<PrivateRoute element={<AddAddress />} />}
                   />
                   <Route
-                    path="/my-address/edit-address"
-                    element={<EditAddress />}
+                    path="/my-address/edit-address/:id"
+                    element={<PrivateRoute element={<EditAddress />} />}
                   />
-                  <Route path="/payment-cards" element={<PaymentCards />} />
+                  <Route
+                    path="/payment-cards"
+                    element={<PrivateRoute element={<PaymentCards />} />}
+                  />
                   <Route
                     path="/quotes"
                     element={<PrivateRoute element={<Quotes />} />}

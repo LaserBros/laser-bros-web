@@ -1,57 +1,175 @@
-import React from "react";
+import React, { useState } from "react";
+import { Form, Row, Col, Button, Modal } from "react-bootstrap";
+import { loadStripe } from "@stripe/stripe-js";
 import {
-    Form,
-    Row,
-    Col,
-    Button,
-    Modal,
-    Image
-} from 'react-bootstrap';
-import cards from "../assets/img/cards.png";
-import cvv from "../assets/img/cvv.png";
-const AddCard = ({ show, handleClose, title }) => {
-    return (
-        <React.Fragment>
-            <Modal centered show={show} onHide={handleClose} className="modal-custom max-width-574">
-                <Modal.Header closeButton className="border-0 text-center pt-4">
-                    <Modal.Title className="mx-auto">{title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="px-lg-5 px-4 pb-4">
-                    <Form className="accountform">
-                        <Row>
-                            <Col md={12}>
-                                <Form.Group className="mb-3 form-group">
-                                    <Form.Label className="d-flex align-items-center justify-content-between">Card Number <Image src={cards} className="img-fluid" alt=""/></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter your card number"/>
-                                </Form.Group>
-                            </Col>
-                            <Col md={12}>
-                                <Form.Group className="mb-3 form-group">
-                                    <Form.Label>Card Holder Name</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter your name"/>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group className="mb-3 form-group">
-                                    <Form.Label>Expiration</Form.Label>
-                                    <Form.Control type="date" placeholder="MM/YY"/>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group className="mb-3 form-group">
-                                    <Form.Label className="d-flex align-items-center justify-content-between">CVV <Image src={cvv} className="img-fluid" alt=""/></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter your cvv"/>
-                                </Form.Group>
-                            </Col>
-                        </Row>
-                        <div className=" text-center mt-3">
-                            <Button as="input" value="Cancel" onClick={handleClose} className="btn-lt-primary min-width-159 mx-2 mb-2" variant={null} />
-                            <Button as="input" value="Save" onClick={handleClose} className="btn-primary min-width-159 mx-2 mb-2" variant={null} />
-                        </div>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        </React.Fragment>
+  Elements,
+  useStripe,
+  useElements,
+  CardElement,
+} from "@stripe/react-stripe-js";
+import { addCard } from "../api/api";
+import { toast } from "react-toastify";
+
+// Your Stripe public key
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
+
+const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [cardHolderName, setCardHolderName] = useState("");
+  const [nameError, setNameError] = useState(null);
+  const [generalError, setGeneralError] = useState(null);
+
+  const validateName = (name) => {
+    if (!name.trim()) {
+      return "Card holder name is required.";
+    } else if (!/^[a-zA-Z\s]+$/.test(name)) {
+      return "Card holder name must only contain letters and spaces.";
+    }
+    return null;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setGeneralError(null);
+
+    // Validate cardholder name
+    const nameValidationError = validateName(cardHolderName);
+    if (nameValidationError) {
+      setNameError(nameValidationError);
+      return;
+    }
+    setNameError(null);
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    // Create token
+    const { token, error } = await stripe.createToken(
+      elements.getElement(CardElement),
+      {
+        name: cardHolderName,
+      }
     );
-}
+
+    if (error) {
+      setGeneralError(error.message);
+    } else {
+      const formData = {
+        last4: token.card.last4,
+        exp_month: token.card.exp_month,
+        exp_year: token.card.exp_year,
+        full_name: cardHolderName,
+        card_id: token.card.id,
+        card_token: token.id,
+      };
+      setLoading(true);
+      try {
+        await addCard(formData);
+        toast.success("Card added successfully!");
+        setLoading(false);
+        setCardHolderName("");
+        handleClose();
+      } catch (error) {
+        setLoading(false);
+        toast.error("Error setting address as default:", error);
+      }
+      // Handle the token as needed
+      setGeneralError(null);
+      onCardAdded();
+      handleClose();
+    }
+  };
+
+  return (
+    <React.Fragment>
+      <Modal
+        centered
+        show={show}
+        onHide={handleClose}
+        className="modal-custom max-width-574"
+      >
+        <Modal.Header closeButton className="border-0 text-center pt-4">
+          <Modal.Title className="mx-auto">{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="px-lg-5 px-4 pb-4">
+          <Form onSubmit={handleSubmit} className="accountform">
+            <Row>
+              <Col md={12}>
+                <Form.Group className="mb-3 form-group">
+                  <Form.Label>Card Holder Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your name"
+                    value={cardHolderName}
+                    onChange={(e) => setCardHolderName(e.target.value)}
+                    required
+                    isInvalid={!!nameError}
+                  />
+                  {nameError && (
+                    <Form.Control.Feedback type="invalid">
+                      {nameError}
+                    </Form.Control.Feedback>
+                  )}
+                </Form.Group>
+              </Col>
+              <Col md={12}>
+                <Form.Group className="mb-3 form-group">
+                  <Form.Label>Card Details</Form.Label>
+                  <CardElement
+                    options={{
+                      style: {
+                        base: {
+                          fontSize: "16px",
+                        },
+                      },
+                    }}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            {generalError && <div style={{ color: "red" }}>{generalError}</div>}
+            <div className="text-center mt-3">
+              <Button
+                type="button"
+                value="Cancel"
+                onClick={handleClose}
+                className="btn-lt-primary min-width-159 mx-2 mb-2"
+                variant={null}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                value="Save"
+                className="btn-primary min-width-159 mx-2 mb-2"
+                variant={null}
+                disabled={loading}
+              >
+                {loading ? (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  "Save"
+                )}
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </React.Fragment>
+  );
+};
+
+const AddCard = (props) => (
+  <Elements stripe={stripePromise}>
+    <AddCardForm {...props} />
+  </Elements>
+);
+
 export default AddCard;
