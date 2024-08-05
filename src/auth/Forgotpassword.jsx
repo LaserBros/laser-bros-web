@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.svg";
@@ -12,6 +12,12 @@ export default function ForgotPassword() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/quotes");
+    }
+  }, []);
   // Validate the form
   const validate = () => {
     const errors = {};

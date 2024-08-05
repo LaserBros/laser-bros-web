@@ -64,6 +64,7 @@ export default function Login() {
         const response = await axiosInstance.post("/signin", data);
         console.log(response.data);
         localStorage.setItem("authToken", response.data.data.token);
+        localStorage.setItem("refreshToken", response.data.data.refreshToken);
         localStorage.setItem("full_name", response.data.data.full_name);
         localStorage.setItem("email", response.data.data.email);
         toast.success("Login Successfully!!");

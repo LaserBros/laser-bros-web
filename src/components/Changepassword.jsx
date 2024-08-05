@@ -15,6 +15,16 @@ const ChangePassword = ({ show, handleClose, title }) => {
     confirmNewPassword: "",
   });
 
+  const resetForm = () => {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmNewPassword("");
+    setErrors({});
+  };
+  const handleModalClose = () => {
+    resetForm();
+    handleClose();
+  };
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -80,7 +90,7 @@ const ChangePassword = ({ show, handleClose, title }) => {
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNewPassword("");
-        handleClose();
+        handleModalClose();
       } catch (error) {
         toast.error(error.response.data.message);
       } finally {
@@ -98,7 +108,7 @@ const ChangePassword = ({ show, handleClose, title }) => {
       <Modal
         centered
         show={show}
-        onHide={handleClose}
+        onHide={handleModalClose}
         className="modal-custom max-width-574"
       >
         <Modal.Header closeButton className="border-0 text-center pt-4">
@@ -205,7 +215,7 @@ const ChangePassword = ({ show, handleClose, title }) => {
             <div className="text-center mt-3">
               <Button
                 type="button"
-                onClick={handleClose}
+                onClick={handleModalClose}
                 className="btn-outline-primary min-width-159 mx-2 mb-2"
               >
                 Cancel

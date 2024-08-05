@@ -49,6 +49,7 @@ import { ThemeProvider } from "./components/Themecontext";
 import ScrollToTop from "./components/ScrollToTop";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "./middleware/PrivateRoute";
+import { UserProvider } from "./localstorage/UserProfileContext";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -65,117 +66,122 @@ function App() {
           <Loader />
         </div>
       ) : (
-        <ThemeProvider>
-          {/* <Router>  */}
-          <Router basename={process.env.REACT_APP_BASENAME}>
-            <ScrollToTop>
-              <Routes>
-                <Route exact path="/login" element={<Login />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/otp" element={<OTP />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route
-                  element={
-                    <Layout>
-                      <Outlet />
-                    </Layout>
-                  }
-                >
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about-us" element={<Aboutus />} />
-                  <Route path="/laser-cutting" element={<Lasercutting />} />
-                  <Route path="/bending" element={<Bending />} />
-                </Route>
-                <Route
-                  element={
-                    <Layout2>
-                      <Outlet />
-                    </Layout2>
-                  }
-                >
+        <UserProvider>
+          <ThemeProvider>
+            {/* <Router>  */}
+            <Router basename={process.env.REACT_APP_BASENAME}>
+              <ScrollToTop>
+                <Routes>
+                  <Route exact path="/login" element={<Login />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/otp" element={<OTP />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/signup" element={<SignUp />} />
                   <Route
-                    path="/resources/laser-cutting"
-                    element={<LaserCuttingGuidelines />}
-                  />
+                    element={
+                      <Layout>
+                        <Outlet />
+                      </Layout>
+                    }
+                  >
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about-us" element={<Aboutus />} />
+                    <Route path="/laser-cutting" element={<Lasercutting />} />
+                    <Route path="/bending" element={<Bending />} />
+                  </Route>
                   <Route
-                    path="/resources/bending"
-                    element={<BendingGuidelines />}
-                  />
-                  <Route path="/resources/steel" element={<Steel />} />
-                  <Route path="/resources/aluminum" element={<Aluminum />} />
+                    element={
+                      <Layout2>
+                        <Outlet />
+                      </Layout2>
+                    }
+                  >
+                    <Route
+                      path="/resources/laser-cutting"
+                      element={<LaserCuttingGuidelines />}
+                    />
+                    <Route
+                      path="/resources/bending"
+                      element={<BendingGuidelines />}
+                    />
+                    <Route path="/resources/steel" element={<Steel />} />
+                    <Route path="/resources/aluminum" element={<Aluminum />} />
+                    <Route
+                      path="/resources/stainless-steel"
+                      element={<StainlessSteel />}
+                    />
+                    <Route path="/resources/brass" element={<Brass />} />
+                    <Route
+                      path="/resources/specialty"
+                      element={<Specialty />}
+                    />
+                    <Route path="/resources/faq" element={<FAQ />} />
+                    <Route path="/resources/shipping" element={<Shipping />} />
+                    <Route
+                      path="/resources/payment-terms"
+                      element={<PaymentTerms />}
+                    />
+                    <Route
+                      path="/resources/privacy-policy"
+                      element={<PrivacyPolicy />}
+                    />
+                    <Route
+                      path="/resources/refund-policy"
+                      element={<RefundPolicy />}
+                    />
+                    <Route
+                      path="/resources/terms-service"
+                      element={<TermsService />}
+                    />
+                  </Route>
                   <Route
-                    path="/resources/stainless-steel"
-                    element={<StainlessSteel />}
-                  />
-                  <Route path="/resources/brass" element={<Brass />} />
-                  <Route path="/resources/specialty" element={<Specialty />} />
-                  <Route path="/resources/faq" element={<FAQ />} />
-                  <Route path="/resources/shipping" element={<Shipping />} />
-                  <Route
-                    path="/resources/payment-terms"
-                    element={<PaymentTerms />}
-                  />
-                  <Route
-                    path="/resources/privacy-policy"
-                    element={<PrivacyPolicy />}
-                  />
-                  <Route
-                    path="/resources/refund-policy"
-                    element={<RefundPolicy />}
-                  />
-                  <Route
-                    path="/resources/terms-service"
-                    element={<TermsService />}
-                  />
-                </Route>
-                <Route
-                  element={
-                    <Layout3>
-                      <Outlet />
-                    </Layout3>
-                  }
-                >
-                  <Route path="/orders" element={<Orders />} />
-                  <Route path="/rfqs" element={<RFQS />} />
-                  <Route
-                    path="/orders/orders-detail"
-                    element={<OrdersDetail />}
-                  />
-                  <Route
-                    path="/my-profile"
-                    element={<PrivateRoute element={<MyProfile />} />}
-                  />
-                  <Route
-                    path="/my-addresses"
-                    element={<PrivateRoute element={<MyAddresses />} />}
-                  />
-                  <Route
-                    path="/my-address/add-address"
-                    element={<PrivateRoute element={<AddAddress />} />}
-                  />
-                  <Route
-                    path="/my-address/edit-address/:id"
-                    element={<PrivateRoute element={<EditAddress />} />}
-                  />
-                  <Route
-                    path="/payment-cards"
-                    element={<PrivateRoute element={<PaymentCards />} />}
-                  />
-                  <Route
-                    path="/quotes"
-                    element={<PrivateRoute element={<Quotes />} />}
-                  />
-                  <Route
-                    path="/quotes/quotes-detail"
-                    element={<QuotesDetail />}
-                  />
-                </Route>
-              </Routes>
-            </ScrollToTop>
-          </Router>
-          <ToastContainer />
-        </ThemeProvider>
+                    element={
+                      <Layout3>
+                        <Outlet />
+                      </Layout3>
+                    }
+                  >
+                    <Route path="/orders" element={<Orders />} />
+                    <Route path="/rfqs" element={<RFQS />} />
+                    <Route
+                      path="/orders/orders-detail"
+                      element={<OrdersDetail />}
+                    />
+                    <Route
+                      path="/my-profile"
+                      element={<PrivateRoute element={<MyProfile />} />}
+                    />
+                    <Route
+                      path="/my-addresses"
+                      element={<PrivateRoute element={<MyAddresses />} />}
+                    />
+                    <Route
+                      path="/my-address/add-address"
+                      element={<PrivateRoute element={<AddAddress />} />}
+                    />
+                    <Route
+                      path="/my-address/edit-address/:id"
+                      element={<PrivateRoute element={<EditAddress />} />}
+                    />
+                    <Route
+                      path="/payment-cards"
+                      element={<PrivateRoute element={<PaymentCards />} />}
+                    />
+                    <Route
+                      path="/quotes"
+                      element={<PrivateRoute element={<Quotes />} />}
+                    />
+                    <Route
+                      path="/quotes/quotes-detail"
+                      element={<QuotesDetail />}
+                    />
+                  </Route>
+                </Routes>
+              </ScrollToTop>
+            </Router>
+            <ToastContainer />
+          </ThemeProvider>
+        </UserProvider>
       )}
     </>
   );

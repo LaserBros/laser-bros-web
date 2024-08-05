@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Card,
   Container,
@@ -17,9 +17,13 @@ import {
   uploadimage,
 } from "../../api/api";
 import { toast } from "react-toastify";
+import { UserContext } from "../../localstorage/UserProfileContext";
 
 export default function MyProfile() {
+  const { nameLocal, updateName } = useContext(UserContext);
+
   const [name, setName] = useState("");
+  const [showName, setshowName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
@@ -36,6 +40,7 @@ export default function MyProfile() {
         const response = await fetchProfile();
         // console.log(response)
         setName(response.data.full_name);
+        setshowName(response.data.full_name);
         setCompanyName(response.data.company_name);
         setEmail(response.data.email);
         setPhoneNo(response.data.phone_number);
@@ -86,8 +91,9 @@ export default function MyProfile() {
         };
 
         await updateProfile(data);
+        updateName(name);
+        setshowName(name);
         toast.success("Profile Updated!!");
-        localStorage.setItem("full_name", name);
         setLoading(false);
       } catch (error) {
         toast.error(
@@ -166,7 +172,7 @@ export default function MyProfile() {
                         accept="image/*"
                       />
                     </div>
-                    <h4>{name}</h4>
+                    <h4>{showName}</h4>
                     <p>{email}</p>
                   </div>
                 </Col>

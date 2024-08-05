@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -10,7 +10,12 @@ import { toast } from "react-toastify";
 export default function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/quotes");
+    }
+  }, []);
   const [formData, setFormData] = useState({
     full_name: "",
     company_name: "",

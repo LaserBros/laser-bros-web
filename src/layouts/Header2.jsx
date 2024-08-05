@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavDropdown, Navbar, Nav, Container, Image } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import logo from "../assets/img/logo.svg";
@@ -7,17 +7,20 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import ThemeToggle from "../components/Themetoggle";
 import ChangePassword from "../components/Changepassword";
 import axiosInstance from "../axios/axiosInstance";
+import { UserContext } from "../localstorage/UserProfileContext";
+
 const Header = () => {
+  const { name } = useContext(UserContext);
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const handleToggle = () => setExpanded(!expanded);
   const closeNav = () => setExpanded(false);
   const [modalShow, setModalShow] = useState(false);
-  const [name, setName] = useState("");
-  useEffect(() => {
-    var name = localStorage.getItem("full_name");
-    setName(name);
-  }, []);
+  // const [name, setName] = useState("");
+  // useEffect(() => {
+  //   var name = localStorage.getItem("full_name");
+  //   setName(name);
+  // }, []);
   const handleLogout = async () => {
     try {
       const response = await axiosInstance.get("/logout");
@@ -117,7 +120,7 @@ const Header = () => {
                   </NavDropdown.Item>
                   <NavDropdown.Item
                     as={NavLink}
-                    to="/login"
+                    // to="/login"
                     onClick={handleLogout}
                   >
                     <Icon icon="mage:logout" /> Logout

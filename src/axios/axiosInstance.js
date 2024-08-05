@@ -12,24 +12,80 @@ const axiosInstance = axios.create({
 // Add a request interceptor to include the token
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (!config.headers.Authorization) {
-      // Get the token from local storage or any other storage method
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        // If the token is available and Authorization header isn't set, add it to the headers
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    const token = localStorage.getItem("authToken");
+    const refresh_token = localStorage.getItem("refreshToken");
+    console.log("sdsddsdsdspasss");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     config.headers["ngrok-skip-browser-warning"] = "true";
     return config;
   },
   (error) => {
-    // Handle the error
     return Promise.reject(error);
   }
 );
 
-// Optional: You can set up response interceptors for handling errors globally
-// axiosInstance.interceptors.response.use(...)
+// Function to refresh the token
+const refreshToken = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  if (!refreshToken) {
+    throw new Error("No refresh token available");
+  }
+
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/refresh`,
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
+    const { token } = response.data.data;
+    localStorage.setItem("authToken", token);
+    console.log(response.data, "sasas");
+    return token;
+  } catch (error) {
+    if (error.response.data.status_code === 401) {
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("full_name");
+      localStorage.removeItem("email");
+      window.location.href = "/Login";
+    }
+    throw new Error("Failed to refresh token");
+  }
+};
+
+// Add a response interceptor to handle token expiration
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const { config, response } = error;
+    const originalRequest = config;
+
+    if (response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const newToken = await refreshToken();
+        // Retry the original request with the new token
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return axios(originalRequest);
+      } catch (refreshError) {
+        // Handle token refresh failure
+        console.error("Token refresh failed:", refreshError);
+        // Redirect to login or handle as needed
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;
