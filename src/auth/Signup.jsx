@@ -131,7 +131,7 @@ export default function SignUp() {
                   <Row>
                     <Col md={6}>
                       <Form.Group className="mb-3 form-group">
-                        <Form.Label>Full Namess</Form.Label>
+                        <Form.Label>Full Name</Form.Label>
                         <Form.Control
                           type="text"
                           placeholder="Enter your full name"
