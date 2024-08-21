@@ -1295,6 +1295,35 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   border-radius: 20px;
   padding: 30px;
 }
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loader {
+  font-size: 20px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 15px 30px;
+  border-radius: 5px;
+}
+
+.processing {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
 .maincontent_div .banner-upload-file svg {
   font-size: 60px;
 }

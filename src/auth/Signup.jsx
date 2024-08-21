@@ -53,8 +53,9 @@ export default function SignUp() {
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email Address is invalid";
     if (!formData.phone_number) newErrors.phone = "Phone No is required";
-    else if (!/^\d{10}$/.test(formData.phone_number))
-      newErrors.phone = "Phone No is invalid";
+    else if (!/^\d{6,15}$/.test(formData.phone_number)) {
+      newErrors.phone = "Phone No must be between 6 and 15 digits";
+    }
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (!isStrongPassword(formData.password)) {

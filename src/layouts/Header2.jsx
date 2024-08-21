@@ -10,7 +10,7 @@ import axiosInstance from "../axios/axiosInstance";
 import { UserContext } from "../localstorage/UserProfileContext";
 
 const Header = () => {
-  const { name } = useContext(UserContext);
+  const { name, image } = useContext(UserContext);
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const handleToggle = () => setExpanded(!expanded);
@@ -26,11 +26,12 @@ const Header = () => {
       const response = await axiosInstance.get("/logout");
       localStorage.removeItem("authToken");
       localStorage.removeItem("full_name");
+      localStorage.removeItem("profile_pic");
       localStorage.removeItem("email");
       navigate("/login");
-      console.log(response);
     } catch (error) {
       localStorage.removeItem("authToken");
+      localStorage.removeItem("profile_pic");
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
       navigate("/login");
@@ -79,7 +80,7 @@ const Header = () => {
                   title={
                     <span>
                       <Image
-                        src={User}
+                        src={image}
                         roundedCircle
                         style={{
                           width: "36px",

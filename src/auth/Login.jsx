@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import logo from "../assets/img/logo.svg";
 import bg from "../assets/img/bg.jpg";
@@ -6,10 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
+import { UserContext } from "../localstorage/UserProfileContext";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const { nameLocal, updateName } = useContext(UserContext);
+
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
@@ -17,6 +20,7 @@ export default function Login() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const { image, updateImage } = useContext(UserContext);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,11 +66,24 @@ export default function Login() {
       try {
         setLoading(true);
         const response = await axiosInstance.post("/signin", data);
-        console.log(response.data);
+        console.log(
+          response.data,
+          "------=====---",
+          response.data.data.profile_image
+        );
         localStorage.setItem("authToken", response.data.data.token);
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
         localStorage.setItem("full_name", response.data.data.full_name);
         localStorage.setItem("email", response.data.data.email);
+        updateName(response.data.data.full_name);
+        // localStorage.setItem("profile_pic", response.data.data.profile_image);
+        updateImage(
+          response.data.data.profile_image != null
+            ? process.env.REACT_APP_BUCKET +
+                "/" +
+                response.data.data.profile_image
+            : "https://s3.us-east-1.amazonaws.com/laserbros-image-upload/1724131072668-default.png"
+        );
         toast.success("Login Successfully!!");
         setLoading(false);
         navigate("/quotes");

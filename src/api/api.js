@@ -141,3 +141,25 @@ export const updateProfile = async (formData) => {
     throw error;
   }
 };
+
+export const uploadQuote = async (formData) => {
+  try {
+    const response = await axiosInstance.post(`/users/uploadQuote`, formData);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const fetchParts = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/users/fetchParts`, data);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};

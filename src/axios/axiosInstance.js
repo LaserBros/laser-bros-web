@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an instance of axios
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // Replace with your API's base URL
-  timeout: 10000, // You can set a timeout for requests
+  timeout: 1000000, // You can set a timeout for requests
   headers: {
     "Content-Type": "application/json",
   },
@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("authToken");
     const refresh_token = localStorage.getItem("refreshToken");
-    console.log("sdsddsdsdspasss");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -21,11 +21,12 @@ import { UserContext } from "../../localstorage/UserProfileContext";
 
 export default function MyProfile() {
   const { nameLocal, updateName } = useContext(UserContext);
-
+  const { image, updateImage } = useContext(UserContext);
   const [name, setName] = useState("");
   const [showName, setshowName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [email, setEmail] = useState("");
+  // const [profileImage, setprofileImage] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [profileImage, setProfileImage] = useState(User); // Default image
   const [imageFile, setImageFile] = useState(null);
@@ -38,12 +39,13 @@ export default function MyProfile() {
     const fetchUserInfo = async () => {
       try {
         const response = await fetchProfile();
-        // console.log(response)
+        console.log(response, "sdsssdsdds");
         setName(response.data.full_name);
         setshowName(response.data.full_name);
         setCompanyName(response.data.company_name);
         setEmail(response.data.email);
         setPhoneNo(response.data.phone_number);
+        setProfileImage(response.data.profile_image);
       } catch (error) {
         console.error("Failed to fetch user info:", error);
       }
@@ -70,7 +72,7 @@ export default function MyProfile() {
     if (!phoneNo) {
       newErrors.phoneNo = "Phone number is required.";
       valid = false;
-    } else if (!/^\d{10}$/.test(phoneNo)) {
+    } else if (!/^\d{6,15}$/.test(phoneNo)) {
       newErrors.phoneNo = "Phone number must be 10 digits.";
       valid = false;
     }
@@ -92,6 +94,7 @@ export default function MyProfile() {
 
         await updateProfile(data);
         updateName(name);
+
         setshowName(name);
         toast.success("Profile Updated!!");
         setLoading(false);
@@ -120,7 +123,6 @@ export default function MyProfile() {
         return;
       }
 
-      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
@@ -130,8 +132,8 @@ export default function MyProfile() {
       try {
         const formData = new FormData();
         formData.append("profile", file);
-
-        await uploadImage(formData);
+        const updated_image = await uploadImage(formData);
+        updateImage(updated_image.data.path);
         toast.success("Profile Image Changed!!");
       } catch (error) {
         toast.error(
@@ -156,7 +158,15 @@ export default function MyProfile() {
                   <div className="profile_user_main text-center mb-3">
                     <div className="user_info position-relative">
                       <Image
-                        src={profileImage}
+                        src={
+                          image != null || image != "" || image != undefined
+                            ? image
+                            : profileImage == "" ||
+                              profileImage == undefined ||
+                              profileImage == "null"
+                            ? "https://s3.us-east-1.amazonaws.com/laserbros-image-upload/1724131072668-default.png"
+                            : process.env.REACT_APP_BUCKET + "/" + profileImage
+                        }
                         className="img-fluid rounded-circle"
                         alt="Profile"
                       />
