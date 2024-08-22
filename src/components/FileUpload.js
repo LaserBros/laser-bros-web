@@ -10,6 +10,7 @@ const FileUpload = ({
   label = "Browse Files",
   instructions = "We accept STEP files for instant quotes",
   onFileDrop,
+  className,
 }) => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -22,7 +23,8 @@ const FileUpload = ({
       setError(`Only ${accept.toUpperCase()} files are accepted.`);
       return;
     }
-
+    console.log("SDssdsdsdsdsd");
+    console.log(onFileDrop);
     if (onFileDrop) {
       onFileDrop(acceptedFiles);
       //   console.log("----", acceptedFiles[0].name);
@@ -51,7 +53,14 @@ const FileUpload = ({
         setTimeout(async () => {
           const response_api = await fetchParts(data_api);
           console.log("response_api", response_api.data);
-          localStorage.setItem("setItem", JSON.stringify(response_api.data));
+          localStorage.setItem(
+            "setItemelementData",
+            JSON.stringify(response_api.data.elementData)
+          );
+          localStorage.setItem(
+            "setItempartsDBdata",
+            JSON.stringify(response_api.data.partsDBdata)
+          );
           setProcessing(false);
           navigate("/quotes/quotes-detail");
         }, 25000);
@@ -71,7 +80,9 @@ const FileUpload = ({
   return (
     <div>
       <div
-        className={`banner-upload-file mb-2 ${processing ? "processing" : ""}`}
+        className={`banner-upload-file mb-2 text-center ${className} ${
+          processing ? "processing" : ""
+        }`}
         {...getRootProps()}
       >
         {processing && (

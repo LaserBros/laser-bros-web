@@ -9,6 +9,8 @@ import QuotesSidebar from "../../components/Quotessidebar";
 import RenamePart from "../../components/Renamepart";
 import AddBend from "../../components/Addbend";
 import AddNote from "../../components/Addnote";
+import FileUpload from "../../components/FileUpload";
+import { updateQuantity } from "../../api/api";
 export default function QuotesDetail() {
   const [modalShow, setModalShow] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
@@ -25,7 +27,7 @@ export default function QuotesDetail() {
   const updateQuoteName = (partId, newName) => {
     setQuoteData((prevQuoteData) =>
       prevQuoteData.map((quote) =>
-        quote.partId === partId ? { ...quote, name: newName } : quote
+        quote.part_id === partId ? { ...quote, quote_name: newName } : quote
       )
     );
     handleClose();
@@ -46,29 +48,44 @@ export default function QuotesDetail() {
 
   useEffect(() => {
     // Fetch data from localStorage
-    const storedData = localStorage.getItem("setItem");
+    const storedData = localStorage.getItem("setItempartsDBdata");
 
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       console.log("---------");
-      console.log(parsedData.elementData);
-      setQuoteData(parsedData.partsData);
+      console.log(parsedData);
+      setQuoteData(parsedData);
     }
   }, []);
+  const uploadQuote = async (formData) => {
+    // API call logic here, e.g., using fetch or axios
+    try {
+      await updateQuantity(formData);
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
+  };
+
   const handleQuantityChange = (partId, increment = true) => {
-    setQuoteData((prevQuoteData) =>
-      prevQuoteData.map((quote) => {
-        if (quote.partId === partId) {
-          console.log("sdsdsdsdsd--111-", quote.partId);
+    setQuoteData((prevQuoteData) => {
+      const updatedQuoteData = prevQuoteData.map((quote) => {
+        if (quote.part_id === partId) {
           const updatedQuantity = increment
             ? quote.quantity + 1
             : Math.max(0, quote.quantity - 1); // Prevent negative quantities
+          const formData = { id: quote._id, quantity: updatedQuantity };
+          uploadQuote(formData);
           return { ...quote, quantity: updatedQuantity };
         }
+
         return quote;
-      })
-    );
+      });
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(updatedQuoteData)
+      );
+    });
   };
 
   const formattedNumber = (num) => {
@@ -84,6 +101,13 @@ export default function QuotesDetail() {
       ...prevQuantities,
       [item]: Math.max(prevQuantities[item] - 1, 0), // Prevent negative quantities
     }));
+  };
+
+  const [error, setError] = useState(null);
+  const [hovered, setHovered] = useState(null);
+  const handleFileDrop = (acceptedFiles) => {
+    console.log("Files dropped:", acceptedFiles);
+    // Add any additional logic for handling the files
   };
 
   return (
@@ -102,20 +126,12 @@ export default function QuotesDetail() {
           </div>
           <Row>
             <Col lg={8} xl={9}>
-              <div className="banner-upload-file mb-4 text-center">
-                <Icon icon="mage:file-plus" />
-                <p>
-                  <label htmlFor="uploadfile">Browse Files</label>
-                  <input
-                    type="file"
-                    id="uploadfile"
-                    name="uploadfile"
-                    className="d-none"
-                  />
-                  <span> or Drag or Drop</span>
-                </p>
-                <small> We accept DXF files for instant quotes</small>
-              </div>
+              <FileUpload
+                acceptedFiles={[".step"]}
+                onFileDrop={handleFileDrop}
+                error={error}
+                className={"mb-4"}
+              />
               {quoteData &&
                 quoteData.length > 0 &&
                 quoteData.map((quote, index) => (
@@ -129,7 +145,7 @@ export default function QuotesDetail() {
                         />
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                        <h2>{quote.name}</h2>
+                        <h2>{quote.quote_name}</h2>
                         <p className="num-dim-main">
                           {/* <span className="num-dim"><span>Number</span>24-05-626-983</span> <span className="px-2 num-dim-indicator">/</span> */}
                           <span className="num-dim">
@@ -169,10 +185,10 @@ export default function QuotesDetail() {
                       <QuantitySelector
                         quantity={quote.quantity}
                         onIncrement={() =>
-                          handleQuantityChange(quote.partId, true)
+                          handleQuantityChange(quote.part_id, true)
                         }
                         onDecrement={() =>
-                          handleQuantityChange(quote.partId, false)
+                          handleQuantityChange(quote.part_id, false)
                         }
                       />
                       <div className="rightbtns gap-2 d-inline-flex flex-wrap">
@@ -181,7 +197,9 @@ export default function QuotesDetail() {
                         </Link>
                         <Link
                           className="btnicon"
-                          onClick={() => handleShow(quote.name, quote.partId)}
+                          onClick={() =>
+                            handleShow(quote.quote_name, quote.part_id)
+                          }
                         >
                           <Icon icon="mynaui:edit" />
                         </Link>

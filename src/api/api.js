@@ -163,3 +163,14 @@ export const fetchParts = async (data) => {
     throw error;
   }
 };
+
+export const updateQuantity = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/users/updateQuantity`, data);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
