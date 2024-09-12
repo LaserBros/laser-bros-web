@@ -6,9 +6,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const FileUpload = ({
-  accept = ".step",
+  accept = ".dxf",
   label = "Browse Files",
-  instructions = "We accept STEP files for instant quotes",
+  instructions = "We accept DXF files for instant quotes",
   onFileDrop,
   className,
 }) => {
@@ -28,42 +28,31 @@ const FileUpload = ({
     if (onFileDrop) {
       onFileDrop(acceptedFiles);
       //   console.log("----", acceptedFiles[0].name);
-      var nameWithoutExtension = acceptedFiles[0].name.replace(/\.step$/, "");
+      var nameWithoutExtension = acceptedFiles[0].name.replace(/\.dxf$/, "");
       console.log(acceptedFiles[0]);
       //   console.log(nameWithoutExtension);
       setProcessing(true);
       try {
         const formData = new FormData();
         formData.append("quote_image", acceptedFiles[0]);
-        formData.append("documentName", nameWithoutExtension + "_document");
-        formData.append("workspaceName", nameWithoutExtension + "_workspace");
         //   console.log(formData);
         const response = await uploadQuote(formData);
-        var url = response.data.elementInfo;
-        var wid = response.data.wid;
-        var did = response.data.did;
-        const data_api = {
-          url: url.toString(),
-          did: did.toString(),
-          wid: wid.toString(),
-          filename: nameWithoutExtension,
-        };
 
-        console.log(data_api);
-        setTimeout(async () => {
-          const response_api = await fetchParts(data_api);
-          console.log("response_api", response_api.data);
-          localStorage.setItem(
-            "setItemelementData",
-            JSON.stringify(response_api.data.elementData)
-          );
-          localStorage.setItem(
-            "setItempartsDBdata",
-            JSON.stringify(response_api.data.partsDBdata)
-          );
-          setProcessing(false);
-          navigate("/quotes/quotes-detail");
-        }, 25000);
+        // setTimeout(async () => {
+        // const response_api = await fetchParts(data_api);
+        console.log("response_api", response.data);
+        localStorage.setItem(
+          "setItemelementData",
+          JSON.stringify(response.data.requestQuoteDB)
+        );
+
+        localStorage.setItem(
+          "setItempartsDBdata",
+          JSON.stringify(response.data.partsDBdata)
+        );
+        setProcessing(false);
+        navigate("/quotes/quotes-detail");
+        // }, 25000);
       } catch (error) {
         toast.error(`${error.response.data.message || "Bad Request"}`);
       }

@@ -66,11 +66,9 @@ export default function Login() {
       try {
         setLoading(true);
         const response = await axiosInstance.post("/signin", data);
-        console.log(
-          response.data,
-          "------=====---",
-          response.data.data.profile_image
-        );
+        const elementId = localStorage.getItem("setItemelementData");
+        const getId = JSON.parse(elementId);
+
         localStorage.setItem("authToken", response.data.data.token);
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
         localStorage.setItem("full_name", response.data.data.full_name);
@@ -84,6 +82,19 @@ export default function Login() {
                 response.data.data.profile_image
             : "https://s3.us-east-1.amazonaws.com/laserbros-image-upload/1724131072668-default.png"
         );
+        if (getId._id != "" && getId._id != null) {
+          const data_id = {
+            id: getId._id,
+          };
+          try {
+            const response_local = await axiosInstance.post(
+              "/users/updateRequestQuoteUserId",
+              data_id
+            );
+            localStorage.setItem("setItemelementData", "");
+            localStorage.setItem("setItempartsDBdata", "");
+          } catch (error) {}
+        }
         toast.success("Login Successfully!!");
         setLoading(false);
         navigate("/quotes");

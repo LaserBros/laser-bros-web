@@ -2625,8 +2625,10 @@ textarea.form-control {
   justify-content: center;
 }
 .list-quotes-main .list-quotes .img-quote img {
-  -o-object-fit: contain;
-     object-fit: contain;
+  width: 154px;
+  height: 160px;
+  object-fit: scale-down;
+  padding: 10px;
 }
 .list-quotes-main .list-quotes .right-quote .quote-off {
   border: 1px solid #E6E6E6;

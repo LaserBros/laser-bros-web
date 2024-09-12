@@ -130,9 +130,9 @@ export default function Home() {
               limitations around what can be built.
             </p>
             <FileUpload
-              accept=".step"
+              accept=".dxf"
               // label="Upload Your STEP File"
-              instructions="We accept STEP files for instant quotes"
+              instructions="We accept DXF files for instant quotes"
               onFileDrop={handleFileDrop}
             />
           </div>

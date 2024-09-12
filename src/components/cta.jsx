@@ -21,7 +21,7 @@ const CTA = () => {
         </div>
         <div className="max-width-810 mx-auto text-center">
           <FileUpload
-            acceptedFiles={[".step"]}
+            acceptedFiles={[".dxf"]}
             onFileChange={handleFileChange}
             error={error}
           />

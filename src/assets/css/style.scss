@@ -3058,7 +3058,10 @@ textarea.form-control {
             justify-content: center;
 
             img {
-                object-fit: contain;
+                width: 154px;
+                height: 160px;
+                object-fit: scale-down;
+                padding: 10px;
             }
 
         }

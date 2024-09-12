@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Container, Image, Form } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 import file1 from "../../assets/img/file1.jpg";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -10,10 +10,21 @@ import RenamePart from "../../components/Renamepart";
 import AddBend from "../../components/Addbend";
 import AddNote from "../../components/Addnote";
 import FileUpload from "../../components/FileUpload";
-import { updateQuantity } from "../../api/api";
+import {
+  copySubQuote,
+  deleteSubQuote,
+  getFinish,
+  getMaterials,
+  getThickness,
+  getThicknessMaterialFinish,
+  updateQuantity,
+  updateSubQuoteDetails,
+} from "../../api/api";
 export default function QuotesDetail() {
   const [modalShow, setModalShow] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
+
   const [selectedPartId, setSelectedPartId] = useState(null);
 
   const [modalShow2, setModalShow2] = useState(false);
@@ -24,19 +35,154 @@ export default function QuotesDetail() {
     setModalShow(true);
   };
 
-  const updateQuoteName = (partId, newName) => {
+  // const colors = [
+  //   { label: "Gloss Red P.C.", value: "#E11F26" },
+  //   { label: "Gloss Yellow P.C.", value: "#facc15" },
+  //   { label: "Gloss Blue P.C.", value: "#1F2E60" },
+  //   { label: "Gloss Green P.C.", value: "#2A5C17" },
+  //   { label: "Gloss Orange P.C.", value: "#f37520" },
+  // ];
+  const [colors, setcolors] = useState([]);
+
+  useEffect(() => {
+    // Fetch options from the API when the parent component mounts
+    const fetchOptions = async () => {
+      try {
+        const response = await getFinish(); // Your API call function
+        const fetchedOptions = response.data.map((item) => ({
+          value: item._id, // Adjust according to the structure of your API response
+          label: item.material_finishing, // Adjust according to the structure of your API response
+        }));
+        setcolors(fetchedOptions);
+      } catch (error) {
+        console.error("Error fetching options:", error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
+
+  const getTotalAmount = () => {
+    if (!Array.isArray(quoteData)) return 0;
+    return quoteData.reduce((sum, quote) => {
+      // Ensure quote.amount is a valid number
+      const amount = parseFloat(quote.amount);
+      return sum + (isNaN(amount) ? 0 : amount);
+    }, 0);
+  };
+  const [materials, setmaterials] = useState([]);
+
+  useEffect(() => {
+    // Fetch options from the API when the parent component mounts
+    const fetchOptions = async () => {
+      try {
+        const response = await getMaterials(); // Your API call function
+        const fetchedOptions = response.data.map((item) => ({
+          value: item._id, // Adjust according to the structure of your API response
+          label: item.material_name + " " + item.material_code, // Adjust according to the structure of your API response
+        }));
+        setmaterials(fetchedOptions);
+      } catch (error) {
+        console.error("Error fetching options:", error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
+
+  const [thickness, setthickness] = useState([]);
+
+  useEffect(() => {
+    // Fetch options from the API when the parent component mounts
+    const fetchThickness = async () => {
+      try {
+        const response = await getThickness(); // Your API call function
+        const fetchedOptions = response.data.map((item) => ({
+          value: item._id, // Adjust according to the structure of your API response
+          label: item.material_thickness, // Adjust according to the structure of your API response
+        }));
+        setthickness(fetchedOptions);
+      } catch (error) {
+        console.error("Error fetching options:", error);
+      }
+    };
+
+    fetchThickness();
+  }, []);
+
+  // const thickness = [
+  //   { label: '.040" / 1.02mm', value: "thickness1" },
+  //   { label: '.040" / 1.02mm', value: "thickness2" },
+  //   { label: '.040" / 1.02mm', value: "thickness3" },
+  //   { label: '.040" / 1.02mm', value: "thickness4" },
+  // ];
+
+  const handleShow3 = (quote, id) => {
+    console.log("notesss", quote);
+    setSelectedNote(quote);
+    setSelectedPartId(id);
+    setModalShow3(true);
+  };
+  const updateQuoteNote = (partId, newNote) => {
     setQuoteData((prevQuoteData) =>
       prevQuoteData.map((quote) =>
-        quote.part_id === partId ? { ...quote, quote_name: newName } : quote
+        quote._id === partId ? { ...quote, notes_text: newNote } : quote
       )
     );
-    handleClose();
-  };
 
+    // Update localStorage
+    const updatedQuoteData = quoteData.map((quote) =>
+      quote._id === partId ? { ...quote, notes_text: newNote } : quote
+    );
+    localStorage.setItem(
+      "setItempartsDBdata",
+      JSON.stringify(updatedQuoteData)
+    );
+  };
+  const handleDeleteQuote = (quoteId) => {
+    setQuoteData((prevQuoteData) => {
+      const updatedQuoteData = prevQuoteData.filter(
+        (quote) => quote._id !== quoteId
+      );
+      const data = {
+        id: quoteId,
+      };
+      try {
+        deleteSubQuote(data);
+        // Update localStorage with the new data
+        localStorage.setItem(
+          "setItempartsDBdata",
+          JSON.stringify(updatedQuoteData)
+        );
+      } catch (error) {}
+
+      return updatedQuoteData;
+    });
+  };
+  const updateQuoteName = (Id, newName) => {
+    setQuoteData((prevQuoteData) =>
+      prevQuoteData.map((quote) =>
+        quote._id === Id ? { ...quote, quote_name: newName } : quote
+      )
+    );
+    const data = {
+      id: Id,
+      quote_name: newName,
+    };
+    updateSubQuoteDetails(data);
+    const updatedQuoteData = quoteData.map((quote) =>
+      quote._id === Id ? { ...quote, quote_name: newName } : quote
+    );
+    localStorage.setItem(
+      "setItempartsDBdata",
+      JSON.stringify(updatedQuoteData)
+    );
+    // setQuoteData(updatedQuoteData);
+  };
   const handleClose = () => setModalShow(false);
   const handleShow2 = () => setModalShow2(true);
   const handleClose2 = () => setModalShow2(false);
-  const handleShow3 = () => setModalShow3(true);
+
   const handleClose3 = () => setModalShow3(false);
   const [quantities, setQuantities] = useState({
     item1: 1,
@@ -53,8 +199,6 @@ export default function QuotesDetail() {
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
-      console.log("---------");
-      console.log(parsedData);
       setQuoteData(parsedData);
     }
   }, []);
@@ -66,26 +210,120 @@ export default function QuotesDetail() {
       console.error("API call failed:", error);
     }
   };
-
-  const handleQuantityChange = (partId, increment = true) => {
+  useEffect(() => {
+    const storedData = localStorage.getItem("setItempartsDBdata");
+    if (storedData) {
+      setQuoteData(JSON.parse(storedData));
+    }
+  }, []);
+  const handleQuantityChange = (Id, increment = true) => {
     setQuoteData((prevQuoteData) => {
+      // Map through the previous quote data and update the quantity where the ID matches
       const updatedQuoteData = prevQuoteData.map((quote) => {
-        if (quote.part_id === partId) {
+        if (quote._id === Id) {
           const updatedQuantity = increment
             ? quote.quantity + 1
             : Math.max(0, quote.quantity - 1); // Prevent negative quantities
+
           const formData = { id: quote._id, quantity: updatedQuantity };
-          uploadQuote(formData);
+          uploadQuote(formData); // Assuming this function handles the API call
+
           return { ...quote, quantity: updatedQuantity };
         }
-
         return quote;
       });
+
+      // Update localStorage with the new data
       localStorage.setItem(
         "setItempartsDBdata",
         JSON.stringify(updatedQuoteData)
       );
+
+      // Return the updated quote data to update the state
+      return updatedQuoteData;
     });
+  };
+
+  const handleDuplicateQuote = async (quote, id) => {
+    try {
+      const data = {
+        id: id,
+      };
+
+      const response = await copySubQuote(data);
+
+      const duplicatedQuote = {
+        ...quote,
+        _id: response.data._id, // Assuming the API returns the new ID
+      };
+
+      // Update the quoteData state to include the duplicated quote
+      setQuoteData((prevQuoteData) => {
+        const updatedQuoteData = [...prevQuoteData, duplicatedQuote];
+
+        // Update localStorage
+        localStorage.setItem(
+          "setItempartsDBdata",
+          JSON.stringify(updatedQuoteData)
+        );
+
+        return updatedQuoteData;
+      });
+    } catch (error) {
+      console.error("Error duplicating quote:", error);
+    }
+  };
+
+  const handleOptionSelect = async (selectedOption, type, id) => {
+    try {
+      const data = {
+        id: selectedOption.value,
+      };
+
+      const response = await getThicknessMaterialFinish(data, type);
+      console.log("Final price received:", response.data.price);
+
+      const updatedQuoteData = quoteData.map((quote) => {
+        if (quote._id === id) {
+          let updatedFields = {};
+          const currentAmount = parseFloat(quote.amount) || 0;
+          const newPrice = parseFloat(response.data.price) || 0;
+          if (type === "material") {
+            updatedFields.material_id = selectedOption.value;
+          } else if (type === "finish") {
+            updatedFields.finishing_id = selectedOption.value;
+          } else if (type === "thickness") {
+            updatedFields.thickness_id = selectedOption.value;
+          }
+
+          return {
+            ...quote,
+            ...updatedFields,
+            amount: currentAmount + newPrice,
+          };
+        }
+        return quote;
+      });
+
+      // Sum the total amount of all quotes
+      const totalAmount = updatedQuoteData.reduce(
+        (sum, quote) => sum + quote.amount,
+        0
+      );
+
+      // Update localStorage with the new quoteData
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(updatedQuoteData)
+      );
+
+      // Update state with the new quoteData
+      setQuoteData(updatedQuoteData);
+
+      console.log("Total sum of prices:", totalAmount);
+    } catch (error) {
+      console.error("Error fetching price:", error);
+    }
   };
 
   const formattedNumber = (num) => {
@@ -96,6 +334,7 @@ export default function QuotesDetail() {
       })
     );
   };
+
   const decrementQuantity = (item) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -127,7 +366,7 @@ export default function QuotesDetail() {
           <Row>
             <Col lg={8} xl={9}>
               <FileUpload
-                acceptedFiles={[".step"]}
+                acceptedFiles={[".dxf"]}
                 onFileDrop={handleFileDrop}
                 error={error}
                 className={"mb-4"}
@@ -148,14 +387,39 @@ export default function QuotesDetail() {
                         <h2>{quote.quote_name}</h2>
                         <p className="num-dim-main">
                           {/* <span className="num-dim"><span>Number</span>24-05-626-983</span> <span className="px-2 num-dim-indicator">/</span> */}
-                          <span className="num-dim">
+                          {/* <span className="num-dim">
                             <span>Dimensions</span> H :{" "}
                             {formattedNumber(quote.dimensions.height)} in x W :{" "}
                             {formattedNumber(quote.dimensions.width)} in x L :{" "}
                             {formattedNumber(quote.dimensions.length)}
-                          </span>
+                          </span> */}
                         </p>
-                        <SelectDropdowns />
+                        <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
+                          <SelectDropdowns
+                            options={materials}
+                            value={quote.material_id}
+                            placeholder={"Select a Material"}
+                            type="material"
+                            id={quote._id}
+                            onOptionSelect={handleOptionSelect}
+                          />
+                          <SelectDropdowns
+                            options={thickness}
+                            value={quote.thickness_id}
+                            type="thickness"
+                            id={quote._id}
+                            placeholder={"Select a Thickness"}
+                            onOptionSelect={handleOptionSelect}
+                          />
+                          <SelectDropdowns
+                            options={colors}
+                            value={quote.finishing_id}
+                            type="finish"
+                            id={quote._id}
+                            placeholder={"Select a Finish"}
+                            onOptionSelect={handleOptionSelect}
+                          />
+                        </div>
                         <div className="quotes-services mt-3">
                           <h4>Services</h4>
                           <Form.Check
@@ -171,9 +435,12 @@ export default function QuotesDetail() {
                       </div>
                       <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
-                        <p className=" text-md-end">$35.00 total</p>
+                        <p className=" text-md-end">${quote.amount} total</p>
                         <p className=" text-md-end">
-                          <strong className="quotes-price">$35.00</strong>/each
+                          <strong className="quotes-price">
+                            ${quote.amount}
+                          </strong>
+                          /each
                         </p>
                         <span className="quote-off">0% Saved</span>
                         <p className="mb-0 text-md-end">
@@ -185,28 +452,39 @@ export default function QuotesDetail() {
                       <QuantitySelector
                         quantity={quote.quantity}
                         onIncrement={() =>
-                          handleQuantityChange(quote.part_id, true)
+                          handleQuantityChange(quote._id, true)
                         }
                         onDecrement={() =>
-                          handleQuantityChange(quote.part_id, false)
+                          handleQuantityChange(quote._id, false)
                         }
                       />
                       <div className="rightbtns gap-2 d-inline-flex flex-wrap">
-                        <Link className="btnshare" onClick={handleShow3}>
+                        <Link
+                          className="btnshare"
+                          onClick={() =>
+                            handleShow3(quote.notes_text, quote._id)
+                          }
+                        >
                           Add Note
                         </Link>
                         <Link
                           className="btnicon"
                           onClick={() =>
-                            handleShow(quote.quote_name, quote.part_id)
+                            handleShow(quote.quote_name, quote._id)
                           }
                         >
                           <Icon icon="mynaui:edit" />
                         </Link>
-                        <Link className="btnicon">
+                        <Link
+                          className="btnicon"
+                          onClick={() => handleDuplicateQuote(quote, quote._id)} // Pass the quote to be duplicated
+                        >
                           <Icon icon="heroicons:document-duplicate" />
                         </Link>
-                        <Link className="btnicon">
+                        <Link
+                          className="btnicon"
+                          onClick={() => handleDeleteQuote(quote._id)}
+                        >
                           <Icon icon="uiw:delete" />
                         </Link>
                       </div>
@@ -215,7 +493,7 @@ export default function QuotesDetail() {
                 ))}
             </Col>
             <Col lg={4} xl={3}>
-              <QuotesSidebar />
+              <QuotesSidebar amount={getTotalAmount().toFixed(2)} />
             </Col>
           </Row>
         </Container>
@@ -227,13 +505,18 @@ export default function QuotesDetail() {
         onSave={(newName) => updateQuoteName(selectedPartId, newName)}
         title="Rename Part 24-05-771-224"
       />
-
       <AddBend
         show2={modalShow2}
         handleClose2={handleClose2}
         title="Specify Bend Details"
       />
-      <AddNote show3={modalShow3} handleClose3={handleClose3} title="Notes" />
+      <AddNote
+        show3={modalShow3}
+        name={selectedNote}
+        handleClose3={handleClose3}
+        onSave={(newNote) => updateQuoteNote(selectedPartId, newNote)}
+        title="Notes"
+      />
     </React.Fragment>
   );
 }
