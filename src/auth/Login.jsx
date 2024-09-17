@@ -82,10 +82,11 @@ export default function Login() {
                 response.data.data.profile_image
             : "https://s3.us-east-1.amazonaws.com/laserbros-image-upload/1724131072668-default.png"
         );
-        if (getId._id != "" && getId._id != null) {
+        if (getId && getId._id) {
           const data_id = {
             id: getId._id,
           };
+
           try {
             const response_local = await axiosInstance.post(
               "/users/updateRequestQuoteUserId",
