@@ -64,12 +64,25 @@ export default function Login() {
         password: password,
       };
       try {
+        console.log("Dsdd");
         setLoading(true);
+        var getId = "";
         const response = await axiosInstance.post("/signin", data);
         const elementId = localStorage.getItem("setItemelementData");
-        const getId = JSON.parse(elementId);
+        if (elementId && typeof elementId === "object") {
+          getId = JSON.parse(elementId);
+        }
+        if (response.data.data.role_type == 1) {
+          localStorage.setItem("adminToken", response.data.data.token);
+        }
 
-        localStorage.setItem("authToken", response.data.data.token);
+        if (response.data.data.role_type == 2) {
+          localStorage.setItem("employeeToken", response.data.data.token);
+        }
+        if (response.data.data.role_type == 3) {
+          localStorage.setItem("authToken", response.data.data.token);
+        }
+
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
         localStorage.setItem("full_name", response.data.data.full_name);
         localStorage.setItem("email", response.data.data.email);
@@ -98,7 +111,16 @@ export default function Login() {
         }
         toast.success("Login Successfully!!");
         setLoading(false);
-        navigate("/quotes");
+        console.log("response.data.data.", response.data.data);
+        if (response.data.data.role_type == 1) {
+          navigate("/admin/dashboard");
+        }
+        if (response.data.data.role_type == 2) {
+          navigate("/employee/dashboard");
+        }
+        if (response.data.data.role_type == 3) {
+          navigate("/quotes");
+        }
       } catch (error) {
         setLoading(false);
         // Check if error.response exists and is a 400 status

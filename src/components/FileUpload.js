@@ -35,6 +35,8 @@ const FileUpload = ({
       try {
         const formData = new FormData();
         formData.append("quote_image", acceptedFiles[0]);
+        formData.append("documentName", "file_upload");
+        formData.append("workspaceName", "file_upload");
         //   console.log(formData);
         const response = await uploadQuote(formData);
 

@@ -7,6 +7,9 @@ import "react-phone-input-2/lib/style.css";
 import cards from "../assets/img/cards.png";
 import cvv from "../assets/img/cvv.png";
 import PaymentDone from "./Paymentdone";
+import { fetchAddress } from "../api/api";
+import axiosInstance from "../axios/axiosInstance";
+import { toast } from "react-toastify";
 const QuotesSidebar = ({ amount }) => {
   const [modalShow, setModalShow] = useState(false);
   const handleShow = () => setModalShow(true);
@@ -29,13 +32,82 @@ const QuotesSidebar = ({ amount }) => {
     }
   };
   const [name, setName] = useState("Andrew James");
-
+  const [address, setAddresss] = useState([]);
   const [token, setToken] = useState("");
   const [email, setEmail] = useState("andrewjames@gmail.com");
   const [address1, setAddress1] = useState("indiit solutions");
   const [city, setCity] = useState("New York");
   const [zipcode, setZipcode] = useState("10001");
   const [phoneno, setPhoneno] = useState("1 9876231221");
+  const [loading, setLoading] = useState(true);
+
+  const handleUpdateQuote = async () => {
+    const updatedQuoteData = JSON.parse(
+      localStorage.getItem("setItempartsDBdata")
+    );
+
+    let isValid = true; // Assume everything is valid initially
+    updatedQuoteData.forEach((quote) => {
+      // Check if any required field is missing
+      if (!quote.material_id || !quote.thickness_id || !quote.finishing_id) {
+        isValid = false;
+
+        // Show a toast message for missing fields
+        toast.error(
+          `Please select Material, Thickness, and Finish for ${quote.quote_name}`
+        );
+      }
+    });
+
+    // Only proceed with submission if all required fields are selected
+    if (isValid) {
+      const elementId = localStorage.getItem("setItemelementData");
+      var getId = "";
+
+      if (elementId) {
+        getId = JSON.parse(elementId);
+      }
+      if (getId && getId._id) {
+        const data_id = {
+          id: getId._id,
+          status: 1,
+        };
+
+        try {
+          setLoading(true);
+          const response_local = await axiosInstance.post(
+            "/users/updateQuoteState",
+            data_id
+          );
+          localStorage.setItem("setItemelementData", "");
+          localStorage.setItem("setItempartsDBdata", "");
+          toast.success("Requst quote send successfully");
+          setLoading(false);
+          navigate("/quotes");
+        } catch (error) {
+          toast.error("Something wents wrong.");
+        }
+      }
+    }
+  };
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const [response] = await Promise.all([fetchAddress()]);
+      console.log(response.data.data);
+      setAddresss(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   const HandleName = () => {
     setName();
   };
@@ -99,16 +171,28 @@ const QuotesSidebar = ({ amount }) => {
                   <span className="quotessubtotal">Subtotal</span>
                   <span className="quotesprice">${amount}</span>
                 </div>
-                <Button className="w-100 mt-3" onClick={() => toggleDiv(1)}>
-                  Proceed To Checkout
-                </Button>
                 <Button
+                  className="w-100 mt-3"
+                  onClick={() => handleUpdateQuote()}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    "Request a Quote"
+                  )}
+                </Button>
+                {/* <Button
                   variant={null}
                   className="w-100 btn-outline-primary mt-3"
                 >
                   {" "}
                   Forward to Purchaser
-                </Button>
+                </Button> */}
               </>
             ) : (
               <>
@@ -163,103 +247,46 @@ const QuotesSidebar = ({ amount }) => {
                   <span className="quotesprice">${amount}</span>
                 </div>
                 <hr className="quotes-separator" />
-
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email address"
-                    value={email}
-                    onChange={HandleEmail}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter full name"
-                    value={name}
-                    onChange={HandleName}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Country</Form.Label>
-                  <Form.Select>
-                    <option disabled selected>
-                      Select
-                    </option>
-                    <option value="1" selected>
-                      USA
-                    </option>
-                    <option value="2">UK</option>
-                    <option value="3">Canada</option>
-                    <option value="4">India</option>
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Address Line 1</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter address"
-                    value={address1}
-                    onChange={HandleAddress}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Address Line 2</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Apt., suite, unit number, etc. (optional)"
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>City</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter city"
-                    value={city}
-                    onChange={HandleCity}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>State</Form.Label>
-                  <Form.Select>
-                    <option disabled selected>
-                      Select
-                    </option>
-                    <option value="1">California</option>
-                    <option value="2" selected>
-                      New YorK
-                    </option>
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Zip Code</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter zip code"
-                    value={zipcode}
-                    onChange={HandleZipcode}
-                  />
-                </Form.Group>
-                <Form.Group controlId="phoneNumber" className="mb-2 form-group">
-                  <Form.Label>Phone Number</Form.Label>
-                  <PhoneInput
-                    country={"us"} // Default country
-                    placeholder="Enter phone number"
-                    enableSearch
-                    inputStyle={{ width: "100%" }}
-                    dropdownClass="custom-dropdown-class"
-                    value={phoneno}
-                    onChange={Handlephoneno}
-                  />
-                </Form.Group>
-                <small className="mt-2 mb-3 d-block">
+                <small className=" mb-3 d-block">
                   <i>
-                    Enter your address and phone number to see faster shipping
-                    options and delivery estimates.
+                    Address : If you want to change address{" "}
+                    <Link className="btn-address" to={`/my-addresses`}>
+                      {" "}
+                      click here
+                    </Link>
                   </i>
                 </small>
+                {address.length === 0 ? (
+                  <Col>
+                    <p>No addresses found</p>
+                  </Col>
+                ) : (
+                  address.map((addr) =>
+                    addr.is_default === 1 ? (
+                      <Col xl={12} lg={12} md={12} className="mb-4">
+                        <div className="addresses-grid">
+                          <div className="d-flex align-items-center justify-content-between mb-3">
+                            <h2 className="mb-0">{addr.full_name}</h2>
+                          </div>
+                          <p className="mb-2">{addr.phone_number}</p>
+                          <p className="mb-3">
+                            {addr.address_line_1}, {addr.city}, {addr.pincode},{" "}
+                            {addr.country}
+                          </p>
+                          <div className="btn-bottom">
+                            <Link
+                              className="btn-address"
+                              to={`/my-address/edit-address/${addr._id}`}
+                            >
+                              <Icon icon="mynaui:edit" />
+                            </Link>
+                          </div>
+                        </div>
+                      </Col>
+                    ) : null
+                  )
+                )}
+
                 <Form.Group className="freeshipping d-inline-flex align-items-center justify-content-between  mb-2">
                   <span>
                     <b>Free Shipping</b> (1- 5 days)
@@ -373,7 +400,7 @@ const QuotesSidebar = ({ amount }) => {
                   label={<>Billing is same as shipping information</>}
                 />
                 <Button className="w-100 mt-3" onClick={handleShow}>
-                  Proceed To Pay <b>$35</b>
+                  Proceed To Pay <b>${amount}</b>
                 </Button>
                 {/* Request  A Quote Button Start*/}
                 {/* <Button className="w-100 mt-3">Request  A Quote</Button> */}

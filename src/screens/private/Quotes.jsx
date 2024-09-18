@@ -45,30 +45,39 @@ const Quotes = () => {
           </div>
           {quoteData &&
             quoteData.length > 0 &&
-            quoteData.map((quote, index) => (
-              <div className="quotes-list flex-column flex-md-row">
-                <div className="quotes-img">
-                  <Image src={file1} className="img-fluid" alt="" />
-                </div>
-                <div className="quotes-content text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-4">
-                  <div className="d-flex align-items-center justify-content-center  justify-content-md-between mb-3 flex-wrap">
-                    <h2 className="mb-0">Quote {quote.quote_number}</h2>
-                    <span className="quotes-date">
-                      {formatDate(quote.createdAt)}
-                    </span>
+            quoteData.map((quote, index) => {
+              // Convert the 'createdAt' field to a Date object
+              const dateObj = new Date(quote.createdAt);
+              const day = String(dateObj.getDate()).padStart(2, "0");
+              const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+
+              return (
+                <div className="quotes-list flex-column flex-md-row">
+                  <div className="quotes-img">
+                    <Image src={quote.image_url} className="img-fluid" alt="" />
                   </div>
-                  <p>
-                    Parts <span>{quote.total_quantity}</span>
-                  </p>
-                  <Link
-                    to="/quotes/quotes-detail"
-                    className="btn btn-outline-primary min-width-159 d-inline-flex align-items-center justify-content-center"
-                  >
-                    <Icon icon="tabler:edit" /> Edit Quote
-                  </Link>
+                  <div className="quotes-content text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-4">
+                    <div className="d-flex align-items-center justify-content-center  justify-content-md-between mb-3 flex-wrap">
+                      <h2 className="mb-0">
+                        Quote # {day}-{month}-{quote.quote_number}
+                      </h2>
+                      <span className="quotes-date">
+                        {formatDate(quote.createdAt)}
+                      </span>
+                    </div>
+                    <p>
+                      Quantity <span>{quote.total_quantity}</span>
+                    </p>
+                    <Link
+                      to="/quotes/quotes-detail"
+                      className="btn btn-outline-primary min-width-159 d-inline-flex align-items-center justify-content-center"
+                    >
+                      <Icon icon="tabler:edit" /> Edit Quote
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
         </Container>
       </section>
     </React.Fragment>

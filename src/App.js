@@ -8,6 +8,38 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/css/style.scss";
 import "./assets/css/style-dark.scss";
+
+import "./employee/assets/css/style.scss";
+import "./employee/assets/css/style-dark.scss";
+
+import AdminDashboard from "./admin/screens/Dashboard";
+import AdminPaymentHistory from "./admin/screens/Payments";
+import AdminViewPayment from "./admin/screens/Payments/Viewpayment";
+import AdminEditProfile from "./admin/screens/Editprofile";
+import AdminCut from "./admin/screens/Cut";
+import AdminQueue from "./admin/screens/Queue";
+import AdminOrders from "./admin/screens/Orders";
+import AdminOrdersDetail from "./admin/screens/Orders/Ordersdetail";
+import AdminQuotes from "./admin/screens/Quotes";
+import AdminQuotesDetail from "./admin/screens/Quotes/Quotesdetail";
+import AdminRFQS from "./admin/screens/RFQS";
+import AdminRfqsDetail from "./admin/screens/RFQS/Rfqsdetail";
+
+import EmpDashboard from "./employee/screens/Dashboard";
+import EmpPaymentHistory from "./employee/screens/Payments";
+import EmpViewPayment from "./employee/screens/Payments/Viewpayment";
+import EmpEditProfile from "./employee/screens/Editprofile";
+import EmpCut from "./employee/screens/Cut";
+import EmpQueue from "./employee/screens/Queue";
+import EmpOrders from "./employee/screens/Orders";
+import EmpOrdersDetail from "./employee/screens/Orders/Ordersdetail";
+import EmpQuotes from "./employee/screens/Quotes";
+import EmpQuotesDetail from "./employee/screens/Quotes/Quotesdetail";
+import EmpRFQS from "./employee/screens/RFQS";
+import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
+
+import AdminLayout from "./admin/Layout";
+import Layouts from "./employee/Layout";
 import Layout from "./Layout";
 import Layout2 from "./Layout2";
 import Layout3 from "./Layout3";
@@ -50,6 +82,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "./middleware/PrivateRoute";
 import { UserProvider } from "./localstorage/UserProfileContext";
+import EmployeRoute from "./middleware/Employe";
+import AdminRoute from "./middleware/AdminRoute";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -72,6 +106,210 @@ function App() {
             <Router basename={process.env.REACT_APP_BASENAME}>
               <ScrollToTop>
                 <Routes>
+                  <Route
+                    path="/admin/dashboard"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Dashboard"}>
+                            <AdminDashboard />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  />
+
+                  <Route
+                    path="/admin/payment-history"
+                    element={
+                      <AdminLayout title={"Payment History"}>
+                        <AdminPaymentHistory />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/payment-history/view-payment"
+                    element={
+                      <AdminLayout title={"View Payment"}>
+                        <AdminViewPayment />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/edit-profile"
+                    element={
+                      <AdminLayout title={"Edit Profile"}>
+                        <AdminEditProfile />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/cut"
+                    element={
+                      <AdminLayout title={"Cut"}>
+                        <AdminCut />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/queue"
+                    element={
+                      <AdminLayout title={"Queue"}>
+                        <AdminQueue />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/orders"
+                    element={
+                      <AdminLayout title={"Orders"}>
+                        <AdminOrders />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/orders/orders-detail"
+                    element={
+                      <AdminLayout title={"Orders Detail"}>
+                        <AdminOrdersDetail />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/quotes"
+                    element={
+                      <AdminLayout title={"Quotes"}>
+                        <AdminQuotes />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/quotes/quotes-detail"
+                    element={
+                      <AdminLayout title={"Quotes Detail"}>
+                        <AdminQuotesDetail />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/rfqs"
+                    element={
+                      <AdminLayout title={"RFQ's"}>
+                        <AdminRFQS />
+                      </AdminLayout>
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/rfqs/rfqs-detail"
+                    element={
+                      <AdminLayout title={"RFQ's Detail"}>
+                        <AdminRfqsDetail />
+                      </AdminLayout>
+                    }
+                  ></Route>
+
+                  <Route
+                    path="/employee/dashboard"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <AdminLayout title={"Dashboard"}>
+                            <EmpDashboard />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  />
+
+                  <Route
+                    path="/employee/payment-history"
+                    element={
+                      <Layouts title={"Payment History"}>
+                        <EmpPaymentHistory />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/payment-history/view-payment"
+                    element={
+                      <Layouts title={"View Payment"}>
+                        <EmpViewPayment />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/edit-profile"
+                    element={
+                      <Layouts title={"Edit Profile"}>
+                        <EmpEditProfile />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/cut"
+                    element={
+                      <Layouts title={"Cut"}>
+                        <EmpCut />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/queue"
+                    element={
+                      <Layouts title={"Queue"}>
+                        <EmpQueue />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/orders"
+                    element={
+                      <Layouts title={"Orders"}>
+                        <EmpOrders />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/orders/orders-detail"
+                    element={
+                      <Layouts title={"Orders Detail"}>
+                        <EmpOrdersDetail />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/quotes"
+                    element={
+                      <Layouts title={"Quotes"}>
+                        <EmpQuotes />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/quotes/quotes-detail"
+                    element={
+                      <Layouts title={"Quotes Detail"}>
+                        <EmpQuotesDetail />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/rfqs"
+                    element={
+                      <Layouts title={"RFQ's"}>
+                        <EmpRFQS />
+                      </Layouts>
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/rfqs/rfqs-detail"
+                    element={
+                      <Layouts title={"RFQ's Detail"}>
+                        <EmpRfqsDetail />
+                      </Layouts>
+                    }
+                  ></Route>
+
                   <Route exact path="/login" element={<Login />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/otp" element={<OTP />} />

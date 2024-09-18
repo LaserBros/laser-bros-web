@@ -1,0 +1,414 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+body.dark {
+  background-color: #000000 !important;
+  min-height: 100vh;
+}
+body.dark .modal .modal-dialog .modal-content {
+  background: #212121;
+}
+body.dark .modal .modal-dialog .modal-content .modal-header .modal-title {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .notesmain .notescont {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .notesmain .notescont h4 {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .notesmain .notescont p {
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .notesmain .notescont a svg {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-img-main p {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-img-main p span {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-title h2 {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bends-upload-file {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bends-upload-file svg {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bends-upload-file p span {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bends-upload-file small {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-quantity h5 {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-quantity .input-group .form-control {
+  background: transparent;
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-quantity .input-group button {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-quantity .input-group button svg {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-quantity .input-group button:hover {
+  border-color: #ffffff;
+  background: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-quantity .input-group button:hover svg {
+  color: #000000;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .form-control {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .modal .modal-dialog .modal-content .modal-body h2 {
+  color: #ffffff;
+}
+body.dark .login-main .loginform {
+  background: #212121;
+}
+body.dark .login-main .loginform .headlogin_div h2 {
+  color: #ffffff;
+}
+body.dark .login-main .loginform .form-group label {
+  color: #ffffff;
+}
+body.dark .login-main .loginform .form-group .form-control {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .login-main .loginform .form-group .form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .login-main .loginform .form-group .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .login-main .loginform .form-group.forgotpassword a {
+  color: #ffffff;
+}
+body.dark .login-main .loginform .form-group .password-input-group svg {
+  color: #ffffff;
+}
+body.dark .login-main .loginform .formfooter {
+  color: #ffffff;
+}
+body.dark .wrapper {
+  background-color: #000000 !important;
+}
+body.dark .wrapper .btnopen {
+  color: #ffffff;
+}
+body.dark .wrapper .mainbreadcrumb h1 {
+  color: #ffffff;
+}
+body.dark .wrapper .mainbreadcrumb nav ol li a {
+  color: #ffffff;
+}
+body.dark .wrapper header.header .mainbreadcrumb h1 {
+  color: #ffffff;
+}
+body.dark .wrapper header.header .mainbreadcrumb nav ol li a {
+  color: #ffffff;
+}
+body.dark .wrapper header.header .headerright {
+  background: #212121;
+}
+body.dark .wrapper header.header .headerright .dropdown .dropdown-toggle span {
+  color: #ffffff;
+}
+body.dark .wrapper header.header .headerright .dropdown .dropdown-menu {
+  background: #000000;
+}
+body.dark .wrapper header.header .headerright .dropdown .dropdown-menu .dropdown-item {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper header.header .headerright .dropdown .dropdown-menu .dropdown-item:hover {
+  background: transparent;
+  color: #4F8CCA;
+}
+body.dark .wrapper .sidebar {
+  background: #212121;
+}
+body.dark .wrapper .sidebar .sidebarlogo_div {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .sidebar .sidebarouter .navitem {
+  color: #ffffff;
+}
+body.dark .wrapper .stats {
+  background: #212121;
+}
+body.dark .wrapper .stats .statsicon {
+  background: #5ECFFF;
+}
+body.dark .wrapper .stats .statsicon img {
+  filter: brightness(0) invert(1);
+}
+body.dark .wrapper .stats .statsicon svg {
+  color: #ffffff !important;
+}
+body.dark .wrapper .stats .statsicon.statsdarkpurple {
+  background: #6418c3;
+}
+body.dark .wrapper .stats .statsicon.statsred {
+  background: #e11f26;
+}
+body.dark .wrapper .stats .statsicon.statspurple {
+  background: #7367f0;
+}
+body.dark .wrapper .stats .statsicon.statsgreen {
+  background: #01943c;
+}
+body.dark .wrapper .stats .statsicon.statsdarkgreen {
+  background: #2a5c17;
+}
+body.dark .wrapper .stats .statsicon.statsdarkblue {
+  background: #1f2e60;
+}
+body.dark .wrapper .stats .stats-cont p {
+  color: #ffffff;
+}
+body.dark .wrapper .stats .stats-cont h4 {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .btn-outline-primary {
+  background: transparent !important;
+}
+body.dark .wrapper .card {
+  background: #212121;
+}
+body.dark .wrapper .card .card-header {
+  background: #212121 !important;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-header h5 {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .profileuser {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark .wrapper .card .card-body .profileuser .userinfo {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark .wrapper .card .card-body .profileuser h4 {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .customtabs.nav-tabs li.nav-item button.nav-link {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .customtabs.nav-tabs li.nav-item button.nav-link.active, body.dark .wrapper .card .card-body .customtabs.nav-tabs li.nav-item button.nav-link:hover {
+  background: #1F2E60;
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .viewpaymentdetail p {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .custom-table .rdt_Table {
+  background: transparent;
+}
+body.dark .wrapper .card .card-body .custom-table .rdt_TableHead .rdt_TableHeadRow {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .custom-table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .custom-table .rdt_TableBody .rdt_TableRow {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .card .card-body .orders-card, body.dark .wrapper .card .card-body .payment-card {
+  background: rgba(255, 255, 255, 0.1);
+}
+body.dark .wrapper .card .card-body .orders-card h4,
+body.dark .wrapper .card .card-body .orders-card label,
+body.dark .wrapper .card .card-body .orders-card span,
+body.dark .wrapper .card .card-body .orders-card p, body.dark .wrapper .card .card-body .payment-card h4,
+body.dark .wrapper .card .card-body .payment-card label,
+body.dark .wrapper .card .card-body .payment-card span,
+body.dark .wrapper .card .card-body .payment-card p {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .download-wo-allfiles {
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .download-wo-allfiles svg {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .download-wo-allfiles p {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .orders-shipping {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .orders-shipping b {
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark .wrapper .card .card-body .orders-detail {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main:not(:last-child) {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-left .list-img-outer .list-img {
+  background: #ffffff !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-left .list-img-outer span {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-checkboxes .form-check-input {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-checkboxes .form-check-input:checked {
+  background: #000000 !important;
+  border-color: #000000 !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-checkboxes .form-check .form-check-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-attachment img {
+  filter: brightness(0) invert(1);
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-attachment span {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .btnnote {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-content h2 {
+  color: #ffffff !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .list-qty .qty {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .list-qty .price-total {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+body.dark .wrapper .card .card-body .form-group .form-label {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .form-group svg {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .form-group .form-control,
+body.dark .wrapper .card .card-body .form-group .form-select {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .form-group .form-control option,
+body.dark .wrapper .card .card-body .form-group .form-select option {
+  color: rgba(0, 0, 0, 0.75);
+}
+body.dark .wrapper .card .card-body .form-group .form-control::-moz-placeholder, body.dark .wrapper .card .card-body .form-group .form-select::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .card .card-body .form-group .form-control::placeholder,
+body.dark .wrapper .card .card-body .form-group .form-select::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .card .card-body .form-group .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: 14px;
+  background-position: calc(100% - 15px) center;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper line.recharts-cartesian-axis-line {
+  stroke: rgba(255, 255, 255, 0.2) !important;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper text.recharts-text.recharts-label {
+  fill: #ffffff;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-cartesian-axis-ticks * {
+  fill: #ffffff;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-legend-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-legend-wrapper li span.recharts-legend-item-text {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-default-tooltip {
+  background: #212121 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-default-tooltip .recharts-tooltip-label {
+  color: #ffffff !important;
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-default-tooltip .recharts-tooltip-item-list li {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .workorders {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .btn-link svg {
+  color: rgba(255, 255, 255, 0.5);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .form-check-input {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td:first-child {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td:last-child {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .btnedit {
+  background: #1F2E60;
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .expanded-top .checkbox-top .form-check .form-check-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .expanded-top p.workorders {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .expanded-top .upload-download {
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .expanded-top .upload-download svg {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .expanded-top .upload-download span {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td {
+  border-color: #4F8CCA;
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:first-child {
+  border-color: #4F8CCA;
+}
+body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:last-child {
+  border-color: #4F8CCA;
+}/*# sourceMappingURL=style-dark.css.map */

@@ -21,6 +21,9 @@ import {
   updateSubQuoteDetails,
 } from "../../api/api";
 export default function QuotesDetail() {
+  const currentDate = new Date();
+  const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const currentDay = String(currentDate.getDate()).padStart(2, "0");
   const [modalShow, setModalShow] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -67,7 +70,7 @@ export default function QuotesDetail() {
     return quoteData.reduce((sum, quote) => {
       // Ensure quote.amount is a valid number
       const amount = parseFloat(quote.amount);
-      return sum + (isNaN(amount) ? 0 : amount);
+      return sum + (isNaN(amount) ? 0 : quote.quantity * amount);
     }, 0);
   };
   const [materials, setmaterials] = useState([]);
@@ -191,14 +194,19 @@ export default function QuotesDetail() {
     item4: 1,
   });
   const [quoteData, setQuoteData] = useState(null);
+  const [quoteList, setQuoteList] = useState(null);
 
   useEffect(() => {
     // Fetch data from localStorage
     const storedData = localStorage.getItem("setItempartsDBdata");
+    const quote_list = localStorage.getItem("setItemelementData");
 
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
+      const quote_list_val = JSON.parse(quote_list);
+      setQuoteList(quote_list_val);
+
       setQuoteData(parsedData);
     }
   }, []);
@@ -212,23 +220,30 @@ export default function QuotesDetail() {
   };
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdata");
+
     if (storedData) {
       setQuoteData(JSON.parse(storedData));
     }
   }, []);
   const handleQuantityChange = (Id, increment = true) => {
     setQuoteData((prevQuoteData) => {
-      // Map through the previous quote data and update the quantity where the ID matches
       const updatedQuoteData = prevQuoteData.map((quote) => {
         if (quote._id === Id) {
           const updatedQuantity = increment
             ? quote.quantity + 1
             : Math.max(0, quote.quantity - 1); // Prevent negative quantities
 
-          const formData = { id: quote._id, quantity: updatedQuantity };
+          const formData = {
+            id: quote._id,
+            quantity: updatedQuantity,
+            quote_id: quote.quote_id,
+          };
           uploadQuote(formData); // Assuming this function handles the API call
 
-          return { ...quote, quantity: updatedQuantity };
+          return {
+            ...quote,
+            quantity: updatedQuantity,
+          };
         }
         return quote;
       });
@@ -280,14 +295,34 @@ export default function QuotesDetail() {
         id: selectedOption.value,
       };
 
-      const response = await getThicknessMaterialFinish(data, type);
-      console.log("Final price received:", response.data.price);
+      let response = "";
+
+      // Use for...of to await each async call
+      for (const quote of quoteData) {
+        if (quote._id === id) {
+          const params = {
+            id: id,
+            material_id:
+              type === "material" ? selectedOption.value : quote.material_id,
+            thickness_id:
+              type === "thickness" ? selectedOption.value : quote.thickness_id,
+            finishing_id:
+              type === "finish" ? selectedOption.value : quote.finishing_id,
+          };
+
+          response = await getThicknessMaterialFinish(data, type, params);
+          break; // Stop after the matching quote is found and processed
+        }
+      }
 
       const updatedQuoteData = quoteData.map((quote) => {
         if (quote._id === id) {
           let updatedFields = {};
           const currentAmount = parseFloat(quote.amount) || 0;
-          const newPrice = parseFloat(response.data.price) || 0;
+          const newPrice = parseFloat(response.data.data) || 0;
+
+          console.log("newPrice", newPrice);
+
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
           } else if (type === "finish") {
@@ -299,7 +334,7 @@ export default function QuotesDetail() {
           return {
             ...quote,
             ...updatedFields,
-            amount: currentAmount + newPrice,
+            amount: newPrice,
           };
         }
         return quote;
@@ -354,7 +389,19 @@ export default function QuotesDetail() {
       <section className="myaccount ptb-50">
         <Container>
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
-            <h2 className="quotes-head">Quote # 24-05-8900</h2>
+            {quoteData && quoteData.length > 0 ? (
+              <>
+                <h2 className="quotes-head">
+                  Quote # {currentDay}-{currentMonth}-{quoteList.quote_number}
+                </h2>
+              </>
+            ) : (
+              <>
+                <h2 className="quotes-head">
+                  Quote # {currentDay}-{currentMonth}-0001
+                </h2>
+              </>
+            )}
             <div className="d-inline-flex gap-2">
               <Link className="btnshare">Share Quote</Link>
               <Link className="btnsavelater">Save For Later</Link>
@@ -455,7 +502,9 @@ export default function QuotesDetail() {
                           handleQuantityChange(quote._id, true)
                         }
                         onDecrement={() =>
-                          handleQuantityChange(quote._id, false)
+                          quote.quantity === 1
+                            ? null
+                            : handleQuantityChange(quote._id, false)
                         }
                       />
                       <div className="rightbtns gap-2 d-inline-flex flex-wrap">
@@ -492,9 +541,11 @@ export default function QuotesDetail() {
                   </div>
                 ))}
             </Col>
-            <Col lg={4} xl={3}>
-              <QuotesSidebar amount={getTotalAmount().toFixed(2)} />
-            </Col>
+            {quoteData && quoteData.length > 0 && (
+              <Col lg={4} xl={3}>
+                <QuotesSidebar amount={getTotalAmount().toFixed(2)} />
+              </Col>
+            )}
           </Row>
         </Container>
       </section>

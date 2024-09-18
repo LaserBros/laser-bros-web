@@ -1,0 +1,642 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import "./variables";
+
+body {
+    &.dark {
+        background-color: $black-color !important;
+        min-height      : 100vh;
+
+        .modal {
+            .modal-dialog {
+                .modal-content {
+                    background: $dark-color;
+
+                    .modal-header {
+                        .modal-title {
+                            color: $white-color;
+                        }
+                    }
+
+                    .modal-body {
+                        .notesmain{
+                            .notescont{
+                                border-color: rgba($white-color, 0.2);
+                                h4{
+                                    color:$white-color;
+                                }
+                                p{
+                                  color:rgba($white-color, 0.70)
+                                }
+                                a{
+                                    svg{
+                                        color:$white-color;
+                                    }
+                                }
+                            }
+                        }
+                        .bend-img-main {
+                            p {
+                                color: rgba($white-color, 0.5);
+
+                                span {
+                                    color: $white-color
+                                }
+                            }
+                        }
+
+                        .bend-content {
+                            .bend-title {
+                                h2 {
+                                    color: $white-color
+                                }
+                            }
+
+                            .bends-upload-file {
+                                background  : rgba($white-color, 0.03);
+                                border-color: rgba($white-color, 0.25);
+
+                                svg {
+                                    color: $white-color
+                                }
+
+                                p {
+                                    span {
+                                        color: $white-color
+                                    }
+                                }
+
+                                small {
+                                    color: rgba($white-color, 0.75);
+                                }
+                            }
+
+                            .bend-quantity {
+                                h5 {
+                                    color: $white-color
+                                }
+
+                                .input-group {
+                                    .form-control {
+                                        background: transparent;
+                                        color     : $white-color;
+                                    }
+
+                                    button {
+                                        border-color: rgba($white-color, 0.2);
+
+                                        svg {
+                                            color: $white-color
+                                        }
+
+                                        &:hover {
+                                            border-color: $white-color;
+                                            background  : $white-color;
+
+                                            svg {
+                                                color: $black-color;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .form-control {
+                            background  : transparent;
+                            border-color: rgba($white-color, 0.2);
+                            color       : rgba($white-color, 0.75);
+
+                            &::placeholder {
+                                color: rgba($white-color, 0.50)
+                            }
+                        }
+
+                        h2 {
+                            color: $white-color
+                        }
+                    }
+                }
+            }
+        }
+
+        .login-main {
+            .loginform {
+                background: $dark-color;
+
+                .headlogin_div {
+                    h2 {
+                        color: $white-color;
+                    }
+                }
+
+                .form-group {
+                    label {
+                        color: $white-color;
+                    }
+
+                    .form-control {
+                        background  : transparent;
+                        border-color: rgba($white-color, 0.2);
+                        color       : rgba($white-color, 0.75);
+
+                        &::placeholder {
+                            color: rgba($white-color, 0.50)
+                        }
+                    }
+
+                    &.forgotpassword {
+                        a {
+                            color: $white-color
+                        }
+                    }
+
+                    .password-input-group {
+                        svg {
+                            color: $white-color
+                        }
+                    }
+                }
+
+                .formfooter {
+                    color: $white-color;
+                }
+            }
+        }
+
+        .wrapper {
+            background-color: $black-color !important;
+            .btnopen{
+                color:$white-color;
+            }
+            .mainbreadcrumb {
+                h1 {
+                    color: $white-color
+                }
+
+                nav {
+                    ol {
+
+                        li {
+                            a {
+                                color: $white-color
+                            }
+                        }
+                    }
+                }
+            }
+
+            header {
+                &.header {
+                    .mainbreadcrumb {
+                        h1 {
+                            color: $white-color
+                        }
+
+                        nav {
+                            ol {
+
+                                li {
+                                    a {
+                                        color: $white-color
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .headerright {
+                        background: $dark-color;
+
+                        .dropdown {
+                            .dropdown-toggle {
+                                span {
+                                    color: $white-color
+                                }
+                            }
+
+                            .dropdown-menu {
+                                background: $black-color;
+
+                                .dropdown-item {
+                                    color: rgba($white-color, 0.5);
+
+                                    &:hover {
+                                        background: transparent;
+                                        color     : $primary-color
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .sidebar {
+                background: $dark-color;
+
+                .sidebarlogo_div {
+                    border-bottom: 1px solid rgba($white-color, 0.2);
+                }
+
+                .sidebarouter {
+                    .navitem {
+                        color: $white-color;
+                    }
+                }
+            }
+
+            .stats {
+                background: $dark-color;
+
+                .statsicon {
+                    background: #5ECFFF;
+
+                    img {
+                        filter: brightness(0) invert(1)
+                    }
+
+                    svg {
+                        color: $white-color !important
+                    }
+
+                    &.statsdarkpurple {
+                        background: #6418c3;
+                    }
+
+                    &.statsred {
+                        background: #e11f26;
+                    }
+
+                    &.statspurple {
+                        background: #7367f0;
+                    }
+
+                    &.statsgreen {
+                        background: #01943c;
+                    }
+
+                    &.statsdarkgreen {
+                        background: #2a5c17;
+                    }
+
+                    &.statsdarkblue {
+                        background: #1f2e60;
+                    }
+                }
+
+                .stats-cont {
+                    p {
+                        color: $white-color
+                    }
+
+                    h4 {
+                        color: rgba($white-color, 0.50)
+                    }
+                }
+            }
+
+            .btn-outline-primary {
+                background: transparent !important;
+            }
+
+            .card {
+                background: $dark-color;
+
+                .card-header {
+                    background  : $dark-color !important;
+                    border-color: rgba($white-color, 0.2);
+
+                    h5 {
+                        color: $white-color
+                    }
+                }
+
+                .card-body {
+                    .profileuser  {
+                        background: rgba($white-color, 0.1);
+                        border-color: rgba($white-color, 0.1);
+                        .userinfo {
+                            border-color:rgba($white-color, 0.1)
+                        }
+                        h4{
+                            color:$white-color;
+                        }
+                    }
+                    .customtabs {
+                        &.nav-tabs {
+    
+                            li {
+                                &.nav-item {
+                                    button {
+                                        &.nav-link {
+                                            border-color       : rgba($white-color, 0.10);
+                                            background   : rgba($white-color, 0.10);
+                                            color     : $white-color;
+                                            &.active,
+                                            &:hover {
+                                                background: $secondary-color;
+                                                color     : $white-color
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .viewpaymentdetail {
+                        p{
+                            color:$white-color;
+                        }
+                    }
+                    .custom-table {
+                        .rdt_Table {
+                            background: transparent;
+                        }
+
+                        .rdt_TableHead {
+                            .rdt_TableHeadRow {
+                                background  : rgba($white-color, 0.1);
+                                border-color: rgba($white-color, 0.2);
+
+                                .rdt_TableCol {
+                                    color: $white-color
+                                }
+                            }
+                        }
+
+                        .rdt_TableBody {
+                            .rdt_TableRow {
+                                background  : transparent;
+                                border-color: rgba($white-color, 0.2);
+
+                                .rdt_TableCell {
+                                    color: rgba($white-color, 0.50);
+                                }
+                            }
+                        }
+                    }
+                    .orders-card , .payment-card{
+                        background: rgba($white-color, 0.1);
+
+                        h4,
+                        label,
+                        span,
+                        p {
+                            color: $white-color;
+                        }
+                    }
+                    .download-wo-allfiles {
+                        border: 1px dashed rgba($white-color, 0.2);
+
+                        svg {
+                            color: $white-color;
+                        }
+
+                        p {
+                            color: rgba($white-color, 0.75);
+                        }
+                    }
+
+                    .orders-shipping {   border-color: rgba($white-color, 0.2);
+                        b {
+                            color: rgba($white-color, 0.7);
+                        }
+                    }
+
+                    .orders-detail {
+                        border-color: rgba($white-color, 0.2);
+
+                        .list-main {
+                            &:not(:last-child) {
+                                border-color: rgba($white-color, 0.1) !important
+                            }
+
+                            .list-left {
+                                .list-img-outer {
+                                    .list-img {
+                                        background: $white-color !important
+                                    }
+
+                                    span {
+                                        color: $white-color;
+                                    }
+                                }
+                            }
+
+                            .list-checkboxes {
+                                .form-check-input {
+                                    background  : transparent !important;
+                                    border-color: rgba($white-color, 0.2) !important;
+
+                                    &:checked {
+                                        background  : $black-color !important;
+                                        border-color: $black-color !important;
+                                    }
+                                }
+
+                                .form-check {
+                                    .form-check-label {
+                                        color: rgba($white-color, 0.70) !important
+                                    }
+                                }
+                            }
+
+                            .list-attachment {
+                                img {
+                                    filter: brightness(0) invert(1)
+                                }
+
+                                span {
+                                    color: rgba($white-color, 0.75) !important;
+                                }
+                            }
+
+                            .list-content {
+                                .btnnote {
+                                    border-color: rgba($white-color, 0.2);
+                                    color       : $white-color;
+                                }
+
+                                h2 {
+                                    color: $white-color !important;
+                                }
+
+                                .list-qty {
+                                    .qty {
+                                        background  : rgba($white-color, 0.1) !important;
+                                        border-color: rgba($white-color, 0.1) !important;
+                                        color       : $white-color !important;
+                                    }
+
+                                    .price-total {
+                                        color: rgba($white-color, 0.50) !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .form-group {
+                        .form-label {
+                            color: $white-color;
+                        }
+
+                        svg {
+                            color: $white-color;
+                        }
+
+                        .form-control,
+                        .form-select {
+                            background  : transparent;
+                            border-color: rgba($white-color, 0.2);
+                            color       : rgba($white-color, 0.75);
+
+                            option {
+                                color: rgba($black-color, 0.75)
+                            }
+
+                            &::placeholder {
+                                color: rgba($white-color, 0.50)
+                            }
+                        }
+
+                        .form-select {
+                            background-image   : url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e');
+                            background-repeat  : no-repeat;
+                            background-size    : 14px;
+                            background-position: calc(100% - 15px) center;
+                        }
+                    }
+
+                    .recharts-wrapper {
+                        line.recharts-cartesian-axis-line {
+                            stroke: rgba($white-color, 0.2) !important
+                        }
+
+                        text.recharts-text.recharts-label {
+                            fill: $white-color
+                        }
+
+                        .recharts-cartesian-axis-ticks * {
+                            fill: $white-color
+                        }
+
+                        .recharts-legend-wrapper {
+                            background: rgba($white-color, 0.2);
+
+                            li {
+                                span.recharts-legend-item-text {
+                                    color: rgba($white-color, 0.70) !important
+                                }
+                            }
+                        }
+
+                        .recharts-default-tooltip {
+                            background  : $dark-color !important;
+                            border-color: rgba($white-color, 0.2) !important;
+
+                            .recharts-tooltip-label {
+                                color: $white-color !important
+                            }
+
+                            .recharts-tooltip-item-list {
+                                li {
+                                    font-size: 12px;
+                                    color    : rgba($white-color, 0.70) !important;
+                                }
+                            }
+                        }
+                    }
+
+                    .table {
+                        &.tablecustom {
+                            tbody {
+                                tr {
+                                    td {
+                                        border-color    : rgba($white-color, 0.1);
+                                        background-color: rgba($white-color, 0.05);
+                                        color           : rgba($white-color, 0.50);
+
+                                        .workorders {
+                                            color: rgba($white-color, 0.50)
+                                        }
+
+                                        .btn-link {
+                                            svg {
+                                                color: rgba($white-color, 0.50);
+                                            }
+                                        }
+
+                                        .form-check-input {
+                                            background  : transparent;
+                                            border-color: rgba($white-color, 0.2);
+                                        }
+
+                                        &:first-child {
+                                            border-color: rgba($white-color, 0.1);
+                                        }
+
+                                        &:last-child {
+                                            border-color: rgba($white-color, 0.1);
+                                        }
+
+                                        .btnedit {
+                                            background: $secondary-color;
+                                            color     : $white-color
+                                        }
+
+                                        .expanded-top {
+                                            .checkbox-top {
+                                                .form-check {
+                                                    .form-check-label {
+                                                        color: rgba($white-color, 0.70)
+                                                    }
+                                                }
+                                            }
+
+                                            p {
+                                                &.workorders {
+                                                    color: $white-color;
+                                                }
+                                            }
+
+                                            .upload-download {
+                                                border: 1px dashed rgba($white-color, 0.2);
+
+                                                svg {
+                                                    color: $white-color;
+                                                }
+
+                                                span {
+                                                    color: rgba($white-color, 0.75);
+                                                }
+                                            }
+                                        }
+
+
+                                    }
+
+                                    &.expanded-row {
+                                        td {
+                                            border-color: $primary-color;
+
+                                            &:first-child {
+                                                border-color: $primary-color;
+                                            }
+
+                                            &:last-child {
+                                                border-color: $primary-color;
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

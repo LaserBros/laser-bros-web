@@ -1,3 +1,4 @@
+import axiosAdminInstance from "../admin/axios/axiosadminInstanse";
 import axiosInstance from "../axios/axiosInstance";
 
 export const fetchAddress = async () => {
@@ -144,11 +145,9 @@ export const updateProfile = async (formData) => {
 
 export const uploadQuote = async (formData) => {
   try {
-    const response = await axiosInstance.post(
-      `/users/uploadBlobElements`,
-      formData
-    );
-    console.log("responseeee", response.data);
+    const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
+    console.log("responseeee ------", response.data);
+    // return;
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -158,11 +157,9 @@ export const uploadQuote = async (formData) => {
 
 export const fetchParts = async (data) => {
   try {
-    const response = await axiosInstance.post(
-      `/users/uploadBlobElements`,
-      data
-    );
+    const response = await axiosInstance.post(`/users/uploaddxfFile`, data);
     console.log("responseeee", response.data);
+    return;
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -252,28 +249,15 @@ export const getAllLoggedInRequestedQuote = async (data) => {
   }
 };
 
-export const getThicknessMaterialFinish = async (data, type) => {
+export const getThicknessMaterialFinish = async (data, type, params) => {
   try {
-    if (type == "material") {
-      var response = await axiosInstance.post(
-        `/users/getParticularMaterial`,
-        data
-      );
-    }
-    if (type == "thickness") {
-      var response = await axiosInstance.post(
-        `/users/getParticularThickness`,
-        data
-      );
-    }
-    if (type == "finish") {
-      var response = await axiosInstance.post(
-        `/users/getParticularFinish`,
-        data
-      );
-    }
-    console.log("responseeee", response.data);
-    return response.data;
+    var response_api = await axiosInstance.post(
+      `/users/updateSubQuoteDetailsId`,
+      params
+    );
+    // console.log("response_api", response_api);
+    // return;
+    return response_api;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;
@@ -284,6 +268,16 @@ export const copySubQuote = async (data) => {
   try {
     const response = await axiosInstance.post(`/users/copySubQuote`, data);
     console.log("responseeee----", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdmingetAllRequestQuotes = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/getAllRequestQuotes`);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

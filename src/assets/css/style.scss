@@ -1473,7 +1473,7 @@ footer {
         border       : 1px dashed rgba($black-color, 0.25);
         border-radius: 20px;
         padding      : 30px;
-
+        cursor: pointer;
         svg {
             font-size: 60px;
         }
@@ -1502,6 +1502,7 @@ footer {
                 font-weight  : 500;
                 border-bottom: 1px solid $primary-color;
                 line-height  : normal;
+                cursor: pointer;
             }
         }
     }
@@ -2968,6 +2969,7 @@ textarea.form-control {
 
         img {
             object-fit: contain;
+            max-width: 100px;
         }
     }
 
