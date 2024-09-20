@@ -93,7 +93,7 @@ const FileUpload = ({
         )}
         <Icon icon="mage:file-plus" />
         <p>
-          <label htmlFor="uploadfile">{label}</label>
+          <label>{label}</label>
           <input
             {...getInputProps()}
             type="file"
