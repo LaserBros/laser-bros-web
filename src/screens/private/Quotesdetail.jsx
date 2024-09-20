@@ -24,6 +24,7 @@ export default function QuotesDetail() {
   const currentDate = new Date();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
   const currentDay = String(currentDate.getDate()).padStart(2, "0");
+  const yearLastTwoDigits = String(currentDate.getFullYear()).slice(-2);
   const [modalShow, setModalShow] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -82,7 +83,7 @@ export default function QuotesDetail() {
         const response = await getMaterials(); // Your API call function
         const fetchedOptions = response.data.map((item) => ({
           value: item._id, // Adjust according to the structure of your API response
-          label: item.material_name + " " + item.material_code, // Adjust according to the structure of your API response
+          label: item.material_name + " " + item.material_grade, // Adjust according to the structure of your API response
         }));
         setmaterials(fetchedOptions);
       } catch (error) {
@@ -95,23 +96,35 @@ export default function QuotesDetail() {
 
   const [thickness, setthickness] = useState([]);
 
-  useEffect(() => {
-    // Fetch options from the API when the parent component mounts
-    const fetchThickness = async () => {
-      try {
-        const response = await getThickness(); // Your API call function
-        const fetchedOptions = response.data.map((item) => ({
-          value: item._id, // Adjust according to the structure of your API response
-          label: item.material_thickness, // Adjust according to the structure of your API response
-        }));
-        setthickness(fetchedOptions);
-      } catch (error) {
-        console.error("Error fetching options:", error);
-      }
-    };
+  // useEffect(() => {
+  // Fetch options from the API when the parent component mounts
+  const fetchThickness = async (materialId, quoteId) => {
+    try {
+      const data = {
+        id: materialId,
+      };
+      const response = await getThickness(data); // Your API call function
 
-    fetchThickness();
-  }, []);
+      // Map the response data to the format needed for the dropdown
+      const fetchedOptions = response.data.map((item) => ({
+        value: item._id,
+        label: item.material_thickness,
+      }));
+
+      // Update only the thickness options for the specific quote
+      setQuoteData((prevQuoteData) =>
+        prevQuoteData.map((quote) =>
+          quote._id === quoteId
+            ? { ...quote, thicknessOptions: fetchedOptions } // Store the thickness options in the quote
+            : quote
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
+  // fetchThickness();
+  // }, []);
 
   // const thickness = [
   //   { label: '.040" / 1.02mm', value: "thickness1" },
@@ -197,7 +210,19 @@ export default function QuotesDetail() {
   const [quoteList, setQuoteList] = useState(null);
 
   useEffect(() => {
-    // Fetch data from localStorage
+    const handleStorageChange = () => {
+      setQuoteData(localStorage.getItem("setItempartsDBdata"));
+    };
+
+    // Optionally listen for `localStorage` changes (if updated by another tab)
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdata");
     const quote_list = localStorage.getItem("setItemelementData");
 
@@ -210,6 +235,25 @@ export default function QuotesDetail() {
       setQuoteData(parsedData);
     }
   }, []);
+  const [quoteDataCon, setquoteDataCon] = useState(true);
+  useEffect(() => {
+    setTimeout(async () => {
+      if (quoteDataCon) {
+        if (Array.isArray(quoteData) && quoteData.length > 0) {
+          const fetchAllThicknessOptions = async () => {
+            for (const quote of quoteData) {
+              if (quote.material_id) {
+                // Ensure there's a material selected
+                await fetchThickness(quote.material_id, quote._id);
+              }
+            }
+          };
+          fetchAllThicknessOptions();
+        }
+        setquoteDataCon(false);
+      }
+    }, 1000);
+  }, [quoteData]);
   const uploadQuote = async (formData) => {
     // API call logic here, e.g., using fetch or axios
     try {
@@ -218,13 +262,7 @@ export default function QuotesDetail() {
       console.error("API call failed:", error);
     }
   };
-  useEffect(() => {
-    const storedData = localStorage.getItem("setItempartsDBdata");
 
-    if (storedData) {
-      setQuoteData(JSON.parse(storedData));
-    }
-  }, []);
   const handleQuantityChange = (Id, increment = true) => {
     setQuoteData((prevQuoteData) => {
       const updatedQuoteData = prevQuoteData.map((quote) => {
@@ -297,7 +335,6 @@ export default function QuotesDetail() {
 
       let response = "";
 
-      // Use for...of to await each async call
       for (const quote of quoteData) {
         if (quote._id === id) {
           const params = {
@@ -305,7 +342,11 @@ export default function QuotesDetail() {
             material_id:
               type === "material" ? selectedOption.value : quote.material_id,
             thickness_id:
-              type === "thickness" ? selectedOption.value : quote.thickness_id,
+              type === "material"
+                ? null
+                : type === "thickness"
+                ? selectedOption.value
+                : quote.thickness_id,
             finishing_id:
               type === "finish" ? selectedOption.value : quote.finishing_id,
           };
@@ -313,6 +354,10 @@ export default function QuotesDetail() {
           response = await getThicknessMaterialFinish(data, type, params);
           break; // Stop after the matching quote is found and processed
         }
+      }
+
+      if (type == "material") {
+        fetchThickness(selectedOption.value, id);
       }
 
       const updatedQuoteData = quoteData.map((quote) => {
@@ -325,6 +370,7 @@ export default function QuotesDetail() {
 
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
+            updatedFields.thickness_id = null;
           } else if (type === "finish") {
             updatedFields.finishing_id = selectedOption.value;
           } else if (type === "thickness") {
@@ -379,9 +425,23 @@ export default function QuotesDetail() {
 
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
-  const handleFileDrop = (acceptedFiles) => {
-    console.log("Files dropped:", acceptedFiles);
-    // Add any additional logic for handling the files
+  const handleFileDrop = (data) => {
+    console.log("Files dropped: ---------", data);
+
+    // Check if data is defined and has the expected structure
+    if (data && data.partsDBdata && data.requestQuoteDB) {
+      const storedData = data.partsDBdata;
+      const quote_list = data.requestQuoteDB;
+
+      // Since storedData and quote_list should already be objects, no need to parse again
+      setQuoteList(quote_list); // Assuming quote_list is already an object/array
+      setQuoteData(storedData); // Assuming storedData is already an object
+
+      // Add any additional logic for handling the files
+    } else {
+      console.error("Data structure is not as expected:", data);
+      // Handle the error case as necessary
+    }
   };
 
   return (
@@ -392,13 +452,14 @@ export default function QuotesDetail() {
             {quoteData && quoteData.length > 0 ? (
               <>
                 <h2 className="quotes-head">
-                  Quote # {currentDay}-{currentMonth}-{quoteList.quote_number}
+                  Quote # {currentMonth}-{yearLastTwoDigits}-
+                  {quoteList.quote_number}
                 </h2>
               </>
             ) : (
               <>
                 <h2 className="quotes-head">
-                  Quote # {currentDay}-{currentMonth}-0001
+                  Quote # {currentMonth}-{yearLastTwoDigits}-0001
                 </h2>
               </>
             )}
@@ -451,7 +512,7 @@ export default function QuotesDetail() {
                             onOptionSelect={handleOptionSelect}
                           />
                           <SelectDropdowns
-                            options={thickness}
+                            options={quote.thicknessOptions || []}
                             value={quote.thickness_id}
                             type="thickness"
                             id={quote._id}

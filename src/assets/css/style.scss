@@ -132,6 +132,7 @@ html {
 
 /*Header Css Start*/
 .header {
+    z-index: 1030!important; 
     .navbar {
         box-shadow    : 0px 0px 10px rgba($black-color, 0.08);
         background    : $white-color;
@@ -1474,6 +1475,45 @@ footer {
         border-radius: 20px;
         padding      : 30px;
         cursor: pointer;
+        &.processing-added {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                right: 0px;
+                bottom: 0px;
+                background: rgba($black-color, .5);
+            }
+            .loader{
+                position: absolute;
+                z-index: 2;
+                color: $white-color;
+                top: 0px;
+                left: 0px;
+                right: 0px;
+                bottom: 0px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                svg{
+                    animation: rotate 2s linear infinite;
+                }
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+            }
+        }
         svg {
             font-size: 60px;
         }

@@ -216,7 +216,7 @@ export const getMaterials = async (data) => {
 
 export const getThickness = async (data) => {
   try {
-    const response = await axiosInstance.get(`/users/getThickness`);
+    const response = await axiosInstance.post(`/users/getThickness`, data);
     console.log("responseeee", response.data);
     return response.data;
   } catch (error) {
@@ -238,10 +238,29 @@ export const getFinish = async (data) => {
 
 export const getAllLoggedInRequestedQuote = async (data) => {
   try {
-    const response = await axiosInstance.get(
-      `/users/getAllLoggedInRequestedQuote`
-    );
+    const response = await axiosInstance.get(`/users/getAllUnRequestQuotes`);
     console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const fetchRFQ = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/fetchRFQ`);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getEditQuote = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/users/getEditQuote`, data);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -275,9 +294,65 @@ export const copySubQuote = async (data) => {
   }
 };
 
-export const AdmingetAllRequestQuotes = async () => {
+////// Admin API START ////////////
+
+export const AdmingetUnAllRequestQuotes = async () => {
   try {
-    const response = await axiosAdminInstance.get(`/getAllRequestQuotes`);
+    const response = await axiosAdminInstance.get(`/getAllUnRequestQuotes`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminfetchRFQ = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/fetchRFQForAdmin`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminfetchProfile = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/fetchProfile`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminupdateProfile = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.put(`/updateProfile`, formData);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminuploadImage = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.put(`/uploadimage`, formData);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const Adminupdatepassword = async (newPassword, oldPassword) => {
+  try {
+    const data = {
+      new_password: newPassword,
+      old_password: oldPassword,
+    };
+    const response = await axiosAdminInstance.post(`/updatePassword`, data);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

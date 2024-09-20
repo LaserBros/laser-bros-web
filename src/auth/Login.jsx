@@ -69,7 +69,7 @@ export default function Login() {
         var getId = "";
         const response = await axiosInstance.post("/signin", data);
         const elementId = localStorage.getItem("setItemelementData");
-        if (elementId && typeof elementId === "object") {
+        if (elementId) {
           getId = JSON.parse(elementId);
         }
         if (response.data.data.role_type == 1) {

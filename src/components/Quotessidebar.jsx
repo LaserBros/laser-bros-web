@@ -83,7 +83,7 @@ const QuotesSidebar = ({ amount }) => {
           localStorage.setItem("setItempartsDBdata", "");
           toast.success("Requst quote send successfully");
           setLoading(false);
-          navigate("/quotes");
+          navigate("/rfqs");
         } catch (error) {
           toast.error("Something wents wrong.");
         }

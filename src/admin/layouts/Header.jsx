@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavDropdown, Breadcrumb, Row, Col, Image } from "react-bootstrap";
 import Avatar from "../assets/img/Avatar.jpg";
 import ThemeToggle from "../../components/Themetoggle";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import axiosAdminInstance from "../axios/axiosadminInstanse";
+import { UserContext } from "../../localstorage/UserProfileContext";
 const Header = ({ title }) => {
   const navigate = useNavigate();
-
-  const handleLogout = async () => {
+  const { name, image } = useContext(UserContext);
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
       const response = await axiosAdminInstance.get("/logout");
       localStorage.removeItem("adminToken");
@@ -47,7 +49,7 @@ const Header = ({ title }) => {
               title={
                 <span>
                   <Image
-                    src={Avatar}
+                    src={image}
                     roundedCircle
                     style={{
                       width: "41px",
@@ -56,21 +58,17 @@ const Header = ({ title }) => {
                       marginRight: "10px",
                     }}
                   />
-                  David Jones
+                  {name}
                   <Icon icon="ion:chevron-down" />
                 </span>
               }
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item as={NavLink} to="/edit-profile">
+              <NavDropdown.Item as={NavLink} to="/admin/edit-profile">
                 <Icon icon="mi:user" />
                 Profile Settings
               </NavDropdown.Item>
-              <NavDropdown.Item
-                as={NavLink}
-                // to="/login"
-                onClick={handleLogout}
-              >
+              <NavDropdown.Item as={NavLink} to="/login" onClick={handleLogout}>
                 <Icon icon="mage:logout" /> Logout
               </NavDropdown.Item>
             </NavDropdown>

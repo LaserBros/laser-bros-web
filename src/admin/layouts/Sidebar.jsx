@@ -6,7 +6,8 @@ import axiosAdminInstance from "../axios/axiosadminInstanse";
 const Sidebar = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
       const response = await axiosAdminInstance.get("/logout");
 
@@ -139,7 +140,7 @@ const Sidebar = () => {
             page.title == "Logout" ? (
               <NavLink
                 key={page.id}
-                // to={page.link}
+                to={page.link}
                 className="navitem inactive"
                 onClick={handleLogout} // Pass the event and page info
                 // Optionally, manage active state if needed

@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import { AdmingetAllRequestQuotes } from "../../../api/api";
+import { AdmingetUnAllRequestQuotes } from "../../../api/api";
 const Quotes = () => {
   const [checkedItems, setCheckedItems] = useState({});
   const handleCheckboxChange = (id) => {
@@ -57,19 +57,43 @@ const Quotes = () => {
     },
   ];
 
-  const getMaterialColor = (material) => {
-    switch (material) {
-      case "A50120":
+  const getMaterialColor = (materials) => {
+    switch (materials) {
+      case "Aluminium 5052":
         return {
-          backgroundColor: "#4F8CCA",
+          backgroundColor: "rgb(164 194 244)",
         };
-      case "CS0120":
+      case "Steel 1008":
         return {
-          backgroundColor: "#E11F26",
+          backgroundColor: "rgb(224 102 103)",
         };
-      case "SB0036":
+      case "Steel A36":
         return {
-          backgroundColor: "#2A5C17",
+          backgroundColor: "rgb(224 102 103)",
+        };
+      case "Aluminium 6061":
+        return {
+          backgroundColor: "rgb(160 197 233)",
+        };
+      case "Stainless Steel 304 (2b)":
+        return {
+          backgroundColor: "rgb(148 196 125)",
+        };
+      case "Stainless Steel 304 (#4)":
+        return {
+          backgroundColor: "rgb(148 196 125)",
+        };
+      case "Stainless Steel 316 (2b)":
+        return {
+          backgroundColor: "rgb(148 196 125)",
+        };
+      case "Brass 260":
+        return {
+          backgroundColor: "rgb(255 217 102)",
+        };
+      case "Custom i.e. Titanium, Incolnel, etc.":
+        return {
+          backgroundColor: "rgb(213 166 189)",
         };
       default:
         return {};
@@ -80,7 +104,7 @@ const Quotes = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [response] = await Promise.all([AdmingetAllRequestQuotes()]);
+      const [response] = await Promise.all([AdmingetUnAllRequestQuotes()]);
       console.log(",response.data.data", response.data);
       setQuotes(response.data);
     } catch (error) {
@@ -142,12 +166,13 @@ const Quotes = () => {
               <tbody>
                 {loading ? (
                   <Col>
-                    <p>Loading...</p>{" "}
-                    {/* You can replace this with a spinner component */}
+                    <p className="text-center mt-4">Loading...</p>{" "}
                   </Col>
                 ) : quotes.length === 0 ? (
                   <Col>
-                    <p>No addresses found</p>
+                    <p className="text-center">
+                      <i>No quote found.</i>
+                    </p>
                   </Col>
                 ) : (
                   quotes.map((row) => {
@@ -157,6 +182,9 @@ const Quotes = () => {
                       2,
                       "0"
                     );
+                    const yearLastTwoDigits = String(
+                      dateObj.getFullYear()
+                    ).slice(-2);
                     return (
                       <React.Fragment key={row._id}>
                         <tr>
@@ -166,7 +194,8 @@ const Quotes = () => {
                               className="workorders"
                             >
                               <b>
-                                WO# LB-{day}-{month}-0006
+                                WO# LB-{month}-{yearLastTwoDigits}-
+                                {row.quote_number}
                               </b>
                             </Link>
                           </td>
@@ -175,11 +204,23 @@ const Quotes = () => {
                             <span
                               key={`${row._id}`}
                               className="badgestatus me-2"
-                              // style={getMaterialColor(materials)
-                              // }
+                              style={getMaterialColor(
+                                row.material_name1 + " " + row.material_grade1
+                              )}
                             >
-                              {row._id}
+                              {row.material_code1}
                             </span>
+                            {row.material_code2 && (
+                              <span
+                                key={`${row._id}`}
+                                className="badgestatus me-2"
+                                style={getMaterialColor(
+                                  row.material_name2 + " " + row.material_grade2
+                                )}
+                              >
+                                {row.material_code2}
+                              </span>
+                            )}
                             {/* ))} */}
                           </td>
                           <td className="text-end">

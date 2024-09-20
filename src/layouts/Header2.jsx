@@ -28,12 +28,18 @@ const Header = () => {
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("email");
+      localStorage.removeItem("setItemelementData");
+      localStorage.removeItem("setItempartsDBdata");
+
       navigate("/login");
     } catch (error) {
       localStorage.removeItem("authToken");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
+      localStorage.removeItem("setItemelementData");
+      localStorage.removeItem("setItempartsDBdata");
+
       navigate("/login");
       console.log("errr", error);
     }

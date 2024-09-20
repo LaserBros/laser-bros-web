@@ -32,6 +32,7 @@ const FileUpload = ({
       console.log(acceptedFiles[0]);
       //   console.log(nameWithoutExtension);
       setProcessing(true);
+      // return;
       try {
         const formData = new FormData();
         formData.append("quote_image", acceptedFiles[0]);
@@ -52,6 +53,12 @@ const FileUpload = ({
           "setItempartsDBdata",
           JSON.stringify(response.data.partsDBdata)
         );
+        // if (onFileDrop) {
+        onFileDrop({
+          requestQuoteDB: response.data.requestQuoteDB,
+          partsDBdata: response.data.partsDBdata,
+        });
+        // }
         setProcessing(false);
         navigate("/quotes/quotes-detail");
         // }, 25000);
@@ -72,14 +79,16 @@ const FileUpload = ({
     <div>
       <div
         className={`banner-upload-file mb-2 text-center ${className} ${
-          processing ? "processing" : ""
+          processing ? "processing-added" : ""
         }`}
         {...getRootProps()}
       >
         {processing && (
           <>
             <div className="loader-overlay"></div>
-            <div className="loader">Processing...</div>
+            <div className="loader">
+              <Icon icon="tabler:loader-2" />
+            </div>
           </>
         )}
         <Icon icon="mage:file-plus" />

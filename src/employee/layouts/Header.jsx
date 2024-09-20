@@ -8,7 +8,8 @@ import axiosInstance from "../axios/axiosInstanse";
 const Header = ({ title }) => {
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
       const response = await axiosInstance.get("/logout");
       localStorage.removeItem("employeeToken");
@@ -66,11 +67,7 @@ const Header = ({ title }) => {
                 <Icon icon="mi:user" />
                 Profile Settings
               </NavDropdown.Item>
-              <NavDropdown.Item
-                as={NavLink}
-                // to="/login"
-                onClick={handleLogout}
-              >
+              <NavDropdown.Item as={NavLink} to="/login" onClick={handleLogout}>
                 <Icon icon="mage:logout" /> Logout
               </NavDropdown.Item>
             </NavDropdown>
