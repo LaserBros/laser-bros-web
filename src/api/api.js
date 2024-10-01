@@ -5,12 +5,46 @@ export const fetchAddress = async () => {
   return axiosInstance.get("/users/getAddress");
 };
 
+export const payment = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/users/payment`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error setting address as default:", error);
+    throw error;
+  }
+};
+
+export const getOrders = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/getOrders`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error setting address as default:", error);
+    throw error;
+  }
+};
+
 export const setAddressAsDefault = async (addressId) => {
   try {
     const data = {
       address_id: addressId,
     };
     const response = await axiosInstance.post(`/users/setdefaultAddress`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error setting address as default:", error);
+    throw error;
+  }
+};
+
+export const addNotes = async (id, text) => {
+  try {
+    const data = {
+      id: id,
+      notes_text: text,
+    };
+    const response = await axiosInstance.post(`/users/addNotes`, data);
     return response.data;
   } catch (error) {
     console.error("Error setting address as default:", error);
@@ -354,6 +388,77 @@ export const Adminupdatepassword = async (newPassword, oldPassword) => {
     };
     const response = await axiosAdminInstance.post(`/updatePassword`, data);
     return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateQuoteState = async (id, status) => {
+  try {
+    const data = {
+      id: id,
+      status: status,
+    };
+    const response = await axiosAdminInstance.post(`/updateQuoteState`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getOrdersAdmin = async (id, status) => {
+  try {
+    const data = {
+      id: id,
+      status: status,
+    };
+    const response = await axiosAdminInstance.get(`/getOrdersAdmin`, data);
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const moveOrderToQueue = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/moveOrderToQueue`, data);
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getParticularOrderDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularOrderDetails`,
+      data
+    );
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const fetchOrdersInQueue = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/fetchOrdersInQueue`);
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getAllTransactions = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/getAllTransactions`);
+    return response;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;

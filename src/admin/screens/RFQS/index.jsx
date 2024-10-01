@@ -10,68 +10,31 @@ import {
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import { AdminfetchRFQ, fetchRFQ } from "../../../api/api";
+import { toast } from "react-toastify";
+import { AdminfetchRFQ, fetchRFQ, updateQuoteState } from "../../../api/api";
 
 const RFQS = () => {
   const [checkedItems, setCheckedItems] = useState({});
+  const getQueue = (id) => {
+    console.log(id, "----------");
+  };
   const handleCheckboxChange = (id) => {
     setCheckedItems((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
     }));
   };
+  const changeStatus = async (status, id) => {
+    const res = await updateQuoteState(id, status);
+    if (status == 2) {
+      toast.success("RFQ accepted successfully");
+    }
+    if (status == 3) {
+      toast.success("RFQ rejected successfully");
+    }
 
-  const data = [
-    {
-      id: 1,
-      wo: "LB-6-24-0001",
-      material: ["CS0120", "A50120"],
-      price: "100",
-      due: "6-14-4",
-    },
-    {
-      id: 2,
-      wo: "LB-6-24-0002",
-      material: ["CS0120", "A50120"],
-      price: "150",
-      due: "6-14-4",
-    },
-    {
-      id: 3,
-      wo: "LB-6-24-0003",
-      material: ["CS0120", "A50120"],
-      price: "175",
-      due: "6-14-4",
-    },
-    {
-      id: 4,
-      wo: "LB-6-24-0004",
-      material: ["SB0036", "A50120"],
-      price: "189",
-      due: "6-14-4",
-    },
-    {
-      id: 5,
-      wo: "LB-6-24-0005",
-      material: ["CS0120", "A50120"],
-      price: "169",
-      due: "6-14-4",
-    },
-    {
-      id: 6,
-      wo: "LB-6-24-0006",
-      material: ["CS0120", "SB0036"],
-      price: "190",
-      due: "6-14-4",
-    },
-    {
-      id: 7,
-      wo: "LB-6-24-0007",
-      material: ["SB0036", "A50120"],
-      price: "211",
-      due: "6-14-4",
-    },
-  ];
+    loadData();
+  };
 
   const getMaterialColor = (materials) => {
     switch (materials) {
@@ -203,10 +166,14 @@ const RFQS = () => {
                       dateObj.getFullYear()
                     ).slice(-2);
                     return (
-                      <React.Fragment key={row.id}>
+                      <React.Fragment key={row._id}>
                         <tr>
                           <td className="text-nowrap">
-                            <Link to="/rfqs/rfqs-detail" className="workorders">
+                            <Link
+                              // to="/admin/rfqs/rfqs-detail"
+                              className="workorders"
+                              onClick={() => getQueue(row._id)}
+                            >
                               <b>
                                 WO# {month}-{yearLastTwoDigits}-
                                 {row.quote_number}
@@ -237,14 +204,36 @@ const RFQS = () => {
                           </td>
                           <td className="text-nowrap">
                             <div className="d-inline-flex align-items-center gap-3">
-                              <Link className="btnaccept">
-                                <Icon icon="icon-park-outline:check-one" />
-                                Accept
-                              </Link>
-                              <Link className="btnreject">
-                                <Icon icon="ion:close-circle-outline" />
-                                Reject
-                              </Link>
+                              {row.status == 1 ? (
+                                <>
+                                  <Link
+                                    className="btnaccept"
+                                    onClick={() => changeStatus(2, row._id)}
+                                  >
+                                    <Icon icon="icon-park-outline:check-one" />
+                                    Accept
+                                  </Link>
+                                  <Link
+                                    className="btnreject"
+                                    onClick={() => changeStatus(3, row._id)}
+                                  >
+                                    <Icon icon="ion:close-circle-outline" />
+                                    Reject
+                                  </Link>
+                                </>
+                              ) : row.status == 2 ? (
+                                <>
+                                  <p className="text-success mb-0">
+                                    RFQ Accepted. Waiting for payemnt
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="text-danger mb-0">
+                                    RFQ Rejected. Waiting for payemnt
+                                  </p>
+                                </>
+                              )}
                             </div>
                           </td>
                           <td className="text-nowrap">
@@ -255,11 +244,11 @@ const RFQS = () => {
                               maximumFractionDigits: 2,
                             }).format(row.total_amount)}
                           </td>
-                          <td className="text-nowrap">
+                          {/* <td className="text-nowrap">
                             <b>Due:</b>
                             6-14-4
-                          </td>
-                          <td className="text-end">
+                          </td> */}
+                          {/* <td className="text-end">
                             <div className="d-inline-flex align-items-center gap-3">
                               <Link className="btnedit">
                                 <Icon icon="teenyicons:edit-outline" />
@@ -270,7 +259,7 @@ const RFQS = () => {
                                 onChange={() => handleCheckboxChange(row._id)}
                               />
                             </div>
-                          </td>
+                          </td> */}
                         </tr>
                       </React.Fragment>
                     );

@@ -2976,6 +2976,101 @@ textarea.form-control {
     }
 }
 
+.addresses-grids {
+    border       : 1px solid rgba($black-color, .1);
+    border-radius: 15px;
+    padding      : 20px;
+    background   : $white-color;
+    box-shadow   : 0px 0px 10px rgba($black-color, 0.08);
+    height       : 100%;
+    // min-height   : 237px;
+
+    h2 {
+        font-size  : 20px;
+        color      : $black-color;
+        font-weight: 600;
+    }
+
+    span {
+        &.statusdefault {
+            min-width    : 80px;
+            height       : 35px;
+            padding      : 0px 10px;
+            background   : $black-color;
+            color        : $white-color;
+            font-size    : 14px;
+            text-align   : center;
+            line-height  : 35px;
+            border-radius: 30px;
+        }
+
+    }
+
+    p {
+        font-size  : 16px;
+        color      : $paragraph-color;
+        line-height: 1.75;
+    }
+
+    .btn-bottom {
+        display    : flex;
+        align-items: center;
+        gap        : 10px;
+
+        a {
+            width          : 36px;
+            height         : 36px;
+            border         : 1px solid $black-color;
+            color          : $black-color;
+            border-radius  : 6px;
+            display        : inline-flex;
+            align-items    : center;
+            justify-content: center;
+            text-decoration: none;
+
+            &.btn-set-default {
+                min-width: 121px;
+                padding  : 0px 10px;
+                font-size: 14px;
+            }
+
+            &:hover {
+                background: $black-color;
+                color     : $white-color
+            }
+        }
+    }
+
+    &.payment-grids {
+        .card-no {
+            font-size     : 20px;
+            margin        : 15px 0px 15px;
+            letter-spacing: 3px;
+
+            @media only screen and (max-width:991.98px) {
+                letter-spacing: 0;
+            }
+        }
+
+        .card-actions {
+            display        : flex;
+            justify-content: space-between;
+            margin-bottom  : 25px;
+
+            .card-info {
+                color    : $paragraph-color;
+                font-size: 14px;
+
+                strong {
+                    display    : block;
+                    font-weight: 500;
+                    color      : $black-color;
+                }
+            }
+        }
+    }
+}
+
 /*My Addresses Css Ends*/
 /*Quotes Css Start*/
 .quotes-head {

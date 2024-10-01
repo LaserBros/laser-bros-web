@@ -11,6 +11,7 @@ import AddBend from "../../components/Addbend";
 import AddNote from "../../components/Addnote";
 import FileUpload from "../../components/FileUpload";
 import {
+  addNotes,
   copySubQuote,
   deleteSubQuote,
   getFinish,
@@ -139,7 +140,7 @@ export default function QuotesDetail() {
     setSelectedPartId(id);
     setModalShow3(true);
   };
-  const updateQuoteNote = (partId, newNote) => {
+  const updateQuoteNote = async (partId, newNote) => {
     setQuoteData((prevQuoteData) =>
       prevQuoteData.map((quote) =>
         quote._id === partId ? { ...quote, notes_text: newNote } : quote
@@ -150,6 +151,9 @@ export default function QuotesDetail() {
     const updatedQuoteData = quoteData.map((quote) =>
       quote._id === partId ? { ...quote, notes_text: newNote } : quote
     );
+    try {
+      await addNotes(partId, newNote);
+    } catch (error) {}
     localStorage.setItem(
       "setItempartsDBdata",
       JSON.stringify(updatedQuoteData)
@@ -364,7 +368,7 @@ export default function QuotesDetail() {
         if (quote._id === id) {
           let updatedFields = {};
           const currentAmount = parseFloat(quote.amount) || 0;
-          const newPrice = parseFloat(response.data.data) || 0;
+          const newPrice = parseFloat(response.data.data.total_amount) || 0;
 
           console.log("newPrice", newPrice);
 

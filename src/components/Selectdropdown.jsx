@@ -6,6 +6,7 @@ const SelectDropdowns = ({
   value,
   placeholder,
   onOptionSelect,
+  disabled,
   type,
   id,
 }) => {
@@ -86,6 +87,7 @@ const SelectDropdowns = ({
     options,
     value,
     placeholder,
+    disabled,
     onOptionSelect,
     id,
   }) => {
@@ -103,6 +105,7 @@ const SelectDropdowns = ({
         options={options}
         value={options.find((option) => option.value === value)}
         onChange={handleChange}
+        isDisabled={disabled}
         // value={selectedOption}
         placeholder={placeholder}
         className="selectdropdown"
@@ -116,6 +119,7 @@ const SelectDropdowns = ({
       <SimpleSelect
         options={options}
         value={value}
+        disabled={disabled}
         placeholder={placeholder}
         onOptionSelect={onOptionSelect}
         type={type}

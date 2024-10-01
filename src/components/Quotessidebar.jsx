@@ -7,12 +7,38 @@ import "react-phone-input-2/lib/style.css";
 import cards from "../assets/img/cards.png";
 import cvv from "../assets/img/cvv.png";
 import PaymentDone from "./Paymentdone";
-import { fetchAddress } from "../api/api";
+import { fetchAddress, getCard, payment } from "../api/api";
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
-const QuotesSidebar = ({ amount }) => {
+const QuotesSidebar = ({ amount, showDiv }) => {
   const [modalShow, setModalShow] = useState(false);
-  const handleShow = () => setModalShow(true);
+  // const handleShow = () => setModalShow(true);
+  const PaymentSubmit = async () => {
+    setLoading(true);
+    const elementId = localStorage.getItem("setItemelementDataPay");
+    var getId = "";
+
+    if (elementId) {
+      getId = JSON.parse(elementId);
+    }
+    const data = {
+      id: getId._id,
+    };
+    const res = await payment(data);
+    try {
+      if (res.status == "success") {
+        setModalShow(true);
+        setLoading(false);
+        localStorage.removeItem("setItemelementDataPay");
+        localStorage.removeItem("setItempartsDBdataPay");
+      } else {
+        toast.error(res.message);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
   const handleClose = () => setModalShow(false);
   const [key, setKey] = useState("card");
   const navigate = useNavigate();
@@ -90,7 +116,7 @@ const QuotesSidebar = ({ amount }) => {
       }
     }
   };
-
+  const [cardsData, setCards] = useState([]);
   const loadData = async () => {
     setLoading(true);
     try {
@@ -104,8 +130,23 @@ const QuotesSidebar = ({ amount }) => {
     }
   };
 
+  const loadCards = async () => {
+    try {
+      setLoading(true);
+      const response = await getCard(); // Call your API function
+      setCards(response.data); // Assuming the data is in response.data
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadData();
+    loadCards();
+    setShowDiv2(showDiv);
+    setShowDiv1(!showDiv);
   }, []);
 
   const HandleName = () => {
@@ -133,7 +174,7 @@ const QuotesSidebar = ({ amount }) => {
   useEffect(() => {
     if (modalShow) {
       const timer = setTimeout(() => {
-        handleClose();
+        navigate("/orders");
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -233,9 +274,9 @@ const QuotesSidebar = ({ amount }) => {
             <div className="quotes-inner">
               <div className="head-quotes d-flex align-items-center justify-content-between">
                 <h2 className="mb-0">Checkout</h2>
-                <Link className="btnicon" onClick={() => toggleDiv(2)}>
+                {/* <Link className="btnicon" onClick={() => toggleDiv(2)}>
                   <Icon icon="ion:chevron-back" />
-                </Link>
+                </Link> */}
               </div>
               <Form className="accountform">
                 <div className="d-flex align-items-center justify-content-between mb-2">
@@ -313,7 +354,7 @@ const QuotesSidebar = ({ amount }) => {
                   }
                 />
 
-                <Tabs
+                {/* <Tabs
                   defaultActiveKey="basicinfo"
                   id="uncontrolled-tab-example"
                   className="customtabs mb-3 mt-3"
@@ -384,7 +425,57 @@ const QuotesSidebar = ({ amount }) => {
                       </>
                     }
                   ></Tab>
-                </Tabs>
+                </Tabs> */}
+                <small className=" mb-3 d-block">
+                  <i>
+                    Card : If you want to change card{" "}
+                    <Link className="btn-address" to={`/payment-cards`}>
+                      {" "}
+                      click here
+                    </Link>
+                  </i>
+                </small>
+                {cardsData.length === 0 ? (
+                  <Col>
+                    <p>No cards found</p>
+                  </Col>
+                ) : (
+                  cardsData.map(
+                    (card) =>
+                      card.is_default === 1 && (
+                        <Col
+                          xl={12}
+                          lg={12}
+                          md={12}
+                          className="mb-4"
+                          key={card.id}
+                        >
+                          <div className="addresses-grids payment-grids">
+                            <div className="d-flex align-items-center justify-content-between mb-3">
+                              {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
+                            </div>
+                            <p
+                              className="mb-2 card-no"
+                              style={{ fontSize: "13px" }}
+                            >
+                              **** **** **** {card.last4}
+                            </p>
+
+                            <div className="card-actions">
+                              <div className="card-info">
+                                <strong>Expiry Date</strong> {card.exp_month}/
+                                {card.exp_year}
+                              </div>
+                              <div className="card-info">
+                                <strong>Name</strong>{" "}
+                                {card.full_name.toUpperCase()}
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
+                      )
+                  )
+                )}
                 {/* Request  A Quote before Payment Start*/}
                 {/* <div className='quotes-login mb-3 mt-3'>
                                     <p className='text-center'>Payment options will be made available after bending has been approved. Please submit your RFQ!</p>
@@ -399,8 +490,22 @@ const QuotesSidebar = ({ amount }) => {
                   onChange={handleCheckboxChange}
                   label={<>Billing is same as shipping information</>}
                 />
-                <Button className="w-100 mt-3" onClick={handleShow}>
-                  Proceed To Pay <b>${amount}</b>
+                <Button
+                  className="w-100 mt-3"
+                  onClick={PaymentSubmit}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    <>
+                      Proceed To Pay <b>${amount}</b>
+                    </>
+                  )}
                 </Button>
                 {/* Request  A Quote Button Start*/}
                 {/* <Button className="w-100 mt-3">Request  A Quote</Button> */}

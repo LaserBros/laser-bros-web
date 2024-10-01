@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Card, Container } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { fetchRFQ } from "../../api/api";
+import { fetchRFQ, getEditQuote } from "../../api/api";
 import Quotes from "./Quotes";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,6 +25,24 @@ export default function RFQS() {
     fetchData();
   }, []);
 
+  const RequestQuote = async (id) => {
+    const data = {
+      id: id,
+    };
+    const response = await getEditQuote(data);
+    console.log("resss-----", response.data);
+    localStorage.setItem(
+      "setItemelementDataPay",
+      JSON.stringify(response.data.requestQuoteDB)
+    );
+
+    localStorage.setItem(
+      "setItempartsDBdataPay",
+      JSON.stringify(response.data.partsDBdata)
+    );
+
+    navigate("/quotes/pay");
+  };
   const columns = [
     {
       name: "Order Number",
@@ -32,7 +51,7 @@ export default function RFQS() {
         const day = String(dateObj.getDate()).padStart(2, "0");
         const month = String(dateObj.getMonth() + 1).padStart(2, "0");
         const yearLastTwoDigits = String(dateObj.getFullYear()).slice(-2);
-        return `Quote # ${month}-${yearLastTwoDigits}-${row.quote_number}`; // Format as desired
+        return `Quote # ${month}-${yearLastTwoDigits}-${row.quote_number}`;
       },
       //   selector: (row) => row.quote_number,
       sortable: false,
@@ -104,7 +123,7 @@ export default function RFQS() {
             <Icon icon="solar:reorder-line-duotone"></Icon>
           </Link>
           {row.status === 2 && (
-            <Link className="btnpay" to="">
+            <Link className="btnpay" onClick={() => RequestQuote(row._id)}>
               Pay
             </Link>
           )}

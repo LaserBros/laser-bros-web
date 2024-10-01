@@ -53,7 +53,8 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
         name: cardHolderName,
       }
     );
-
+    // console.log(token);
+    // return;
     if (error) {
       setGeneralError(error.message);
     } else {

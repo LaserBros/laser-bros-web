@@ -84,6 +84,7 @@ import PrivateRoute from "./middleware/PrivateRoute";
 import { UserProvider } from "./localstorage/UserProfileContext";
 import EmployeRoute from "./middleware/Employe";
 import AdminRoute from "./middleware/AdminRoute";
+import QuotesDetailPay from "./screens/private/QuotesDetailPay";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -122,89 +123,133 @@ function App() {
                   <Route
                     path="/admin/payment-history"
                     element={
-                      <AdminLayout title={"Payment History"}>
-                        <AdminPaymentHistory />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Payment History"}>
+                            <AdminPaymentHistory />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/payment-history/view-payment"
                     element={
-                      <AdminLayout title={"View Payment"}>
-                        <AdminViewPayment />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"View Payment"}>
+                            <AdminViewPayment />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/edit-profile"
                     element={
-                      <AdminLayout title={"Edit Profile"}>
-                        <AdminEditProfile />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Edit Profile"}>
+                            <AdminEditProfile />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/cut"
                     element={
-                      <AdminLayout title={"Cut"}>
-                        <AdminCut />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Cut"}>
+                            <AdminCut />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/queue"
                     element={
-                      <AdminLayout title={"Queue"}>
-                        <AdminQueue />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Queue"}>
+                            <AdminQueue />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/orders"
                     element={
-                      <AdminLayout title={"Orders"}>
-                        <AdminOrders />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Orders"}>
+                            <AdminOrders />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/orders/orders-detail"
                     element={
-                      <AdminLayout title={"Orders Detail"}>
-                        <AdminOrdersDetail />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Orders Detail"}>
+                            <AdminOrdersDetail />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/quotes"
                     element={
-                      <AdminLayout title={"Quotes"}>
-                        <AdminQuotes />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Quotes"}>
+                            <AdminQuotes />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/quotes/quotes-detail"
                     element={
-                      <AdminLayout title={"Quotes Detail"}>
-                        <AdminQuotesDetail />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Quotes Detail"}>
+                            <AdminQuotesDetail />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/rfqs"
                     element={
-                      <AdminLayout title={"RFQ's"}>
-                        <AdminRFQS />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"RFQ's"}>
+                            <AdminRFQS />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
                   <Route
                     path="/admin/rfqs/rfqs-detail"
                     element={
-                      <AdminLayout title={"RFQ's Detail"}>
-                        <AdminRfqsDetail />
-                      </AdminLayout>
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"RFQ's Detail"}>
+                            <AdminRfqsDetail />
+                          </AdminLayout>
+                        }
+                      />
                     }
                   ></Route>
 
@@ -412,6 +457,10 @@ function App() {
                     <Route
                       path="/quotes/quotes-detail"
                       element={<QuotesDetail />}
+                    />
+                    <Route
+                      path="/quotes/pay"
+                      element={<PrivateRoute element={<QuotesDetailPay />} />}
                     />
                   </Route>
                 </Routes>

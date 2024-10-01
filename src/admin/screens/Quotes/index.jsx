@@ -226,7 +226,7 @@ const Quotes = () => {
                           <td className="text-end">
                             <div className="d-inline-flex align-items-center gap-3">
                               <Link className="btnedit">
-                                <Icon icon="teenyicons:edit-outline" />
+                                <Icon icon="teenyicons:bin-outline" />
                               </Link>
                               <Form.Check
                                 type="checkbox"
