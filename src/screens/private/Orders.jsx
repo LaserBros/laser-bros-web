@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Container, Image } from "react-bootstrap";
+import { Card, Col, Container, Image } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
@@ -244,13 +244,19 @@ export default function Orders() {
               <h5>Orders</h5>{" "}
             </Card.Header>
             <Card.Body>
-              <DataTable
-                columns={columns}
-                data={orders}
-                responsive
-                pagination
-                className="custom-table custom-table2"
-              />
+              {loading ? (
+                <Col>
+                  <p className="text-center mt-4">Loading...</p>{" "}
+                </Col>
+              ) : (
+                <DataTable
+                  columns={columns}
+                  data={orders}
+                  responsive
+                  pagination
+                  className="custom-table custom-table2"
+                />
+              )}
             </Card.Body>
           </Card>
         </Container>

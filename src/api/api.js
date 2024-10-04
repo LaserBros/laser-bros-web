@@ -432,13 +432,23 @@ export const moveOrderToQueue = async (data) => {
   }
 };
 
+export const moveOrderStatus = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/moveOrderStatus`, data);
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getParticularOrderDetails = async (data) => {
   try {
     const response = await axiosAdminInstance.post(
       `/getParticularOrderDetails`,
       data
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;
@@ -459,6 +469,29 @@ export const getAllTransactions = async () => {
   try {
     const response = await axiosAdminInstance.get(`/getAllTransactions`);
     return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getParticularTransaction = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularTransaction`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const fetchOrdersInCut = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(`/fetchOrdersInCut`, data);
+    return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;

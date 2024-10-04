@@ -158,8 +158,9 @@ const Orders = () => {
           toast.error("Error when order move to Queue");
         }
       });
-      console.log("SDssssdsddssdsdsd");
-      loadOrders();
+      setTimeout(() => {
+        loadOrders();
+      }, 4000);
     }
   };
   return (
@@ -218,96 +219,117 @@ const Orders = () => {
           <div className="table-responsive">
             <Table className="tablecustom pt-0">
               <tbody>
-                {orders && orders.length > 0 ? (
-                  orders.map((row) => {
-                    const dateObj = new Date(row.createdAt);
-                    const day = String(dateObj.getDate()).padStart(2, "0"); // Get the day of the month
-                    const month = String(dateObj.getMonth() + 1).padStart(
-                      2,
-                      "0"
-                    );
-                    const yearLastTwoDigits = String(
-                      dateObj.getFullYear()
-                    ).slice(-2);
-                    return (
-                      <tr key={row._id}>
-                        <td>
-                          <Link
-                            className="workorders"
-                            to="/admin/orders/orders-detail"
-                          >
-                            <b>
-                              WO# {month}-{yearLastTwoDigits}-{row.quote_number}
-                            </b>
-                          </Link>
-                        </td>
-                        <td className="text-nowrap">
-                          <span
-                            key={`${row._id}-material1`}
-                            className="badgestatus me-2"
-                            style={getMaterialColor(
-                              row.material_name1 + " " + row.material_grade1
-                            )}
-                          >
-                            {row.material_code1}
-                          </span>
-                          {row.material_code2 && (
-                            <span
-                              key={`${row._id}-material2`}
-                              className="badgestatus me-2"
-                              style={getMaterialColor(
-                                row.material_name1 + " " + row.material_grade1
+                {loading ? (
+                  <>
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      className="spinner-border spinner-border-sm text-center"
+                      style={{
+                        margin: "0 auto",
+                        display: "block",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    ></span>
+                  </>
+                ) : (
+                  <>
+                    {orders && orders.length > 0 ? (
+                      orders.map((row) => {
+                        const dateObj = new Date(row.createdAt);
+                        const day = String(dateObj.getDate()).padStart(2, "0"); // Get the day of the month
+                        const month = String(dateObj.getMonth() + 1).padStart(
+                          2,
+                          "0"
+                        );
+                        const yearLastTwoDigits = String(
+                          dateObj.getFullYear()
+                        ).slice(-2);
+                        return (
+                          <tr key={row._id}>
+                            <td>
+                              <Link
+                                className="workorders"
+                                to={`/admin/orders/orders-detail/${row._id}`}
+                              >
+                                <b>
+                                  WO# {month}-{yearLastTwoDigits}-
+                                  {row.quote_number}
+                                </b>
+                              </Link>
+                            </td>
+                            <td className="text-nowrap">
+                              <span
+                                key={`${row._id}-material1`}
+                                className="badgestatus me-2"
+                                style={getMaterialColor(
+                                  row.material_name1 + " " + row.material_grade1
+                                )}
+                              >
+                                {row.material_code1}
+                              </span>
+                              {row.material_code2 && (
+                                <span
+                                  key={`${row._id}-material2`}
+                                  className="badgestatus me-2"
+                                  style={getMaterialColor(
+                                    row.material_name1 +
+                                      " " +
+                                      row.material_grade1
+                                  )}
+                                >
+                                  {row.material_code2}
+                                </span>
                               )}
-                            >
-                              {row.material_code2}
-                            </span>
-                          )}
-                        </td>
-                        <td className="text-nowrap">
-                          <span className="statusnew">
-                            {row.status == 0
-                              ? "New"
-                              : row.status == 1
-                              ? "In Progress"
-                              : row.status == 2
-                              ? "Shipped"
-                              : row.status == 3
-                              ? "Delivered"
-                              : ""}
-                          </span>
-                        </td>
-                        <td className="text-nowrap">
-                          {" "}
-                          {new Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD", // Change to your desired currency
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          }).format(row.total_amount)}
-                        </td>
-                        {/* <td className="text-nowrap">
+                            </td>
+                            <td className="text-nowrap">
+                              <span className="statusnew">
+                                {row.status == 0
+                                  ? "New"
+                                  : row.status == 1
+                                  ? "In Progress"
+                                  : row.status == 2
+                                  ? "Shipped"
+                                  : row.status == 3
+                                  ? "Delivered"
+                                  : ""}
+                              </span>
+                            </td>
+                            <td className="text-nowrap">
+                              {" "}
+                              {new Intl.NumberFormat("en-US", {
+                                style: "currency",
+                                currency: "USD", // Change to your desired currency
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }).format(row.total_amount)}
+                            </td>
+                            {/* <td className="text-nowrap">
                           <b>Due:</b>
                           {row.due}
                         </td> */}
-                        <td className="text-end">
-                          <div className="d-inline-flex align-items-center gap-3">
-                            {/* <Link className="btnedit">
+                            <td className="text-end">
+                              <div className="d-inline-flex align-items-center gap-3">
+                                {/* <Link className="btnedit">
                               <Icon icon="teenyicons:edit-outline" />
                             </Link> */}
-                            <Form.Check
-                              type="checkbox"
-                              checked={checkedItems[row._id] || false}
-                              onChange={() => handleCheckboxChange(row._id)}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <p className="text-center mt-2">
-                    <i> No orders available </i>
-                  </p>
+                                <Form.Check
+                                  type="checkbox"
+                                  checked={checkedItems[row._id] || false}
+                                  onChange={() => handleCheckboxChange(row._id)}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <p className="text-center mt-2">
+                        <i> No orders available </i>
+                      </p>
+                    )}
+                  </>
                 )}
               </tbody>
             </Table>

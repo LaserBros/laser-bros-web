@@ -77,9 +77,9 @@ export default function QuotesDetailPay() {
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
-      // Ensure quote.amount is a valid number
+      console.log("---- -- - -- amount -----", quote.amount);
       const amount = parseFloat(quote.amount);
-      return sum + (isNaN(amount) ? 0 : quote.quantity * amount);
+      return sum + (isNaN(amount) ? 0 : amount);
     }, 0);
   };
   const [materials, setmaterials] = useState([]);

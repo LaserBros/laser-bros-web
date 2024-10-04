@@ -133,7 +133,7 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/admin/payment-history/view-payment"
+                    path="/admin/payment-history/view-payment/:id"
                     element={
                       <AdminRoute
                         element={
@@ -193,7 +193,7 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/admin/orders/orders-detail"
+                    path="/admin/orders/orders-detail/:id"
                     element={
                       <AdminRoute
                         element={

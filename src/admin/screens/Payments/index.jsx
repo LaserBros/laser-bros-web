@@ -31,7 +31,7 @@ const PaymentHistory = () => {
     },
     {
       name: "Work Order",
-      selector: (row) => row.order_id,
+      selector: (row) => row.order_number,
       sortable: true,
     },
     {
@@ -57,14 +57,23 @@ const PaymentHistory = () => {
     },
     {
       name: "Date",
-      selector: (row) => row.date,
+      selector: (row) => {
+        const dateObj = new Date(row.createdAt);
+        const day = String(dateObj.getDate()).padStart(2, "0");
+        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const yearLastTwoDigits = String(dateObj.getFullYear());
+        return `${day}-${month}-${yearLastTwoDigits}`;
+      },
       sortable: true,
     },
     {
       name: "Actions",
       cell: (row) => (
         <>
-          <Link className="btnview" to="/payment-history/view-payment">
+          <Link
+            className="btnview"
+            to={`/admin/payment-history/view-payment/${row._id}`}
+          >
             <Icon icon="tabler:eye"></Icon>
           </Link>
         </>
@@ -128,12 +137,30 @@ const PaymentHistory = () => {
           <h5>All Payments</h5>
         </CardHeader>
         <CardBody>
-          <DataTable
-            columns={columns}
-            data={transaction}
-            responsive
-            className="custom-table"
-          />
+          {!loading ? (
+            <>
+              <DataTable
+                columns={columns}
+                data={transaction}
+                responsive
+                className="custom-table"
+              />
+            </>
+          ) : (
+            <>
+              <span
+                role="status"
+                aria-hidden="true"
+                className="spinner-border spinner-border-sm text-center"
+                style={{
+                  margin: "0 auto",
+                  display: "block",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              ></span>
+            </>
+          )}
         </CardBody>
       </Card>
     </React.Fragment>

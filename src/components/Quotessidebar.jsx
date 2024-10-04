@@ -281,7 +281,7 @@ const QuotesSidebar = ({ amount, showDiv }) => {
               <Form className="accountform">
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Laser Cutting</span>
-                  <span className="quotesitem quotesright">${amount}</span>
+                  <span className="quotesitem quotesright">${amount} </span>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                   <span className="quotessubtotal">Subtotal</span>

@@ -48,30 +48,29 @@ export default function QuotesDetail() {
   //   { label: "Gloss Orange P.C.", value: "#f37520" },
   // ];
   const [colors, setcolors] = useState([]);
-
+  const fetchOptions = async () => {
+    try {
+      const response = await getFinish(); // Your API call function
+      const fetchedOptions = response.data.map((item) => ({
+        value: item.finishing_code,
+        label: item.finishing_desc,
+      }));
+      setcolors(fetchedOptions);
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
   useEffect(() => {
-    // Fetch options from the API when the parent component mounts
-    const fetchOptions = async () => {
-      try {
-        const response = await getFinish(); // Your API call function
-        const fetchedOptions = response.data.map((item) => ({
-          value: item._id, // Adjust according to the structure of your API response
-          label: item.material_finishing, // Adjust according to the structure of your API response
-        }));
-        setcolors(fetchedOptions);
-      } catch (error) {
-        console.error("Error fetching options:", error);
-      }
-    };
-
-    fetchOptions();
+    // fetchOptions();
   }, []);
 
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
+    console.log(" ------- amount -------", quoteData);
     return quoteData.reduce((sum, quote) => {
       // Ensure quote.amount is a valid number
       const amount = parseFloat(quote.amount);
+
       return sum + (isNaN(amount) ? 0 : quote.quantity * amount);
     }, 0);
   };
@@ -79,7 +78,7 @@ export default function QuotesDetail() {
 
   useEffect(() => {
     // Fetch options from the API when the parent component mounts
-    const fetchOptions = async () => {
+    const fetchOptions_val = async () => {
       try {
         const response = await getMaterials(); // Your API call function
         const fetchedOptions = response.data.map((item) => ({
@@ -92,7 +91,7 @@ export default function QuotesDetail() {
       }
     };
 
-    fetchOptions();
+    fetchOptions_val();
   }, []);
 
   const [thickness, setthickness] = useState([]);
@@ -106,13 +105,21 @@ export default function QuotesDetail() {
       };
       const response = await getThickness(data); // Your API call function
 
-      // Map the response data to the format needed for the dropdown
       const fetchedOptions = response.data.map((item) => ({
         value: item._id,
         label: item.material_thickness,
+        materialCode: item.finishing_options,
       }));
+      // const fetchedOptions_val_id = finishing_options.map((item) => ({
+      //   item,
+      // }));
+      // console.log(fetchedOptions_val_id);
+      // const filteredOptions_val = colors.filter((option) =>
+      //   option.value.includes(fetchedOptions_val_id)
+      // );
 
-      // Update only the thickness options for the specific quote
+      // setcolors(filteredOptions_val);
+      console.log("fetchedOptions ----", fetchedOptions);
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId
@@ -368,10 +375,9 @@ export default function QuotesDetail() {
         if (quote._id === id) {
           let updatedFields = {};
           const currentAmount = parseFloat(quote.amount) || 0;
-          const newPrice = parseFloat(response.data.data.total_amount) || 0;
+          const newPrice = parseFloat(response.data.data.data.amount) || 0;
 
           console.log("newPrice", newPrice);
-
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
             updatedFields.thickness_id = null;
@@ -405,6 +411,32 @@ export default function QuotesDetail() {
       // Update state with the new quoteData
       setQuoteData(updatedQuoteData);
 
+      if (type === "thickness") {
+        const responses = await getFinish();
+        const colors = responses.data.map((item) => ({
+          value: item.finishing_code,
+          label: item.finishing_desc,
+        }));
+        const { value, materialCode } = selectedOption;
+
+        // Ensure that fetchedOptions_val_id is always an array
+        const fetchedOptions_val_id = Array.isArray(materialCode)
+          ? materialCode
+          : [materialCode];
+        const filteredOptions_val = colors.filter((option) => {
+          return fetchedOptions_val_id.includes(option.value);
+        });
+
+        console.log("Filtered Options:", filteredOptions_val, id);
+
+        setQuoteData((prevQuoteData) =>
+          prevQuoteData.map((quote) =>
+            quote._id === id
+              ? { ...quote, finishOptions: filteredOptions_val } // Update finishOptions
+              : quote
+          )
+        );
+      }
       console.log("Total sum of prices:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
@@ -515,6 +547,7 @@ export default function QuotesDetail() {
                             id={quote._id}
                             onOptionSelect={handleOptionSelect}
                           />
+
                           <SelectDropdowns
                             options={quote.thicknessOptions || []}
                             value={quote.thickness_id}
@@ -524,7 +557,7 @@ export default function QuotesDetail() {
                             onOptionSelect={handleOptionSelect}
                           />
                           <SelectDropdowns
-                            options={colors}
+                            options={quote.finishOptions || []}
                             value={quote.finishing_id}
                             type="finish"
                             id={quote._id}
