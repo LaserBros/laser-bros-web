@@ -13,7 +13,11 @@ import {
 import file from "../../assets/img/file1.jpg";
 import { Icon } from "@iconify/react";
 import attachment from "../../assets/img/attachment.svg";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import {
+  downloadAllFiles,
+  downloadParticularFile,
   fetchOrdersInQueue,
   moveOrderStatus,
   moveOrderToQueue,
@@ -28,8 +32,7 @@ const Queue = () => {
     try {
       setLoading(true);
       const response = await fetchOrdersInQueue();
-      console.log("response.data", response.data.data);
-      setOrders(response.data.data.subQuotes);
+      setOrders(response.data.data.result);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {
@@ -39,62 +42,29 @@ const Queue = () => {
   useEffect(() => {
     loadOrders();
   }, []);
-  const data = [
-    {
-      id: 3,
-      material: "SB0036",
-      parts: 3,
-      due: "7-18-4",
-      wo: "LB-6-24-0003",
-      checkboxes: ["3KW", "12KW"],
-      workOrders: [
-        {
-          id: 1,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "SB0036(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["SB0036", "F15", "Bend", "Post OP"],
-        },
-        {
-          id: 2,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "SB0036(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["SB0036", "F15", "Bend", "Post OP"],
-        },
-        {
-          id: 3,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "SB0036(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["SB0036", "F15", "Bend", "Post OP"],
-        },
-      ],
-    },
-  ];
 
-  const handleExpandClick = (id) => {
-    setExpandedRow(expandedRow === id ? null : id);
+  const [selectAll, setSelectAll] = useState(false);
+  const handleSelectAllChange = (event) => {
+    const isChecked = event.target.checked;
+    setSelectAll(isChecked);
+
+    // Update all individual checkboxes based on select all state
+    const newCheckedItems = {};
+    orders.forEach((row) => {
+      newCheckedItems[row._id] = isChecked;
+    });
+    setCheckedItems(newCheckedItems);
   };
 
-  const handleCheckboxChange = (id) => {
+  const handleCheckboxChangeEvent = (event, id, type) => {
+    const isChecked = event.target.checked;
     setCheckedItems((prevState) => ({
       ...prevState,
-      [id]: !prevState[id],
+      [id]: isChecked,
     }));
   };
 
   const moveQueue = () => {
-    console.log("Dfdf");
     const checkedIds = Object.entries(checkedItems)
       .filter(([id, isChecked]) => isChecked)
       .map(([id]) => id);
@@ -104,7 +74,6 @@ const Queue = () => {
       checkedIds.forEach(async (id) => {
         const data = {
           id: id,
-          move_status: 2,
         };
         try {
           const res = await moveOrderStatus(data);
@@ -112,6 +81,7 @@ const Queue = () => {
           toast.error("Error when order move to Queue");
         }
       });
+      setLoading(true);
       setTimeout(() => {
         loadOrders();
       }, 4000);
@@ -120,23 +90,34 @@ const Queue = () => {
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = String(date.getFullYear()).slice(-2);
+    return `${month}-${year}`;
+  };
+  const getDateMonthYearWithSeconds = (dateStr) => {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const year = date.getFullYear();
-    return `${month}-${year}`; // Returns "MM/YYYY"
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${day}/${month}/${year} `;
   };
   const getMaterialColor = (materials) => {
     // console.log("materials", materials);
     switch (materials) {
       case "Aluminium 5052":
         return {
-          backgroundColor: "rgb(164 194 244)",
+          backgroundColor: "rgb(79 140 202)",
         };
       case "Steel 1008":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Steel A36":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Aluminium 6061":
         return {
@@ -144,35 +125,84 @@ const Queue = () => {
         };
       case "Stainless Steel 304 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 304 (#4)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 316 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Brass 260":
         return {
-          backgroundColor: "rgb(255 217 102)",
+          backgroundColor: "rgb(255 186 22)",
         };
       case "Custom i.e. Titanium, Incolnel, etc.":
         return {
-          backgroundColor: "rgb(213 166 189)",
+          backgroundColor: "rgb(115 103 240)",
         };
       default:
         return {};
     }
   };
-  const handleDownload = (url, name) => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", name); // Set the custom file name
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link); // Clean up after the click
+  const handleDownloadAll = async (data, id) => {
+    const checkedIds = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key]
+    );
+
+    if (checkedIds.length === 0) {
+      console.log("No items selected");
+      return;
+    }
+    const selectedOrders = orders.filter((order) =>
+      checkedIds.includes(order._id)
+    );
+
+    const urls = selectedOrders.map((order) => order);
+    const confirmSave = window.confirm(
+      "Do you want to proceed with the download?"
+    );
+    if (!confirmSave) {
+      console.log("User canceled the download.");
+      return; // Exit if the user clicks "Cancel"
+    }
+    selectedOrders.map(async (order) => {
+      const param = {
+        id: order._id,
+        order_id: order.order_id,
+        type: 0,
+      };
+      try {
+        const result = await downloadParticularFile(param);
+      } catch (error) {}
+    });
+    const zip = new JSZip();
+
+    try {
+      const filePromises = urls.map(async (url, index) => {
+        const response = await fetch(url.dxf_url);
+        const blob = await response.blob();
+        const fileName =
+          url.material_code +
+          "-" +
+          url.quantity +
+          "-" +
+          getMonthYear(url.createdAt) +
+          "-" +
+          url.quote_number;
+        zip.file(fileName, blob);
+      });
+
+      await Promise.all(filePromises);
+
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "files.zip");
+      setCheckedItems({});
+    } catch (error) {
+      console.error("Error downloading or zipping files:", error);
+    }
   };
 
   return (
@@ -184,19 +214,41 @@ const Queue = () => {
         <CardBody>
           <Form>
             <Row className="px-2 gx-3">
+              <Col lg={3} xxl={2}>
+                <Button
+                  variant={null}
+                  className="btn-outline-primary min-width-147"
+                  onClick={handleDownloadAll}
+                >
+                  Download Files
+                </Button>
+              </Col>
               <Col lg={3} xxl={12} className="text-lg-end">
                 <Button
                   variant={null}
                   className="btn-outline-primary min-width-147"
                   onClick={moveQueue}
                 >
-                  Move To Cut
+                  Move To Archive
                 </Button>
               </Col>
             </Row>
           </Form>
           <div className="table-responsive">
             <Table className="tablecustom pt-0">
+              <thead>
+                <th>
+                  <Form.Check
+                    type="checkbox"
+                    id={`selectall`}
+                    checked={selectAll}
+                    onChange={handleSelectAllChange}
+                  />
+                </th>
+                <th>Name</th>
+                <th>Order Date</th>
+                <th>Type</th>
+              </thead>
               <tbody>
                 {loading ? (
                   <>
@@ -216,192 +268,36 @@ const Queue = () => {
                   <>
                     {orders && orders.length > 0 ? (
                       orders.map((row) => (
-                        <React.Fragment key={row.id}>
+                        <React.Fragment key={row._id}>
                           <tr
                             className={
-                              expandedRow === row.id ? "expanded-row" : ""
+                              expandedRow === row._id ? "expanded-row" : ""
                             }
                           >
                             <td className="text-nowrap">
-                              <b>Materials:</b>
-                              <span
-                                className="badgestatus"
-                                style={getMaterialColor(
-                                  row?.updatedSubQuoteData[0]?.material_name +
-                                    " " +
-                                    row.updatedSubQuoteData[0].material_grade
-                                )}
-                              >
-                                {row.updatedSubQuoteData[0].material_code}
-                              </span>
+                              <Form.Check
+                                type="checkbox"
+                                id={`${row.material_code}${row._id}`}
+                                checked={checkedItems[row._id] || false} // Set checked based on state
+                                onChange={(event) =>
+                                  handleCheckboxChangeEvent(
+                                    event,
+                                    row._id,
+                                    "isChecked_material"
+                                  )
+                                }
+                              />
                             </td>
                             <td className="text-nowrap">
-                              <b>Number Of Parts:</b>
-                              {row.total_quantity}
+                              {row.material_code}-{row.quantity}-
+                              {getMonthYear(row.createdAt)}-{row.quote_number}
                             </td>
-                            {/* <td className="text-nowrap">
-                        <b>Due:</b>
-                        {row.due}
-                      </td> */}
-                            <td className="text-end">
-                              <div className="d-inline-flex align-items-center">
-                                <Button
-                                  variant="link"
-                                  onClick={() => handleExpandClick(row._id)}
-                                >
-                                  {expandedRow === row._id ? (
-                                    <Icon icon="teenyicons:minimise-alt-outline" />
-                                  ) : (
-                                    <Icon icon="teenyicons:expand-alt-solid" />
-                                  )}
-                                </Button>
-                                <Form.Check
-                                  type="checkbox"
-                                  checked={checkedItems[row._id] || false}
-                                  onChange={() => handleCheckboxChange(row._id)}
-                                />
-                              </div>
+
+                            <td className="text-nowrap">
+                              {getDateMonthYearWithSeconds(row.createdAt)}
                             </td>
+                            <td className="text-nowrap">DXF File</td>
                           </tr>
-                          {expandedRow === row._id && (
-                            <tr>
-                              <td colSpan="4" style={{ borderRadius: 12 }}>
-                                <Row className="expanded-top align-items-center mb-3">
-                                  <Col xs={5}>
-                                    <div className="d-inline-flex align-items-center checkbox-top gap-3">
-                                      {/* {row.checkboxes.map((option) => (
-                                  <Form.Check
-                                    key={option}
-                                    type="checkbox"
-                                    id={`${option}1`}
-                                    label={option}
-                                  />
-                                ))} */}
-                                    </div>
-                                    <p className="workorders mb-0">
-                                      WO# {getMonthYear(row.createdAt)}-
-                                      {row.quote_number}
-                                    </p>
-                                  </Col>
-                                  <Col xs={7} className="text-end">
-                                    <div className="d-inline-flex align-items-center gap-3">
-                                      <div
-                                        className="upload-download"
-                                        onClick={() =>
-                                          handleDownload(
-                                            row?.updatedSubQuoteData[0]
-                                              ?.dxf_url,
-                                            "dxf_file.dxf"
-                                          )
-                                        }
-                                      >
-                                        <Icon icon="bytesize:download" />
-                                        <span>Download DXF Files</span>
-                                      </div>
-
-                                      <div className="upload-download">
-                                        <Icon icon="bytesize:upload" />
-                                        <span>Upload Nest</span>
-                                      </div>
-                                      <div className="upload-download">
-                                        <Icon icon="bytesize:download" />
-                                        <span>Download Nest</span>
-                                      </div>
-                                    </div>
-                                  </Col>
-                                </Row>
-
-                                {row.updatedSubQuoteData.map((wo, index) => (
-                                  <div
-                                    key={index}
-                                    className="list-main  d-inline-flex justify-content-between w-100"
-                                  >
-                                    <div className="list-left d-inline-flex">
-                                      <div className="list-img-outer">
-                                        <div className="list-img">
-                                          <Image
-                                            src={wo.image_url}
-                                            alt={wo.image_url}
-                                            className="img-fluid"
-                                          />
-                                        </div>
-                                        {/* <span>{wo.dimension}</span> */}
-                                      </div>
-                                      <div className="list-content">
-                                        <h2>
-                                          {wo.material_code}
-                                          {"-"}
-                                          {wo.quote_name}
-                                          <Icon
-                                            icon="material-symbols-light:download-sharp"
-                                            onClick={() =>
-                                              handleDownload(
-                                                wo?.dxf_url,
-                                                "dxf_file.dxf"
-                                              )
-                                            }
-                                          />
-                                        </h2>
-                                        <div className="list-qty d-inline-flex align-items-center gap-3">
-                                          <span className="qty">
-                                            <strong>QTY:</strong> {wo.quantity}
-                                          </span>
-                                          <span className="price-total">
-                                            {new Intl.NumberFormat("en-US", {
-                                              style: "currency",
-                                              currency: "USD", // Change to your desired currency
-                                              minimumFractionDigits: 2,
-                                              maximumFractionDigits: 2,
-                                            }).format(wo.amount)}
-                                            /ea.
-                                          </span>
-                                          <span className="price-total">
-                                            {new Intl.NumberFormat("en-US", {
-                                              style: "currency",
-                                              currency: "USD", // Change to your desired currency
-                                              minimumFractionDigits: 2,
-                                              maximumFractionDigits: 2,
-                                            }).format(wo.amount)}
-                                            /total
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    {/* <div className="list-checkboxes  d-inline-flex gap-3">
-                                {wo.labels.map((label, index) => (
-                                  <div
-                                    className="custom-checkbox-container text-center"
-                                    key={label}
-                                  >
-                                    <label
-                                      key={`${row.id}-${label}-${index}`}
-                                      className="custom-label"
-                                      htmlFor={`${label}${wo.id}`}
-                                      style={getMaterialColor(row.material)}
-                                    >
-                                      {label}
-                                    </label>
-                                    <Form.Check
-                                      type="checkbox"
-                                      id={`${label}${wo.id}`}
-                                    />
-                                  </div>
-                                ))}
-                              </div> */}
-                                    <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                                      <Image
-                                        src={attachment}
-                                        className="img-fluid"
-                                        alt=""
-                                      />
-                                      <span>Attachments</span>
-                                    </div>
-                                  </div>
-                                ))}
-                              </td>
-                            </tr>
-                          )}
                         </React.Fragment>
                       ))
                     ) : (

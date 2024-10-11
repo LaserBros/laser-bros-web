@@ -259,6 +259,19 @@ export const getThickness = async (data) => {
   }
 };
 
+export const fetchSelectedFinishes = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/fetchSelectedFinishes`,
+      data
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getFinish = async (data) => {
   try {
     const response = await axiosInstance.get(`/users/getFinish`, data);
@@ -308,6 +321,18 @@ export const getThicknessMaterialFinish = async (data, type, params) => {
       `/users/updateSubQuoteDetailsId`,
       params
     );
+    // console.log("response_api", response_api);
+    // return;
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const bendQuotes = async (data) => {
+  try {
+    var response_api = await axiosInstance.post(`/users/bendQuotes`, data);
     // console.log("response_api", response_api);
     // return;
     return response_api;
@@ -434,7 +459,7 @@ export const moveOrderToQueue = async (data) => {
 
 export const moveOrderStatus = async (data) => {
   try {
-    const response = await axiosAdminInstance.post(`/moveOrderStatus`, data);
+    const response = await axiosAdminInstance.post(`/moveToArchive`, data);
     return response;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -488,9 +513,167 @@ export const getParticularTransaction = async (data) => {
   }
 };
 
-export const fetchOrdersInCut = async (data) => {
+export const fetchOrdersInArchive = async (data) => {
   try {
-    const response = await axiosAdminInstance.get(`/fetchOrdersInCut`, data);
+    const response = await axiosAdminInstance.get(
+      `/fetchOrdersInArchive`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const downloadAllFiles = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/downloadAllFiles`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const downloadParticularFile = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/downloadParticularFile`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateWorkStatus = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/updateWorkStatus`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdmingetEditQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/getEditQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminaddNotes = async (id, text) => {
+  try {
+    const data = {
+      id: id,
+      notes_text: text,
+    };
+    const response = await axiosAdminInstance.post(`/addNotes`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error setting address as default:", error);
+    throw error;
+  }
+};
+
+export const AdminfetchSelectedFinishes = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/fetchSelectedFinishes`,
+      data
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminbendQuotes = async (data) => {
+  try {
+    var response_api = await axiosAdminInstance.post(`/bendQuotes`, data);
+    // console.log("response_api", response_api);
+    // return;
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdmingetMaterials = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(`/getMaterials`, data);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdmingetThickness = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/getThickness`, data);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdmingetThicknessMaterialFinish = async (data, type, params) => {
+  try {
+    var response_api = await axiosAdminInstance.post(
+      `/editSubQuoteDetailsAdmin`,
+      params
+    );
+    // console.log("response_api", response_api);
+    // return;
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminupdateQuantity = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/updateQuantity`, data);
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminupdateSubQuoteDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateSubQuoteDetails`,
+      data
+    );
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const editSubQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/editSubQuote`, data);
+    console.log("responseeee", response.data);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

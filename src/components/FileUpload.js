@@ -27,22 +27,23 @@ const FileUpload = ({
     console.log(onFileDrop);
     if (onFileDrop) {
       onFileDrop(acceptedFiles);
-      //   console.log("----", acceptedFiles[0].name);
       var nameWithoutExtension = acceptedFiles[0].name.replace(/\.dxf$/, "");
       console.log(acceptedFiles[0]);
-      //   console.log(nameWithoutExtension);
+
       setProcessing(true);
-      // return;
       try {
         const formData = new FormData();
         formData.append("quote_image", acceptedFiles[0]);
         formData.append("documentName", "file_upload");
         formData.append("workspaceName", "file_upload");
-        //   console.log(formData);
-        const response = await uploadQuote(formData);
+        const quote_list = localStorage.getItem("setItemelementData");
 
-        // setTimeout(async () => {
-        // const response_api = await fetchParts(data_api);
+        if (quote_list) {
+          const quote_list_val = JSON.parse(quote_list);
+          formData.append("id", quote_list_val._id);
+          formData.append("type", 0);
+        }
+        const response = await uploadQuote(formData);
         console.log("response_api", response.data);
         localStorage.setItem(
           "setItemelementData",

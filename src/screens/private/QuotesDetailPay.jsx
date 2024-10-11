@@ -9,6 +9,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
+import attachment from "../../employee/assets/img/attachment.svg";
 import { Link, json } from "react-router-dom";
 import file1 from "../../assets/img/file1.jpg";
 import QuantitySelector from "../../components/Quantityselector";
@@ -21,6 +22,7 @@ import FileUpload from "../../components/FileUpload";
 import {
   copySubQuote,
   deleteSubQuote,
+  fetchSelectedFinishes,
   getFinish,
   getMaterials,
   getThickness,
@@ -28,6 +30,7 @@ import {
   updateQuantity,
   updateSubQuoteDetails,
 } from "../../api/api";
+import AdminAddNote from "../../admin/components/AddNote";
 export default function QuotesDetailPay() {
   const currentDate = new Date();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -55,7 +58,7 @@ export default function QuotesDetailPay() {
   //   { label: "Gloss Orange P.C.", value: "#f37520" },
   // ];
   const [colors, setcolors] = useState([]);
-
+  const handleClose3 = () => setModalShow3(false);
   useEffect(() => {
     // Fetch options from the API when the parent component mounts
     const fetchOptions = async () => {
@@ -131,6 +134,37 @@ export default function QuotesDetailPay() {
       console.error("Error fetching options:", error);
     }
   };
+  const [selectedAdminNote, setSelectedAdminNote] = useState(null);
+  const handleShow3 = (quote, notes_admin, id) => {
+    setSelectedNote(quote);
+    setSelectedAdminNote(notes_admin);
+    setSelectedPartId(id);
+    setModalShow3(true);
+  };
+
+  const fetchFinish = async (materialId, quoteId) => {
+    try {
+      const data = {
+        id: materialId,
+      };
+      const response = await fetchSelectedFinishes(data); // Your API call function
+
+      const fetchedOptions = response.data.map((item) => ({
+        value: item._id,
+        label: item.finishing_desc,
+      }));
+
+      setQuoteData((prevQuoteData) =>
+        prevQuoteData.map((quote) =>
+          quote._id === quoteId
+            ? { ...quote, finishOptions: fetchedOptions } // Store the thickness options in the quote
+            : quote
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
   // fetchThickness();
   // }, []);
 
@@ -184,8 +218,10 @@ export default function QuotesDetailPay() {
           const fetchAllThicknessOptions = async () => {
             for (const quote of quoteData) {
               if (quote.material_id) {
-                // Ensure there's a material selected
                 await fetchThickness(quote.material_id, quote._id);
+              }
+              if (quote.thickness_id) {
+                await fetchFinish(quote.thickness_id, quote._id);
               }
             }
           };
@@ -195,174 +231,6 @@ export default function QuotesDetailPay() {
       }
     }, 1000);
   }, [quoteData]);
-  const uploadQuote = async (formData) => {
-    // API call logic here, e.g., using fetch or axios
-    try {
-      await updateQuantity(formData);
-    } catch (error) {
-      console.error("API call failed:", error);
-    }
-  };
-
-  const handleQuantityChange = (Id, increment = true) => {
-    setQuoteData((prevQuoteData) => {
-      const updatedQuoteData = prevQuoteData.map((quote) => {
-        if (quote._id === Id) {
-          const updatedQuantity = increment
-            ? quote.quantity + 1
-            : Math.max(0, quote.quantity - 1); // Prevent negative quantities
-
-          const formData = {
-            id: quote._id,
-            quantity: updatedQuantity,
-            quote_id: quote.quote_id,
-          };
-          uploadQuote(formData); // Assuming this function handles the API call
-
-          return {
-            ...quote,
-            quantity: updatedQuantity,
-          };
-        }
-        return quote;
-      });
-
-      // Update localStorage with the new data
-      localStorage.setItem(
-        "setItempartsDBdataPay",
-        JSON.stringify(updatedQuoteData)
-      );
-
-      // Return the updated quote data to update the state
-      return updatedQuoteData;
-    });
-  };
-
-  const handleDuplicateQuote = async (quote, id) => {
-    try {
-      const data = {
-        id: id,
-      };
-
-      const response = await copySubQuote(data);
-
-      const duplicatedQuote = {
-        ...quote,
-        _id: response.data._id, // Assuming the API returns the new ID
-      };
-
-      // Update the quoteData state to include the duplicated quote
-      setQuoteData((prevQuoteData) => {
-        const updatedQuoteData = [...prevQuoteData, duplicatedQuote];
-
-        // Update localStorage
-        localStorage.setItem(
-          "setItempartsDBdataPay",
-          JSON.stringify(updatedQuoteData)
-        );
-
-        return updatedQuoteData;
-      });
-    } catch (error) {
-      console.error("Error duplicating quote:", error);
-    }
-  };
-
-  const handleOptionSelect = async (selectedOption, type, id) => {
-    try {
-      const data = {
-        id: selectedOption.value,
-      };
-
-      let response = "";
-
-      for (const quote of quoteData) {
-        if (quote._id === id) {
-          const params = {
-            id: id,
-            material_id:
-              type === "material" ? selectedOption.value : quote.material_id,
-            thickness_id:
-              type === "material"
-                ? null
-                : type === "thickness"
-                ? selectedOption.value
-                : quote.thickness_id,
-            finishing_id:
-              type === "finish" ? selectedOption.value : quote.finishing_id,
-          };
-
-          response = await getThicknessMaterialFinish(data, type, params);
-          break; // Stop after the matching quote is found and processed
-        }
-      }
-
-      if (type == "material") {
-        fetchThickness(selectedOption.value, id);
-      }
-
-      const updatedQuoteData = quoteData.map((quote) => {
-        if (quote._id === id) {
-          let updatedFields = {};
-          const currentAmount = parseFloat(quote.amount) || 0;
-          const newPrice = parseFloat(response.data.data.total_amount) || 0;
-
-          console.log("newPrice", newPrice);
-
-          if (type === "material") {
-            updatedFields.material_id = selectedOption.value;
-            updatedFields.thickness_id = null;
-          } else if (type === "finish") {
-            updatedFields.finishing_id = selectedOption.value;
-          } else if (type === "thickness") {
-            updatedFields.thickness_id = selectedOption.value;
-          }
-
-          return {
-            ...quote,
-            ...updatedFields,
-            amount: newPrice,
-          };
-        }
-        return quote;
-      });
-
-      // Sum the total amount of all quotes
-      const totalAmount = updatedQuoteData.reduce(
-        (sum, quote) => sum + quote.amount,
-        0
-      );
-
-      // Update localStorage with the new quoteData
-      localStorage.setItem(
-        "setItempartsDBdataPay",
-        JSON.stringify(updatedQuoteData)
-      );
-
-      // Update state with the new quoteData
-      setQuoteData(updatedQuoteData);
-
-      console.log("Total sum of prices:", totalAmount);
-    } catch (error) {
-      console.error("Error fetching price:", error);
-    }
-  };
-
-  const formattedNumber = (num) => {
-    return parseFloat(
-      num.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })
-    );
-  };
-
-  const decrementQuantity = (item) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [item]: Math.max(prevQuantities[item] - 1, 0), // Prevent negative quantities
-    }));
-  };
 
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
@@ -457,7 +325,7 @@ export default function QuotesDetailPay() {
                             // onOptionSelect={handleOptionSelect}
                           />
                           <SelectDropdowns
-                            options={colors}
+                            options={quote.finishOptions || []}
                             value={quote.finishing_id}
                             type="finish"
                             disabled={true}
@@ -467,22 +335,39 @@ export default function QuotesDetailPay() {
                           />
                         </div>
                         <div className="quotes-services mt-3">
-                          {quote.notes_text ? (
-                            <>
-                              <h2>Notes</h2>
-                              <h4>{quote.notes_text}</h4>
-                            </>
-                          ) : (
-                            ""
-                          )}
+                          <Link
+                            className="btnshare"
+                            onClick={() =>
+                              handleShow3(
+                                quote.notes_text,
+                                quote.notes_admin,
+                                quote._id
+                              )
+                            }
+                          >
+                            View Note
+                          </Link>
                         </div>
                       </div>
                       <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
-                        <p className=" text-md-end">${quote.amount} total</p>
+                        <p className=" text-md-end">
+                          {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD", // Change to your desired currency
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }).format(quote.amount)}{" "}
+                          total
+                        </p>
                         <p className=" text-md-end">
                           <strong className="quotes-price">
-                            ${quote.amount}
+                            {new Intl.NumberFormat("en-US", {
+                              style: "currency",
+                              currency: "USD", // Change to your desired currency
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }).format(quote.amount)}
                           </strong>
                           /each
                         </p>
@@ -490,6 +375,34 @@ export default function QuotesDetailPay() {
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>
+                        <div className="quotes-services mt-3">
+                          {quote.bend_count > 0 ? (
+                            <>
+                              <h4>
+                                <a href={`${quote.bendupload_url}`}>
+                                  <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                                    <Image
+                                      src={attachment}
+                                      className="img-fluid"
+                                      alt=""
+                                    />
+                                    <span
+                                      style={{
+                                        fontSize: "12px",
+                                        color: "rgba(0, 0, 0, 0.5)",
+                                        marginBottom: "10px",
+                                      }}
+                                    >
+                                      Attachment
+                                    </span>
+                                  </div>
+                                </a>
+                              </h4>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
@@ -530,6 +443,17 @@ export default function QuotesDetailPay() {
           </Row>
         </Container>
       </section>
+      <AdminAddNote
+        show={modalShow3}
+        // isEditAdmin={true}
+        onSave={""}
+        handleDeleteNote={"dd"}
+        customer_note={selectedNote}
+        admin_note={selectedAdminNote}
+        id={selectedPartId}
+        handleClose={handleClose3}
+        title="Notes"
+      />
     </React.Fragment>
   );
 }

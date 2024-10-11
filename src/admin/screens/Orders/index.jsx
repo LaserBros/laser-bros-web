@@ -31,6 +31,12 @@ const Orders = () => {
   useEffect(() => {
     loadOrders();
   }, []);
+  const getMonthYear = (dateStr) => {
+    const date = new Date(dateStr);
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${month}-${year}`; // Returns "MM/YYYY"
+  };
   const [checkedItems, setCheckedItems] = useState({});
   const handleCheckboxChange = (id) => {
     setCheckedItems((prevState) => ({
@@ -98,18 +104,19 @@ const Orders = () => {
   ];
 
   const getMaterialColor = (materials) => {
+    // console.log("materials", materials);
     switch (materials) {
       case "Aluminium 5052":
         return {
-          backgroundColor: "rgb(164 194 244)",
+          backgroundColor: "rgb(79 140 202)",
         };
       case "Steel 1008":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Steel A36":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Aluminium 6061":
         return {
@@ -117,23 +124,23 @@ const Orders = () => {
         };
       case "Stainless Steel 304 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 304 (#4)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 316 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Brass 260":
         return {
-          backgroundColor: "rgb(255 217 102)",
+          backgroundColor: "rgb(255 186 22)",
         };
       case "Custom i.e. Titanium, Incolnel, etc.":
         return {
-          backgroundColor: "rgb(213 166 189)",
+          backgroundColor: "rgb(115 103 240)",
         };
       default:
         return {};
@@ -254,7 +261,8 @@ const Orders = () => {
                                 to={`/admin/orders/orders-detail/${row._id}`}
                               >
                                 <b>
-                                  WO# {month}-{yearLastTwoDigits}-
+                                  WO# {row.material_code}-{row.quantity}-
+                                  {getMonthYear(row.createdAt)}-
                                   {row.quote_number}
                                 </b>
                               </Link>
@@ -274,9 +282,9 @@ const Orders = () => {
                                   key={`${row._id}-material2`}
                                   className="badgestatus me-2"
                                   style={getMaterialColor(
-                                    row.material_name1 +
+                                    row.material_name2 +
                                       " " +
-                                      row.material_grade1
+                                      row.material_grade2
                                   )}
                                 >
                                   {row.material_code2}
@@ -310,16 +318,20 @@ const Orders = () => {
                           {row.due}
                         </td> */}
                             <td className="text-end">
-                              <div className="d-inline-flex align-items-center gap-3">
-                                {/* <Link className="btnedit">
+                              {row.move_status == 0 && (
+                                <div className="d-inline-flex align-items-center gap-3">
+                                  {/* <Link className="btnedit">
                               <Icon icon="teenyicons:edit-outline" />
                             </Link> */}
-                                <Form.Check
-                                  type="checkbox"
-                                  checked={checkedItems[row._id] || false}
-                                  onChange={() => handleCheckboxChange(row._id)}
-                                />
-                              </div>
+                                  <Form.Check
+                                    type="checkbox"
+                                    checked={checkedItems[row._id] || false}
+                                    onChange={() =>
+                                      handleCheckboxChange(row._id)
+                                    }
+                                  />
+                                </div>
+                              )}
                             </td>
                           </tr>
                         );

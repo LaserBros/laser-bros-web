@@ -11,9 +11,9 @@ const AddNote = ({ show3, name, handleClose3, title, onSave }) => {
 
   const handleNotes = () => {
     if (comment.trim() && onSave) {
-      onSave(comment.trim()); // Save the trimmed note when the user submits it
+      onSave(comment.trim());
     }
-    handleClose3(); // Close the modal after saving
+    handleClose3();
   };
 
   return (

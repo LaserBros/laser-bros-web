@@ -14,13 +14,16 @@ import {
   addNotes,
   copySubQuote,
   deleteSubQuote,
+  fetchSelectedFinishes,
   getFinish,
+  bendQuotes,
   getMaterials,
   getThickness,
   getThicknessMaterialFinish,
   updateQuantity,
   updateSubQuoteDetails,
 } from "../../api/api";
+import Amount from "../../components/Amount";
 export default function QuotesDetail() {
   const currentDate = new Date();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -48,42 +51,53 @@ export default function QuotesDetail() {
   //   { label: "Gloss Orange P.C.", value: "#f37520" },
   // ];
   const [colors, setcolors] = useState([]);
-  const fetchOptions = async () => {
-    try {
-      const response = await getFinish(); // Your API call function
-      const fetchedOptions = response.data.map((item) => ({
-        value: item.finishing_code,
-        label: item.finishing_desc,
-      }));
-      setcolors(fetchedOptions);
-    } catch (error) {
-      console.error("Error fetching options:", error);
-    }
-  };
   useEffect(() => {
     // fetchOptions();
   }, []);
 
+  const handleUpload = async (file, id, quantities, pdf_url) => {
+    console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
+    if (!pdf_url) {
+      alert("Please upload a PDF file before saving.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("quote_image", file);
+    formData.append("id", id);
+    formData.append("bend_count", quantities);
+    try {
+      const response = await bendQuotes(formData);
+      setQuoteData(response.data.data);
+      setquoteDataCon(true);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(response.data.data)
+      );
+
+      setModalShow2(false);
+    } catch (error) {
+      console.log("errororoor ----", error);
+    }
+  };
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
-    console.log(" ------- amount -------", quoteData);
     return quoteData.reduce((sum, quote) => {
       // Ensure quote.amount is a valid number
       const amount = parseFloat(quote.amount);
 
-      return sum + (isNaN(amount) ? 0 : quote.quantity * amount);
+      return sum + (isNaN(amount) ? 0 : amount);
     }, 0);
   };
   const [materials, setmaterials] = useState([]);
 
   useEffect(() => {
-    // Fetch options from the API when the parent component mounts
     const fetchOptions_val = async () => {
       try {
-        const response = await getMaterials(); // Your API call function
+        const response = await getMaterials();
         const fetchedOptions = response.data.map((item) => ({
-          value: item._id, // Adjust according to the structure of your API response
-          label: item.material_name + " " + item.material_grade, // Adjust according to the structure of your API response
+          value: item._id,
+          label: item.material_name + " " + item.material_grade,
         }));
         setmaterials(fetchedOptions);
       } catch (error) {
@@ -103,23 +117,13 @@ export default function QuotesDetail() {
       const data = {
         id: materialId,
       };
-      const response = await getThickness(data); // Your API call function
+      const response = await getThickness(data);
 
       const fetchedOptions = response.data.map((item) => ({
         value: item._id,
         label: item.material_thickness,
-        materialCode: item.finishing_options,
       }));
-      // const fetchedOptions_val_id = finishing_options.map((item) => ({
-      //   item,
-      // }));
-      // console.log(fetchedOptions_val_id);
-      // const filteredOptions_val = colors.filter((option) =>
-      //   option.value.includes(fetchedOptions_val_id)
-      // );
 
-      // setcolors(filteredOptions_val);
-      console.log("fetchedOptions ----", fetchedOptions);
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId
@@ -131,6 +135,34 @@ export default function QuotesDetail() {
       console.error("Error fetching options:", error);
     }
   };
+  const fetchFinish = async (materialId, quoteId) => {
+    try {
+      const data = {
+        id: materialId,
+      };
+      const response = await fetchSelectedFinishes(data); // Your API call function
+      const res_status = response.data;
+      const fetchedOptions = res_status.map((item) => ({
+        value: item._id,
+        label: item.finishing_desc,
+      }));
+
+      setQuoteData((prevQuoteData) =>
+        prevQuoteData.map((quote) =>
+          quote._id === quoteId
+            ? {
+                ...quote,
+                finishOptions: fetchedOptions,
+                binding_option: response.bending,
+              }
+            : quote
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
+
   // fetchThickness();
   // }, []);
 
@@ -142,7 +174,6 @@ export default function QuotesDetail() {
   // ];
 
   const handleShow3 = (quote, id) => {
-    console.log("notesss", quote);
     setSelectedNote(quote);
     setSelectedPartId(id);
     setModalShow3(true);
@@ -207,7 +238,25 @@ export default function QuotesDetail() {
     // setQuoteData(updatedQuoteData);
   };
   const handleClose = () => setModalShow(false);
-  const handleShow2 = () => setModalShow2(true);
+  const [image_url, setimage_url] = useState(null);
+  const [quote_name, setquote_name] = useState(null);
+  const [bend_count, setbend_count] = useState(null);
+  const [bendupload_url, setbendupload_url] = useState(null);
+  const [id_quote, setid_quote] = useState(null);
+  const handleShow2 = (
+    image_url,
+    quote_name,
+    bend_count,
+    bendupload_url,
+    id
+  ) => {
+    setimage_url(image_url);
+    setquote_name(quote_name);
+    setbend_count(bend_count);
+    setbendupload_url(bendupload_url);
+    setid_quote(id);
+    setModalShow2(true);
+  };
   const handleClose2 = () => setModalShow2(false);
 
   const handleClose3 = () => setModalShow3(false);
@@ -254,8 +303,10 @@ export default function QuotesDetail() {
           const fetchAllThicknessOptions = async () => {
             for (const quote of quoteData) {
               if (quote.material_id) {
-                // Ensure there's a material selected
                 await fetchThickness(quote.material_id, quote._id);
+              }
+              if (quote.thickness_id) {
+                await fetchFinish(quote.thickness_id, quote._id);
               }
             }
           };
@@ -266,46 +317,69 @@ export default function QuotesDetail() {
     }, 1000);
   }, [quoteData]);
   const uploadQuote = async (formData) => {
-    // API call logic here, e.g., using fetch or axios
     try {
-      await updateQuantity(formData);
+      return await updateQuantity(formData);
     } catch (error) {
       console.error("API call failed:", error);
     }
   };
 
-  const handleQuantityChange = (Id, increment = true) => {
-    setQuoteData((prevQuoteData) => {
-      const updatedQuoteData = prevQuoteData.map((quote) => {
-        if (quote._id === Id) {
-          const updatedQuantity = increment
-            ? quote.quantity + 1
-            : Math.max(0, quote.quantity - 1); // Prevent negative quantities
+  const handleQuantityChange = async (Id, increment = true) => {
+    let formData = "";
 
-          const formData = {
-            id: quote._id,
-            quantity: updatedQuantity,
-            quote_id: quote.quote_id,
-          };
-          uploadQuote(formData); // Assuming this function handles the API call
+    const updatedQuoteData = quoteData.map((quote) => {
+      if (quote._id === Id) {
+        const updatedQuantity = increment
+          ? quote.quantity + 1
+          : Math.max(0, quote.quantity - 1); // Prevent negative quantities
 
-          return {
-            ...quote,
-            quantity: updatedQuantity,
-          };
-        }
-        return quote;
-      });
+        formData = {
+          id: quote._id,
+          quantity: updatedQuantity,
+          quote_id: quote.quote_id,
+        };
 
-      // Update localStorage with the new data
-      localStorage.setItem(
-        "setItempartsDBdata",
-        JSON.stringify(updatedQuoteData)
+        return {
+          ...quote,
+          quantity: updatedQuantity,
+        };
+      }
+      return quote;
+    });
+    setQuoteData(updatedQuoteData);
+    // Update localStorage with the new data
+    localStorage.setItem(
+      "setItempartsDBdata",
+      JSON.stringify(updatedQuoteData)
+    );
+
+    const response = await uploadQuote(formData);
+    console.log(response, "Sdsdsdsdds= response,", formData);
+    if (response && response.data) {
+      const discount = response.data.updateQuantity.discount;
+      const price = response.data.updatedPrice.total_amount;
+      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+
+      const finalQuoteData = updatedQuoteData.map((quote) =>
+        quote._id === Id
+          ? {
+              ...quote,
+              quantity: quote.quantity,
+              discount: discount,
+              amount: price,
+            }
+          : quote
       );
 
-      // Return the updated quote data to update the state
-      return updatedQuoteData;
-    });
+      setQuoteData(finalQuoteData);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(finalQuoteData)
+      );
+    } else {
+      console.error("Error updating quote:", response);
+    }
+    // });
   };
 
   const handleDuplicateQuote = async (quote, id) => {
@@ -358,8 +432,13 @@ export default function QuotesDetail() {
                 : type === "thickness"
                 ? selectedOption.value
                 : quote.thickness_id,
+
             finishing_id:
-              type === "finish" ? selectedOption.value : quote.finishing_id,
+              type === "material" || type === "thickness"
+                ? null
+                : type === "finish"
+                ? selectedOption.value
+                : quote.finishing_id,
           };
 
           response = await getThicknessMaterialFinish(data, type, params);
@@ -370,6 +449,9 @@ export default function QuotesDetail() {
       if (type == "material") {
         fetchThickness(selectedOption.value, id);
       }
+      if (type == "thickness") {
+        fetchFinish(selectedOption.value, id);
+      }
 
       const updatedQuoteData = quoteData.map((quote) => {
         if (quote._id === id) {
@@ -377,19 +459,22 @@ export default function QuotesDetail() {
           const currentAmount = parseFloat(quote.amount) || 0;
           const newPrice = parseFloat(response.data.data.data.amount) || 0;
 
-          console.log("newPrice", newPrice);
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
             updatedFields.thickness_id = null;
+            updatedFields.finishing_id = null;
+            updatedFields.binding_option = "No";
           } else if (type === "finish") {
             updatedFields.finishing_id = selectedOption.value;
           } else if (type === "thickness") {
             updatedFields.thickness_id = selectedOption.value;
+            updatedFields.finishing_id = null;
           }
 
           return {
             ...quote,
             ...updatedFields,
+            discount: response.data.data.data.discount,
             amount: newPrice,
           };
         }
@@ -410,33 +495,6 @@ export default function QuotesDetail() {
 
       // Update state with the new quoteData
       setQuoteData(updatedQuoteData);
-
-      if (type === "thickness") {
-        const responses = await getFinish();
-        const colors = responses.data.map((item) => ({
-          value: item.finishing_code,
-          label: item.finishing_desc,
-        }));
-        const { value, materialCode } = selectedOption;
-
-        // Ensure that fetchedOptions_val_id is always an array
-        const fetchedOptions_val_id = Array.isArray(materialCode)
-          ? materialCode
-          : [materialCode];
-        const filteredOptions_val = colors.filter((option) => {
-          return fetchedOptions_val_id.includes(option.value);
-        });
-
-        console.log("Filtered Options:", filteredOptions_val, id);
-
-        setQuoteData((prevQuoteData) =>
-          prevQuoteData.map((quote) =>
-            quote._id === id
-              ? { ...quote, finishOptions: filteredOptions_val } // Update finishOptions
-              : quote
-          )
-        );
-      }
       console.log("Total sum of prices:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
@@ -472,7 +530,7 @@ export default function QuotesDetail() {
       // Since storedData and quote_list should already be objects, no need to parse again
       setQuoteList(quote_list); // Assuming quote_list is already an object/array
       setQuoteData(storedData); // Assuming storedData is already an object
-
+      setquoteDataCon(true);
       // Add any additional logic for handling the files
     } else {
       console.error("Data structure is not as expected:", data);
@@ -547,7 +605,6 @@ export default function QuotesDetail() {
                             id={quote._id}
                             onOptionSelect={handleOptionSelect}
                           />
-
                           <SelectDropdowns
                             options={quote.thicknessOptions || []}
                             value={quote.thickness_id}
@@ -566,28 +623,55 @@ export default function QuotesDetail() {
                           />
                         </div>
                         <div className="quotes-services mt-3">
-                          <h4>Services</h4>
-                          <Form.Check
-                            type="radio"
-                            label="Bending"
-                            name="options2"
-                            value="option11"
-                            id="option11"
-                            className="d-inline-flex align-items-center me-2"
-                            onClick={handleShow2}
-                          />
+                          {quote.binding_option == "No" ? (
+                            <p></p>
+                          ) : (
+                            <>
+                              {quote.thickness_id && (
+                                <>
+                                  <h4>Services</h4>
+
+                                  <Form.Check
+                                    type="radio"
+                                    label="Bending"
+                                    name={`options-${quote._id}`}
+                                    value={`options-${quote._id}`}
+                                    id={`options-${quote._id}`}
+                                    className="d-inline-flex align-items-center me-2"
+                                    onClick={() =>
+                                      handleShow2(
+                                        quote.image_url,
+                                        quote.quote_name,
+                                        quote.bend_count,
+                                        quote.bendupload_url,
+                                        quote._id
+                                      )
+                                    }
+                                    checked={quote.bend_count >= 1}
+                                  />
+                                </>
+                              )}
+                            </>
+                          )}
+                          {/* </> */}
+                          {/* )} */}
                         </div>
                       </div>
                       <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
-                        <p className=" text-md-end">${quote.amount} total</p>
+                        <p className=" text-md-end">
+                          {" "}
+                          <Amount amount={quote.amount} /> total
+                        </p>
                         <p className=" text-md-end">
                           <strong className="quotes-price">
-                            ${quote.amount}
+                            <Amount amount={quote.amount / quote.quantity} />
                           </strong>
                           /each
                         </p>
-                        <span className="quote-off">0% Saved</span>
+                        <span className="quote-off">
+                          {quote.discount}% Saved
+                        </span>
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>
@@ -657,7 +741,13 @@ export default function QuotesDetail() {
       <AddBend
         show2={modalShow2}
         handleClose2={handleClose2}
+        image={image_url}
+        name={quote_name}
+        count={bend_count}
+        pdf_url={bendupload_url}
         title="Specify Bend Details"
+        id={id_quote}
+        onUpload={handleUpload}
       />
       <AddNote
         show3={modalShow3}

@@ -85,6 +85,7 @@ import { UserProvider } from "./localstorage/UserProfileContext";
 import EmployeRoute from "./middleware/Employe";
 import AdminRoute from "./middleware/AdminRoute";
 import QuotesDetailPay from "./screens/private/QuotesDetailPay";
+import EditRFQS from "./admin/screens/Quotes/EditQuote";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -235,6 +236,19 @@ function App() {
                         element={
                           <AdminLayout title={"RFQ's"}>
                             <AdminRFQS />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+
+                  <Route
+                    path="/admin/rfqs/edit-quote"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Edit Quote"}>
+                            <EditRFQS />
                           </AdminLayout>
                         }
                       />
@@ -424,11 +438,17 @@ function App() {
                       </Layout3>
                     }
                   >
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/rfqs" element={<RFQS />} />
+                    <Route
+                      path="/orders"
+                      element={<PrivateRoute element={<Orders />} />}
+                    />
+                    <Route
+                      path="/rfqs"
+                      element={<PrivateRoute element={<RFQS />} />}
+                    />
                     <Route
                       path="/orders/orders-detail"
-                      element={<OrdersDetail />}
+                      element={<PrivateRoute element={<OrdersDetail />} />}
                     />
                     <Route
                       path="/my-profile"

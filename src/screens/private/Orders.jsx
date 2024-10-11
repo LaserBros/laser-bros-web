@@ -151,18 +151,19 @@ export default function Orders() {
     },
   ];
   const getMaterialsColor = (materials) => {
+    // console.log("materials", materials);
     switch (materials) {
       case "Aluminium 5052":
         return {
-          backgroundColor: "rgb(164 194 244)",
+          backgroundColor: "rgb(79 140 202)",
         };
       case "Steel 1008":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Steel A36":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Aluminium 6061":
         return {
@@ -170,23 +171,23 @@ export default function Orders() {
         };
       case "Stainless Steel 304 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 304 (#4)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 316 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Brass 260":
         return {
-          backgroundColor: "rgb(255 217 102)",
+          backgroundColor: "rgb(255 186 22)",
         };
       case "Custom i.e. Titanium, Incolnel, etc.":
         return {
-          backgroundColor: "rgb(213 166 189)",
+          backgroundColor: "rgb(115 103 240)",
         };
       default:
         return {};

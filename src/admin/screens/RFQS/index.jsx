@@ -9,11 +9,17 @@ import {
   Col,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AdminfetchRFQ, fetchRFQ, updateQuoteState } from "../../../api/api";
+import {
+  AdminfetchRFQ,
+  AdmingetEditQuote,
+  fetchRFQ,
+  updateQuoteState,
+} from "../../../api/api";
 
 const RFQS = () => {
+  const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
   const getQueue = (id) => {
     console.log(id, "----------");
@@ -24,31 +30,62 @@ const RFQS = () => {
       [id]: !prevState[id],
     }));
   };
+  const [loadingRows, setLoadingRows] = useState({});
+
   const changeStatus = async (status, id) => {
-    const res = await updateQuoteState(id, status);
-    if (status == 2) {
-      toast.success("RFQ accepted successfully");
+    setLoadingRows((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+    try {
+      const res = await updateQuoteState(id, status);
+      if (status == 2) {
+        toast.success("RFQ accepted successfully");
+      }
+      if (status == 3) {
+        toast.success("RFQ rejected successfully");
+      }
+    } catch (error) {
+      console.error("Error updating status", error);
+    } finally {
+      // Reset loading state for the specific row
+      setLoadingRows((prevState) => ({
+        ...prevState,
+        [id]: false,
+      }));
+      loadData();
     }
-    if (status == 3) {
-      toast.success("RFQ rejected successfully");
-    }
-
-    loadData();
   };
-
+  const EditQuote = async (id) => {
+    const data = {
+      id: id,
+    };
+    const res = await AdmingetEditQuote(data);
+    console.log(res);
+    localStorage.setItem(
+      "setItempartsDBdataAdmin",
+      JSON.stringify(res.data.partsDBdata)
+    );
+    localStorage.setItem(
+      "setItemelementDataAdmin",
+      JSON.stringify(res.data.requestQuoteDB)
+    );
+    navigate("/admin/rfqs/edit-quote");
+  };
   const getMaterialColor = (materials) => {
+    // console.log("materials", materials);
     switch (materials) {
       case "Aluminium 5052":
         return {
-          backgroundColor: "rgb(164 194 244)",
+          backgroundColor: "rgb(79 140 202)",
         };
       case "Steel 1008":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Steel A36":
         return {
-          backgroundColor: "rgb(224 102 103)",
+          backgroundColor: "rgb(225 31 38)",
         };
       case "Aluminium 6061":
         return {
@@ -56,23 +93,23 @@ const RFQS = () => {
         };
       case "Stainless Steel 304 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 304 (#4)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Stainless Steel 316 (2b)":
         return {
-          backgroundColor: "rgb(148 196 125)",
+          backgroundColor: "rgb(42 92 23)",
         };
       case "Brass 260":
         return {
-          backgroundColor: "rgb(255 217 102)",
+          backgroundColor: "rgb(255 186 22)",
         };
       case "Custom i.e. Titanium, Incolnel, etc.":
         return {
-          backgroundColor: "rgb(213 166 189)",
+          backgroundColor: "rgb(115 103 240)",
         };
       default:
         return {};
@@ -195,7 +232,7 @@ const RFQS = () => {
                                 key={`${row._id}`}
                                 className="badgestatus me-2"
                                 style={getMaterialColor(
-                                  row.material_name1 + " " + row.material_grade1
+                                  row.material_name2 + " " + row.material_grade2
                                 )}
                               >
                                 {row.material_code2}
@@ -210,15 +247,35 @@ const RFQS = () => {
                                     className="btnaccept"
                                     onClick={() => changeStatus(2, row._id)}
                                   >
-                                    <Icon icon="icon-park-outline:check-one" />
-                                    Accept
+                                    {loadingRows[row._id] ? (
+                                      <span
+                                        role="status"
+                                        aria-hidden="true"
+                                        className="spinner-border spinner-border-sm"
+                                      ></span>
+                                    ) : (
+                                      <>
+                                        <Icon icon="icon-park-outline:check-one" />
+                                        Accept
+                                      </>
+                                    )}
                                   </Link>
                                   <Link
                                     className="btnreject"
                                     onClick={() => changeStatus(3, row._id)}
                                   >
-                                    <Icon icon="ion:close-circle-outline" />
-                                    Reject
+                                    {loadingRows[row._id] ? (
+                                      <span
+                                        role="status"
+                                        aria-hidden="true"
+                                        className="spinner-border spinner-border-sm"
+                                      ></span>
+                                    ) : (
+                                      <>
+                                        <Icon icon="ion:close-circle-outline" />
+                                        Reject
+                                      </>
+                                    )}
                                   </Link>
                                 </>
                               ) : row.status == 2 ? (
@@ -236,6 +293,17 @@ const RFQS = () => {
                               )}
                             </div>
                           </td>
+                          <td>
+                            {row.status == 1 && (
+                              <Link
+                                className="btnaccept"
+                                onClick={() => EditQuote(row._id)}
+                              >
+                                <Icon icon="tabler:edit" />
+                                Edit Quote
+                              </Link>
+                            )}
+                          </td>
                           <td className="text-nowrap">
                             {new Intl.NumberFormat("en-US", {
                               style: "currency",
@@ -244,22 +312,6 @@ const RFQS = () => {
                               maximumFractionDigits: 2,
                             }).format(row.total_amount)}
                           </td>
-                          {/* <td className="text-nowrap">
-                            <b>Due:</b>
-                            6-14-4
-                          </td> */}
-                          {/* <td className="text-end">
-                            <div className="d-inline-flex align-items-center gap-3">
-                              <Link className="btnedit">
-                                <Icon icon="teenyicons:edit-outline" />
-                              </Link>
-                              <Form.Check
-                                type="checkbox"
-                                checked={checkedItems[row._id] || false}
-                                onChange={() => handleCheckboxChange(row._id)}
-                              />
-                            </div>
-                          </td> */}
                         </tr>
                       </React.Fragment>
                     );

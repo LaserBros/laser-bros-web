@@ -58,6 +58,12 @@ const Quotes = () => {
     // Format as dd-mm-yyyy
     return `${day} ${monthName} ${year}`;
   }
+  const handleClick = () => {
+    localStorage.removeItem("setItemelementData");
+    localStorage.removeItem("setItempartsDBdata");
+    localStorage.removeItem("setItempartsDBdataPay");
+    localStorage.removeItem("setItemelementDataPay");
+  };
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -65,8 +71,10 @@ const Quotes = () => {
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
             <h2 className="quotes-head">Quotes</h2>
             <Link
+              // to=""
               to="/quotes/quotes-detail"
               className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-259"
+              onClick={handleClick}
             >
               Add New Quote
             </Link>

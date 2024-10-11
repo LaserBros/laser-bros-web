@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 
-const RenamePart = ({ show, handleClose, title, quote, onSave }) => {
+const RenamePart = ({ show3, handleClose3, title, quote, onSave }) => {
   const [name, setName] = useState(quote);
   const [error, setError] = useState("");
   const handleNameChange = (e) => {
@@ -19,15 +19,15 @@ const RenamePart = ({ show, handleClose, title, quote, onSave }) => {
       return;
     }
     onSave(name); // Pass the new name back to the parent component
-    handleClose(); // Close the modal
+    handleClose3(); // Close the modal
   };
 
   return (
     <React.Fragment>
       <Modal
         centered
-        show={show}
-        onHide={handleClose}
+        show={show3}
+        onHide={handleClose3}
         className="modal-custom max-width-574"
       >
         <Modal.Header closeButton className="border-0 text-center pt-4">
@@ -53,7 +53,7 @@ const RenamePart = ({ show, handleClose, title, quote, onSave }) => {
               <Button
                 as="input"
                 value="Cancel"
-                onClick={handleClose}
+                onClick={handleClose3}
                 className="btn-lt-primary min-width-159 mx-2 mb-2"
                 variant={null}
               />
