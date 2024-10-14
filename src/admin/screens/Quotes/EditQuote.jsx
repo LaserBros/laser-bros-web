@@ -392,16 +392,23 @@ const EditRFQS = () => {
       const price = response.data.data.updateData.price;
       //   console.log("response.data.discount;", response.data.data.updateData.discount);
 
-      const finalQuoteData = updatedQuoteData.map((quote) =>
-        quote._id === id
-          ? {
-              ...quote,
-              quantity: quote.quantity,
-              discount: discount,
-              amount: price,
-            }
-          : quote
-      );
+      const finalQuoteData = updatedQuoteData.map((quote) => {
+        if (quote._id === id) {
+          let parts = quote.subquote_number.split("-");
+
+          // Update the 2nd part (index 1 in the array) that represents the "-3-"
+          parts[1] = quantity; // Replace "new_value" with your desired value
+
+          parts.join("-");
+          return {
+            ...quote,
+            quantity: quote.quantity,
+            subquote_number: parts,
+            discount: discount,
+            amount: price,
+          };
+        } else return quote;
+      });
 
       setQuoteData(finalQuoteData);
       localStorage.setItem(
@@ -641,7 +648,11 @@ const EditRFQS = () => {
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
                         <h2>{quote.quote_name}</h2>
-
+                        <p className="num-dim-main">
+                          <span className="num-dim">
+                            {quote.subquote_number}
+                          </span>
+                        </p>
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
                             options={materials}

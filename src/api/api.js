@@ -226,6 +226,16 @@ export const deleteSubQuote = async (data) => {
   }
 };
 
+export const reOrder = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/users/reOrder`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    // throw error;
+  }
+};
+
 export const updateQuantity = async (data) => {
   try {
     const response = await axiosInstance.post(`/users/updateQuantity`, data);

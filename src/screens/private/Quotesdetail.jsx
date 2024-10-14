@@ -24,6 +24,7 @@ import {
   updateSubQuoteDetails,
 } from "../../api/api";
 import Amount from "../../components/Amount";
+import DimensionsToggle from "../../components/DimensionsToggle";
 export default function QuotesDetail() {
   const currentDate = new Date();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -32,6 +33,7 @@ export default function QuotesDetail() {
   const [modalShow, setModalShow] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
+  const [addLoading, setaddLoading] = useState(false);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
 
@@ -67,6 +69,7 @@ export default function QuotesDetail() {
     formData.append("id", id);
     formData.append("bend_count", quantities);
     try {
+      setaddLoading(true);
       const response = await bendQuotes(formData);
       setQuoteData(response.data.data);
       setquoteDataCon(true);
@@ -74,9 +77,10 @@ export default function QuotesDetail() {
         "setItempartsDBdata",
         JSON.stringify(response.data.data)
       );
-
+      setaddLoading(false);
       setModalShow2(false);
     } catch (error) {
+      setaddLoading(false);
       console.log("errororoor ----", error);
     }
   };
@@ -98,6 +102,7 @@ export default function QuotesDetail() {
         const fetchedOptions = response.data.map((item) => ({
           value: item._id,
           label: item.material_name + " " + item.material_grade,
+          // selectedValue : item.
         }));
         setmaterials(fetchedOptions);
       } catch (error) {
@@ -122,12 +127,13 @@ export default function QuotesDetail() {
       const fetchedOptions = response.data.map((item) => ({
         value: item._id,
         label: item.material_thickness,
+        selectedValue: item.material_code,
       }));
 
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId
-            ? { ...quote, thicknessOptions: fetchedOptions } // Store the thickness options in the quote
+            ? { ...quote, thicknessOptions: fetchedOptions }
             : quote
         )
       );
@@ -243,19 +249,41 @@ export default function QuotesDetail() {
   const [bend_count, setbend_count] = useState(null);
   const [bendupload_url, setbendupload_url] = useState(null);
   const [id_quote, setid_quote] = useState(null);
-  const handleShow2 = (
+  const handleShow2 = async (
     image_url,
     quote_name,
     bend_count,
     bendupload_url,
-    id
+    id,
+    checked
   ) => {
-    setimage_url(image_url);
-    setquote_name(quote_name);
-    setbend_count(bend_count);
-    setbendupload_url(bendupload_url);
-    setid_quote(id);
-    setModalShow2(true);
+    if (checked) {
+      setimage_url(image_url);
+      setquote_name(quote_name);
+      setbend_count(bend_count);
+      setbendupload_url(bendupload_url);
+      setid_quote(id);
+      setModalShow2(true);
+    } else {
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("bend_count", 0);
+      formData.append("quote_image", "");
+      try {
+        const response = bendQuotes(formData);
+        setQuoteData((prevState) =>
+          prevState.map((quote) =>
+            quote._id === id
+              ? {
+                  ...quote,
+                  bend_count: 0,
+                  bendupload_url: "",
+                }
+              : quote
+          )
+        );
+      } catch {}
+    }
   };
   const handleClose2 = () => setModalShow2(false);
 
@@ -287,7 +315,6 @@ export default function QuotesDetail() {
     const quote_list = localStorage.getItem("setItemelementData");
 
     if (storedData) {
-      // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
       setQuoteList(quote_list_val);
@@ -323,6 +350,41 @@ export default function QuotesDetail() {
       console.error("API call failed:", error);
     }
   };
+  const handleQuantityChangeAPI = async (Id, qty) => {
+    let formData = "";
+    console.log(qty);
+    formData = {
+      id: Id,
+      quantity: qty,
+      quote_id: Id,
+    };
+
+    const response = await uploadQuote(formData);
+    if (response && response.data) {
+      const discount = response.data.updateQuantity.discount;
+      const price = response.data.updatedPrice.total_amount;
+      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+
+      const finalQuoteData = quoteData.map((quote) =>
+        quote._id === Id
+          ? {
+              ...quote,
+              quantity: qty,
+              discount: discount,
+              amount: price,
+            }
+          : quote
+      );
+
+      setQuoteData(finalQuoteData);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(finalQuoteData)
+      );
+    } else {
+      console.error("Error updating quote:", response);
+    }
+  };
 
   const handleQuantityChange = async (Id, increment = true) => {
     let formData = "";
@@ -330,8 +392,8 @@ export default function QuotesDetail() {
     const updatedQuoteData = quoteData.map((quote) => {
       if (quote._id === Id) {
         const updatedQuantity = increment
-          ? quote.quantity + 1
-          : Math.max(0, quote.quantity - 1); // Prevent negative quantities
+          ? parseInt(quote.quantity) + 1
+          : Math.max(0, parseInt(quote.quantity) - 1); // Prevent negative quantities
 
         formData = {
           id: quote._id,
@@ -346,12 +408,12 @@ export default function QuotesDetail() {
       }
       return quote;
     });
-    setQuoteData(updatedQuoteData);
-    // Update localStorage with the new data
-    localStorage.setItem(
-      "setItempartsDBdata",
-      JSON.stringify(updatedQuoteData)
-    );
+    // setQuoteData(updatedQuoteData);
+    // // Update localStorage with the new data
+    // localStorage.setItem(
+    //   "setItempartsDBdata",
+    //   JSON.stringify(updatedQuoteData)
+    // );
 
     const response = await uploadQuote(formData);
     console.log(response, "Sdsdsdsdds= response,", formData);
@@ -417,7 +479,6 @@ export default function QuotesDetail() {
       const data = {
         id: selectedOption.value,
       };
-
       let response = "";
 
       for (const quote of quoteData) {
@@ -442,7 +503,7 @@ export default function QuotesDetail() {
           };
 
           response = await getThicknessMaterialFinish(data, type, params);
-          break; // Stop after the matching quote is found and processed
+          break;
         }
       }
 
@@ -463,10 +524,11 @@ export default function QuotesDetail() {
             updatedFields.material_id = selectedOption.value;
             updatedFields.thickness_id = null;
             updatedFields.finishing_id = null;
-            updatedFields.binding_option = "No";
+            updatedFields.binding_option = "no";
           } else if (type === "finish") {
             updatedFields.finishing_id = selectedOption.value;
           } else if (type === "thickness") {
+            updatedFields.type_options = selectedOption.selectedValue;
             updatedFields.thickness_id = selectedOption.value;
             updatedFields.finishing_id = null;
           }
@@ -584,18 +646,34 @@ export default function QuotesDetail() {
                           className="img-fluid"
                           alt=""
                         />
+                        <div></div>
                       </div>
+
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
                         <h2>{quote.quote_name}</h2>
-                        <p className="num-dim-main">
-                          {/* <span className="num-dim"><span>Number</span>24-05-626-983</span> <span className="px-2 num-dim-indicator">/</span> */}
-                          {/* <span className="num-dim">
-                            <span>Dimensions</span> H :{" "}
-                            {formattedNumber(quote.dimensions.height)} in x W :{" "}
-                            {formattedNumber(quote.dimensions.width)} in x L :{" "}
-                            {formattedNumber(quote.dimensions.length)}
-                          </span> */}
-                        </p>
+                        {quote.type_options != "" &&
+                        quote.type_options != null ? (
+                          <p className="num-dim-main">
+                            <span className="num-dim">
+                              {quote.type_options}-{quote.quantity}-
+                              {currentMonth}-{yearLastTwoDigits}-
+                              {quoteList.quote_number}-{" "}
+                              {String(index + 1).padStart(3, "0")}
+                            </span>
+                          </p>
+                        ) : (
+                          quote.type_option != "" &&
+                          quote.type_option != null && (
+                            <p className="num-dim-main">
+                              <span className="num-dim">
+                                {quote.type_option[0].material_code}-
+                                {quote.quantity}-{currentMonth}-
+                                {yearLastTwoDigits}-{quoteList.quote_number}-
+                                {String(index + 1).padStart(3, "0")}
+                              </span>
+                            </p>
+                          )
+                        )}
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
                             options={materials}
@@ -623,7 +701,7 @@ export default function QuotesDetail() {
                           />
                         </div>
                         <div className="quotes-services mt-3">
-                          {quote.binding_option == "No" ? (
+                          {quote.binding_option == "no" ? (
                             <p></p>
                           ) : (
                             <>
@@ -632,19 +710,20 @@ export default function QuotesDetail() {
                                   <h4>Services</h4>
 
                                   <Form.Check
-                                    type="radio"
+                                    type="checkbox"
                                     label="Bending"
                                     name={`options-${quote._id}`}
                                     value={`options-${quote._id}`}
                                     id={`options-${quote._id}`}
                                     className="d-inline-flex align-items-center me-2"
-                                    onClick={() =>
+                                    onChange={(e) =>
                                       handleShow2(
                                         quote.image_url,
                                         quote.quote_name,
                                         quote.bend_count,
                                         quote.bendupload_url,
-                                        quote._id
+                                        quote._id,
+                                        e.target.checked
                                       )
                                     }
                                     checked={quote.bend_count >= 1}
@@ -677,6 +756,9 @@ export default function QuotesDetail() {
                         </p>
                       </div>
                     </div>
+                    <span className="num-dim">
+                      <DimensionsToggle dimensions={quote.dimensions} />
+                    </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
                       <QuantitySelector
                         quantity={quote.quantity}
@@ -687,6 +769,9 @@ export default function QuotesDetail() {
                           quote.quantity === 1
                             ? null
                             : handleQuantityChange(quote._id, false)
+                        }
+                        onQuantityChange={(newQuantity) =>
+                          handleQuantityChangeAPI(quote._id, newQuantity)
                         }
                       />
                       <div className="rightbtns gap-2 d-inline-flex flex-wrap">
@@ -748,6 +833,7 @@ export default function QuotesDetail() {
         title="Specify Bend Details"
         id={id_quote}
         onUpload={handleUpload}
+        loading={addLoading}
       />
       <AddNote
         show3={modalShow3}

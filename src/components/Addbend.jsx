@@ -14,6 +14,7 @@ const AddBend = ({
   pdf_url,
   id,
   onUpload,
+  loading,
 }) => {
   const [quantities, setQuantities] = useState(
     count == 0 || count == null ? 1 : count
@@ -90,8 +91,17 @@ const AddBend = ({
                   className="btn-outline-primary"
                   variant={null}
                   onClick={handleSave}
+                  disabled={loading}
                 >
-                  Done
+                  {loading ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    "Done"
+                  )}
                 </Button>
                 <button className="btn-close" onClick={handleClose2}></button>
               </div>

@@ -1,11 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Image } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import nocart from "../../assets/img/no-cart.svg";
-import { getOrders } from "../../api/api";
+import { getOrders, reOrder } from "../../api/api";
+import { toast } from "react-toastify";
 export default function Orders() {
+  // const navigate = useNavigation();
+  const navigate = useNavigate();
+  const [loadingResend, setLoadingResend] = useState(false);
+  const [loadingRowId, setLoadingRowId] = useState(null);
+
+  const OrderDetailClick = async (id) => {
+    setLoadingRowId(id);
+    const data = {
+      id: id,
+    };
+    setLoadingResend(true);
+    try {
+      const res = await reOrder(data);
+      toast.success(
+        "Order resend successfully. Please wait for admin approval"
+      );
+      setLoadingResend(false);
+      navigate("/rfqs");
+    } catch (error) {
+      setLoadingResend(false);
+      toast.error("Something wents wrong..");
+    } finally {
+      setLoadingRowId(null);
+    }
+  };
   const columns = [
     {
       name: "Order Number",
@@ -65,11 +91,22 @@ export default function Orders() {
       name: "Actions",
       cell: (row) => (
         <div>
-          <Link className="btnview" to="/orders/orders-detail">
+          <Link className="btnview" to={`/orders/orders-detail/${row._id}`}>
             <Icon icon="hugeicons:view"></Icon>
           </Link>
-          <Link className="btnreorder" to="">
-            <Icon icon="solar:reorder-line-duotone"></Icon>
+          <Link
+            className="btnreorder"
+            to=""
+            disabled={loadingRowId === row._id ? true : false}
+            onClick={() => {
+              OrderDetailClick(row._id);
+            }}
+          >
+            {loadingRowId === row._id ? (
+              <Icon icon="eos-icons:loading" spin={true}></Icon>
+            ) : (
+              <Icon icon="solar:reorder-line-duotone"></Icon>
+            )}
           </Link>
         </div>
       ),
@@ -92,64 +129,6 @@ export default function Orders() {
     loadOrders();
   }, []);
 
-  const data = [
-    {
-      id: 1,
-      orderno: "ORD12343s",
-      materials: "Aluminum",
-      quantity: "54",
-      totalprice: "$1,500.00",
-      status: "In Progress",
-    },
-    {
-      id: 2,
-      orderno: "ORD12343",
-      materials: "Steel",
-      quantity: "65",
-      totalprice: "$1,630.00",
-      status: "Delivered",
-    },
-    {
-      id: 3,
-      orderno: "ORD12343",
-      materials: "Stainless Steel",
-      quantity: "25",
-      totalprice: "$1,210.00",
-      status: "Shipped",
-    },
-    {
-      id: 4,
-      orderno: "ORD12343",
-      materials: "Steel",
-      quantity: "45",
-      totalprice: "$1,300.00",
-      status: "Order Placed",
-    },
-    {
-      id: 5,
-      orderno: "ORD12343",
-      materials: "Aluminum",
-      quantity: "45",
-      totalprice: "$2,201.00",
-      status: "Delivered",
-    },
-    {
-      id: 6,
-      orderno: "ORD12343",
-      materials: "Stainless Steel",
-      quantity: "45",
-      totalprice: "$1,235.00",
-      status: "Shipped",
-    },
-    {
-      id: 7,
-      orderno: "ORD12343",
-      materials: "Steel",
-      quantity: "45",
-      totalprice: "$1,699.00",
-      status: "Order Placed",
-    },
-  ];
   const getMaterialsColor = (materials) => {
     // console.log("materials", materials);
     switch (materials) {

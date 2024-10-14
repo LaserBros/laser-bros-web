@@ -261,7 +261,7 @@ const Orders = () => {
                                 to={`/admin/orders/orders-detail/${row._id}`}
                               >
                                 <b>
-                                  WO# {row.material_code}-{row.quantity}-
+                                  WO# {row.material_code1}-{row.total_quantity}-
                                   {getMonthYear(row.createdAt)}-
                                   {row.quote_number}
                                 </b>

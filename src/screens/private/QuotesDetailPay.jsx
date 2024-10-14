@@ -296,6 +296,17 @@ export default function QuotesDetailPay() {
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
                         <h2>{quote.quote_name}</h2>
+
+                        {quote.type_option != "" &&
+                          quote.type_option != null && (
+                            <p className="num-dim-main">
+                              <span className="num-dim">
+                                {quote.type_option[0].material_code}-
+                                {quote.quantity}-{currentMonth}-
+                                {yearLastTwoDigits}-{quoteList.quote_number}
+                              </span>
+                            </p>
+                          )}
                         <p className="num-dim-main">
                           {/* <span className="num-dim"><span>Number</span>24-05-626-983</span> <span className="px-2 num-dim-indicator">/</span> */}
                           {/* <span className="num-dim">

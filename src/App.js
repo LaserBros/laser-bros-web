@@ -447,7 +447,7 @@ function App() {
                       element={<PrivateRoute element={<RFQS />} />}
                     />
                     <Route
-                      path="/orders/orders-detail"
+                      path="/orders/orders-detail/:id"
                       element={<PrivateRoute element={<OrdersDetail />} />}
                     />
                     <Route

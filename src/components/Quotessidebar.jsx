@@ -74,22 +74,30 @@ const QuotesSidebar = ({ amount, showDiv }) => {
     );
 
     let isValid = true; // Assume everything is valid initially
-    updatedQuoteData.forEach((quote) => {
-      // Check if any required field is missing
-      if (!quote.material_id || !quote.thickness_id || !quote.finishing_id) {
-        isValid = false;
 
-        // Show a toast message for missing fields
-        toast.error(
-          `Please select Material, Thickness, and Finish for ${quote.quote_name}`
-        );
+    // Use a for...of loop to allow breaking out of the loop
+    for (const quote of updatedQuoteData) {
+      if (!quote.material_id) {
+        isValid = false;
+        toast.error(`Please select Material.`);
+        break; // Stop the loop if validation fails
       }
-    });
+      if (!quote.thickness_id) {
+        isValid = false;
+        toast.error(`Please select Thickness.`);
+        break; // Stop the loop if validation fails
+      }
+      if (!quote.finishing_id) {
+        isValid = false;
+        toast.error(`Please select Finish.`);
+        break; // Stop the loop if validation fails
+      }
+    }
 
     // Only proceed with submission if all required fields are selected
     if (isValid) {
       const elementId = localStorage.getItem("setItemelementData");
-      var getId = "";
+      let getId = "";
 
       if (elementId) {
         getId = JSON.parse(elementId);
@@ -108,15 +116,16 @@ const QuotesSidebar = ({ amount, showDiv }) => {
           );
           localStorage.setItem("setItemelementData", "");
           localStorage.setItem("setItempartsDBdata", "");
-          toast.success("Requst quote send successfully");
+          toast.success("Request quote sent successfully");
           setLoading(false);
           navigate("/rfqs");
         } catch (error) {
-          toast.error("Something wents wrong.");
+          toast.error("Something went wrong.");
         }
       }
     }
   };
+
   const [cardsData, setCards] = useState([]);
   const loadData = async () => {
     setLoading(true);
