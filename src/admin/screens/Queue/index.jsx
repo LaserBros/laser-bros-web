@@ -301,9 +301,9 @@ const Queue = () => {
                         </React.Fragment>
                       ))
                     ) : (
-                      <p className="text-center mt-2">
-                        <i> No Queue Order Found. </i>
-                      </p>
+                      <tr className="text-center mt-2">
+                        <td colSpan={4}> No Queue Order Found. </td>
+                      </tr>
                     )}
                   </>
                 )}

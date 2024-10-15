@@ -15,9 +15,22 @@ export const payment = async (data) => {
   }
 };
 
+export const UsergetParticularOrderDetails = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/getParticularOrderDetails`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getOrders = async (data) => {
   try {
-    const response = await axiosInstance.get(`/users/getOrders`, data);
+    const response = await axiosInstance.get(`/users/getOrders?page=` + data);
     return response.data;
   } catch (error) {
     console.error("Error setting address as default:", error);
@@ -306,7 +319,7 @@ export const getAllLoggedInRequestedQuote = async (data) => {
 
 export const fetchRFQ = async (data) => {
   try {
-    const response = await axiosInstance.get(`/users/fetchRFQ`);
+    const response = await axiosInstance.get(`/users/fetchRFQ?page=` + data);
     console.log("responseeee", response.data);
     return response.data;
   } catch (error) {
@@ -375,9 +388,11 @@ export const AdmingetUnAllRequestQuotes = async () => {
   }
 };
 
-export const AdminfetchRFQ = async () => {
+export const AdminfetchRFQ = async (page) => {
   try {
-    const response = await axiosAdminInstance.get(`/fetchRFQForAdmin`);
+    const response = await axiosAdminInstance.get(
+      `/fetchRFQForAdmin?page=` + page
+    );
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -443,13 +458,11 @@ export const updateQuoteState = async (id, status) => {
   }
 };
 
-export const getOrdersAdmin = async (id, status) => {
+export const getOrdersAdmin = async (page) => {
   try {
-    const data = {
-      id: id,
-      status: status,
-    };
-    const response = await axiosAdminInstance.get(`/getOrdersAdmin`, data);
+    const response = await axiosAdminInstance.get(
+      `/getOrdersAdmin?page=` + page
+    );
     return response;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -500,9 +513,11 @@ export const fetchOrdersInQueue = async () => {
   }
 };
 
-export const getAllTransactions = async () => {
+export const getAllTransactions = async (page) => {
   try {
-    const response = await axiosAdminInstance.get(`/getAllTransactions`);
+    const response = await axiosAdminInstance.get(
+      `/getAllTransactions?page=` + page
+    );
     return response;
   } catch (error) {
     console.error("Something wents wrong.", error);

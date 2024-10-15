@@ -11,7 +11,9 @@ export default function Orders() {
   const navigate = useNavigate();
   const [loadingResend, setLoadingResend] = useState(false);
   const [loadingRowId, setLoadingRowId] = useState(null);
-
+  const [totalRows, setTotalRows] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage] = useState(10);
   const OrderDetailClick = async (id) => {
     setLoadingRowId(id);
     const data = {
@@ -35,7 +37,7 @@ export default function Orders() {
   const columns = [
     {
       name: "Order Number",
-      selector: (row) => row.order_number,
+      selector: (row) => formatDate(row.createdAt) + "-" + row.quote_number,
       sortable: false,
     },
     {
@@ -114,21 +116,33 @@ export default function Orders() {
   ];
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loadOrders = async () => {
+  const loadOrders = async (page) => {
     try {
-      setLoading(true);
-      const response = await getOrders();
-      setOrders(response.data);
+      // setLoading(true);
+      const response = await getOrders(page);
+      setOrders(response.data.updatedQuotes);
+      setTotalRows(response.data.total);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {
       setLoading(false);
     }
   };
+  const formatDate = (dateCreate) => {
+    const dateObj = new Date(dateCreate);
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const yearLastTwoDigits = String(dateObj.getFullYear()).slice(-2);
+    return `Quote # ${month}-${yearLastTwoDigits}`;
+  };
   useEffect(() => {
-    loadOrders();
+    loadOrders(currentPage);
   }, []);
 
+  const handlePageChange = (page) => {
+    console.log("handlePageChange , handlePageChange", page);
+    setCurrentPage(page);
+    loadOrders(page);
+  };
   const getMaterialsColor = (materials) => {
     // console.log("materials", materials);
     switch (materials) {
@@ -229,13 +243,19 @@ export default function Orders() {
                   <p className="text-center mt-4">Loading...</p>{" "}
                 </Col>
               ) : (
-                <DataTable
-                  columns={columns}
-                  data={orders}
-                  responsive
-                  pagination
-                  className="custom-table custom-table2"
-                />
+                <>
+                  <DataTable
+                    columns={columns}
+                    data={orders}
+                    responsive
+                    pagination
+                    paginationTotalRows={totalRows}
+                    // onChangePage={handlePageChange}
+                    onChangeRowsPerPage={handlePageChange}
+                    paginationPerPage={perPage}
+                    className="custom-table custom-table2"
+                  />
+                </>
               )}
             </Card.Body>
           </Card>

@@ -123,6 +123,7 @@ const EditRFQS = () => {
       const fetchedOptions = response.data.map((item) => ({
         value: item._id,
         label: item.material_thickness,
+        selectedValue: item.material_code,
       }));
 
       setQuoteData((prevQuoteData) =>
@@ -358,6 +359,7 @@ const EditRFQS = () => {
     }
   };
   const updateQuantityAPI = async (quantity, id) => {
+    console.log("Dssdsdsdsd", quantity);
     let data = "";
     let type = "";
     let params = "";
@@ -394,16 +396,16 @@ const EditRFQS = () => {
 
       const finalQuoteData = updatedQuoteData.map((quote) => {
         if (quote._id === id) {
-          let parts = quote.subquote_number.split("-");
+          let part_number = quote.subquote_number.toString();
 
-          // Update the 2nd part (index 1 in the array) that represents the "-3-"
-          parts[1] = quantity; // Replace "new_value" with your desired value
+          let parts = part_number.split("-");
+          parts[1] = quantity;
 
-          parts.join("-");
+          let total_parts = parts.join("-");
           return {
             ...quote,
             quantity: quote.quantity,
-            subquote_number: parts,
+            subquote_number: total_parts,
             discount: discount,
             amount: price,
           };
@@ -536,6 +538,13 @@ const EditRFQS = () => {
           } else if (type === "thickness") {
             updatedFields.thickness_id = selectedOption.value;
             updatedFields.finishing_id = null;
+            let part_number = quote.subquote_number.toString();
+
+            let parts = part_number.split("-");
+            parts[0] = selectedOption.selectedValue;
+
+            let total_parts = parts.join("-");
+            updatedFields.subquote_number = total_parts;
           }
 
           return {

@@ -9,22 +9,33 @@ export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
   const navigate = useNavigate();
+  const [totalRows, setTotalRows] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage] = useState(10);
+  const fetchData = async (page) => {
+    console.log("Sdsdsdsdsdsdsdsdsdsd --0-0-0-0-0-0-0----", page);
+    try {
+      const data = {
+        page: page,
+      };
+      const res = await fetchRFQ(page);
+      console.log("SDsdsdsdsddssds =-=-=-=-=-=-=-", res.data);
+      setQuotes(res.data.updatedQuotes);
+      setTotalRows(res.data.total);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetchRFQ();
-        console.log("SDsdsdsdsddssds", res.data);
-        setQuotes(res.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
-
+  const handlePageChange = (page) => {
+    console.log("SDsdsdsdddsdsds", page);
+    setCurrentPage(page);
+    fetchData(page);
+  };
   const RequestQuote = async (id) => {
     const data = {
       id: id,
@@ -262,7 +273,7 @@ export default function RFQS() {
         <Container>
           <Card>
             <Card.Header>
-              <h5>Request For Quotes</h5>{" "}
+              <h5>Request For Quotes =</h5>{" "}
             </Card.Header>
             <Card.Body>
               {loading ? (
@@ -271,10 +282,16 @@ export default function RFQS() {
                 <DataTable
                   columns={columns}
                   data={quoteData}
-                  loading={loading}
-                  responsive
+                  progressPending={loading}
                   pagination
+                  paginationServer
+                  paginationTotalRows={totalRows}
+                  onChangePage={handlePageChange}
+                  paginationPerPage={perPage}
+                  responsive
+                  paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
                   className="custom-table custom-table2"
+                  labelRowsPerPage=""
                 />
               ) : (
                 <div className="text-center mt-4">

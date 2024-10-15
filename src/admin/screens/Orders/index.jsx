@@ -13,23 +13,33 @@ import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { getOrdersAdmin, moveOrderToQueue } from "../../../api/api";
 import { toast } from "react-toastify";
+import Pagination from "../../components/Pagination";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loadOrders = async () => {
+  const [totalPage, settotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const loadOrders = async (page) => {
     try {
       setLoading(true);
-      const response = await getOrdersAdmin();
-      console.log("response.data", response.data.data);
-      setOrders(response.data.data);
+      const response = await getOrdersAdmin(page);
+      setOrders(response.data.data.updatedQuotes);
+      settotalPage(response.data.data.total);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {
       setLoading(false);
     }
   };
+  const onPageChange = (pageNumber) => {
+    console.log(pageNumber, "response.data.");
+    setCurrentPage(pageNumber);
+    loadOrders(pageNumber);
+  };
   useEffect(() => {
-    loadOrders();
+    loadOrders(currentPage);
   }, []);
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);
@@ -44,65 +54,6 @@ const Orders = () => {
       [id]: !prevState[id],
     }));
   };
-  const data = [
-    {
-      id: 1,
-      wo: "LB-6-24-0001",
-      material: ["CS0120", "A50120"],
-      status: "new",
-      price: "100",
-      due: "6-14-4",
-    },
-    {
-      id: 2,
-      wo: "LB-6-24-0002",
-      material: ["CS0120", "A50120"],
-      status: "new",
-      price: "150",
-      due: "6-14-4",
-    },
-    {
-      id: 3,
-      wo: "LB-6-24-0003",
-      material: ["CS0120", "A50120"],
-      status: "new",
-      price: "175",
-      due: "6-14-4",
-    },
-    {
-      id: 4,
-      wo: "LB-6-24-0004",
-      material: ["SB0036", "A50120"],
-      status: "new",
-      price: "189",
-      due: "6-14-4",
-    },
-    {
-      id: 5,
-      wo: "LB-6-24-0005",
-      material: ["CS0120", "A50120"],
-      status: "new",
-      price: "169",
-      due: "6-14-4",
-    },
-    {
-      id: 6,
-      wo: "LB-6-24-0006",
-      material: ["CS0120", "SB0036"],
-      status: "new",
-      price: "190",
-      due: "6-14-4",
-    },
-    {
-      id: 7,
-      wo: "LB-6-24-0007",
-      material: ["SB0036", "A50120"],
-      status: "new",
-      price: "221",
-      due: "6-14-4",
-    },
-  ];
-
   const getMaterialColor = (materials) => {
     // console.log("materials", materials);
     switch (materials) {
@@ -346,6 +297,14 @@ const Orders = () => {
               </tbody>
             </Table>
           </div>
+          {loading && totalPage > 10 && (
+            <Pagination
+              totalItems={totalPage}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={onPageChange}
+            />
+          )}
         </CardBody>
       </Card>
     </React.Fragment>

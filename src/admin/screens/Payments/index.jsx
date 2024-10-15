@@ -4,23 +4,31 @@ import { Icon } from "@iconify/react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import { getAllTransactions } from "../../../api/api";
+import Pagination from "../../components/Pagination";
 const PaymentHistory = () => {
   const [loading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
+  const [totalPage, settotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const fetchData = async (page) => {
+    try {
+      const res = await getAllTransactions(page);
+      console.log(res.data.data);
+      setTransaction(res.data.data.transactions);
+      settotalPage(res.data.data.total);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    fetchData(pageNumber);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getAllTransactions();
-        console.log(res.data.data);
-        setTransaction(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchData(currentPage);
   }, []);
 
   const columns = [
@@ -159,6 +167,16 @@ const PaymentHistory = () => {
                   marginBottom: "20px",
                 }}
               ></span>
+              {loading && totalPage > 10 ? (
+                <Pagination
+                  totalItems={totalPage}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                />
+              ) : (
+                ""
+              )}
             </>
           )}
         </CardBody>

@@ -17,7 +17,7 @@ import {
   fetchRFQ,
   updateQuoteState,
 } from "../../../api/api";
-
+import Pagination from "../../components/Pagination";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -31,6 +31,10 @@ const RFQS = () => {
     }));
   };
   const [loadingRows, setLoadingRows] = useState({});
+
+  const [totalPage, settotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   const changeStatus = async (status, id) => {
     setLoadingRows((prevState) => ({
@@ -55,6 +59,15 @@ const RFQS = () => {
       }));
       loadData();
     }
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const onPageChange = (pageNumber) => {
+    console.log(pageNumber, "response.data.");
+    setCurrentPage(pageNumber);
+    loadData(pageNumber);
   };
   const EditQuote = async (id) => {
     const data = {
@@ -117,12 +130,13 @@ const RFQS = () => {
   };
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
-  const loadData = async () => {
+  const loadData = async (page) => {
     setLoading(true);
     try {
-      const [response] = await Promise.all([AdminfetchRFQ()]);
+      const [response] = await Promise.all([AdminfetchRFQ(page)]);
       console.log(",response.data.data", response.data);
-      setQuotes(response.data);
+      setQuotes(response.data.updatedQuotes);
+      settotalPage(response.data.total);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -131,7 +145,7 @@ const RFQS = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(currentPage);
   }, []);
 
   return (
@@ -203,7 +217,7 @@ const RFQS = () => {
                       dateObj.getFullYear()
                     ).slice(-2);
                     return (
-                      <React.Fragment key={row._id}>
+                      <React.Fragment>
                         <tr>
                           <td className="text-nowrap">
                             <Link
@@ -219,7 +233,6 @@ const RFQS = () => {
                           </td>
                           <td className="text-nowrap">
                             <span
-                              key={`${row._id}`}
                               className="badgestatus me-2"
                               style={getMaterialColor(
                                 row.material_name1 + " " + row.material_grade1
@@ -229,7 +242,6 @@ const RFQS = () => {
                             </span>
                             {row.material_code2 && (
                               <span
-                                key={`${row._id}`}
                                 className="badgestatus me-2"
                                 style={getMaterialColor(
                                   row.material_name2 + " " + row.material_grade2
@@ -320,6 +332,14 @@ const RFQS = () => {
               </tbody>
             </Table>
           </div>
+          {!loading && totalPage > 10 && (
+            <Pagination
+              totalItems={totalPage}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={onPageChange}
+            />
+          )}
         </CardBody>
       </Card>
     </React.Fragment>
