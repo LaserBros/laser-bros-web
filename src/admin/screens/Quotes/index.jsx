@@ -11,6 +11,7 @@ import {
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { AdmingetUnAllRequestQuotes } from "../../../api/api";
+import Pagination from "../../components/Pagination";
 const Quotes = () => {
   const [checkedItems, setCheckedItems] = useState({});
   const handleCheckboxChange = (id) => {
@@ -102,12 +103,19 @@ const Quotes = () => {
   };
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
-  const loadData = async () => {
+  const [totalPage, settotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(1);
+  const [name, searchName] = useState("");
+  const loadData = async (page, search = "") => {
     setLoading(true);
     try {
-      const [response] = await Promise.all([AdmingetUnAllRequestQuotes()]);
+      const [response] = await Promise.all([
+        AdmingetUnAllRequestQuotes(page, search),
+      ]);
       console.log(",response.data.data", response.data);
-      setQuotes(response.data.updatedQuotes);
+      setQuotes(response.data?.updatedQuotes || []);
+      settotalPage(response.data?.total || []);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -115,8 +123,12 @@ const Quotes = () => {
     }
   };
 
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    loadData(pageNumber, name);
+  };
   useEffect(() => {
-    loadData();
+    loadData(currentPage);
   }, []);
   return (
     <React.Fragment>
@@ -137,6 +149,11 @@ const Quotes = () => {
                     <Form.Control
                       type="text"
                       placeholder="Search WO"
+                      onChange={(e) => {
+                        setCurrentPage(1);
+                        searchName(e.target.value);
+                        loadData(1, e.target.value);
+                      }}
                       className="rounded-5"
                     />
                   </div>
@@ -187,7 +204,7 @@ const Quotes = () => {
                       dateObj.getFullYear()
                     ).slice(-2);
                     return (
-                      <React.Fragment key={row._id}>
+                      <React.Fragment>
                         <tr>
                           <td className="text-nowrap">
                             <Link
@@ -195,15 +212,14 @@ const Quotes = () => {
                               className="workorders"
                             >
                               <b>
-                                WO# LB-{month}-{yearLastTwoDigits}-
-                                {row.quote_number}
+                                WO# LB-
+                                {row.search_quote}
                               </b>
                             </Link>
                           </td>
                           <td className="text-nowrap">
                             {/* {row.material.map((materials, index) => ( */}
                             <span
-                              key={`${row._id}`}
                               className="badgestatus me-2"
                               style={getMaterialColor(
                                 row.material_name1 + " " + row.material_grade1
@@ -213,7 +229,6 @@ const Quotes = () => {
                             </span>
                             {row.material_code2 && (
                               <span
-                                key={`${row._id}`}
                                 className="badgestatus me-2"
                                 style={getMaterialColor(
                                   row.material_name2 + " " + row.material_grade2
@@ -244,6 +259,14 @@ const Quotes = () => {
               </tbody>
             </Table>
           </div>
+          {totalPage > 1 && (
+            <Pagination
+              totalItems={totalPage}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={onPageChange}
+            />
+          )}
         </CardBody>
       </Card>
     </React.Fragment>

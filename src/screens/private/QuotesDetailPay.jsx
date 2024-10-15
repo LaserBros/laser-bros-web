@@ -261,8 +261,7 @@ export default function QuotesDetailPay() {
             {quoteData && quoteData.length > 0 ? (
               <>
                 <h2 className="quotes-head">
-                  Quote # {currentMonth}-{yearLastTwoDigits}-
-                  {quoteList?.quote_number}
+                  Quote #{quoteList?.search_quote}
                 </h2>
               </>
             ) : (
@@ -273,8 +272,8 @@ export default function QuotesDetailPay() {
               </>
             )}
             <div className="d-inline-flex gap-2">
-              <Link className="btnshare">Share Quote</Link>
-              <Link className="btnsavelater">Save For Later</Link>
+              {/* <Link className="btnshare">Share Quote</Link>
+              <Link className="btnsavelater">Save For Later</Link> */}
               {/* <Link className="btnicon">
                 <Icon icon="bytesize:upload" />
               </Link> */}
@@ -302,8 +301,7 @@ export default function QuotesDetailPay() {
                             <p className="num-dim-main">
                               <span className="num-dim">
                                 {quote.type_option[0].material_code}-
-                                {quote.quantity}-{currentMonth}-
-                                {yearLastTwoDigits}-{quoteList.quote_number}
+                                {quote.quantity}-{quoteList.search_quote}
                               </span>
                             </p>
                           )}

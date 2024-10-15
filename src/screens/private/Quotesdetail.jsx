@@ -403,17 +403,17 @@ export default function QuotesDetail() {
 
         return {
           ...quote,
+          amount: quote.amount,
           quantity: updatedQuantity,
         };
       }
       return quote;
     });
-    // setQuoteData(updatedQuoteData);
-    // // Update localStorage with the new data
-    // localStorage.setItem(
-    //   "setItempartsDBdata",
-    //   JSON.stringify(updatedQuoteData)
-    // );
+    setQuoteData(updatedQuoteData);
+    localStorage.setItem(
+      "setItempartsDBdata",
+      JSON.stringify(updatedQuoteData)
+    );
 
     const response = await uploadQuote(formData);
     console.log(response, "Sdsdsdsdds= response,", formData);
@@ -426,8 +426,8 @@ export default function QuotesDetail() {
         quote._id === Id
           ? {
               ...quote,
-              quantity: quote.quantity,
               discount: discount,
+
               amount: price,
             }
           : quote
@@ -607,10 +607,7 @@ export default function QuotesDetail() {
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
             {quoteData && quoteData.length > 0 ? (
               <>
-                <h2 className="quotes-head">
-                  Quote # {currentMonth}-{yearLastTwoDigits}-
-                  {quoteList.quote_number}
-                </h2>
+                <h2 className="quotes-head">Quote #{quoteList.search_quote}</h2>
               </>
             ) : (
               <>

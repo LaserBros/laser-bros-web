@@ -18,7 +18,7 @@ const Quotes = () => {
     const fetchData = async () => {
       try {
         const res = await getAllLoggedInRequestedQuote();
-        setQuotes(res.data);
+        setQuotes(res.data.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -95,9 +95,7 @@ const Quotes = () => {
                   </div>
                   <div className="quotes-content text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-4">
                     <div className="d-flex align-items-center justify-content-center  justify-content-md-between mb-3 flex-wrap">
-                      <h2 className="mb-0">
-                        Quote # {month}-{yearLastTwoDigits}-{quote.quote_number}
-                      </h2>
+                      <h2 className="mb-0">Quote # {quote.search_quote}</h2>
                       <span className="quotes-date">
                         {formatDate(quote.createdAt)}
                       </span>

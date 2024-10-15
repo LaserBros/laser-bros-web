@@ -620,10 +620,7 @@ const EditRFQS = () => {
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
             {quoteData && quoteData.length > 0 ? (
               <>
-                <h2 className="quotes-head">
-                  Quote # {currentMonth}-{yearLastTwoDigits}-
-                  {quoteList.quote_number}
-                </h2>
+                <h2 className="quotes-head">Quote #{quoteList.search_quote}</h2>
               </>
             ) : (
               <>

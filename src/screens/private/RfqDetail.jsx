@@ -62,10 +62,7 @@ export default function RfqDetail() {
               <Card.Body>
                 <ul className="tablelist list-unstyled ">
                   <li>
-                    <span>
-                      {formatDate(orderDetails.createdAt)}-
-                      {orderDetails.quote_number}
-                    </span>
+                    <span>Quote # {orderDetails.search_quote}</span>
                   </li>
                   {/* <li>
                     Order Date <span>May 21, 2024 3:05 pm</span>

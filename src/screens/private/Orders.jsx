@@ -39,7 +39,7 @@ export default function Orders() {
   const columns = [
     {
       name: "Order Number",
-      selector: (row) => formatDate(row.createdAt) + "-" + row.quote_number,
+      selector: (row) => "Quote #" + row.search_quote,
       sortable: false,
     },
     {

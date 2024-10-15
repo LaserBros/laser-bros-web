@@ -195,32 +195,21 @@ const Orders = () => {
                   <>
                     {orders && orders.length > 0 ? (
                       orders.map((row) => {
-                        const dateObj = new Date(row.createdAt);
-                        const day = String(dateObj.getDate()).padStart(2, "0"); // Get the day of the month
-                        const month = String(dateObj.getMonth() + 1).padStart(
-                          2,
-                          "0"
-                        );
-                        const yearLastTwoDigits = String(
-                          dateObj.getFullYear()
-                        ).slice(-2);
                         return (
-                          <tr key={row._id}>
+                          <tr>
                             <td>
                               <Link
                                 className="workorders"
                                 to={`/admin/orders/orders-detail/${row._id}`}
                               >
                                 <b>
-                                  WO# {row.material_code1}-{row.total_quantity}-
-                                  {getMonthYear(row.createdAt)}-
-                                  {row.quote_number}
+                                  WO#
+                                  {row.search_quote}
                                 </b>
                               </Link>
                             </td>
                             <td className="text-nowrap">
                               <span
-                                key={`${row._id}-material1`}
                                 className="badgestatus me-2"
                                 style={getMaterialColor(
                                   row.material_name1 + " " + row.material_grade1
@@ -230,7 +219,6 @@ const Orders = () => {
                               </span>
                               {row.material_code2 && (
                                 <span
-                                  key={`${row._id}-material2`}
                                   className="badgestatus me-2"
                                   style={getMaterialColor(
                                     row.material_name2 +

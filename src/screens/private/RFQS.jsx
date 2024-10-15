@@ -61,11 +61,7 @@ export default function RFQS() {
     {
       name: "Order Number",
       selector: (row) => {
-        const dateObj = new Date(row.createdAt);
-        const day = String(dateObj.getDate()).padStart(2, "0");
-        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
-        const yearLastTwoDigits = String(dateObj.getFullYear()).slice(-2);
-        return `Quote # ${month}-${yearLastTwoDigits}-${row.quote_number}`;
+        return `Quote # ${row.search_quote}`;
       },
       //   selector: (row) => row.quote_number,
       sortable: false,

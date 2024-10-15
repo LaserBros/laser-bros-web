@@ -268,7 +268,7 @@ const Queue = () => {
                   <>
                     {orders && orders.length > 0 ? (
                       orders.map((row) => (
-                        <React.Fragment key={row._id}>
+                        <React.Fragment>
                           <tr
                             className={
                               expandedRow === row._id ? "expanded-row" : ""

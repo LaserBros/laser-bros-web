@@ -153,6 +153,17 @@ const PaymentHistory = () => {
                 responsive
                 className="custom-table"
               />
+
+              {totalPage > 10 ? (
+                <Pagination
+                  totalItems={totalPage}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={currentPage}
+                  onPageChange={onPageChange}
+                />
+              ) : (
+                ""
+              )}
             </>
           ) : (
             <>
@@ -167,16 +178,6 @@ const PaymentHistory = () => {
                   marginBottom: "20px",
                 }}
               ></span>
-              {loading && totalPage > 10 ? (
-                <Pagination
-                  totalItems={totalPage}
-                  itemsPerPage={itemsPerPage}
-                  currentPage={currentPage}
-                  onPageChange={onPageChange}
-                />
-              ) : (
-                ""
-              )}
             </>
           )}
         </CardBody>

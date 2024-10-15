@@ -390,9 +390,11 @@ export const copySubQuote = async (data) => {
 
 ////// Admin API START ////////////
 
-export const AdmingetUnAllRequestQuotes = async () => {
+export const AdmingetUnAllRequestQuotes = async (page, search) => {
   try {
-    const response = await axiosAdminInstance.get(`/getAllUnRequestQuotes`);
+    const response = await axiosAdminInstance.get(
+      `/getAllUnRequestQuotes?page=` + page + "&query=" + search
+    );
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

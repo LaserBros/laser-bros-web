@@ -152,7 +152,7 @@ const RFQS = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="py-4">
-          <h5>RFQ's===</h5>
+          <h5>RFQ's</h5>
         </CardHeader>
         <CardBody>
           <Form>
@@ -226,8 +226,8 @@ const RFQS = () => {
                               onClick={() => getQueue(row._id)}
                             >
                               <b>
-                                WO# {month}-{yearLastTwoDigits}-
-                                {row.quote_number}
+                                WO#
+                                {row.search_quote}
                               </b>
                             </Link>
                           </td>

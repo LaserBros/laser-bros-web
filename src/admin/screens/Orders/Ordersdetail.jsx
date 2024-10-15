@@ -185,25 +185,6 @@ const OrdersDetail = () => {
     return `${materialCode}-${quoteName}`;
   };
 
-  const getLabelsColor = (labels) => {
-    switch (labels) {
-      case "A50090":
-        return {
-          backgroundColor: "#4F8CCA",
-        };
-      case "CS0120":
-        return {
-          backgroundColor: "#E11F26",
-        };
-      case "SB0036":
-        return {
-          backgroundColor: "#2A5C17",
-        };
-      default:
-        return {};
-    }
-  };
-
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -228,8 +209,8 @@ const OrdersDetail = () => {
           <Card>
             <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
               <h5>
-                WO# LB-{getMonthYear(order?.orderedQuote.createdAt)}-
-                {order?.orderedQuote.quote_number}
+                WO# LB-
+                {order?.newUpdatedData[0]?.search_quote}
               </h5>
               <Button
                 as={Link}
