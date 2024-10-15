@@ -152,7 +152,7 @@ const RFQS = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="py-4">
-          <h5>RFQ's</h5>
+          <h5>RFQ's===</h5>
         </CardHeader>
         <CardBody>
           <Form>

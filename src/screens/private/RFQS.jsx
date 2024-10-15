@@ -3,8 +3,9 @@ import { Card, Container } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { fetchRFQ, getEditQuote } from "../../api/api";
+import { fetchRFQ, getEditQuote, reOrder } from "../../api/api";
 import Quotes from "./Quotes";
+import { toast } from "react-toastify";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
@@ -12,8 +13,10 @@ export default function RFQS() {
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(10);
+  const [loadingRowId, setLoadingRowId] = useState(null);
+  const [loadingResend, setLoadingResend] = useState(false);
+
   const fetchData = async (page) => {
-    console.log("Sdsdsdsdsdsdsdsdsdsd --0-0-0-0-0-0-0----", page);
     try {
       const data = {
         page: page,
@@ -127,11 +130,8 @@ export default function RFQS() {
       minWidth: "160px",
       cell: (row) => (
         <div>
-          <Link className="btnview" to="">
+          <Link className="btnview" to={`/rfq/rfq-detail/${row._id}`}>
             <Icon icon="hugeicons:view"></Icon>
-          </Link>
-          <Link className="btnreorder" to="">
-            <Icon icon="solar:reorder-line-duotone"></Icon>
           </Link>
           {row.status === 2 && (
             <Link className="btnpay" onClick={() => RequestQuote(row._id)}>
@@ -273,7 +273,7 @@ export default function RFQS() {
         <Container>
           <Card>
             <Card.Header>
-              <h5>Request For Quotes =</h5>{" "}
+              <h5>Request For Quotes </h5>{" "}
             </Card.Header>
             <Card.Body>
               {loading ? (

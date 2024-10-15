@@ -107,7 +107,7 @@ const Quotes = () => {
     try {
       const [response] = await Promise.all([AdmingetUnAllRequestQuotes()]);
       console.log(",response.data.data", response.data);
-      setQuotes(response.data);
+      setQuotes(response.data.updatedQuotes);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -169,7 +169,7 @@ const Quotes = () => {
                   <Col>
                     <p className="text-center mt-4">Loading...</p>{" "}
                   </Col>
-                ) : quotes.length === 0 ? (
+                ) : quotes && quotes.length === 0 ? (
                   <Col>
                     <p className="text-center">
                       <i>No quote found.</i>

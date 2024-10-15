@@ -86,6 +86,7 @@ import EmployeRoute from "./middleware/Employe";
 import AdminRoute from "./middleware/AdminRoute";
 import QuotesDetailPay from "./screens/private/QuotesDetailPay";
 import EditRFQS from "./admin/screens/Quotes/EditQuote";
+import RfqDetail from "./screens/private/RfqDetail";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -449,6 +450,10 @@ function App() {
                     <Route
                       path="/orders/orders-detail/:id"
                       element={<PrivateRoute element={<OrdersDetail />} />}
+                    />
+                    <Route
+                      path="/rfq/rfq-detail/:id"
+                      element={<PrivateRoute element={<RfqDetail />} />}
                     />
                     <Route
                       path="/my-profile"

@@ -9,6 +9,7 @@ import {
   getParticularOrderDetails,
 } from "../../api/api";
 import Amount from "../../components/Amount";
+import DimensionsToggle from "../../components/DimensionsToggle";
 export default function OrdersDetail() {
   const { id } = useParams();
   const [orders, setOrders] = useState([]);
@@ -22,6 +23,7 @@ export default function OrdersDetail() {
       const res = await UsergetParticularOrderDetails(data);
       setOrders(res.data.newUpdatedData);
       setOrdersDetail(res.data.orderedQuote);
+      console.log(orders, "Sdsdsdsddsddsdssddssd");
       console.log("res", res.data);
       setLoading(false);
     } catch (error) {
@@ -55,7 +57,7 @@ export default function OrdersDetail() {
             </Card.Header>
             {loading ? (
               <div className="loader text-center mt-5 mb-5">Loading...</div>
-            ) : !loading && orders.length > 0 ? (
+            ) : orders && orders.length > 0 ? (
               <Card.Body>
                 <ul className="tablelist list-unstyled ">
                   <li>
@@ -78,7 +80,7 @@ export default function OrdersDetail() {
                     Status{" "}
                     <span className="badge-status">
                       {orderDetails.status == 0
-                        ? "New"
+                        ? "Order Placed"
                         : orderDetails.status == 1
                         ? "In Progress"
                         : orderDetails.status == 2
@@ -89,195 +91,96 @@ export default function OrdersDetail() {
                     </span>
                   </li>
                 </ul>
-                <div className="list-quotes-main">
-                  <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                    <div className="img-quote mx-auto mx-md-0">
-                      <Image src={file1} className="img-fluid" alt="" />
-                    </div>
-                    <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                      <h2>Cube</h2>
-                      <p className="num-dim-main">
-                        <span className="num-dim">
-                          <span>Dimensions</span> 1.00 in x 1.00 in
-                        </span>
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>QTY:</span> 14
-                        </span>
-                      </p>
-                      <p className="num-dim-main">
-                        <span className="num-dim">
-                          <span>Material</span> Aluminum 6061
-                        </span>
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>Thickness:</span> .040" / 1.02mm
-                        </span>{" "}
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>Finish:</span>{" "}
-                          <Icon
-                            icon="mdi:circle"
-                            color="#E11F26"
-                            className="me-1"
-                          />{" "}
-                          Gloss Red P.C.
-                        </span>
-                      </p>
-                      <div className="quotes-services mt-3">
-                        <h4>Services</h4>
-                        <label>Bending</label>
+                {orders.map((row) => {
+                  return (
+                    <div className="list-quotes-main">
+                      <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
+                        <div className="img-quote mx-auto mx-md-0">
+                          <Image
+                            src={row.image_url}
+                            className="img-fluid"
+                            alt=""
+                          />
+                        </div>
+
+                        <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
+                          <h2>{row.quote_name}</h2>
+                          <p className="num-dim-main">
+                            {/* <span className="num-dim">
+                              <span>Dimensions</span> 1.00 in x 1.00 in
+                            </span> */}
+                            {/* <span className="px-2 num-dim-indicator">/</span>{" "} */}
+                            <span className="num-dim">
+                              <span>QTY:</span> {row.quantity}
+                            </span>
+                          </p>
+                          <p className="num-dim-main">
+                            <span className="num-dim">
+                              <span>Material</span> {row.material_name}
+                            </span>
+                            <span className="px-2 num-dim-indicator">/</span>{" "}
+                            <span className="num-dim">
+                              <span>Thickness:</span> {row.thickness}
+                            </span>{" "}
+                            <span className="px-2 num-dim-indicator">/</span>{" "}
+                            <span className="num-dim">
+                              <span>Finish:</span> {row.finishing_desc}
+                            </span>
+                          </p>
+                          {row.bend_count > 0 && (
+                            <div className="quotes-services mt-3">
+                              <h4>Services</h4>
+                              <label>
+                                Bending :{" "}
+                                <a
+                                  href={`${row.bendupload_url}`}
+                                  target="_blank"
+                                >
+                                  Attachment
+                                </a>
+                              </label>
+                            </div>
+                          )}
+                        </div>
+                        <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
+                          <p className=" text-md-end">
+                            <Amount amount={row.amount} /> total
+                          </p>
+                          <p className=" text-md-end">
+                            <strong className="quotes-price">
+                              <Amount amount={row.amount / row.quantity} />
+                            </strong>
+                            /each
+                          </p>
+                          <span className="quote-off">
+                            {row.discount}% Saved
+                          </span>
+                          <p className="mb-0 text-md-end">
+                            Typical Lead Time 2-3 days
+                          </p>
+                        </div>
                       </div>
+                      <span className="num-dim">
+                        <DimensionsToggle dimensions={row.dimensions} />
+                      </span>
                     </div>
-                    <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
-                      <p className=" text-md-end">$35.00 total</p>
-                      <p className=" text-md-end">
-                        <strong className="quotes-price">$35.00</strong>/each
-                      </p>
-                      <span className="quote-off">0% Saved</span>
-                      <p className="mb-0 text-md-end">
-                        Typical Lead Time 2-3 days
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="list-quotes-main">
-                  <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                    <div className="img-quote mx-auto mx-md-0">
-                      <Image src={file1} className="img-fluid" alt="" />
-                    </div>
-                    <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                      <h2>Cube</h2>
-                      <p className="num-dim-main">
-                        <span className="num-dim">
-                          <span>Dimensions</span> 1.00 in x 1.00 in
-                        </span>
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>QTY:</span> 14
-                        </span>
-                      </p>
-                      <p className="num-dim-main">
-                        <span className="num-dim">
-                          <span>Material</span> Aluminum 6061
-                        </span>
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>Thickness:</span> .040" / 1.02mm
-                        </span>{" "}
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>Finish:</span>{" "}
-                          <Icon
-                            icon="mdi:circle"
-                            color="#E11F26"
-                            className="me-1"
-                          />{" "}
-                          Gloss Red P.C.
-                        </span>
-                      </p>
-                      <div className="quotes-services mt-3">
-                        <h4>Services</h4>
-                        <label>Bending</label>
-                      </div>
-                    </div>
-                    <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
-                      <p className=" text-md-end">$35.00 total</p>
-                      <p className=" text-md-end">
-                        <strong className="quotes-price">$35.00</strong>/each
-                      </p>
-                      <span className="quote-off">0% Saved</span>
-                      <p className="mb-0 text-md-end">
-                        Typical Lead Time 2-3 days
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="list-quotes-main">
-                  <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                    <div className="img-quote mx-auto mx-md-0">
-                      <Image src={file1} className="img-fluid" alt="" />
-                    </div>
-                    <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                      <h2>Cube</h2>
-                      <p className="num-dim-main">
-                        <span className="num-dim">
-                          <span>Dimensions</span> 1.00 in x 1.00 in
-                        </span>
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>QTY:</span> 14
-                        </span>
-                      </p>
-                      <p className="num-dim-main">
-                        <span className="num-dim">
-                          <span>Material</span> Aluminum 6061
-                        </span>
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>Thickness:</span> .040" / 1.02mm
-                        </span>{" "}
-                        <span className="px-2 num-dim-indicator">/</span>{" "}
-                        <span className="num-dim">
-                          <span>Finish:</span>{" "}
-                          <Icon
-                            icon="mdi:circle"
-                            color="#E11F26"
-                            className="me-1"
-                          />{" "}
-                          Gloss Red P.C.
-                        </span>
-                      </p>
-                      <div className="quotes-services mt-3">
-                        <h4>Services</h4>
-                        <label>Bending</label>
-                      </div>
-                    </div>
-                    <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
-                      <p className=" text-md-end">$35.00 total</p>
-                      <p className=" text-md-end">
-                        <strong className="quotes-price">$35.00</strong>/each
-                      </p>
-                      <span className="quote-off">0% Saved</span>
-                      <p className="mb-0 text-md-end">
-                        Typical Lead Time 2-3 days
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* <div className="table-responsive">
-                                <table className="table tablecustom">
-                                    <thead>
-                                        <tr>
-                                            <th> Name </th>
-                                            <th> Materials </th>
-                                            <th> Quantity </th>
-                                            <th> Type </th>
-                                            <th> Parts </th>
-                                            <th> Payment Method </th>
-                                            <th> Total Price </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Cube</td>
-                                            <td><div className="badgematerials d-inline-flex align-items-center"><span style={{ backgroundColor: '#E11F26' }}></span>Aluminum</div></td>
-                                            <td>54</td>
-                                            <td>DXF File</td>
-                                            <td>1</td>
-                                            <td>Credit Card</td>
-                                            <td>$1,500.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div> */}
+                  );
+                })}
                 <Row className="justify-content-end mt-2">
                   <Col lg={3} md={4} xs={6} className="totaltable ">
                     <p>
-                      Subtotal <span>$135.00</span>
+                      Subtotal{" "}
+                      <span>
+                        {" "}
+                        <Amount amount={orderDetails.total_amount} />
+                      </span>
                     </p>
                     <p className="grandtotal">
-                      Total <span>$135.00</span>
+                      Total{" "}
+                      <span>
+                        {" "}
+                        <Amount amount={orderDetails.total_amount} />
+                      </span>
                     </p>
                   </Col>
                 </Row>

@@ -233,7 +233,7 @@ const OrdersDetail = () => {
               </h5>
               <Button
                 as={Link}
-                to="/orders"
+                to="/admin/orders"
                 className="d-inline-flex align-items-center justify-content-center"
               >
                 Back To Orders
