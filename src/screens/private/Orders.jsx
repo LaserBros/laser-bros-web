@@ -6,6 +6,7 @@ import DataTable from "react-data-table-component";
 import nocart from "../../assets/img/no-cart.svg";
 import { getOrders, reOrder } from "../../api/api";
 import { toast } from "react-toastify";
+import Pagination from "../../admin/components/Pagination";
 export default function Orders() {
   // const navigate = useNavigation();
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function Orders() {
   const [loadingRowId, setLoadingRowId] = useState(null);
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, settotalPage] = useState(1);
   const [perPage] = useState(10);
   const OrderDetailClick = async (id) => {
     setLoadingRowId(id);
@@ -137,6 +139,14 @@ export default function Orders() {
   useEffect(() => {
     loadOrders(currentPage);
   }, []);
+  const [itemsPerPage] = useState(10);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    loadOrders(pageNumber);
+  };
 
   const handlePageChange = (page) => {
     console.log("handlePageChange , handlePageChange", page);
@@ -255,6 +265,14 @@ export default function Orders() {
                     paginationPerPage={perPage}
                     className="custom-table custom-table2"
                   />
+                  {!loading && totalPage > 10 && (
+                    <Pagination
+                      totalItems={totalPage}
+                      itemsPerPage={itemsPerPage}
+                      currentPage={currentPage}
+                      onPageChange={onPageChange}
+                    />
+                  )}
                 </>
               )}
             </Card.Body>
