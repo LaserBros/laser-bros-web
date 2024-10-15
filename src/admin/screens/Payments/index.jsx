@@ -8,7 +8,7 @@ import Pagination from "../../components/Pagination";
 const PaymentHistory = () => {
   const [loading, setLoading] = useState(true);
   const [transaction, setTransaction] = useState([]);
-  const [totalPage, settotalPage] = useState(1);
+  const [totalPage, settotalPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const fetchData = async (page) => {
