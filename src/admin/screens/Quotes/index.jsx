@@ -103,7 +103,7 @@ const Quotes = () => {
   };
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
-  const [totalPage, settotalPage] = useState(1);
+  const [totalPage, settotalPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(1);
   const [name, searchName] = useState("");
@@ -259,7 +259,7 @@ const Quotes = () => {
               </tbody>
             </Table>
           </div>
-          {totalPage > 1 && (
+          {totalPage > 10 && (
             <Pagination
               totalItems={totalPage}
               itemsPerPage={itemsPerPage}
