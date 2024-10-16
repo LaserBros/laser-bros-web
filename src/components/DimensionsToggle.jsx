@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Switch from "react-switch";
 
-const DimensionsToggle = ({ dimensions }) => {
+const DimensionsToggle = ({ dimensions, id }) => {
   const [isInches, setIsInches] = useState(true);
 
   // Conversion factor: 1 inch = 25.4 mm
@@ -11,31 +11,42 @@ const DimensionsToggle = ({ dimensions }) => {
     setIsInches(!isInches);
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  // Function to handle checkbox change
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
   return (
-    <div>
+    <div className="toggle-switch-container">
       <div>
-        H :{" "}
-        {isInches
+        Height :{" "}
+        {isChecked
           ? `${dimensions.height} in`
           : `${inchesToMm(dimensions.height)} mm`}{" "}
-        x W :{" "}
-        {isInches
+        Width :{" "}
+        {isChecked
           ? `${dimensions.width} in`
           : `${inchesToMm(dimensions.width)} mm`}
       </div>
-      <label htmlFor="toggleSwitch" style={{ marginRight: "10px" }}>
-        Convert to {isInches ? "Millimeters (mm)" : "Inches (in)"}
-      </label>
-      <Switch
-        checked={isInches}
-        onChange={handleToggle}
-        onColor="#00d084"
-        offColor="#888"
-        uncheckedIcon={false}
-        checkedIcon={false}
-        height={20}
-        width={48}
-      />
+
+      <div className="container">
+        <div className="toggle-switch">
+          <input
+            type="checkbox"
+            className="checkbox"
+            name={id}
+            id={id}
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+          />
+          <label className="label" htmlFor={id}>
+            <span className="inner" />
+            <span className="switch" />
+          </label>
+        </div>
+      </div>
     </div>
   );
 };

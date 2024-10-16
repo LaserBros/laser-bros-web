@@ -85,8 +85,8 @@ const Sidebar = () => {
     },
     {
       id: "cut",
-      title: "Cut",
-      link: "/admin/cut",
+      title: "Archive",
+      link: "/admin/archive",
       icon: "fluent:laser-tool-20-regular",
     },
     {

@@ -87,6 +87,7 @@ import AdminRoute from "./middleware/AdminRoute";
 import QuotesDetailPay from "./screens/private/QuotesDetailPay";
 import EditRFQS from "./admin/screens/Quotes/EditQuote";
 import RfqDetail from "./screens/private/RfqDetail";
+import ViewRFQS from "./admin/screens/Quotes/viewRFQ";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -159,11 +160,11 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/admin/cut"
+                    path="/admin/archive"
                     element={
                       <AdminRoute
                         element={
-                          <AdminLayout title={"Cut"}>
+                          <AdminLayout title={"Archive"}>
                             <AdminCut />
                           </AdminLayout>
                         }
@@ -250,6 +251,18 @@ function App() {
                         element={
                           <AdminLayout title={"Edit Quote"}>
                             <EditRFQS />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/quote/view-quote"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"View RFQ's"}>
+                            <ViewRFQS />
                           </AdminLayout>
                         }
                       />

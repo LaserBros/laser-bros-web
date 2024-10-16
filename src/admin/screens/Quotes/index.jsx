@@ -9,10 +9,14 @@ import {
   Col,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
-import { AdmingetUnAllRequestQuotes } from "../../../api/api";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  AdmingetEditQuote,
+  AdmingetUnAllRequestQuotes,
+} from "../../../api/api";
 import Pagination from "../../components/Pagination";
 const Quotes = () => {
+  const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
   const handleCheckboxChange = (id) => {
     setCheckedItems((prevState) => ({
@@ -20,43 +24,6 @@ const Quotes = () => {
       [id]: !prevState[id],
     }));
   };
-  const data = [
-    {
-      id: 1,
-      wo: "LB-6-24-0001",
-      material: ["CS0120", "A50120"],
-    },
-    {
-      id: 2,
-      wo: "LB-6-24-0002",
-      material: ["CS0120", "A50120"],
-    },
-    {
-      id: 3,
-      wo: "LB-6-24-0003",
-      material: ["CS0120", "A50120"],
-    },
-    {
-      id: 4,
-      wo: "LB-6-24-0004",
-      material: ["SB0036", "A50120"],
-    },
-    {
-      id: 5,
-      wo: "LB-6-24-0005",
-      material: ["CS0120", "A50120"],
-    },
-    {
-      id: 6,
-      wo: "LB-6-24-0006",
-      material: ["CS0120", "SB0036"],
-    },
-    {
-      id: 7,
-      wo: "LB-6-24-0007",
-      material: ["SB0036", "A50120"],
-    },
-  ];
 
   const getMaterialColor = (materials) => {
     // console.log("materials", materials);
@@ -107,13 +74,19 @@ const Quotes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(1);
   const [name, searchName] = useState("");
-  const loadData = async (page, search = "") => {
+  const [sortOrder, setSortOrder] = useState("");
+  const handleSortChange = (e) => {
+    const selectedValue = e.target.value;
+    console.log("selectedValue", selectedValue);
+    setSortOrder(selectedValue);
+    loadData(1, name, selectedValue);
+  };
+  const loadData = async (page, search = "", sortOrder = "") => {
     setLoading(true);
     try {
       const [response] = await Promise.all([
-        AdmingetUnAllRequestQuotes(page, search),
+        AdmingetUnAllRequestQuotes(page, search, sortOrder),
       ]);
-      console.log(",response.data.data", response.data);
       setQuotes(response.data?.updatedQuotes || []);
       settotalPage(response.data?.total || []);
     } catch (error) {
@@ -123,9 +96,26 @@ const Quotes = () => {
     }
   };
 
+  const EditQuote = async (id) => {
+    const data = {
+      id: id,
+    };
+    const res = await AdmingetEditQuote(data);
+    console.log(res);
+    localStorage.setItem(
+      "setItempartsDBdataAdmin",
+      JSON.stringify(res.data.partsDBdata)
+    );
+    localStorage.setItem(
+      "setItemelementDataAdmin",
+      JSON.stringify(res.data.requestQuoteDB)
+    );
+    navigate("/admin/quote/view-quote");
+  };
+
   const onPageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    loadData(pageNumber, name);
+    loadData(pageNumber, name, sortOrder);
   };
   useEffect(() => {
     loadData(currentPage);
@@ -139,7 +129,7 @@ const Quotes = () => {
         <CardBody>
           <Form>
             <Row className="px-2 gx-3">
-              <Col lg={3} xxl={2}>
+              <Col lg={3} xxl={3}>
                 <Form.Group className="form-group mb-2 searchfield">
                   <div className=" position-relative">
                     <Icon
@@ -148,34 +138,46 @@ const Quotes = () => {
                     />
                     <Form.Control
                       type="text"
+                      value={name}
                       placeholder="Search WO"
                       onChange={(e) => {
                         setCurrentPage(1);
                         searchName(e.target.value);
-                        loadData(1, e.target.value);
+                        loadData(1, e.target.value, sortOrder);
                       }}
                       className="rounded-5"
                     />
                   </div>
                 </Form.Group>
               </Col>
-              <Col lg={3} xxl={2}>
+              <Col lg={4} xxl={3}>
                 <Form.Group className="form-group mb-2">
-                  <Form.Select className="rounded-5" defaultValue="value1">
+                  <Form.Select
+                    className="rounded-5"
+                    value={sortOrder}
+                    onChange={handleSortChange}
+                  >
                     <option disabled value="value1">
                       Sort By
                     </option>
+                    <option value="false">Sort Newest to Oldest</option>
+                    <option value="true">Sort Oldest to Newest</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col lg={3} xxl={2}>
-                <Form.Group className="form-group mb-2">
-                  <Form.Select className="rounded-5" defaultValue="value1">
-                    <option disabled value="value1">
-                      Filter By
-                    </option>
-                  </Form.Select>
-                </Form.Group>
+              <Col lg={4} xxl={3}>
+                <Link
+                  to={""}
+                  onClick={() => {
+                    setCurrentPage(1);
+                    setSortOrder("value1");
+                    searchName("");
+                    loadData(1);
+                  }}
+                >
+                  {" "}
+                  Clear
+                </Link>
               </Col>
             </Row>
           </Form>
@@ -208,7 +210,8 @@ const Quotes = () => {
                         <tr>
                           <td className="text-nowrap">
                             <Link
-                              to="/quotes/quotes-detail"
+                              to=""
+                              onClick={() => EditQuote(row._id)}
                               className="workorders"
                             >
                               <b>

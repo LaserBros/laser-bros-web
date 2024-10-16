@@ -754,7 +754,10 @@ export default function QuotesDetail() {
                       </div>
                     </div>
                     <span className="num-dim">
-                      <DimensionsToggle dimensions={quote.dimensions} />
+                      <DimensionsToggle
+                        dimensions={quote.dimensions}
+                        id={quote._id}
+                      />
                     </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
                       <QuantitySelector

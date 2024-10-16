@@ -130,10 +130,20 @@ const RFQS = () => {
   };
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
-  const loadData = async (page) => {
+  const [name, searchName] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const handleSortChange = (e) => {
+    const selectedValue = e.target.value;
+    setSortOrder(selectedValue);
+    loadData(1, name, selectedValue);
+  };
+
+  const loadData = async (page, search = "", sortOrder = "") => {
     setLoading(true);
     try {
-      const [response] = await Promise.all([AdminfetchRFQ(page)]);
+      const [response] = await Promise.all([
+        AdminfetchRFQ(page, search, sortOrder),
+      ]);
       console.log(",response.data.data", response.data);
       setQuotes(response.data.updatedQuotes);
       settotalPage(response.data.total);
@@ -157,7 +167,7 @@ const RFQS = () => {
         <CardBody>
           <Form>
             <Row className="px-2 gx-3">
-              <Col lg={3} xxl={2}>
+              <Col lg={3} xxl={3}>
                 <Form.Group className="form-group mb-2 searchfield">
                   <div className=" position-relative">
                     <Icon
@@ -167,28 +177,46 @@ const RFQS = () => {
                     <Form.Control
                       type="text"
                       placeholder="Search WO"
+                      value={name}
+                      onChange={(e) => {
+                        setCurrentPage(1);
+                        searchName(e.target.value);
+                        loadData(1, e.target.value, sortOrder);
+                      }}
                       className="rounded-5"
                     />
                   </div>
                 </Form.Group>
               </Col>
-              <Col lg={3} xxl={2}>
+
+              <Col lg={4} xxl={3}>
                 <Form.Group className="form-group mb-2">
-                  <Form.Select className="rounded-5" defaultValue="value1">
+                  <Form.Select
+                    className="rounded-5"
+                    value={sortOrder}
+                    onChange={handleSortChange}
+                  >
                     <option disabled value="value1">
                       Sort By
                     </option>
+                    <option value="false">Sort Newest to Oldest</option>
+                    <option value="true">Sort Oldest to Newest</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col lg={3} xxl={2}>
-                <Form.Group className="form-group mb-2">
-                  <Form.Select className="rounded-5" defaultValue="value1">
-                    <option disabled value="value1">
-                      Filter By
-                    </option>
-                  </Form.Select>
-                </Form.Group>
+              <Col lg={4} xxl={3}>
+                <Link
+                  to={""}
+                  onClick={() => {
+                    setCurrentPage(1);
+                    setSortOrder("value1");
+                    searchName("");
+                    loadData(1);
+                  }}
+                >
+                  {" "}
+                  Clear
+                </Link>
               </Col>
             </Row>
           </Form>

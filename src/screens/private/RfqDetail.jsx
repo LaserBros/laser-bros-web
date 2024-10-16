@@ -159,7 +159,10 @@ export default function RfqDetail() {
                         </div>
                       </div>
                       <span className="num-dim">
-                        <DimensionsToggle dimensions={row.dimensions} />
+                        <DimensionsToggle
+                          dimensions={row.dimensions}
+                          id={row._id}
+                        />
                       </span>
                     </div>
                   );

@@ -14,24 +14,32 @@ import file from "../../assets/img/file1.jpg";
 import { Icon } from "@iconify/react";
 import attachment from "../../assets/img/attachment.svg";
 import JSZip from "jszip";
+import Select from "react-select";
+
 import { saveAs } from "file-saver";
 import {
+  AdmingetThickness,
   downloadAllFiles,
   downloadParticularFile,
   fetchOrdersInQueue,
+  getAllMaterialCodes,
   moveOrderStatus,
   moveOrderToQueue,
 } from "../../../api/api";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const Queue = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loadOrders = async () => {
+  const [materialCodes, setMaterialCodes] = useState([]);
+  const [selectedCode, setSelectedCode] = useState("");
+
+  const loadOrders = async (selectedValue = "") => {
     try {
       setLoading(true);
-      const response = await fetchOrdersInQueue();
+      const response = await fetchOrdersInQueue(selectedValue);
       setOrders(response.data.data.result);
     } catch (error) {
       console.error("Error fetching cards:", error);
@@ -39,8 +47,19 @@ const Queue = () => {
       setLoading(false);
     }
   };
+  const getCode = async () => {
+    try {
+      const res = await getAllMaterialCodes();
+      const options = res.data.map((code) => ({
+        label: code, // What you want to display in the dropdown
+        value: code, // The value associated with the option
+      }));
+      setMaterialCodes(options);
+    } catch {}
+  };
   useEffect(() => {
     loadOrders();
+    getCode();
   }, []);
 
   const [selectAll, setSelectAll] = useState(false);
@@ -77,6 +96,9 @@ const Queue = () => {
         };
         try {
           const res = await moveOrderStatus(data);
+          if (res.data.status == "failure") {
+            toast.error("This quote not downloaded yet. Please download quote");
+          }
         } catch (error) {
           toast.error("Error when order move to Queue");
         }
@@ -86,6 +108,11 @@ const Queue = () => {
         loadOrders();
       }, 4000);
     }
+  };
+  const handleSortChange = (value) => {
+    const selectedValue = value.value;
+    setSelectedCode(value);
+    loadOrders(selectedValue);
   };
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);
@@ -104,49 +131,7 @@ const Queue = () => {
 
     return `${day}/${month}/${year} `;
   };
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const handleDownloadAll = async (data, id) => {
     const checkedIds = Object.keys(checkedItems).filter(
       (key) => checkedItems[key]
@@ -184,14 +169,7 @@ const Queue = () => {
       const filePromises = urls.map(async (url, index) => {
         const response = await fetch(url.dxf_url);
         const blob = await response.blob();
-        const fileName =
-          url.material_code +
-          "-" +
-          url.quantity +
-          "-" +
-          getMonthYear(url.createdAt) +
-          "-" +
-          url.quote_number;
+        const fileName = url.subquote_number + ".dxf";
         zip.file(fileName, blob);
       });
 
@@ -213,6 +191,24 @@ const Queue = () => {
         </CardHeader>
         <CardBody>
           <Form>
+            <Select
+              className="rounded-5"
+              value={selectedCode}
+              onChange={handleSortChange}
+              options={materialCodes}
+              isSearchable={true}
+              placeholder="Select Material Code"
+            />
+            <Link
+              to={""}
+              onClick={() => {
+                setSelectedCode("");
+                loadOrders();
+              }}
+            >
+              {" "}
+              Clear
+            </Link>
             <Row className="px-2 gx-3">
               <Col lg={3} xxl={2}>
                 <Button
@@ -289,8 +285,7 @@ const Queue = () => {
                               />
                             </td>
                             <td className="text-nowrap">
-                              {row.material_code}-{row.quantity}-
-                              {getMonthYear(row.createdAt)}-{row.quote_number}
+                              {row.subquote_number}
                             </td>
 
                             <td className="text-nowrap">

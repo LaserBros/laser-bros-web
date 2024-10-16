@@ -390,10 +390,15 @@ export const copySubQuote = async (data) => {
 
 ////// Admin API START ////////////
 
-export const AdmingetUnAllRequestQuotes = async (page, search) => {
+export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   try {
     const response = await axiosAdminInstance.get(
-      `/getAllUnRequestQuotes?page=` + page + "&query=" + search
+      `/getAllUnRequestQuotes?page=` +
+        page +
+        "&query=" +
+        search +
+        "&ascending=" +
+        sort
     );
     return response.data;
   } catch (error) {
@@ -402,10 +407,15 @@ export const AdmingetUnAllRequestQuotes = async (page, search) => {
   }
 };
 
-export const AdminfetchRFQ = async (page) => {
+export const AdminfetchRFQ = async (page, search, sort) => {
   try {
     const response = await axiosAdminInstance.get(
-      `/fetchRFQForAdmin?page=` + page
+      `/fetchRFQForAdmin?page=` +
+        page +
+        "&query=" +
+        search +
+        "&ascending=" +
+        sort
     );
     return response.data;
   } catch (error) {
@@ -472,10 +482,10 @@ export const updateQuoteState = async (id, status) => {
   }
 };
 
-export const getOrdersAdmin = async (page) => {
+export const getOrdersAdmin = async (page, search, sort) => {
   try {
     const response = await axiosAdminInstance.get(
-      `/getOrdersAdmin?page=` + page
+      `/getOrdersAdmin?page=` + page + "&query=" + search + "&ascending=" + sort
     );
     return response;
   } catch (error) {
@@ -517,9 +527,11 @@ export const getParticularOrderDetails = async (data) => {
   }
 };
 
-export const fetchOrdersInQueue = async () => {
+export const fetchOrdersInQueue = async (selectedValue) => {
   try {
-    const response = await axiosAdminInstance.get(`/fetchOrdersInQueue`);
+    const response = await axiosAdminInstance.get(
+      `/fetchOrdersInQueue?query=` + selectedValue
+    );
     return response;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -555,8 +567,7 @@ export const getParticularTransaction = async (data) => {
 export const fetchOrdersInArchive = async (data) => {
   try {
     const response = await axiosAdminInstance.get(
-      `/fetchOrdersInArchive`,
-      data
+      `/fetchOrdersInArchive?query=` + data
     );
     return response.data;
   } catch (error) {
@@ -661,6 +672,17 @@ export const AdmingetMaterials = async (data) => {
 export const AdmingetThickness = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/getThickness`, data);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getAllMaterialCodes = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/getAllMaterialCodes`);
     console.log("responseeee", response.data);
     return response.data;
   } catch (error) {
