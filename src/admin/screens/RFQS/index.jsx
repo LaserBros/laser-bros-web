@@ -207,6 +207,7 @@ const RFQS = () => {
               <Col lg={4} xxl={3}>
                 <Link
                   to={""}
+                  className="btn btn-primary d-inline-flex align-items-center justify-content-center"
                   onClick={() => {
                     setCurrentPage(1);
                     setSortOrder("value1");

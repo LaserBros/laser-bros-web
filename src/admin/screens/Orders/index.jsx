@@ -104,7 +104,7 @@ const Orders = () => {
         return {};
     }
   };
-
+  const [loadingQueue, setLoadingQueue] = useState(false);
   const moveQueue = () => {
     const checkedIds = Object.entries(checkedItems)
       .filter(([id, isChecked]) => isChecked)
@@ -118,12 +118,14 @@ const Orders = () => {
           move_status: 1,
         };
         try {
+          setLoadingQueue(true);
           const res = await moveOrderToQueue(data);
         } catch (error) {
           toast.error("Error when order move to Queue");
         }
       });
       setTimeout(() => {
+        setLoadingQueue(false);
         loadOrders();
       }, 4000);
     }
@@ -173,9 +175,10 @@ const Orders = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col lg={4} xxl={3}>
+              <Col lg={2} xxl={3}>
                 <Link
                   to={""}
+                  className="btn btn-primary d-inline-flex align-items-center justify-content-center"
                   onClick={() => {
                     setCurrentPage(1);
                     setSortOrder("value1");
@@ -187,13 +190,22 @@ const Orders = () => {
                   Clear
                 </Link>
               </Col>
-              <Col lg={3} xxl={6} className="text-lg-end">
+              <Col lg={3} xxl={3} className="text-lg-end">
                 <Button
                   variant={null}
                   onClick={moveQueue}
                   className="btn-outline-primary min-width-147"
+                  disabled={loadingQueue}
                 >
-                  Move To Queue
+                  {loadingQueue ? (
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  ) : (
+                    "Move To Queue"
+                  )}
                 </Button>
               </Col>
             </Row>
@@ -261,6 +273,8 @@ const Orders = () => {
                                   : row.status == 1
                                   ? "In Progress"
                                   : row.status == 2
+                                  ? "Order Completed"
+                                  : row.status == 3
                                   ? "Shipped"
                                   : row.status == 3
                                   ? "Delivered"

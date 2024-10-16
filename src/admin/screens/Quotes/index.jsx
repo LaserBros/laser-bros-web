@@ -168,6 +168,7 @@ const Quotes = () => {
               <Col lg={4} xxl={3}>
                 <Link
                   to={""}
+                  className="btn btn-primary d-inline-flex align-items-center justify-content-center"
                   onClick={() => {
                     setCurrentPage(1);
                     setSortOrder("value1");
@@ -244,14 +245,12 @@ const Quotes = () => {
                           </td>
                           <td className="text-end">
                             <div className="d-inline-flex align-items-center gap-3">
-                              <Link className="btnedit">
-                                <Icon icon="teenyicons:bin-outline" />
+                              <Link
+                                className="btnedit"
+                                onClick={() => EditQuote(row._id)}
+                              >
+                                <Icon icon="teenyicons:eye-outline" />
                               </Link>
-                              <Form.Check
-                                type="checkbox"
-                                checked={checkedItems[row._id] || false}
-                                onChange={() => handleCheckboxChange(row._id)}
-                              />
                             </div>
                           </td>
                         </tr>

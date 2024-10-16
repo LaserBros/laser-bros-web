@@ -36,6 +36,25 @@ const Queue = () => {
   const [materialCodes, setMaterialCodes] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
 
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      border: "1px solid rgba(0, 0, 0, 0.15)",
+      boxShadow: "none",
+      minHeight: "50px",
+      borderRadius: "40px",
+      fontSize: "14px",
+    }),
+    multiValue: (provided, state) => ({
+      ...provided,
+      color: "#fff",
+      backgroundColor: "#4f8cca", // Change background color of the selected value container
+    }),
+    multiValueLabel: (provided, state) => ({
+      ...provided,
+      color: "#fff",
+    }),
+  };
   const loadOrders = async (selectedValue = "") => {
     try {
       setLoading(true);
@@ -191,25 +210,31 @@ const Queue = () => {
         </CardHeader>
         <CardBody>
           <Form>
-            <Select
-              className="rounded-5"
-              value={selectedCode}
-              onChange={handleSortChange}
-              options={materialCodes}
-              isSearchable={true}
-              placeholder="Select Material Code"
-            />
-            <Link
-              to={""}
-              onClick={() => {
-                setSelectedCode("");
-                loadOrders();
-              }}
-            >
-              {" "}
-              Clear
-            </Link>
             <Row className="px-2 gx-3">
+              <Col lg={6} xxl={7}>
+                <div className="d-flex align-items-center gap-2">
+                  <Select
+                    className="rounded-5 flex-grow-1"
+                    styles={customStyles}
+                    value={selectedCode}
+                    onChange={handleSortChange}
+                    options={materialCodes}
+                    isSearchable={true}
+                    placeholder="Select Material Code"
+                  />
+                  <Link
+                    to={""}
+                    className="flex-shrink-0 btn btn-primary d-inline-flex align-items-center justify-content-center"
+                    onClick={() => {
+                      setSelectedCode("");
+                      loadOrders();
+                    }}
+                  >
+                    {" "}
+                    Clear
+                  </Link>
+                </div>
+              </Col>
               <Col lg={3} xxl={2}>
                 <Button
                   variant={null}
@@ -219,7 +244,7 @@ const Queue = () => {
                   Download Files
                 </Button>
               </Col>
-              <Col lg={3} xxl={12} className="text-lg-end">
+              <Col lg={3} xxl={3} className="text-lg-end">
                 <Button
                   variant={null}
                   className="btn-outline-primary min-width-147"
@@ -233,32 +258,38 @@ const Queue = () => {
           <div className="table-responsive">
             <Table className="tablecustom pt-0">
               <thead>
-                <th>
-                  <Form.Check
-                    type="checkbox"
-                    id={`selectall`}
-                    checked={selectAll}
-                    onChange={handleSelectAllChange}
-                  />
-                </th>
-                <th>Name</th>
-                <th>Order Date</th>
-                <th>Type</th>
+                <tr>
+                  <th>
+                    <Form.Check
+                      type="checkbox"
+                      id={`selectall`}
+                      checked={selectAll}
+                      onChange={handleSelectAllChange}
+                    />
+                  </th>
+                  <th>Name</th>
+                  <th>Order Date</th>
+                  <th>Type</th>
+                </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <>
-                    <span
-                      role="status"
-                      aria-hidden="true"
-                      className="spinner-border spinner-border-sm text-center"
-                      style={{
-                        margin: "0 auto",
-                        display: "block",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                      }}
-                    ></span>
+                    <tr className="text-center mt-2">
+                      <td colSpan={4}>
+                        <span
+                          role="status"
+                          aria-hidden="true"
+                          className="spinner-border spinner-border-sm text-center"
+                          style={{
+                            margin: "0 auto",
+                            display: "block",
+                            marginTop: "20px",
+                            marginBottom: "20px",
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
                   </>
                 ) : (
                   <>

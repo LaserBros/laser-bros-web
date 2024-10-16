@@ -14,7 +14,7 @@ const Pagination = ({
 
   return (
     <nav>
-      <ul className="pagination">
+      <ul className="pagination_order">
         {pageNumbers.map((number) => (
           <li
             key={number}

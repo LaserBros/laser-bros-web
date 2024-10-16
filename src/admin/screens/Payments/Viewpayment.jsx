@@ -12,9 +12,14 @@ const ViewPayment = () => {
     const data = {
       id: id,
     };
-    const res = await getParticularTransaction(data);
-    setTransaction(res.data);
-    setLoading(false);
+    try {
+      const res = await getParticularTransaction(data);
+      setTransaction(res.data);
+      setLoading(false);
+    } catch (error) {
+      setTransaction([]);
+      setLoading(false);
+    }
   };
   useEffect(() => {
     fetchOrder();
@@ -92,49 +97,80 @@ const ViewPayment = () => {
   return (
     <React.Fragment>
       <Card>
-        <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
-          <h5>#TXN123456</h5>
-          <Button
-            as={Link}
-            to="/admin/payment-history"
-            className="d-inline-flex align-items-center justify-content-center"
-          >
-            Back To Payments
-          </Button>
-        </CardHeader>
         {!loading ? (
-          <>
-            <CardBody>
-              <Row className="justify-content-between  mb-3">
-                <Col xl={4} lg={4} md={6}>
-                  <div className="payment-card">
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Name </label>{" "}
-                      <span>{transaction?.userDetails?.full_name}</span>
+          transaction != "" ? (
+            <>
+              <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
+                <h5>{transaction?.orderDetails?.transaction_id}</h5>
+                <Button
+                  as={Link}
+                  to="/admin/payment-history"
+                  className="d-inline-flex align-items-center justify-content-center"
+                >
+                  Back To Payments
+                </Button>
+              </CardHeader>
+
+              <CardBody>
+                <Row className="justify-content-between  mb-3">
+                  <Col xl={4} lg={4} md={6}>
+                    <div className="payment-card">
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Name </label>{" "}
+                        <span>{transaction?.userDetails?.full_name}</span>
+                      </div>
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Email Address </label>{" "}
+                        <span>{transaction?.userDetails?.email}</span>
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <label>Phone No </label>{" "}
+                        <span>{transaction?.userDetails?.phone_number}</span>
+                      </div>
                     </div>
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Email Address </label>{" "}
-                      <span>{transaction?.userDetails?.email}</span>
+                  </Col>
+                  <Col xl={3} lg={4} md={6}>
+                    <div className="payment-card">
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Work Order </label>{" "}
+                        <span>
+                          WO# LB-
+                          {transaction?.search_quote}
+                        </span>
+                      </div>
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Total Amount </label>{" "}
+                        <span>
+                          {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD", // Change to your desired currency
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }).format(transaction?.orderDetails?.total_amount)}
+                        </span>
+                      </div>
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Payment Mode </label> <span>Stripe</span>
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <label>Status </label>{" "}
+                        <span className="statusactive">Paid</span>
+                      </div>
                     </div>
-                    <div className="d-flex align-items-center">
-                      <label>Phone No </label>{" "}
-                      <span>{transaction?.userDetails?.phone_number}</span>
-                    </div>
-                  </div>
-                </Col>
-                <Col xl={3} lg={4} md={6}>
-                  <div className="payment-card">
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Work Order </label>{" "}
+                  </Col>
+                </Row>
+                <DataTable
+                  columns={columns}
+                  data={transaction?.updatedSubQuoteData}
+                  responsive
+                  className="custom-table"
+                />
+                <Row className="justify-content-end viewpaymentdetail mt-3">
+                  <Col xl={2} lg={4} md={6}>
+                    <p>
+                      Subtotal{" "}
                       <span>
-                        WO# LB-
-                        {getMonthYear(transaction?.orderDetails?.createdAt)}-
-                        {transaction?.orderDetails?.quote_number}
-                      </span>
-                    </div>
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Total Amount </label>{" "}
-                      <span>
+                        {" "}
                         {new Intl.NumberFormat("en-US", {
                           style: "currency",
                           currency: "USD", // Change to your desired currency
@@ -142,53 +178,28 @@ const ViewPayment = () => {
                           maximumFractionDigits: 2,
                         }).format(transaction?.orderDetails?.total_amount)}
                       </span>
-                    </div>
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Payment Mode </label> <span>Stripe</span>
-                    </div>
-                    <div className="d-flex align-items-center">
-                      <label>Status </label>{" "}
-                      <span className="statusactive">Paid</span>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-              <DataTable
-                columns={columns}
-                data={transaction?.updatedSubQuoteData}
-                responsive
-                className="custom-table"
-              />
-              <Row className="justify-content-end viewpaymentdetail mt-3">
-                <Col xl={2} lg={4} md={6}>
-                  <p>
-                    Subtotal{" "}
-                    <span>
-                      {" "}
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD", // Change to your desired currency
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(transaction?.orderDetails?.total_amount)}
-                    </span>
-                  </p>
-                  <p>
-                    <b>Total Amount</b>{" "}
-                    <b>
-                      {" "}
-                      {new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD", // Change to your desired currency
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }).format(transaction?.orderDetails?.total_amount)}
-                    </b>
-                  </p>
-                </Col>
-              </Row>
-            </CardBody>
-          </>
+                    </p>
+                    <p>
+                      <b>Total Amount</b>{" "}
+                      <b>
+                        {" "}
+                        {new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "USD", // Change to your desired currency
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(transaction?.orderDetails?.total_amount)}
+                      </b>
+                    </p>
+                  </Col>
+                </Row>
+              </CardBody>
+            </>
+          ) : (
+            <Col>
+              <p className="text-center mt-4">No Transaction found..</p>{" "}
+            </Col>
+          )
         ) : (
           <Col>
             <p className="text-center mt-4">Loading...</p>{" "}

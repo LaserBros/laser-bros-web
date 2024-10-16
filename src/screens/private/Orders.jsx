@@ -83,8 +83,10 @@ export default function Orders() {
             : row.status == 1
             ? "In Progress"
             : row.status == 2
-            ? "Shipped"
+            ? "Order Completed"
             : row.status == 3
+            ? "Shipped"
+            : row.status == 4
             ? "Delivered"
             : ""}
         </div>

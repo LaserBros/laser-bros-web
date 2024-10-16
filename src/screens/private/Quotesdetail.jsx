@@ -637,13 +637,15 @@ export default function QuotesDetail() {
                 quoteData.map((quote, index) => (
                   <div className="list-quotes-main">
                     <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                      <div className="img-quote mx-auto mx-md-0">
+                      <div className="img-quote mx-auto mx-md-0 position-relative">
+                        <span className="bublenumber">
+                          {String(index + 1).padStart(3, "0")}
+                        </span>
                         <Image
                           src={quote.image_url}
                           className="img-fluid"
                           alt=""
                         />
-                        <div></div>
                       </div>
 
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">

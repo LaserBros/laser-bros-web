@@ -19,33 +19,37 @@ const DimensionsToggle = ({ dimensions, id }) => {
   };
 
   return (
-    <div className="toggle-switch-container">
+    <div className="toggle-switch-container mt-2">
       <div>
-        Height :{" "}
-        {isChecked
-          ? `${dimensions.height} in`
-          : `${inchesToMm(dimensions.height)} mm`}{" "}
-        Width :{" "}
-        {isChecked
-          ? `${dimensions.width} in`
-          : `${inchesToMm(dimensions.width)} mm`}
-      </div>
-
-      <div className="container">
-        <div className="toggle-switch">
-          <input
-            type="checkbox"
-            className="checkbox"
-            name={id}
-            id={id}
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          />
-          <label className="label" htmlFor={id}>
-            <span className="inner" />
-            <span className="switch" />
-          </label>
-        </div>
+        <p>
+          Height :{" "}
+          {isChecked
+            ? `${dimensions.height} in`
+            : `${inchesToMm(dimensions.height)} mm`}{" "}
+        </p>
+        <p>
+          Width :{" "}
+          {isChecked
+            ? `${dimensions.width} in`
+            : `${inchesToMm(dimensions.width)} mm`}
+        </p>
+        <p className="d-flex align-items-center">
+          Units:
+          <div className="toggle-switch">
+            <input
+              type="checkbox"
+              className="checkbox"
+              name={id}
+              id={id}
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+            <label className="label" htmlFor={id}>
+              <span className="inner" />
+              <span className="switch" />
+            </label>
+          </div>
+        </p>
       </div>
     </div>
   );

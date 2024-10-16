@@ -39,7 +39,7 @@ const PaymentHistory = () => {
     },
     {
       name: "Work Order",
-      selector: (row) => row.order_number,
+      selector: (row) => row.search_quote,
       sortable: true,
     },
     {

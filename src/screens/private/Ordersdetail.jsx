@@ -50,7 +50,7 @@ export default function OrdersDetail() {
               <h5>Orders Detail</h5>{" "}
               <Link
                 to="/orders"
-                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159"
+                className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
               >
                 Back To Orders
               </Link>
@@ -81,8 +81,10 @@ export default function OrdersDetail() {
                         : orderDetails.status == 1
                         ? "In Progress"
                         : orderDetails.status == 2
-                        ? "Shipped"
+                        ? "Order Completed"
                         : orderDetails.status == 3
+                        ? "Shipped"
+                        : orderDetails.status == 4
                         ? "Delivered"
                         : ""}
                     </span>
