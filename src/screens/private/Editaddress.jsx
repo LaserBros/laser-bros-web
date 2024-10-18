@@ -135,7 +135,9 @@ export default function AddAddress() {
                         value={formValues.country || ""}
                         onChange={handleChange}
                       >
-                        <option value="">Select</option>
+                        <option disabled value="">
+                          Select
+                        </option>
                         <option value="USA">USA</option>
                         <option value="UK">UK</option>
                         <option value="Canada">Canada</option>
@@ -195,7 +197,9 @@ export default function AddAddress() {
                         value={formValues.state || ""}
                         onChange={handleChange}
                       >
-                        <option value="">Select</option>
+                        <option disabled value="">
+                          Select
+                        </option>
                         <option value="California">California</option>
                         <option value="New York">New York</option>
                       </Form.Select>

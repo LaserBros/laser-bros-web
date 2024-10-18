@@ -5,7 +5,7 @@ const DimensionsToggle = ({ dimensions, id }) => {
   const [isInches, setIsInches] = useState(true);
 
   // Conversion factor: 1 inch = 25.4 mm
-  const inchesToMm = (inches) => (inches * 25.4).toFixed(2);
+  const inchesToMm = (inches) => (inches * 0.0393701).toFixed(2);
 
   const handleToggle = () => {
     setIsInches(!isInches);
@@ -24,14 +24,14 @@ const DimensionsToggle = ({ dimensions, id }) => {
         <p>
           Height :{" "}
           {isChecked
-            ? `${dimensions.height} in`
-            : `${inchesToMm(dimensions.height)} mm`}{" "}
+            ? `${inchesToMm(dimensions.height)} in`
+            : `${dimensions.height} mm`}{" "}
         </p>
         <p>
           Width :{" "}
           {isChecked
-            ? `${dimensions.width} in`
-            : `${inchesToMm(dimensions.width)} mm`}
+            ? `${inchesToMm(dimensions.width)} in`
+            : `${dimensions.width} mm`}
         </p>
         <p className="d-flex align-items-center">
           Units:

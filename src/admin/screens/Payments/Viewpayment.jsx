@@ -69,24 +69,7 @@ const ViewPayment = () => {
     //   sortable: true,
     // },
   ];
-  const data = [
-    {
-      id: 1,
-      image: file,
-      name: "SB0036(14)-plate1.dxf",
-      qty: "14",
-      price: "$150",
-      dimension: "11 in x 11 in",
-    },
-    {
-      id: 2,
-      image: file,
-      name: "SB0036(14)-plate1.dxf",
-      qty: "14",
-      price: "$150",
-      dimension: "11 in x 11 in",
-    },
-  ];
+
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
@@ -101,7 +84,7 @@ const ViewPayment = () => {
           transaction != "" ? (
             <>
               <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
-                <h5>{transaction?.orderDetails?.transaction_id}</h5>
+                <h5>{transaction?.transactions?.transaction_id}</h5>
                 <Button
                   as={Link}
                   to="/admin/payment-history"
@@ -202,7 +185,17 @@ const ViewPayment = () => {
           )
         ) : (
           <Col>
-            <p className="text-center mt-4">Loading...</p>{" "}
+            <span
+              role="status"
+              aria-hidden="true"
+              className="spinner-border spinner-border-sm text-center"
+              style={{
+                margin: "0 auto",
+                display: "block",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            ></span>
           </Col>
         )}
       </Card>

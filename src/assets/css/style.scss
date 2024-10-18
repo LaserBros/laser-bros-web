@@ -3932,13 +3932,13 @@ textarea.form-control {
   .toggle-switch-container .inner:before {
     content: "mm";
     padding-left: 6px;
-    background-color: #060;
+    background-color:red;
     color: #fff;
   }
  .toggle-switch-container .inner:after {
     content: "in";
     padding-right: 6px;
-    background-color: #bbb;
+    background-color: #4F8CCA;
     color: #fff;
     text-align: right;
   }
@@ -3961,4 +3961,17 @@ textarea.form-control {
   }
   .toggle-switch-container .checkbox:checked + .label .switch {
     right: 0px;
+  }
+
+  .submenu {
+    padding-left: 20px; /* Indent for sub-menu */
+  }
+  
+  .submenu-item {
+    font-size: 14px; /* Smaller font for sub-menu items */
+    color: #888;
+  }
+  
+  .submenu-item:hover {
+    color: #000;
   }

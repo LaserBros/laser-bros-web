@@ -146,6 +146,7 @@ export default function Orders() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
   const onPageChange = (pageNumber) => {
+    console.log("Dssdsdssdsdsd");
     setCurrentPage(pageNumber);
     loadOrders(pageNumber);
   };
@@ -252,7 +253,17 @@ export default function Orders() {
             <Card.Body>
               {loading ? (
                 <Col>
-                  <p className="text-center mt-4">Loading...</p>{" "}
+                  <span
+                    role="status"
+                    aria-hidden="true"
+                    className="spinner-border spinner-border-sm text-center"
+                    style={{
+                      margin: "0 auto",
+                      display: "block",
+                      marginTop: "20px",
+                      marginBottom: "20px",
+                    }}
+                  ></span>
                 </Col>
               ) : (
                 <>
@@ -260,12 +271,21 @@ export default function Orders() {
                     columns={columns}
                     data={orders}
                     responsive
-                    pagination
-                    paginationTotalRows={totalRows}
+                    // pagination
+                    // paginationTotalRows={totalRows}
                     // onChangePage={handlePageChange}
-                    onChangeRowsPerPage={handlePageChange}
+                    // // onChangeRowsPerPage={handlePageChange}
+                    // paginationPerPage={perPage}
+                    // className="custom-table custom-table2"
+                    pagination
+                    paginationServer
+                    paginationTotalRows={totalRows}
+                    onChangePage={handlePageChange}
                     paginationPerPage={perPage}
+                    // responsive
+                    paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
                     className="custom-table custom-table2"
+                    labelRowsPerPage=""
                   />
                   {!loading && totalPage > 10 && (
                     <Pagination

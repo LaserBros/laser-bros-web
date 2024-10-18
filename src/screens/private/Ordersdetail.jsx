@@ -56,7 +56,17 @@ export default function OrdersDetail() {
               </Link>
             </Card.Header>
             {loading ? (
-              <div className="loader text-center mt-5 mb-5">Loading...</div>
+              <span
+                role="status"
+                aria-hidden="true"
+                className="spinner-border spinner-border-sm text-center"
+                style={{
+                  margin: "0 auto",
+                  display: "block",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              ></span>
             ) : orders && orders.length > 0 ? (
               <Card.Body>
                 <ul className="tablelist list-unstyled ">

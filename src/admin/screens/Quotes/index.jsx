@@ -72,12 +72,11 @@ const Quotes = () => {
   const [quotes, setQuotes] = useState([]);
   const [totalPage, settotalPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const [name, searchName] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("selectedValue", selectedValue);
     setSortOrder(selectedValue);
     loadData(1, name, selectedValue);
   };
@@ -187,7 +186,17 @@ const Quotes = () => {
               <tbody>
                 {loading ? (
                   <Col>
-                    <p className="text-center mt-4">Loading...</p>{" "}
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      className="spinner-border spinner-border-sm text-center"
+                      style={{
+                        margin: "0 auto",
+                        display: "block",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    ></span>
                   </Col>
                 ) : quotes && quotes.length === 0 ? (
                   <Col>

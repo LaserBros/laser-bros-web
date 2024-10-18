@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Icon } from "@iconify/react";
-import { fetchParts, uploadQuote } from "../api/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { uploadQuote } from "../api/api";
 
 const FileUpload = ({
   accept = ".dxf",
@@ -15,34 +15,46 @@ const FileUpload = ({
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([]); // Track uploaded files
 
   const onDrop = async (acceptedFiles, fileRejections) => {
     setError("");
+
+    // Check if the current file count exceeds 5
+    if (uploadedFiles.length + acceptedFiles.length > 5) {
+      setError("You can only upload a maximum of 5 files.");
+      return;
+    }
 
     if (fileRejections.length > 0) {
       setError(`Only ${accept.toUpperCase()} files are accepted.`);
       return;
     }
-    console.log("SDssdsdsdsdsd");
-    console.log(onFileDrop);
+
     if (onFileDrop) {
-      onFileDrop(acceptedFiles);
-      var nameWithoutExtension = acceptedFiles[0].name.replace(/\.dxf$/, "");
-      console.log(acceptedFiles[0]);
+      // Add the new files to the state
+      setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+
+      const formData = new FormData();
+      console.log("SAasasas", acceptedFiles);
+      for (let i = 0; i < acceptedFiles.length; i++) {
+        formData.append("quote_image", acceptedFiles[i]);
+      }
+
+      formData.append("documentName", "file_upload");
+      formData.append("workspaceName", "file_upload");
+
+      const quote_list = localStorage.getItem("setItemelementData");
+
+      if (quote_list) {
+        const quote_list_val = JSON.parse(quote_list);
+        formData.append("id", quote_list_val._id);
+        formData.append("type", 0);
+      }
 
       setProcessing(true);
-      try {
-        const formData = new FormData();
-        formData.append("quote_image", acceptedFiles[0]);
-        formData.append("documentName", "file_upload");
-        formData.append("workspaceName", "file_upload");
-        const quote_list = localStorage.getItem("setItemelementData");
 
-        if (quote_list) {
-          const quote_list_val = JSON.parse(quote_list);
-          formData.append("id", quote_list_val._id);
-          formData.append("type", 0);
-        }
+      try {
         const response = await uploadQuote(formData);
         console.log("response_api", response.data);
         localStorage.setItem(
@@ -54,15 +66,14 @@ const FileUpload = ({
           "setItempartsDBdata",
           JSON.stringify(response.data.partsDBdata)
         );
-        // if (onFileDrop) {
+
         onFileDrop({
           requestQuoteDB: response.data.requestQuoteDB,
           partsDBdata: response.data.partsDBdata,
         });
-        // }
+
         setProcessing(false);
         navigate("/quotes/quotes-detail");
-        // }, 25000);
       } catch (error) {
         toast.error(`${error.response.data.message || "Bad Request"}`);
       }
@@ -107,6 +118,14 @@ const FileUpload = ({
         <small>{instructions}</small>
       </div>
       {error && <div className="text-danger">{error}</div>}
+      <div className="uploaded-files">
+        {/* Display uploaded file names */}
+        {/* <ul>
+          {uploadedFiles.map((file, index) => (
+            <li key={index}>{file.name}</li>
+          ))}
+        </ul> */}
+      </div>
     </div>
   );
 };

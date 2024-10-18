@@ -57,7 +57,17 @@ export default function RfqDetail() {
               </Link>
             </Card.Header>
             {loading ? (
-              <div className="loader text-center mt-5 mb-5">Loading...</div>
+              <span
+                role="status"
+                aria-hidden="true"
+                className="spinner-border spinner-border-sm text-center"
+                style={{
+                  margin: "0 auto",
+                  display: "block",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              ></span>
             ) : orders && orders.length > 0 ? (
               <Card.Body>
                 <ul className="tablelist list-unstyled ">
@@ -125,6 +135,14 @@ export default function RfqDetail() {
                               <span>Finish:</span> {row.finishing_desc}
                             </span>
                           </p>
+                          {/* <Link
+                            className="btn btn-secondary"
+                            onClick={() => {
+                              // handleShow(wo.notes_text, wo.notes_admin);
+                            }}
+                          >
+                            View Notes
+                          </Link> */}
                           {row.bend_count > 0 && (
                             <div className="quotes-services mt-3">
                               <h4>Services</h4>
@@ -150,6 +168,7 @@ export default function RfqDetail() {
                             </strong>
                             /each
                           </p>
+
                           <span className="quote-off">
                             {row.discount}% Saved
                           </span>

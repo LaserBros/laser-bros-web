@@ -23,6 +23,7 @@ import {
   getAllMaterialCodes,
 } from "../../../api/api";
 import { Link } from "react-router-dom";
+import Pagination from "../../components/Pagination";
 const Cut = () => {
   const customStyles = {
     control: (provided, state) => ({
@@ -47,12 +48,24 @@ const Cut = () => {
   const [checkedItems, setCheckedItems] = useState({});
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loadOrders = async (selectedValue = "") => {
+  const [totalPage, settotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [name, searchName] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const [selectedCode, setSelectedCode] = useState("");
+  const onPageChange = (pageNumber) => {
+    console.log(pageNumber, "response.data.");
+    setCurrentPage(pageNumber);
+    loadOrders(selectedCode, pageNumber);
+  };
+  const loadOrders = async (selectedValue = "", currentPage = 1) => {
     try {
       setLoading(true);
-      const response = await fetchOrdersInArchive(selectedValue);
+      const response = await fetchOrdersInArchive(selectedValue, currentPage);
       console.log("response.data", response.data);
-      setOrders(response.data);
+      setOrders(response.data.result);
+      settotalPage(response.data.total);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {
@@ -60,7 +73,7 @@ const Cut = () => {
     }
   };
   const [materialCodes, setMaterialCodes] = useState([]);
-  const [selectedCode, setSelectedCode] = useState("");
+
   const handleSortChange = (value) => {
     // console.log(":Sdsddsd", value);
     const selectedValue = value.value;
@@ -281,7 +294,7 @@ const Cut = () => {
                       ))
                     ) : (
                       <tr className="text-center mt-2">
-                        <td colSpan={4}> No Queue Order Found. </td>
+                        <td colSpan={4}> No Archive Order Found. </td>
                       </tr>
                     )}
                   </>
@@ -289,6 +302,16 @@ const Cut = () => {
               </tbody>
             </Table>
           </div>
+          {totalPage > 10 && (
+            <>
+              <Pagination
+                totalItems={totalPage}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+              />
+            </>
+          )}
         </CardBody>
       </Card>
     </React.Fragment>

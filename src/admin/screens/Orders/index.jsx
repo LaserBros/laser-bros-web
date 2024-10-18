@@ -236,7 +236,7 @@ const Orders = () => {
                             <td>
                               <Link
                                 className="workorders"
-                                to={`/admin/orders/orders-detail/${row._id}`}
+                                to={`/admin/orders-detail/${row._id}`}
                               >
                                 <b>
                                   WO#
@@ -323,7 +323,7 @@ const Orders = () => {
               </tbody>
             </Table>
           </div>
-          {loading && totalPage > 10 && (
+          {!loading && totalPage > 10 && (
             <Pagination
               totalItems={totalPage}
               itemsPerPage={itemsPerPage}

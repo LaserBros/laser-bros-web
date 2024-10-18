@@ -273,7 +273,17 @@ export default function RFQS() {
             </Card.Header>
             <Card.Body>
               {loading ? (
-                <div className="loader text-center mt-4">Loading...</div>
+                <span
+                  role="status"
+                  aria-hidden="true"
+                  className="spinner-border spinner-border-sm text-center"
+                  style={{
+                    margin: "0 auto",
+                    display: "block",
+                    marginTop: "20px",
+                    marginBottom: "20px",
+                  }}
+                ></span>
               ) : quoteData && quoteData.length > 0 ? (
                 <DataTable
                   columns={columns}

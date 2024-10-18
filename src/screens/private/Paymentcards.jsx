@@ -121,12 +121,14 @@ export default function PaymentCards() {
                           </div>
                         </div>
                         <div className="btn-bottom">
-                          <Link
-                            className="btn-address"
-                            onClick={() => handleShowModal(card._id)}
-                          >
-                            <Icon icon="uiw:delete" />
-                          </Link>
+                          {card.is_default === 0 && (
+                            <Link
+                              className="btn-address"
+                              onClick={() => handleShowModal(card._id)}
+                            >
+                              <Icon icon="uiw:delete" />
+                            </Link>
+                          )}
                           {card.is_default === 0 && (
                             <Link
                               className="btn-set-default"

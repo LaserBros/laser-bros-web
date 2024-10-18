@@ -8,27 +8,34 @@ import {
   getAllLoggedInRequestedQuote,
   getEditQuote,
 } from "../../api/api";
+import Pagination from "../../admin/components/Pagination";
 // Add loading state
 
 const Quotes = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
+  const [totalPage, settotalPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const fetchData = async (page = 1) => {
+    try {
+      const res = await getAllLoggedInRequestedQuote(page);
+      setQuotes(res.data.data);
+      settotalPage(res.data.total);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getAllLoggedInRequestedQuote();
-        setQuotes(res.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
-
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    fetchData(pageNumber);
+  };
   const RequestQuote = async (id) => {
     const data = {
       id: id,
@@ -80,7 +87,17 @@ const Quotes = () => {
             </Link>
           </div>
           {loading ? (
-            <div className="loader text-center mt-4">Loading...</div>
+            <span
+              role="status"
+              aria-hidden="true"
+              className="spinner-border spinner-border-sm text-center"
+              style={{
+                margin: "0 auto",
+                display: "block",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            ></span>
           ) : quoteData && quoteData.length > 0 ? (
             quoteData.map((quote, index) => {
               // Convert the 'createdAt' field to a Date object
@@ -120,6 +137,14 @@ const Quotes = () => {
             </div>
           )}
         </Container>
+        {!loading && totalPage > 10 && (
+          <Pagination
+            totalItems={totalPage}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+          />
+        )}
       </section>
     </React.Fragment>
   );

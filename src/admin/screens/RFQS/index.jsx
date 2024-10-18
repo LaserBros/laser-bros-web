@@ -226,7 +226,17 @@ const RFQS = () => {
               <tbody>
                 {loading ? (
                   <Col>
-                    <p className="text-center mt-4">Loading...</p>{" "}
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      className="spinner-border spinner-border-sm text-center"
+                      style={{
+                        margin: "0 auto",
+                        display: "block",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    ></span>
                   </Col>
                 ) : quotes.length === 0 ? (
                   <Col>

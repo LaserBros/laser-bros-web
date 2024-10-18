@@ -66,6 +66,9 @@ export default function AddAddress() {
     if (!formData.pincode) {
       formErrors.zipCode = "Zip Code is required.";
       valid = false;
+    } else if (!/^\d{6}$/.test(formData.pincode)) {
+      formErrors.zipCode = "Zip Code must be a 6-digit number.";
+      valid = false;
     }
 
     if (!formData.phone_number) {

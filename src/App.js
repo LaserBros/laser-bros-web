@@ -88,6 +88,9 @@ import QuotesDetailPay from "./screens/private/QuotesDetailPay";
 import EditRFQS from "./admin/screens/Quotes/EditQuote";
 import RfqDetail from "./screens/private/RfqDetail";
 import ViewRFQS from "./admin/screens/Quotes/viewRFQ";
+import CompleteOrders from "./admin/screens/Orders/complete";
+import Employe from "./admin/screens/Employe";
+import AddEmp from "./admin/screens/Employe/AddEmp";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -196,7 +199,19 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/admin/orders/orders-detail/:id"
+                    path="/admin/complete-orders"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Complete Orders"}>
+                            <CompleteOrders />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/orders-detail/:id"
                     element={
                       <AdminRoute
                         element={
@@ -207,6 +222,31 @@ function App() {
                       />
                     }
                   ></Route>
+                  <Route
+                    path="/admin/employes"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Employee"}>
+                            <Employe />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/add/:id?"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Add Employee"}>
+                            <AddEmp />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+
                   <Route
                     path="/admin/quotes"
                     element={

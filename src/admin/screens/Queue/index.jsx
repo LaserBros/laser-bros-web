@@ -196,6 +196,9 @@ const Queue = () => {
 
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, "files.zip");
+      setTimeout(() => {
+        loadOrders();
+      }, 1000);
       setCheckedItems({});
     } catch (error) {
       console.error("Error downloading or zipping files:", error);
@@ -235,7 +238,7 @@ const Queue = () => {
                   </Link>
                 </div>
               </Col>
-              <Col lg={3} xxl={2}>
+              <Col lg={3} xxl={5} className="text-lg-end">
                 <Button
                   variant={null}
                   className="btn-outline-primary min-width-147"
@@ -244,7 +247,7 @@ const Queue = () => {
                   Download Files
                 </Button>
               </Col>
-              <Col lg={3} xxl={3} className="text-lg-end">
+              {/* <Col lg={3} xxl={3} className="text-lg-end">
                 <Button
                   variant={null}
                   className="btn-outline-primary min-width-147"
@@ -252,7 +255,7 @@ const Queue = () => {
                 >
                   Move To Archive
                 </Button>
-              </Col>
+              </Col> */}
             </Row>
           </Form>
           <div className="table-responsive">

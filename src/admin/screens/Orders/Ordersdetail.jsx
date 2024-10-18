@@ -13,24 +13,48 @@ import { Icon } from "@iconify/react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import barcode from "../../assets/img/barcode.jpg";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import file from "../../assets/img/file1.jpg";
 import loaderimg from "../../../../src/assets/img/loader.svg";
 
 import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
-import { getParticularOrderDetails, updateWorkStatus } from "../../../api/api";
+import {
+  AdminmoveOrderStatus,
+  getParticularOrderDetails,
+  markCompleteQuote,
+  moveOrderStatus,
+  updateWorkStatus,
+} from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
+import { toast } from "react-toastify";
 const OrdersDetail = () => {
   const [modalShow, setModalShow] = useState(false);
   const [customer_note, setcustomer_note] = useState(false);
   const [admin_note, setadmin_note] = useState(false);
+  const navigate = useNavigate();
   const [order, setOrders] = useState([]);
   const handleShow = (customer_note, admin_note) => {
     setcustomer_note(customer_note);
     setadmin_note(admin_note);
     setModalShow(true);
+  };
+
+  const [Rowloading, setLoadingRow] = useState(true);
+  const handleComplete = async (id) => {
+    setLoadingRow(id);
+    try {
+      const data = {
+        id: id,
+      };
+      const res = await markCompleteQuote(data);
+      await fetchOrder();
+      setLoadingRow("");
+    } catch (error) {
+      setLoadingRow("");
+      toast.error("Something wents wrong..");
+    }
   };
   const handleClose = () => setModalShow(false);
   const { id } = useParams();
@@ -134,6 +158,21 @@ const OrdersDetail = () => {
       console.error("Download failed:", error);
     }
   };
+  const [moveOrder, setMoveOrder] = useState(false);
+  const handleMove = async (id) => {
+    setMoveOrder(true);
+    const data = {
+      id: id,
+      move_status: 2,
+    };
+    try {
+      const res = await AdminmoveOrderStatus(data);
+      toast.success("Order move sucessfully.");
+      navigate("/admin/complete-orders");
+    } catch (error) {
+      toast.error("Something wents wrong.");
+    }
+  };
   const handleCheckboxChangeEvent = async (event, id, type) => {
     const isChecked = event.target.checked;
     var checked = 0;
@@ -212,13 +251,24 @@ const OrdersDetail = () => {
                 WO# LB-
                 {order?.newUpdatedData[0]?.search_quote}
               </h5>
-              <Button
-                as={Link}
-                to="/admin/orders"
-                className="d-inline-flex align-items-center justify-content-center"
-              >
-                Back To Orders
-              </Button>
+              {order?.orderedQuote.status == 2 &&
+              order?.orderedQuote.move_status == 2 ? (
+                <Button
+                  as={Link}
+                  to="/admin/complete-orders"
+                  className="d-inline-flex align-items-center justify-content-center"
+                >
+                  Back
+                </Button>
+              ) : (
+                <Button
+                  as={Link}
+                  to="/admin/orders"
+                  className="d-inline-flex align-items-center justify-content-center"
+                >
+                  Back To Orders
+                </Button>
+              )}
             </CardHeader>
             <CardBody>
               <Row>
@@ -256,7 +306,15 @@ const OrdersDetail = () => {
                     </div>
                     <div className="d-flex align-items-center">
                       <label>Status: </label>{" "}
-                      <span className="statusnew fw-medium">Paid</span>
+                      <span className="statusnew fw-medium">
+                        {order?.orderedQuote.status == 1
+                          ? "Paid"
+                          : order?.orderedQuote.status == 2
+                          ? "Complete"
+                          : order?.orderedQuote.status == 3
+                          ? "Complete"
+                          : ""}
+                      </span>
                     </div>
                   </div>
                 </Col>
@@ -306,6 +364,26 @@ const OrdersDetail = () => {
                     </span>
                   ))}
                 </div>
+                {order?.orderedQuote.status == 2 &&
+                  order?.orderedQuote.move_status != 2 && (
+                    <Link
+                      className="btnnote p-3 btn-success btn text-white"
+                      onClick={() => {
+                        handleMove(order?.orderedQuote._id);
+                      }}
+                      disabled={moveOrder}
+                    >
+                      {moveOrder ? (
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                      ) : (
+                        " Move To Complete Order"
+                      )}
+                    </Link>
+                  )}
                 {/* <div className="d-inline-flex align-items-center gap-2 my-1">
                   <b>Shipping:</b>
                   <span
@@ -318,10 +396,7 @@ const OrdersDetail = () => {
               </div>
               <div className="orders-detail mt-3">
                 {order.newUpdatedData.map((wo, index) => (
-                  <div
-                    key={index}
-                    className="list-main  d-inline-flex justify-content-between w-100"
-                  >
+                  <div className="list-main  d-inline-flex justify-content-between w-100">
                     <div className="list-left d-inline-flex">
                       <div className="list-img-outer">
                         <div className="list-img">
@@ -367,14 +442,34 @@ const OrdersDetail = () => {
                         >
                           View Notes
                         </Link>
+                        {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                          <Link
+                            className="btnnote ms-2"
+                            onClick={() => {
+                              handleComplete(wo._id);
+                            }}
+                          >
+                            {Rowloading == wo._id ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              "Mark Complete"
+                            )}
+                          </Link>
+                        )}
+                        {wo.isCompleted == 1 && (
+                          <Link className="ms-2 text-success text-decoration-none">
+                            Completed
+                          </Link>
+                        )}
                       </div>
                     </div>
 
                     <div className="list-checkboxes  d-inline-flex gap-3">
-                      <div
-                        className="custom-checkbox-container text-center"
-                        key={wo.material_code}
-                      >
+                      <div className="custom-checkbox-container text-center">
                         <label
                           key={`${wo._id}-${wo.material_code}`}
                           className="custom-label-tag"
@@ -399,10 +494,7 @@ const OrdersDetail = () => {
                         />
                       </div>
                       {wo.bend_count > 0 && (
-                        <div
-                          className="custom-checkbox-container text-center"
-                          key={wo.material_code}
-                        >
+                        <div className="custom-checkbox-container text-center">
                           <label
                             key={`${wo._id}-${wo.material_code}`}
                             className="custom-label-tag"
@@ -427,10 +519,7 @@ const OrdersDetail = () => {
                           />
                         </div>
                       )}
-                      <div
-                        className="custom-checkbox-container text-center"
-                        key={wo.material_code}
-                      >
+                      <div className="custom-checkbox-container text-center">
                         <label
                           key={`${wo._id}-${wo.material_code}`}
                           className="custom-label-tag"
@@ -454,10 +543,7 @@ const OrdersDetail = () => {
                           }
                         />
                       </div>
-                      <div
-                        className="custom-checkbox-container text-center"
-                        key={wo.finishing_desc}
-                      >
+                      <div className="custom-checkbox-container text-center">
                         <label
                           key={`${wo._id}-${wo.finishing_desc}`}
                           className="custom-label-tag"

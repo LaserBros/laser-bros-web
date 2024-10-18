@@ -27,6 +27,7 @@ export const UsergetParticularOrderDetails = async (data) => {
     throw error;
   }
 };
+
 export const getParticularRFQDetails = async (data) => {
   try {
     const response = await axiosInstance.post(
@@ -204,7 +205,11 @@ export const updateProfile = async (formData) => {
 
 export const uploadQuote = async (formData) => {
   try {
-    const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
+    const response = await axiosInstance.post(
+      `/users/uploaddxfFiles`,
+      formData
+    );
+    // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
     console.log("responseeee ------", response.data);
     // return;
     return response.data;
@@ -318,9 +323,11 @@ export const getFinish = async (data) => {
   }
 };
 
-export const getAllLoggedInRequestedQuote = async (data) => {
+export const getAllLoggedInRequestedQuote = async (page) => {
   try {
-    const response = await axiosInstance.get(`/users/getAllUnRequestQuotes`);
+    const response = await axiosInstance.get(
+      `/users/getAllUnRequestQuotes?page=` + page
+    );
     console.log("responseeee", response.data);
     return response.data;
   } catch (error) {
@@ -494,6 +501,63 @@ export const getOrdersAdmin = async (page, search, sort) => {
   }
 };
 
+export const fetchOrdersInComplete = async (page, search, sort) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/fetchOrdersInComplete?page=` +
+        page +
+        "&query=" +
+        search +
+        "&ascending=" +
+        sort
+    );
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getAllEmployees = async (page, search, sort) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/getAllEmployees?page=` +
+        page +
+        "&query=" +
+        search +
+        "&ascending=" +
+        sort
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateEmpDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateEmployeeDetails`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const empSignup = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/empSignup`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const moveOrderToQueue = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/moveOrderToQueue`, data);
@@ -507,6 +571,16 @@ export const moveOrderToQueue = async (data) => {
 export const moveOrderStatus = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/moveToArchive`, data);
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminmoveOrderStatus = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/moveOrderStatus`, data);
     return response;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -564,10 +638,10 @@ export const getParticularTransaction = async (data) => {
   }
 };
 
-export const fetchOrdersInArchive = async (data) => {
+export const fetchOrdersInArchive = async (data, page) => {
   try {
     const response = await axiosAdminInstance.get(
-      `/fetchOrdersInArchive?query=` + data
+      `/fetchOrdersInArchive?query=` + data + `&page=` + page
     );
     return response.data;
   } catch (error) {
@@ -738,6 +812,57 @@ export const editSubQuote = async (data) => {
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const markCompleteQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/markCompleteQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getEmpDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularEmployee`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const deleteEmployeeDetails = async (id) => {
+  const data = {
+    id: id,
+  };
+  try {
+    const response = await axiosAdminInstance.post(
+      `/deleteEmployeeDetails`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error setting employee as default:");
+    throw error;
+  }
+};
+
+export const getDashboardDetails = async (fromDate, toDate) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/getDashboardDetails?fromDate=` + fromDate + `&toDate=` + toDate
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error setting employee as default:");
     throw error;
   }
 };

@@ -60,6 +60,12 @@ const Sidebar = () => {
       icon: "fluent:grid-16-regular",
     },
     {
+      id: "employes",
+      title: "Employees",
+      link: "/admin/employes",
+      icon: "solar:user-linear",
+    },
+    {
       id: "quotes",
       title: "Quotes",
       link: "/admin/quotes",
@@ -82,12 +88,26 @@ const Sidebar = () => {
       title: "Queue",
       link: "/admin/queue",
       icon: "hugeicons:queue-02",
+      subMenu: [
+        {
+          id: "archive",
+          title: "Archive",
+          link: "/admin/archive",
+          icon: "fluent:laser-tool-20-regular",
+        },
+      ],
     },
+    // {
+    //   id: "cut",
+    //   title: "Archive",
+    //   link: "/admin/archive",
+    //   icon: "fluent:laser-tool-20-regular",
+    // },
     {
-      id: "cut",
-      title: "Archive",
-      link: "/admin/archive",
-      icon: "fluent:laser-tool-20-regular",
+      id: "complete-orders",
+      title: "Complete Orders",
+      link: "/admin/complete-orders",
+      icon: "carbon:task-complete",
     },
     {
       id: "payment-history",
@@ -137,34 +157,41 @@ const Sidebar = () => {
         </div>
         <div className="sidebarouter">
           {pages.map((page) =>
-            page.title == "Logout" ? (
+            page.title === "Logout" ? (
               <NavLink
-                key={page.id}
                 to={page.link}
                 className="navitem inactive"
-                onClick={handleLogout} // Pass the event and page info
-                // Optionally, manage active state if needed
-
-                // isActive={() => location.pathname.startsWith(page.link)}
+                onClick={handleLogout}
               >
                 <Icon icon={page.icon} />
                 {page.title}
               </NavLink>
             ) : (
-              <>
+              <div key={page.id}>
                 <NavLink
-                  key={page.id}
                   to={page.link}
                   className="navitem"
                   onClick={handleNavLinkClick}
-                  // isActive={() => {
-                  //   return location.pathname.startsWith(page.link);
-                  // }}
                 >
                   <Icon icon={page.icon} />
                   {page.title}
                 </NavLink>
-              </>
+                {page.subMenu && (
+                  <div className="submenu">
+                    {page.subMenu.map((subPage) => (
+                      <NavLink
+                        key={subPage.id}
+                        to={subPage.link}
+                        className="navitem submenu-item"
+                        onClick={handleNavLinkClick}
+                      >
+                        <Icon icon={subPage.icon} />
+                        {subPage.title}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
             )
           )}
         </div>
