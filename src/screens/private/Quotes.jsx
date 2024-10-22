@@ -20,6 +20,8 @@ const Quotes = () => {
   const [itemsPerPage] = useState(10);
   const fetchData = async (page = 1) => {
     try {
+      setLoading(true);
+      setQuotes([]);
       const res = await getAllLoggedInRequestedQuote(page);
       setQuotes(res.data.data);
       settotalPage(res.data.total);

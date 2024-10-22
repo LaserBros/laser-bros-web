@@ -346,32 +346,6 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                   )
                 )}
 
-                <Form.Group className="freeshipping d-inline-flex align-items-center justify-content-between  mb-2">
-                  <span>
-                    <b>Free Shipping</b> (1- 5 days)
-                  </span>{" "}
-                  <b>Free</b>
-                </Form.Group>
-                <Form.Group className="mb-2 form-group">
-                  <Form.Label>Discount Code</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your discount code"
-                  />
-                </Form.Group>
-                <Form.Check
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkbox"
-                  className="d-inline-flex"
-                  label={
-                    <>
-                      <span>1% Discount </span> Let us post photos/videos of
-                      these parts on our social media.
-                    </>
-                  }
-                />
-
                 {/* <Tabs
                   defaultActiveKey="basicinfo"
                   id="uncontrolled-tab-example"

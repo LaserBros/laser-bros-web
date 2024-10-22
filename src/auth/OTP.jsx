@@ -19,7 +19,7 @@ const OTPForm = () => {
     token_val = token;
     setType(type);
     if (token === "" || token === undefined) {
-      console.log("Navigating to /SignUp"); // Add this line for debugging
+      console.log("Navigating to /SignUp");
       navigate("/SignUp");
     }
     token_val = token;

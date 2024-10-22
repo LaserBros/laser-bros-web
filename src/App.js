@@ -37,6 +37,19 @@ import EmpQuotes from "./employee/screens/Quotes";
 import EmpQuotesDetail from "./employee/screens/Quotes/Quotesdetail";
 import EmpRFQS from "./employee/screens/RFQS";
 import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
+import EmpCompleteOrders from "./employee/screens/Orders/complete";
+// import EmpDashboard from "./employee/screens/Dashboard";
+// import EmpPaymentHistory from "./employee/screens/Payments";
+// import EmpViewPayment from "./employee/screens/Payments/Viewpayment";
+// import EmpEditProfile from "./employee/screens/Editprofile";
+// import EmpCut from "./employee/screens/Cut";
+// import EmpQueue from "./employee/screens/Queue";
+// import EmpOrders from "./employee/screens/Orders";
+// import EmpOrdersDetail from "./employee/screens/Orders/Ordersdetail";
+// import EmpQuotes from "./employee/screens/Quotes";
+// import EmpQuotesDetail from "./employee/screens/Quotes/Quotesdetail";
+// import EmpRFQS from "./employee/screens/RFQS";
+// import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
 
 import AdminLayout from "./admin/Layout";
 import Layouts from "./employee/Layout";
@@ -321,14 +334,15 @@ function App() {
                     }
                   ></Route>
 
+                  {/* Employee API's */}
                   <Route
                     path="/employee/dashboard"
                     element={
                       <EmployeRoute
                         element={
-                          <AdminLayout title={"Dashboard"}>
+                          <Layouts title={"Dashboard"}>
                             <EmpDashboard />
-                          </AdminLayout>
+                          </Layouts>
                         }
                       />
                     }
@@ -337,91 +351,160 @@ function App() {
                   <Route
                     path="/employee/payment-history"
                     element={
-                      <Layouts title={"Payment History"}>
-                        <EmpPaymentHistory />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Payment History"}>
+                            <EmpPaymentHistory />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/payment-history/view-payment"
                     element={
-                      <Layouts title={"View Payment"}>
-                        <EmpViewPayment />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"View Payment"}>
+                            <EmpViewPayment />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/edit-profile"
                     element={
-                      <Layouts title={"Edit Profile"}>
-                        <EmpEditProfile />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Edit Profile"}>
+                            <EmpEditProfile />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
-                    path="/employee/cut"
+                    path="/employee/complete-orders"
                     element={
-                      <Layouts title={"Cut"}>
-                        <EmpCut />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Complete Orders"}>
+                            <EmpCompleteOrders />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
+                  <Route
+                    path="/employee/archive"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Archive"}>
+                            <EmpCut />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  />
+
                   <Route
                     path="/employee/queue"
                     element={
-                      <Layouts title={"Queue"}>
-                        <EmpQueue />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Queue"}>
+                            <EmpQueue />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/orders"
                     element={
-                      <Layouts title={"Orders"}>
-                        <EmpOrders />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Orders"}>
+                            <EmpOrders />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
-                    path="/employee/orders/orders-detail"
+                    path="/employee/orders-detail/:id"
                     element={
-                      <Layouts title={"Orders Detail"}>
-                        <EmpOrdersDetail />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Orders Detail"}>
+                            <EmpOrdersDetail />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/quotes"
                     element={
-                      <Layouts title={"Quotes"}>
-                        <EmpQuotes />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Quotes"}>
+                            <EmpQuotes />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/quotes/quotes-detail"
                     element={
-                      <Layouts title={"Quotes Detail"}>
-                        <EmpQuotesDetail />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Quotes Detail"}>
+                            <EmpQuotesDetail />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/rfqs"
                     element={
-                      <Layouts title={"RFQ's"}>
-                        <EmpRFQS />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"RFQ's"}>
+                            <EmpRFQS />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
                   <Route
                     path="/employee/rfqs/rfqs-detail"
                     element={
-                      <Layouts title={"RFQ's Detail"}>
-                        <EmpRfqsDetail />
-                      </Layouts>
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"RFQ's Detail"}>
+                            <EmpRfqsDetail />
+                          </Layouts>
+                        }
+                      />
                     }
-                  ></Route>
+                  />
+
+                  {/* End Employee API's */}
 
                   <Route exact path="/login" element={<Login />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />

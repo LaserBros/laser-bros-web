@@ -617,8 +617,8 @@ export default function QuotesDetail() {
               </>
             )}
             <div className="d-inline-flex gap-2">
-              <Link className="btnshare">Share Quote</Link>
-              <Link className="btnsavelater">Save For Later</Link>
+              {/* <Link className="btnshare">Share Quote</Link>
+              <Link className="btnsavelater">Save For Later</Link> */}
               {/* <Link className="btnicon">
                 <Icon icon="bytesize:upload" />
               </Link> */}

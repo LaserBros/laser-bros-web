@@ -31,10 +31,12 @@ const Orders = () => {
   const loadOrders = async (page, search = "", sortOrder = "") => {
     try {
       setLoading(true);
+      setOrders([]);
       const response = await getOrdersAdmin(page, search, sortOrder);
       setOrders(response.data.data.updatedQuotes);
       settotalPage(response.data.data.total);
     } catch (error) {
+      setOrders([]);
       console.error("Error fetching cards:", error);
     } finally {
       setLoading(false);

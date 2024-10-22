@@ -198,7 +198,7 @@ const CompleteOrders = () => {
                   Clear
                 </Link>
               </Col>
-              <Col lg={3} xxl={3} className="text-lg-end">
+              {/* <Col lg={3} xxl={3} className="text-lg-end">
                 <Button
                   variant={null}
                   onClick={moveQueue}
@@ -215,7 +215,7 @@ const CompleteOrders = () => {
                     "Move To Queue"
                   )}
                 </Button>
-              </Col>
+              </Col> */}
             </Row>
           </Form>
           <div className="table-responsive">

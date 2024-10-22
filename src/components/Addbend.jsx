@@ -3,7 +3,7 @@ import { Image, Modal, Button } from "react-bootstrap";
 import file1 from "../assets/img/file1.jpg";
 import { Icon } from "@iconify/react";
 import QuantitySelector from "./Quantityselector";
-import pdf from "../assets/img/PDF_file_icon.png";
+import pdf from "../assets/img/file.png";
 const AddBend = ({
   show2,
   handleClose2,
@@ -54,12 +54,29 @@ const AddBend = ({
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type === "application/pdf") {
-      setErrorMessage("");
-      setFile1(file);
-      setPdfPreviewUrl(URL.createObjectURL(file)); // Create PDF preview URL
-    } else {
-      setErrorMessage("Please upload a valid PDF file.");
+    const validFileTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "application/octet-stream",
+    ]; // Add MIME types for STEP if applicable
+    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step"]; // Add extensions for STEP if applicable
+
+    if (file) {
+      const fileType = file.type;
+      const fileName = file.name;
+      const isValidType = validFileTypes.includes(fileType);
+      const isValidExtension = validExtensions.some((ext) =>
+        fileName.endsWith(ext)
+      );
+
+      if (isValidType || isValidExtension) {
+        setErrorMessage("");
+        setFile1(file);
+        setPdfPreviewUrl(URL.createObjectURL(file)); // Create file preview URL
+      } else {
+        setErrorMessage("Please upload a valid PDF, STEP, JPG, or PNG file.");
+      }
     }
   };
 
@@ -149,7 +166,7 @@ const AddBend = ({
                       id="uploadfileBend"
                       name="uploadfileBend"
                       className="d-none"
-                      accept="application/pdf" // Accept only PDFs
+                      accept=".pdf,.jpg,.jpeg,.png,.PNG,.JPG,.JPEG,.step"
                       onChange={handleFileChange}
                     />
                     <span> or Drag or Drop</span>
@@ -158,7 +175,7 @@ const AddBend = ({
                     <p style={{ color: "red" }}>{errorMessage}</p>
                   )}
                   <small>
-                    Please upload your step file for bending review. PDF
+                    Please upload your step file for bending review. PDF, PNG
                     drawings are also welcome, but might require more time for
                     review.
                   </small>

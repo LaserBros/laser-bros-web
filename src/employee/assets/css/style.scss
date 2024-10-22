@@ -242,7 +242,7 @@ html {
             .password-input-group {
                 svg {
                     position: absolute;
-                    top     : 14px;
+                    top     : 17px;
                     right   : 20px;
                     opacity : 0.30;
                 }
@@ -333,12 +333,12 @@ html {
                       }
                 }
                 .form-control {
-                    height       : 50px;
+                    height       : auto;
                     border-radius: 12px;
                     border       : 1px solid rgba($black-color, 0.15);
                     color        : $black-color;
                     padding-left : 20px;
-                    padding-top : 6px;
+                    padding-top : 10px;
                     padding-right: 20px;
                     font-size    : 14px;
                     resize: none;
@@ -489,7 +489,10 @@ html {
         }
     }
 }
-
+.inactive.active {
+    color: #000000;
+    background-color:  $primary-color;
+}
 @media only screen and (max-width: 767.98px) {
 
     .header,
@@ -1175,7 +1178,6 @@ html {
                         border-spacing : 0 .75em;
                         margin-bottom  : 0;
                         padding        : 5px;
-
                         tbody {
                             tr {
                                 box-shadow   : 0px 0px 10px rgba($black-color, .1);
@@ -1302,7 +1304,7 @@ html {
                     .password-input-group {
                         svg {
                             position: absolute;
-                            top     : 14px;
+                            top     : 17px;
                             right   : 20px;
                             opacity : 0.30;
                         }

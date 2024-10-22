@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.svg";
 import { Icon } from "@iconify/react";
-import axiosInstance from "../axios/axiosInstanse";
+import axiosEmployeeInstance from "../axios/axiosemployeeInstanse";
 const Sidebar = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axiosInstance.get("/logout");
+      const response = await axiosEmployeeInstance.get("/logout");
+
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("email");
       navigate("/login");
     } catch (error) {
-      // console.log(error);
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("full_name");
@@ -55,55 +56,51 @@ const Sidebar = () => {
     {
       id: "Dashboard",
       title: "Dashboard",
-      link: "/dashboard",
+      link: "/employee/dashboard",
       icon: "fluent:grid-16-regular",
-    },
-    {
-      id: "quotes",
-      title: "Quotes",
-      link: "/quotes",
-      icon: "mage:file-3",
-    },
-    {
-      id: "rfqs",
-      title: "RFQ's",
-      link: "/rfqs",
-      icon: "hugeicons:file-edit",
     },
     {
       id: "orders",
       title: "Orders",
-      link: "/orders",
+      link: "/employee/orders",
       icon: "mage:box-3d-check",
     },
     {
       id: "queue",
       title: "Queue",
-      link: "/queue",
+      link: "/employee/queue",
       icon: "hugeicons:queue-02",
+      subMenu: [
+        {
+          id: "archive",
+          title: "Archive",
+          link: "/employee/archive",
+          icon: "fluent:laser-tool-20-regular",
+        },
+      ],
     },
+    // {
+    //   id: "cut",
+    //   title: "Archive",
+    //   link: "/employee/archive",
+    //   icon: "fluent:laser-tool-20-regular",
+    // },
     {
-      id: "cut",
-      title: "Cut",
-      link: "/cut",
-      icon: "fluent:laser-tool-20-regular",
-    },
-    {
-      id: "payment-history",
-      title: "Payment History",
-      link: "/payment-history",
-      icon: "material-symbols:attach-money-rounded",
+      id: "complete-orders",
+      title: "Complete Orders",
+      link: "/employee/complete-orders",
+      icon: "carbon:task-complete",
     },
     {
       id: "edit-profile",
       title: "Profile Settings",
-      link: "/edit-profile",
+      link: "/employee/edit-profile",
       icon: "basil:user-outline",
     },
     {
       id: "logout",
       title: "Logout",
-      link: "/",
+      link: "/employee/logout",
       icon: "hugeicons:logout-04",
     },
   ];
@@ -136,33 +133,41 @@ const Sidebar = () => {
         </div>
         <div className="sidebarouter">
           {pages.map((page) =>
-            page.title == "Logout" ? (
+            page.title === "Logout" ? (
               <NavLink
-                key={page.id}
-                // to={page.link}
-                className="navitem"
-                onClick={handleLogout} // Pass the event and page info
-                // Optionally, manage active state if needed
-                // isActive={() => location.pathname.startsWith(page.link)}
+                to={page.link}
+                className="navitem inactive"
+                onClick={handleLogout}
               >
                 <Icon icon={page.icon} />
                 {page.title}
               </NavLink>
             ) : (
-              <>
+              <div key={page.id}>
                 <NavLink
-                  key={page.id}
                   to={page.link}
                   className="navitem"
                   onClick={handleNavLinkClick}
-                  // isActive={() => {
-                  //   return location.pathname.startsWith(page.link);
-                  // }}
                 >
                   <Icon icon={page.icon} />
                   {page.title}
                 </NavLink>
-              </>
+                {page.subMenu && (
+                  <div className="submenu">
+                    {page.subMenu.map((subPage) => (
+                      <NavLink
+                        key={subPage.id}
+                        to={subPage.link}
+                        className="navitem submenu-item"
+                        onClick={handleNavLinkClick}
+                      >
+                        <Icon icon={subPage.icon} />
+                        {subPage.title}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
             )
           )}
         </div>

@@ -1008,6 +1008,20 @@ body {
   margin-bottom: 7px;
   white-space: nowrap;
 }
+
+.custom-label-tag {
+  height: 25px;
+  padding: 0px 10px;
+  font-size: 12px;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 25px;
+  border-radius: 30px;
+  margin-bottom: 7px;
+  white-space: nowrap;
+}
+
 .wrapper .maincontent_div .card .card-body .list-main .list-attachment img {
   height: 32px;
   -o-object-fit: contain;

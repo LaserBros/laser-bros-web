@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -16,11 +16,13 @@ import barcode from "../../assets/img/barcode.jpg";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import file from "../../assets/img/file1.jpg";
 import loaderimg from "../../../../src/assets/img/loader.svg";
-
+import Select from "react-select";
 import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
 import {
   AdminmoveOrderStatus,
+  assignTaskToEmployees,
+  getEmployeeDetails,
   getParticularOrderDetails,
   markCompleteQuote,
   moveOrderStatus,
@@ -28,8 +30,79 @@ import {
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import { toast } from "react-toastify";
 const OrdersDetail = () => {
+  const pdfRef = useRef();
+
+  const loadImagesAsBase64 = async () => {
+    const images = document.querySelectorAll("#pdf-content img");
+    const promises = Array.from(images).map(async (img) => {
+      try {
+        if (
+          img.src.startsWith("http") &&
+          !img.src.includes(window.location.origin)
+        ) {
+          const response = await fetch(img.src, { mode: "cors" });
+          if (!response.ok)
+            throw new Error(`Failed to fetch image: ${img.src}`);
+
+          const blob = await response.blob();
+          const reader = new FileReader();
+
+          return new Promise((resolve) => {
+            reader.onload = () => {
+              img.src = reader.result; // Replace image src with base64 data
+              resolve();
+            };
+            reader.readAsDataURL(blob);
+          });
+        }
+      } catch (error) {
+        console.error(error); // Log the error for debugging
+        return Promise.resolve(); // Continue without breaking
+      }
+    });
+    return Promise.all(promises);
+  };
+
+  const downloadPDF = async () => {
+    await loadImagesAsBase64(); // Ensure all images are converted to base64
+    const input = document.getElementById("pdf-content");
+
+    // Use html2canvas to create a canvas from the content
+    const canvas = await html2canvas(input, { useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "pt",
+      format: "a4",
+    });
+
+    const imgWidth = 595.28; // A4 page width in points
+    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Scale height according to width
+
+    // Calculate how many pages are needed
+    const pageHeight = pdf.internal.pageSize.height; // Height of the PDF page
+    let heightLeft = imgHeight; // Remaining height for the image
+
+    let position = 0;
+
+    // Add image to PDF, creating new pages as needed
+    while (heightLeft >= 0) {
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight; // Decrease height left by one page height
+      position -= pageHeight; // Move position for next page
+      if (heightLeft >= 0) {
+        pdf.addPage(); // Add a new page if there's still more content
+      }
+    }
+
+    pdf.save("download.pdf");
+  };
+
   const [modalShow, setModalShow] = useState(false);
   const [customer_note, setcustomer_note] = useState(false);
   const [admin_note, setadmin_note] = useState(false);
@@ -69,6 +142,7 @@ const OrdersDetail = () => {
   };
   useEffect(() => {
     fetchOrder();
+    loadEmp();
   }, []);
   const handleDownloadAll = async (data) => {
     console.log("Sddssdds");
@@ -238,153 +312,284 @@ const OrdersDetail = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`; // Customize as needed (MM/DD/YYYY)
   };
-
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      border: "1px solid rgba(0, 0, 0, 0.15)",
+      boxShadow: "none",
+      minHeight: "50px",
+      borderRadius: "40px",
+      fontSize: "14px",
+    }),
+    multiValue: (provided, state) => ({
+      ...provided,
+      color: "#fff",
+      backgroundColor: "#4f8cca", // Change background color of the selected value container
+    }),
+    multiValueLabel: (provided, state) => ({
+      ...provided,
+      color: "#fff",
+    }),
+  };
   // <p>{formatDate(order.createdAt)}</p>;
+  const [selectedEmp, setSelectedEmp] = useState("");
+  const [Emp, setEmp] = useState([]);
+  const [EmpLoad, setEmpLoad] = useState(false);
+  useEffect(() => {
+    const defaultEmployee = Emp.find(
+      (emp) => emp.value === order?.orderedQuote?.task_assigned
+    );
 
+    if (defaultEmployee) {
+      setSelectedEmp({
+        value: defaultEmployee?.value,
+        label: defaultEmployee?.label,
+      });
+    } else {
+      setSelectedEmp();
+    }
+    // setSelectedEmp();
+  }, [order]);
+
+  const loadEmp = async () => {
+    try {
+      const res = await getEmployeeDetails();
+      const options = res.data.map((code) => ({
+        label: code.full_name,
+        value: code._id,
+      }));
+      setEmp(options);
+    } catch (error) {
+      setEmp([]);
+    }
+  };
+
+  const handleSortChange = (value) => {
+    const selectedValue = value.value;
+    setSelectedEmp(value);
+  };
+  const SaveEmp = async () => {
+    setEmpLoad(true);
+    try {
+      const data = {
+        id: order?.orderedQuote._id,
+        employee_id: selectedEmp.value,
+      };
+      const res = await assignTaskToEmployees(data);
+      setEmpLoad(false);
+      toast.success("Employee assign sucessfully!!");
+    } catch (error) {
+      setEmpLoad(false);
+      toast.error("Something wents wrong.");
+    }
+  };
   return (
-    <React.Fragment>
-      {!loading ? (
-        <>
-          <Card>
-            <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
-              <h5>
-                WO# LB-
-                {order?.newUpdatedData[0]?.search_quote}
-              </h5>
-              {order?.orderedQuote.status == 2 &&
-              order?.orderedQuote.move_status == 2 ? (
-                <Button
-                  as={Link}
-                  to="/admin/complete-orders"
-                  className="d-inline-flex align-items-center justify-content-center"
-                >
-                  Back
-                </Button>
-              ) : (
-                <Button
-                  as={Link}
-                  to="/admin/orders"
-                  className="d-inline-flex align-items-center justify-content-center"
-                >
-                  Back To Orders
-                </Button>
-              )}
-            </CardHeader>
-            <CardBody>
-              <Row>
-                <Col md={6} lg={4} xl={3} className="mb-3">
-                  <div className="orders-card ">
-                    <h4>{order.addressDetails?.full_name}</h4>
-                    <p>{order.addressDetails?.address_line_1}</p>
-                    <p>{order.addressDetails?.address_line_2}</p>
-                    <p>{order.addressDetails?.state}</p>
-                    <p className="mb-0">
-                      {order.addressDetails?.country},{" "}
-                      {order.addressDetails?.pincode}
-                    </p>
-                  </div>
-                </Col>
-                <Col md={6} lg={4} xl={3} className="mb-3">
-                  <div className="orders-card">
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Order Date: </label>{" "}
-                      <span>{formatDate(order?.orderedQuote.createdAt)}</span>
+    <div id="pdf-content">
+      <React.Fragment>
+        {!loading ? (
+          <>
+            <Card>
+              <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
+                <h5>
+                  WO# LB-
+                  {order?.newUpdatedData[0]?.search_quote}
+                </h5>
+                {order?.orderedQuote.status == 2 &&
+                order?.orderedQuote.move_status == 2 ? (
+                  <Button
+                    as={Link}
+                    to="/admin/complete-orders"
+                    className="d-inline-flex align-items-center justify-content-center"
+                  >
+                    Back
+                  </Button>
+                ) : (
+                  <Button
+                    as={Link}
+                    to="/admin/orders"
+                    className="d-inline-flex align-items-center justify-content-center"
+                  >
+                    Back To Orders
+                  </Button>
+                )}
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <Col md={6} lg={4} xl={3} className="mb-3">
+                    <div className="orders-card ">
+                      <h4>{order.addressDetails?.full_name}</h4>
+                      <p>{order.addressDetails?.address_line_1}</p>
+                      <p>{order.addressDetails?.address_line_2}</p>
+                      <p>{order.addressDetails?.state}</p>
+                      <p className="mb-0">
+                        {order.addressDetails?.country},{" "}
+                        {order.addressDetails?.pincode}
+                      </p>
                     </div>
-                    {/* <div className="d-flex align-items-center mb-3">
+                  </Col>
+                  <Col md={6} lg={4} xl={3} className="mb-3">
+                    <div className="orders-card">
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Order Date: </label>{" "}
+                        <span>{formatDate(order?.orderedQuote.createdAt)}</span>
+                      </div>
+                      {/* <div className="d-flex align-items-center mb-3">
                       <label>Due Date: </label> <span>6-14-24</span>
                     </div> */}
-                    <div className="d-flex align-items-center mb-3">
-                      <label>Order Amount: </label>{" "}
-                      <span>
-                        {new Intl.NumberFormat("en-US", {
-                          style: "currency",
-                          currency: "USD", // Change to your desired currency
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(order?.orderedQuote.total_amount)}
-                      </span>
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Order Amount: </label>{" "}
+                        <span>
+                          {new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD", // Change to your desired currency
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }).format(order?.orderedQuote.total_amount)}
+                        </span>
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <label>Status: </label>{" "}
+                        <span className="statusnew fw-medium">
+                          {order?.orderedQuote.status == 0
+                            ? "New"
+                            : order?.orderedQuote.status == 1
+                            ? "Paid"
+                            : order?.orderedQuote.status == 2
+                            ? "Complete"
+                            : order?.orderedQuote.status == 3
+                            ? "Complete"
+                            : ""}
+                        </span>
+                      </div>
                     </div>
-                    <div className="d-flex align-items-center">
-                      <label>Status: </label>{" "}
-                      <span className="statusnew fw-medium">
-                        {order?.orderedQuote.status == 1
-                          ? "Paid"
-                          : order?.orderedQuote.status == 2
-                          ? "Complete"
-                          : order?.orderedQuote.status == 3
-                          ? "Complete"
-                          : ""}
-                      </span>
-                    </div>
-                  </div>
-                </Col>
-                <Col md={6} lg={4} xl={6} className="text-xl-end mb-3">
-                  {/* <Image src={barcode} className="img-fluid mb-3" alt="" /> */}
-                  {}
-                  <ReactBarcode
-                    value={`WO# LB-${getMonthYear(
-                      order?.orderedQuote.createdAt
-                    )}-
+                  </Col>
+                  <Col md={6} lg={4} xl={6} className="text-xl-end mb-3">
+                    {/* <Image src={barcode} className="img-fluid mb-3" alt="" /> */}
+                    {}
+                    <ReactBarcode
+                      value={`WO# LB-${getMonthYear(
+                        order?.orderedQuote.createdAt
+                      )}-
                 ${order?.orderedQuote.quote_number}`}
-                    options={{
-                      width: 0.6,
-                      textAlign: "right",
-                      text: " ",
-                      // format: "CODE39",
-                    }}
-                  />
-
-                  <div className="d-flex align-items-center justify-content-xl-end gap-3">
-                    <div className="text-center download-wo-allfiles">
-                      <Icon icon="solar:file-download-linear" />
-                      <p className="mb-0">Download WO</p>
-                    </div>
-                    <div
-                      className="text-center download-wo-allfiles"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleDownloadAll(order.newUpdatedData)}
-                    >
-                      <Icon icon="bytesize:download" />
-                      <p className="mb-0">Download All Files</p>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-              <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">
-                <div className="d-inline-flex align-items-center gap-2 my-1">
-                  <b>In this order:</b>
-                  {order.newUpdatedData.map((wo, index) => (
-                    <span
-                      className="badgestatus"
-                      style={getMaterialColor(
-                        wo?.material_name + " " + wo?.material_grade
-                      )}
-                    >
-                      {wo?.material_code}
-                    </span>
-                  ))}
-                </div>
-                {order?.orderedQuote.status == 2 &&
-                  order?.orderedQuote.move_status != 2 && (
-                    <Link
-                      className="btnnote p-3 btn-success btn text-white"
-                      onClick={() => {
-                        handleMove(order?.orderedQuote._id);
+                      options={{
+                        width: 0.6,
+                        textAlign: "right",
+                        text: " ",
+                        // format: "CODE39",
                       }}
-                      disabled={moveOrder}
-                    >
-                      {moveOrder ? (
+                    />
+
+                    <div className="d-flex align-items-center justify-content-xl-end gap-3">
+                      <div
+                        className="text-center download-wo-allfiles"
+                        style={{ cursor: "pointer" }}
+                        onClick={downloadPDF}
+                      >
+                        <Icon icon="solar:file-download-linear" />
+                        <p className="mb-0">Download WO</p>
+                      </div>
+                      <div
+                        className="text-center download-wo-allfiles"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDownloadAll(order.newUpdatedData)}
+                      >
+                        <Icon icon="bytesize:download" />
+                        <p className="mb-0">Download All Files</p>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+                <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
+                  {order?.orderedQuote.status == 0 ? (
+                    <>
+                      <div>
                         <span
-                          className="spinner-border spinner-border-sm"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
+                          className=" d-inline-flex align-items-center justify-content-center"
+                          style={{ paddingRight: "20px" }}
+                        >
+                          Select Employee
+                        </span>
+                      </div>
+                      {/* {selectedEmp} -== */}
+                      <Select
+                        className="rounded-5 flex-grow-1 mr-2"
+                        styles={customStyles}
+                        value={selectedEmp == null ? "" : selectedEmp}
+                        onChange={handleSortChange}
+                        options={Emp}
+                        isSearchable={false}
+                        placeholder="Select Employee"
+                      />
+                      <div className="col-xxl-1 col-lg-1 text-lg-end">
+                        <Link
+                          className="btn btn-primary d-inline-flex align-items-center justify-content-center ml-2"
+                          to={""}
+                          onClick={() => {
+                            SaveEmp();
+                          }}
+                          disabled={EmpLoad}
+                        >
+                          {EmpLoad ? (
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                          ) : (
+                            "Save"
+                          )}
+                        </Link>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {order?.orderedQuote.employee_name ? (
+                        <span>
+                          <b>
+                            Order assigned : {order?.orderedQuote.employee_name}
+                          </b>
+                        </span>
                       ) : (
-                        " Move To Complete Order"
+                        <span>No Employee Selected</span>
                       )}
-                    </Link>
+                    </>
                   )}
-                {/* <div className="d-inline-flex align-items-center gap-2 my-1">
+                </div>
+                <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">
+                  <div className="d-inline-flex align-items-center gap-2 my-1">
+                    <b>In this order:</b>
+                    {order.newUpdatedData.map((wo, index) => (
+                      <span
+                        className="badgestatus"
+                        style={getMaterialColor(
+                          wo?.material_name + " " + wo?.material_grade
+                        )}
+                      >
+                        {wo?.material_code}
+                      </span>
+                    ))}
+                  </div>
+                  {order?.orderedQuote.status == 2 &&
+                    order?.orderedQuote.move_status != 2 && (
+                      <Link
+                        className="btnnote p-3 btn-success btn text-white"
+                        onClick={() => {
+                          handleMove(order?.orderedQuote._id);
+                        }}
+                        disabled={moveOrder}
+                      >
+                        {moveOrder ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : (
+                          " Move To Complete Order"
+                        )}
+                      </Link>
+                    )}
+                  {/* <div className="d-inline-flex align-items-center gap-2 my-1">
                   <b>Shipping:</b>
                   <span
                     className="badgestatus"
@@ -393,227 +598,226 @@ const OrdersDetail = () => {
                     UPS
                   </span>
                 </div> */}
-              </div>
-              <div className="orders-detail mt-3">
-                {order.newUpdatedData.map((wo, index) => (
-                  <div className="list-main  d-inline-flex justify-content-between w-100">
-                    <div className="list-left d-inline-flex">
-                      <div className="list-img-outer">
-                        <div className="list-img">
-                          <Image
-                            src={wo.image_url}
-                            alt={wo.image_url}
-                            className="img-fluid"
-                          />
+                </div>
+                <div className="orders-detail mt-3">
+                  {order.newUpdatedData.map((wo, index) => (
+                    <div className="list-main  d-inline-flex justify-content-between w-100">
+                      <div className="list-left d-inline-flex">
+                        <div className="list-img-outer">
+                          <div className="list-img">
+                            <Image
+                              src={wo.image_url}
+                              alt={wo.image_url}
+                              className="img-fluid"
+                            />
+                          </div>
+                          {/* <span>{wo.dimension}</span> */}
                         </div>
-                        {/* <span>{wo.dimension}</span> */}
+                        <div className="list-content">
+                          <h2>
+                            {shortenName(wo.material_code, wo.quote_name)}
+                            <Icon
+                              icon="material-symbols-light:download-sharp"
+                              onClick={() =>
+                                handleDownload(
+                                  wo?.dxf_url,
+                                  wo?.material_code + "-" + wo.quote_name
+                                )
+                              }
+                            />
+                          </h2>
+                          <div className="list-qty d-flex align-items-center gap-3 mb-3">
+                            <span className="qty">
+                              <strong>QTY:</strong> {wo.quantity}
+                            </span>
+                            <span className="price-total">
+                              <Amount amount={wo.amount / wo.quantity} />
+                              /ea.
+                            </span>
+                            <span className="price-total">
+                              <Amount amount={wo.amount} />
+                              /total
+                            </span>
+                          </div>
+                          <Link
+                            className="btnnote"
+                            onClick={() => {
+                              handleShow(wo.notes_text, wo.notes_admin);
+                            }}
+                          >
+                            View Notes
+                          </Link>
+                          {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                            <Link
+                              className="btnnote ms-2"
+                              onClick={() => {
+                                handleComplete(wo._id);
+                              }}
+                            >
+                              {Rowloading == wo._id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                ></span>
+                              ) : (
+                                "Mark Complete"
+                              )}
+                            </Link>
+                          )}
+                          {wo.isCompleted == 1 && (
+                            <Link className="ms-2 text-success text-decoration-none">
+                              Completed
+                            </Link>
+                          )}
+                        </div>
                       </div>
-                      <div className="list-content">
-                        <h2>
-                          {shortenName(wo.material_code, wo.quote_name)}
-                          <Icon
-                            icon="material-symbols-light:download-sharp"
-                            onClick={() =>
-                              handleDownload(
-                                wo?.dxf_url,
-                                wo?.material_code + "-" + wo.quote_name
+
+                      <div className="list-checkboxes  d-inline-flex gap-3">
+                        <div className="custom-checkbox-container text-center">
+                          <label
+                            className="custom-label-tag"
+                            htmlFor={`${wo.material_code}${wo._id}`}
+                            style={getMaterialColor(
+                              wo?.material_name + " " + wo?.material_grade
+                            )}
+                          >
+                            {wo.material_code}
+                          </label>
+                          <Form.Check
+                            type="checkbox"
+                            id={`${wo.material_code}${wo._id}`}
+                            checked={wo.isChecked_material == 1}
+                            onChange={(event) =>
+                              handleCheckboxChangeEvent(
+                                event,
+                                wo._id,
+                                "isChecked_material"
                               )
                             }
                           />
-                        </h2>
-                        <div className="list-qty d-flex align-items-center gap-3 mb-3">
-                          <span className="qty">
-                            <strong>QTY:</strong> {wo.quantity}
-                          </span>
-                          <span className="price-total">
-                            <Amount amount={wo.amount / wo.quantity} />
-                            /ea.
-                          </span>
-                          <span className="price-total">
-                            <Amount amount={wo.amount} />
-                            /total
-                          </span>
                         </div>
-                        <Link
-                          className="btnnote"
-                          onClick={() => {
-                            handleShow(wo.notes_text, wo.notes_admin);
-                          }}
-                        >
-                          View Notes
-                        </Link>
-                        {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
-                          <Link
-                            className="btnnote ms-2"
-                            onClick={() => {
-                              handleComplete(wo._id);
-                            }}
-                          >
-                            {Rowloading == wo._id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>
-                            ) : (
-                              "Mark Complete"
-                            )}
-                          </Link>
+                        {wo.bend_count > 0 && (
+                          <div className="custom-checkbox-container text-center">
+                            <label
+                              className="custom-label-tag"
+                              htmlFor={`${wo._id}-POST`}
+                              style={getMaterialColor(
+                                wo?.material_name + " " + wo?.material_grade
+                              )}
+                            >
+                              Bend
+                            </label>
+                            <Form.Check
+                              type="checkbox"
+                              id={`${wo._id}-POST`}
+                              checked={wo.isChecked_bend == 1}
+                              onChange={(event) =>
+                                handleCheckboxChangeEvent(
+                                  event,
+                                  wo._id,
+                                  "isChecked_bend"
+                                )
+                              }
+                            />
+                          </div>
                         )}
-                        {wo.isCompleted == 1 && (
-                          <Link className="ms-2 text-success text-decoration-none">
-                            Completed
-                          </Link>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="list-checkboxes  d-inline-flex gap-3">
-                      <div className="custom-checkbox-container text-center">
-                        <label
-                          key={`${wo._id}-${wo.material_code}`}
-                          className="custom-label-tag"
-                          htmlFor={`${wo.material_code}${wo._id}`}
-                          style={getMaterialColor(
-                            wo?.material_name + " " + wo?.material_grade
-                          )}
-                        >
-                          {wo.material_code}
-                        </label>
-                        <Form.Check
-                          type="checkbox"
-                          id={`${wo.material_code}${wo._id}`}
-                          checked={wo.isChecked_material == 1}
-                          onChange={(event) =>
-                            handleCheckboxChangeEvent(
-                              event,
-                              wo._id,
-                              "isChecked_material"
-                            )
-                          }
-                        />
-                      </div>
-                      {wo.bend_count > 0 && (
                         <div className="custom-checkbox-container text-center">
                           <label
-                            key={`${wo._id}-${wo.material_code}`}
                             className="custom-label-tag"
                             htmlFor={`${wo._id}-POST`}
                             style={getMaterialColor(
                               wo?.material_name + " " + wo?.material_grade
                             )}
                           >
-                            Bend
+                            Post OP
                           </label>
                           <Form.Check
                             type="checkbox"
                             id={`${wo._id}-POST`}
-                            checked={wo.isChecked_bend == 1}
+                            checked={wo.isChecked_PO == 1}
                             onChange={(event) =>
                               handleCheckboxChangeEvent(
                                 event,
                                 wo._id,
-                                "isChecked_bend"
+                                "isChecked_PO"
                               )
                             }
                           />
                         </div>
-                      )}
-                      <div className="custom-checkbox-container text-center">
-                        <label
-                          key={`${wo._id}-${wo.material_code}`}
-                          className="custom-label-tag"
-                          htmlFor={`${wo._id}-POST`}
-                          style={getMaterialColor(
-                            wo?.material_name + " " + wo?.material_grade
-                          )}
-                        >
-                          Post OP
-                        </label>
-                        <Form.Check
-                          type="checkbox"
-                          id={`${wo._id}-POST`}
-                          checked={wo.isChecked_PO == 1}
-                          onChange={(event) =>
-                            handleCheckboxChangeEvent(
-                              event,
-                              wo._id,
-                              "isChecked_PO"
-                            )
-                          }
-                        />
+                        {wo.finishing_desc && (
+                          <div className="custom-checkbox-container text-center">
+                            <label
+                              className="custom-label-tag"
+                              htmlFor={`${wo._id}-${wo.finishing_desc}`}
+                              style={getMaterialColor(
+                                wo?.material_name + " " + wo?.material_grade
+                              )}
+                            >
+                              {wo.finishing_desc}
+                            </label>
+                            <Form.Check
+                              type="checkbox"
+                              id={`${wo._id}-${wo.finishing_desc}`}
+                              checked={wo.isChecked_finish == 1}
+                              onChange={(event) =>
+                                handleCheckboxChangeEvent(
+                                  event,
+                                  wo._id,
+                                  "isChecked_finish"
+                                )
+                              }
+                            />
+                          </div>
+                        )}
                       </div>
-                      <div className="custom-checkbox-container text-center">
-                        <label
-                          key={`${wo._id}-${wo.finishing_desc}`}
-                          className="custom-label-tag"
-                          htmlFor={`${wo._id}-${wo.finishing_desc}`}
-                          style={getMaterialColor(
-                            wo?.material_name + " " + wo?.material_grade
-                          )}
-                        >
-                          {wo.finishing_desc}
-                        </label>
-                        <Form.Check
-                          type="checkbox"
-                          id={`${wo._id}-${wo.finishing_desc}`}
-                          checked={wo.isChecked_finish == 1}
-                          onChange={(event) =>
-                            handleCheckboxChangeEvent(
-                              event,
-                              wo._id,
-                              "isChecked_finish"
-                            )
-                          }
-                        />
-                      </div>
-                    </div>
-                    {wo.bend_count > 0 ? (
-                      <a href={wo.bendupload_url} download="filename.pdf">
+                      {wo.bend_count > 0 ? (
+                        <a href={wo.bendupload_url} download="filename.pdf">
+                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                            <Image
+                              src={attachment}
+                              className="img-fluid"
+                              alt=""
+                            />
+                            <span>Attachments</span>
+                          </div>
+                        </a>
+                      ) : (
                         <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                          <Image
-                            src={attachment}
-                            className="img-fluid"
-                            alt=""
-                          />
-                          <span>Attachments</span>
-                        </div>
-                      </a>
-                    ) : (
-                      <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                        {/* <Image src={attachment} className="img-fluid" alt="" />
+                          {/* <Image src={attachment} className="img-fluid" alt="" />
                         <span>Attachments</span> */}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </CardBody>
-          </Card>
-          <AddNote
-            title="Notes"
-            show={modalShow}
-            customer_note={customer_note}
-            admin_note={admin_note}
-            handleClose={handleClose}
-          />
-        </>
-      ) : (
-        <>
-          <span
-            role="status"
-            aria-hidden="true"
-            className="spinner-border spinner-border-sm text-center"
-            style={{
-              margin: "0 auto",
-              display: "block",
-              marginTop: "20px",
-              marginBottom: "20px",
-            }}
-          ></span>
-        </>
-      )}
-    </React.Fragment>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+            <AddNote
+              title="Notes"
+              show={modalShow}
+              customer_note={customer_note}
+              admin_note={admin_note}
+              handleClose={handleClose}
+            />
+          </>
+        ) : (
+          <>
+            <span
+              role="status"
+              aria-hidden="true"
+              className="spinner-border spinner-border-sm text-center"
+              style={{
+                margin: "0 auto",
+                display: "block",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            ></span>
+          </>
+        )}
+      </React.Fragment>
+    </div>
   );
 };
 

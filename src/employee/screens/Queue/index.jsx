@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -13,146 +13,203 @@ import {
 import file from "../../assets/img/file1.jpg";
 import { Icon } from "@iconify/react";
 import attachment from "../../assets/img/attachment.svg";
+import JSZip from "jszip";
+import Select from "react-select";
+
+import { saveAs } from "file-saver";
+import {
+  AdmingetThickness,
+  downloadAllFiles,
+  EmpdownloadParticularFile,
+  EmpfetchOrdersInQueue,
+  EmpgetAllMaterialCodes,
+  EmpmoveOrderStatus,
+  moveOrderToQueue,
+} from "../../../api/api";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const Queue = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [materialCodes, setMaterialCodes] = useState([]);
+  const [selectedCode, setSelectedCode] = useState("");
 
-  const data = [
-    {
-      id: 1,
-      material: "CS0120",
-      parts: 2,
-      due: "6-14-4",
-      wo: "LB-6-24-0001",
-      checkboxes: ["3KW", "12KW"],
-      workOrders: [
-        {
-          id: 1,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "CS0120(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["CS0120", "F15", "Bend", "Post OP"],
-        },
-      ],
-    },
-    {
-      id: 2,
-      material: "A50120",
-      parts: 1,
-      due: "7-18-4",
-      wo: "LB-6-24-0002",
-      checkboxes: ["3KW", "12KW"],
-      workOrders: [
-        {
-          id: 1,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "A50120(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["A50120", "F15", "Bend", "Post OP"],
-        },
-      ],
-    },
-    {
-      id: 3,
-      material: "SB0036",
-      parts: 3,
-      due: "7-18-4",
-      wo: "LB-6-24-0003",
-      checkboxes: ["3KW", "12KW"],
-      workOrders: [
-        {
-          id: 1,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "SB0036(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["SB0036", "F15", "Bend", "Post OP"],
-        },
-        {
-          id: 2,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "SB0036(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["SB0036", "F15", "Bend", "Post OP"],
-        },
-        {
-          id: 3,
-          img: file,
-          dimension: "11 in x 11 in",
-          name: "SB0036(14)-plate1.dxf",
-          qty: "13",
-          price: "10",
-          total: "100",
-          labels: ["SB0036", "F15", "Bend", "Post OP"],
-        },
-      ],
-    },
-  ];
-
-  const handleExpandClick = (id) => {
-    setExpandedRow(expandedRow === id ? null : id);
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      border: "1px solid rgba(0, 0, 0, 0.15)",
+      boxShadow: "none",
+      minHeight: "50px",
+      borderRadius: "40px",
+      fontSize: "14px",
+    }),
+    multiValue: (provided, state) => ({
+      ...provided,
+      color: "#fff",
+      backgroundColor: "#4f8cca", // Change background color of the selected value container
+    }),
+    multiValueLabel: (provided, state) => ({
+      ...provided,
+      color: "#fff",
+    }),
   };
+  const loadOrders = async (selectedValue = "") => {
+    // alert("Your file is being uploaded!");
 
-  const handleCheckboxChange = (id) => {
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
-  };
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(164 194 244)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(224 102 103)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(224 102 103)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(148 196 125)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(148 196 125)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(148 196 125)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 217 102)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(213 166 189)",
-        };
-      default:
-        return {};
+    try {
+      setLoading(true);
+      setOrders([]);
+      const response = await EmpfetchOrdersInQueue(selectedValue);
+      console.log("response.data.data.result", response.data.data.result);
+      setOrders(response.data.data.result);
+    } catch (error) {
+      setOrders([]);
+      console.error("Error fetching cards:", error);
+    } finally {
+      setLoading(false);
     }
   };
+  const getCode = async () => {
+    try {
+      const res = await EmpgetAllMaterialCodes();
+      const options = res.data.map((code) => ({
+        label: code, // What you want to display in the dropdown
+        value: code, // The value associated with the option
+      }));
+      setMaterialCodes(options);
+    } catch {}
+  };
+  useEffect(() => {
+    loadOrders();
+    getCode();
+  }, []);
+
+  const [selectAll, setSelectAll] = useState(false);
+  const handleSelectAllChange = (event) => {
+    const isChecked = event.target.checked;
+    setSelectAll(isChecked);
+
+    // Update all individual checkboxes based on select all state
+    const newCheckedItems = {};
+    orders.forEach((row) => {
+      newCheckedItems[row._id] = isChecked;
+    });
+    setCheckedItems(newCheckedItems);
+  };
+
+  const handleCheckboxChangeEvent = (event, id, type) => {
+    const isChecked = event.target.checked;
+    setCheckedItems((prevState) => ({
+      ...prevState,
+      [id]: isChecked,
+    }));
+  };
+
+  const moveQueue = () => {
+    const checkedIds = Object.entries(checkedItems)
+      .filter(([id, isChecked]) => isChecked)
+      .map(([id]) => id);
+    if (checkedIds.length === 0) {
+      toast.error("Please check atleast one order");
+    } else {
+      checkedIds.forEach(async (id) => {
+        const data = {
+          id: id,
+        };
+        try {
+          const res = await EmpmoveOrderStatus(data);
+          if (res.data.status == "failure") {
+            toast.error("This quote not downloaded yet. Please download quote");
+          }
+        } catch (error) {
+          toast.error("Error when order move to Queue");
+        }
+      });
+      setLoading(true);
+      setTimeout(() => {
+        loadOrders();
+      }, 4000);
+    }
+  };
+  const handleSortChange = (value) => {
+    const selectedValue = value.value;
+    setSelectedCode(value);
+    loadOrders(selectedValue);
+  };
+  const getMonthYear = (dateStr) => {
+    const date = new Date(dateStr);
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = String(date.getFullYear()).slice(-2);
+    return `${month}-${year}`;
+  };
+  const getDateMonthYearWithSeconds = (dateStr) => {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${day}/${month}/${year} `;
+  };
+
+  const handleDownloadAll = async (data, id) => {
+    const checkedIds = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key]
+    );
+
+    if (checkedIds.length === 0) {
+      console.log("No items selected");
+      return;
+    }
+    const selectedOrders = orders.filter((order) =>
+      checkedIds.includes(order._id)
+    );
+
+    const urls = selectedOrders.map((order) => order);
+    const confirmSave = window.confirm(
+      "Do you want to proceed with the download?"
+    );
+    if (!confirmSave) {
+      console.log("User canceled the download.");
+      return; // Exit if the user clicks "Cancel"
+    }
+    selectedOrders.map(async (order) => {
+      const param = {
+        id: order._id,
+        order_id: order.order_id,
+        type: 0,
+      };
+      try {
+        const result = await EmpdownloadParticularFile(param);
+      } catch (error) {}
+    });
+    const zip = new JSZip();
+
+    try {
+      const filePromises = urls.map(async (url, index) => {
+        const response = await fetch(url.dxf_url);
+        const blob = await response.blob();
+        const fileName = url.subquote_number + ".dxf";
+        zip.file(fileName, blob);
+      });
+
+      await Promise.all(filePromises);
+
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "files.zip");
+      setTimeout(() => {
+        loadOrders();
+      }, 1000);
+      setCheckedItems({});
+    } catch (error) {
+      console.error("Error downloading or zipping files:", error);
+    }
+  };
+
   return (
     <React.Fragment>
       <Card>
@@ -162,200 +219,128 @@ const Queue = () => {
         <CardBody>
           <Form>
             <Row className="px-2 gx-3">
-              <Col lg={3} xxl={2}>
-                <Form.Group className="form-group mb-2 searchfield">
-                  <div className=" position-relative">
-                    <Icon
-                      icon="flowbite:search-solid"
-                      className="position-absolute"
-                    />
-                    <Form.Control
-                      type="text"
-                      placeholder="Search WO"
-                      className="rounded-5"
-                    />
-                  </div>
-                </Form.Group>
+              <Col lg={6} xxl={7}>
+                <div className="d-flex align-items-center gap-2">
+                  <Select
+                    className="rounded-5 flex-grow-1"
+                    styles={customStyles}
+                    value={selectedCode}
+                    onChange={handleSortChange}
+                    options={materialCodes}
+                    isSearchable={true}
+                    placeholder="Select Material Code"
+                  />
+                  <Link
+                    to={""}
+                    className="flex-shrink-0 btn btn-primary d-inline-flex align-items-center justify-content-center"
+                    onClick={() => {
+                      setSelectedCode("");
+                      loadOrders();
+                    }}
+                  >
+                    {" "}
+                    Clear
+                  </Link>
+                </div>
               </Col>
-              <Col lg={3} xxl={2}>
-                <Form.Group className="form-group mb-2">
-                  <Form.Select className="rounded-5" defaultValue="value1">
-                    <option disabled value="value1">
-                      Sort By
-                    </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={3} xxl={2}>
-                <Form.Group className="form-group mb-2">
-                  <Form.Select className="rounded-5" defaultValue="value1">
-                    <option disabled value="value1">
-                      Filter By
-                    </option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col lg={3} xxl={6} className="text-lg-end">
+              <Col lg={3} xxl={5} className="text-lg-end">
                 <Button
                   variant={null}
                   className="btn-outline-primary min-width-147"
+                  onClick={handleDownloadAll}
                 >
-                  Move To Cut
+                  Download Files
                 </Button>
               </Col>
+              {/* <Col lg={3} xxl={3} className="text-lg-end">
+                <Button
+                  variant={null}
+                  className="btn-outline-primary min-width-147"
+                  onClick={moveQueue}
+                >
+                  Move To Archive
+                </Button>
+              </Col> */}
             </Row>
           </Form>
           <div className="table-responsive">
             <Table className="tablecustom pt-0">
+              <thead>
+                <tr>
+                  <th>
+                    <Form.Check
+                      type="checkbox"
+                      id={`selectall`}
+                      checked={selectAll}
+                      onChange={handleSelectAllChange}
+                    />
+                  </th>
+                  <th>Name</th>
+                  <th>Order Date</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
               <tbody>
-                {data.map((row) => (
-                  <React.Fragment key={row.id}>
-                    <tr
-                      className={expandedRow === row.id ? "expanded-row" : ""}
-                    >
-                      <td className="text-nowrap">
-                        <b>Material:</b>
+                {loading ? (
+                  <>
+                    <tr className="text-center mt-2">
+                      <td colSpan={4}>
                         <span
-                          className="badgestatus"
-                          style={getMaterialColor(row.material)}
-                        >
-                          {row.material}
-                        </span>
-                      </td>
-                      <td className="text-nowrap">
-                        <b>Number Of Parts:</b>
-                        {row.parts}
-                      </td>
-                      <td className="text-nowrap">
-                        <b>Due:</b>
-                        {row.due}
-                      </td>
-                      <td className="text-end">
-                        <div className="d-inline-flex align-items-center">
-                          <Button
-                            variant="link"
-                            onClick={() => handleExpandClick(row.id)}
-                          >
-                            {expandedRow === row.id ? (
-                              <Icon icon="teenyicons:minimise-alt-outline" />
-                            ) : (
-                              <Icon icon="teenyicons:expand-alt-solid" />
-                            )}
-                          </Button>
-                          <Form.Check
-                            type="checkbox"
-                            checked={checkedItems[row.id] || false}
-                            onChange={() => handleCheckboxChange(row.id)}
-                          />
-                        </div>
+                          role="status"
+                          aria-hidden="true"
+                          className="spinner-border spinner-border-sm text-center"
+                          style={{
+                            margin: "0 auto",
+                            display: "block",
+                            marginTop: "20px",
+                            marginBottom: "20px",
+                          }}
+                        ></span>
                       </td>
                     </tr>
-                    {expandedRow === row.id && (
-                      <tr>
-                        <td colSpan="4" style={{ borderRadius: 12 }}>
-                          <Row className="expanded-top align-items-center mb-3">
-                            <Col xs={5}>
-                              <div className="d-inline-flex align-items-center checkbox-top gap-3">
-                                {row.checkboxes.map((option) => (
-                                  <Form.Check
-                                    key={option}
-                                    type="checkbox"
-                                    id={`${option}1`}
-                                    label={option}
-                                  />
-                                ))}
-                              </div>
-                              <p className="workorders mb-0">WO# {row.wo}</p>
-                            </Col>
-                            <Col xs={7} className="text-end">
-                              <div className="d-inline-flex align-items-center gap-3">
-                                <div className="upload-download">
-                                  <Icon icon="bytesize:download" />
-                                  <span>Download DXF Files</span>
-                                </div>
-                                <div className="upload-download">
-                                  <Icon icon="bytesize:upload" />
-                                  <span>Upload Nest</span>
-                                </div>
-                                <div className="upload-download">
-                                  <Icon icon="bytesize:download" />
-                                  <span>Download Nest</span>
-                                </div>
-                              </div>
-                            </Col>
-                          </Row>
+                  </>
+                ) : (
+                  <>
+                    {orders && orders.length > 0 ? (
+                      orders.map((row) => (
+                        <React.Fragment>
+                          <tr
+                            className={
+                              expandedRow === row._id ? "expanded-row" : ""
+                            }
+                          >
+                            <td className="text-nowrap">
+                              <Form.Check
+                                type="checkbox"
+                                id={`${row.material_code}${row._id}`}
+                                checked={checkedItems[row._id] || false} // Set checked based on state
+                                onChange={(event) =>
+                                  handleCheckboxChangeEvent(
+                                    event,
+                                    row._id,
+                                    "isChecked_material"
+                                  )
+                                }
+                              />
+                            </td>
+                            <td className="text-nowrap">
+                              {row.subquote_number}
+                            </td>
 
-                          {row.workOrders.map((wo, index) => (
-                            <div
-                              key={index}
-                              className="list-main  d-inline-flex justify-content-between w-100"
-                            >
-                              <div className="list-left d-inline-flex">
-                                <div className="list-img-outer">
-                                  <div className="list-img">
-                                    <Image
-                                      src={wo.img}
-                                      alt={wo.wo}
-                                      className="img-fluid"
-                                    />
-                                  </div>
-                                  <span>{wo.dimension}</span>
-                                </div>
-                                <div className="list-content">
-                                  <h2>
-                                    {wo.name}{" "}
-                                    <Icon icon="material-symbols-light:download-sharp" />
-                                  </h2>
-                                  <div className="list-qty d-inline-flex align-items-center gap-3">
-                                    <span className="qty">
-                                      <strong>QTY:</strong> {wo.qty}
-                                    </span>
-                                    <span className="price-total">
-                                      ${wo.price}/ea.
-                                    </span>
-                                    <span className="price-total">
-                                      ${wo.total}/total
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="list-checkboxes  d-inline-flex gap-3">
-                                {wo.labels.map((label, index) => (
-                                  <div
-                                    className="custom-checkbox-container text-center"
-                                    key={label}
-                                  >
-                                    <label
-                                      key={`${row.id}-${label}-${index}`}
-                                      className="custom-label"
-                                      htmlFor={`${label}${wo.id}`}
-                                      style={getMaterialColor(row.material)}
-                                    >
-                                      {label}
-                                    </label>
-                                    <Form.Check
-                                      type="checkbox"
-                                      id={`${label}${wo.id}`}
-                                    />
-                                  </div>
-                                ))}
-                              </div>
-                              <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                                <Image
-                                  src={attachment}
-                                  className="img-fluid"
-                                  alt=""
-                                />
-                                <span>Attachments</span>
-                              </div>
-                            </div>
-                          ))}
-                        </td>
+                            <td className="text-nowrap">
+                              {getDateMonthYearWithSeconds(row.createdAt)}
+                            </td>
+                            <td className="text-nowrap">DXF File</td>
+                          </tr>
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <tr className="text-center mt-2">
+                        <td colSpan={4}> No Queue Order Found. </td>
                       </tr>
                     )}
-                  </React.Fragment>
-                ))}
+                  </>
+                )}
               </tbody>
             </Table>
           </div>

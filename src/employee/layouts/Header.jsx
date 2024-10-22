@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavDropdown, Breadcrumb, Row, Col, Image } from "react-bootstrap";
 import Avatar from "../assets/img/Avatar.jpg";
 import ThemeToggle from "../../components/Themetoggle";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import axiosInstance from "../axios/axiosInstanse";
+import axiosEmployeeInstance from "../axios/axiosemployeeInstanse";
+import { UserContext } from "../../localstorage/UserProfileContext";
 const Header = ({ title }) => {
   const navigate = useNavigate();
-
+  const { name, image } = useContext(UserContext);
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.get("/logout");
+      const response = await axiosEmployeeInstance.get("/logout");
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");
@@ -48,7 +49,7 @@ const Header = ({ title }) => {
               title={
                 <span>
                   <Image
-                    src={Avatar}
+                    src={image}
                     roundedCircle
                     style={{
                       width: "41px",
@@ -57,13 +58,13 @@ const Header = ({ title }) => {
                       marginRight: "10px",
                     }}
                   />
-                  David Jones
+                  {name}
                   <Icon icon="ion:chevron-down" />
                 </span>
               }
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item as={NavLink} to="/edit-profile">
+              <NavDropdown.Item as={NavLink} to="/employee/edit-profile">
                 <Icon icon="mi:user" />
                 Profile Settings
               </NavDropdown.Item>
