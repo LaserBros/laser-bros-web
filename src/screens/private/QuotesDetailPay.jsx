@@ -31,6 +31,7 @@ import {
   updateSubQuoteDetails,
 } from "../../api/api";
 import AdminAddNote from "../../admin/components/AddNote";
+import DimensionsToggle from "../../components/DimensionsToggle";
 export default function QuotesDetailPay() {
   const currentDate = new Date();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -414,6 +415,14 @@ export default function QuotesDetailPay() {
                         </div>
                       </div>
                     </div>
+                    <span className="num-dim">
+                      <DimensionsToggle
+                        dimensions={quote.dimensions}
+                        id={quote._id}
+                        type={quote.dimension_type}
+                        // isEdit={true}
+                      />
+                    </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
                       <InputGroup>
                         Quantity :{" "}

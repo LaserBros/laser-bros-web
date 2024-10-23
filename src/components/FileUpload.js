@@ -21,8 +21,28 @@ const FileUpload = ({
     setError("");
 
     // Check if the current file count exceeds 5
-    if (uploadedFiles.length + acceptedFiles.length > 5) {
-      setError("You can only upload a maximum of 5 files.");
+    var count = JSON.parse(localStorage.getItem("setItempartsDBdata"));
+    const token = localStorage.getItem("authToken");
+    // console.log(
+    //   "uploadedFiles.length + acceptedFiles.length",
+    //   uploadedFiles.length + acceptedFiles.length
+    // );
+    if (!token && uploadedFiles.length + acceptedFiles.length > 5) {
+      setError(
+        "You can only upload a maximum of 5 files. Please login to upload more dxf file."
+      );
+      return;
+    }
+    if (count != null) {
+      if (!token && count.length > 5) {
+        setError(
+          "You can only upload a maximum of 5 files. Please login to upload more dxf file."
+        );
+        return;
+      }
+    }
+    if (uploadedFiles.length + acceptedFiles.length > 20) {
+      setError("You can only upload a maximum of 20 files.");
       return;
     }
 
@@ -117,7 +137,7 @@ const FileUpload = ({
         </p>
         <small>{instructions}</small>
       </div>
-      {error && <div className="text-danger">{error}</div>}
+      {error && <div className="text-danger mb-4">{error}</div>}
       <div className="uploaded-files">
         {/* Display uploaded file names */}
         {/* <ul>

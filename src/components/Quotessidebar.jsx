@@ -185,7 +185,7 @@ const QuotesSidebar = ({ amount, showDiv }) => {
     if (modalShow) {
       const timer = setTimeout(() => {
         navigate("/orders");
-      }, 5000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [modalShow]);

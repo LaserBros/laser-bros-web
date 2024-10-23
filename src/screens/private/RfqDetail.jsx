@@ -99,43 +99,49 @@ export default function RfqDetail() {
                     </span>
                   </li>
                 </ul>
-                {orders.map((row) => {
-                  return (
-                    <div className="list-quotes-main">
-                      <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                        <div className="img-quote mx-auto mx-md-0">
-                          <Image
-                            src={row.image_url}
-                            className="img-fluid"
-                            alt=""
-                          />
-                        </div>
+                {orders
+                  .slice()
+                  .reverse()
+                  .map((row) => {
+                    return (
+                      <div className="list-quotes-main">
+                        <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
+                          <div className="img-quote mx-auto mx-md-0">
+                            <Image
+                              src={row.image_url}
+                              className="img-fluid"
+                              alt=""
+                            />
+                          </div>
 
-                        <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                          <h2>{row.quote_name}</h2>
-                          <p className="num-dim-main">
-                            {/* <span className="num-dim">
+                          <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
+                            <h2>{row.quote_name}</h2>
+                            <p className="num-dim-main">
+                              {row?.subquote_number}
+                              {/* <span className="num-dim">
                               <span>Dimensions</span> 1.00 in x 1.00 in
                             </span> */}
-                            {/* <span className="px-2 num-dim-indicator">/</span>{" "} */}
-                            <span className="num-dim">
-                              <span>QTY:</span> {row.quantity}
-                            </span>
-                          </p>
-                          <p className="num-dim-main">
-                            <span className="num-dim">
-                              <span>Material</span> {row.material_name}
-                            </span>
-                            <span className="px-2 num-dim-indicator">/</span>{" "}
-                            <span className="num-dim">
-                              <span>Thickness:</span> {row.thickness}
-                            </span>{" "}
-                            <span className="px-2 num-dim-indicator">/</span>{" "}
-                            <span className="num-dim">
-                              <span>Finish:</span> {row.finishing_desc}
-                            </span>
-                          </p>
-                          {/* <Link
+                            </p>
+                            <p className="num-dim-main">
+                              {/* <span className="px-2 num-dim-indicator">/</span>{" "} */}
+                              <span className="num-dim">
+                                <span>QTY:</span> {row.quantity}
+                              </span>
+                            </p>
+                            <p className="num-dim-main">
+                              <span className="num-dim">
+                                <span>Material</span> {row.material_name}
+                              </span>
+                              <span className="px-2 num-dim-indicator">/</span>{" "}
+                              <span className="num-dim">
+                                <span>Thickness:</span> {row.thickness}
+                              </span>{" "}
+                              <span className="px-2 num-dim-indicator">/</span>{" "}
+                              <span className="num-dim">
+                                <span>Finish:</span> {row.finishing_desc}
+                              </span>
+                            </p>
+                            {/* <Link
                             className="btn btn-secondary"
                             onClick={() => {
                               // handleShow(wo.notes_text, wo.notes_admin);
@@ -143,49 +149,50 @@ export default function RfqDetail() {
                           >
                             View Notes
                           </Link> */}
-                          {row.bend_count > 0 && (
-                            <div className="quotes-services mt-3">
-                              <h4>Services</h4>
-                              <label>
-                                Bending :{" "}
-                                <a
-                                  href={`${row.bendupload_url}`}
-                                  target="_blank"
-                                >
-                                  Attachment
-                                </a>
-                              </label>
-                            </div>
-                          )}
-                        </div>
-                        <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
-                          <p className=" text-md-end">
-                            <Amount amount={row.amount} /> total
-                          </p>
-                          <p className=" text-md-end">
-                            <strong className="quotes-price">
-                              <Amount amount={row.amount / row.quantity} />
-                            </strong>
-                            /each
-                          </p>
+                            {row.bend_count > 0 && (
+                              <div className="quotes-services mt-3">
+                                <h4>Services</h4>
+                                <label>
+                                  Bending :{" "}
+                                  <a
+                                    href={`${row.bendupload_url}`}
+                                    target="_blank"
+                                  >
+                                    Attachment
+                                  </a>
+                                </label>
+                              </div>
+                            )}
+                          </div>
+                          <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
+                            <p className=" text-md-end">
+                              <Amount amount={row.amount} /> total
+                            </p>
+                            <p className=" text-md-end">
+                              <strong className="quotes-price">
+                                <Amount amount={row.amount / row.quantity} />
+                              </strong>
+                              /each
+                            </p>
 
-                          <span className="quote-off">
-                            {row.discount}% Saved
-                          </span>
-                          <p className="mb-0 text-md-end">
-                            Typical Lead Time 2-3 days
-                          </p>
+                            <span className="quote-off">
+                              {row.discount}% Saved
+                            </span>
+                            <p className="mb-0 text-md-end">
+                              Typical Lead Time 2-3 days
+                            </p>
+                          </div>
                         </div>
+                        <span className="num-dim">
+                          <DimensionsToggle
+                            dimensions={row.dimensions}
+                            id={row._id}
+                            type={row.dimension_type}
+                          />
+                        </span>
                       </div>
-                      <span className="num-dim">
-                        <DimensionsToggle
-                          dimensions={row.dimensions}
-                          id={row._id}
-                        />
-                      </span>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
                 <Row className="justify-content-end mt-2">
                   <Col lg={3} md={4} xs={6} className="totaltable ">
                     <p>

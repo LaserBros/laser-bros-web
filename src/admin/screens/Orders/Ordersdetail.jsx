@@ -33,6 +33,7 @@ import { ReactBarcode } from "react-jsbarcode";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { toast } from "react-toastify";
+import DimensionsToggle from "../../../components/DimensionsToggle";
 const OrdersDetail = () => {
   const pdfRef = useRef();
 
@@ -600,104 +601,148 @@ const OrdersDetail = () => {
                 </div> */}
                 </div>
                 <div className="orders-detail mt-3">
-                  {order.newUpdatedData.map((wo, index) => (
-                    <div className="list-main  d-inline-flex justify-content-between w-100">
-                      <div className="list-left d-inline-flex">
-                        <div className="list-img-outer">
-                          <div className="list-img">
-                            <Image
-                              src={wo.image_url}
-                              alt={wo.image_url}
-                              className="img-fluid"
+                  {order.newUpdatedData
+                    .slice()
+                    .reverse()
+                    .map((wo, index) => (
+                      <div className="list-main  d-inline-flex justify-content-between w-100">
+                        <div className="list-left d-inline-flex">
+                          <div
+                            className="list-img-outer"
+                            style={{ width: "110px" }}
+                          >
+                            <div className="list-img">
+                              <Image
+                                src={wo.image_url}
+                                alt={wo.image_url}
+                                className="img-fluid"
+                              />
+                            </div>
+                            {/* <span>{wo.dimension}</span> */}
+                            <DimensionsToggle
+                              dimensions={wo.dimensions}
+                              id={wo._id}
+                              type={wo.dimension_type}
+                              // isEdit={true}
                             />
                           </div>
-                          {/* <span>{wo.dimension}</span> */}
+
+                          <div className="list-content">
+                            <h2>
+                              {shortenName(wo.material_code, wo.quote_name)}
+                              <Icon
+                                icon="material-symbols-light:download-sharp"
+                                onClick={() =>
+                                  handleDownload(
+                                    wo?.dxf_url,
+                                    wo?.material_code + "-" + wo.quote_name
+                                  )
+                                }
+                              />
+                            </h2>
+                            <span
+                              className="num-dim mb-2"
+                              style={{ fontSize: "12px" }}
+                            >
+                              {wo?.subquote_number}
+                            </span>
+
+                            <div className="list-qty d-flex align-items-center gap-3 mb-3 pt-3">
+                              <span className="qty">
+                                <strong>QTY:</strong> {wo.quantity}
+                              </span>
+                              <span className="price-total">
+                                <Amount amount={wo.amount / wo.quantity} />
+                                /ea.
+                              </span>
+                              <span className="price-total">
+                                <Amount amount={wo.amount} />
+                                /total
+                              </span>
+                            </div>
+                            <Link
+                              className="btnnote"
+                              onClick={() => {
+                                handleShow(wo.notes_text, wo.notes_admin);
+                              }}
+                            >
+                              View Notes
+                            </Link>
+                            {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                              <Link
+                                className="btnnote ms-2"
+                                onClick={() => {
+                                  handleComplete(wo._id);
+                                }}
+                              >
+                                {Rowloading == wo._id ? (
+                                  <span
+                                    className="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  ></span>
+                                ) : (
+                                  "Mark Complete"
+                                )}
+                              </Link>
+                            )}
+                            {wo.isCompleted == 1 && (
+                              <Link className="ms-2 text-success text-decoration-none">
+                                Completed
+                              </Link>
+                            )}
+                          </div>
                         </div>
-                        <div className="list-content">
-                          <h2>
-                            {shortenName(wo.material_code, wo.quote_name)}
-                            <Icon
-                              icon="material-symbols-light:download-sharp"
-                              onClick={() =>
-                                handleDownload(
-                                  wo?.dxf_url,
-                                  wo?.material_code + "-" + wo.quote_name
+
+                        <div className="list-checkboxes  d-inline-flex gap-3">
+                          <div className="custom-checkbox-container text-center">
+                            <label
+                              className="custom-label-tag"
+                              htmlFor={`${wo.material_code}${wo._id}`}
+                              style={getMaterialColor(
+                                wo?.material_name + " " + wo?.material_grade
+                              )}
+                            >
+                              {wo.material_code}
+                            </label>
+                            <Form.Check
+                              type="checkbox"
+                              id={`${wo.material_code}${wo._id}`}
+                              checked={wo.isChecked_material == 1}
+                              onChange={(event) =>
+                                handleCheckboxChangeEvent(
+                                  event,
+                                  wo._id,
+                                  "isChecked_material"
                                 )
                               }
                             />
-                          </h2>
-                          <div className="list-qty d-flex align-items-center gap-3 mb-3">
-                            <span className="qty">
-                              <strong>QTY:</strong> {wo.quantity}
-                            </span>
-                            <span className="price-total">
-                              <Amount amount={wo.amount / wo.quantity} />
-                              /ea.
-                            </span>
-                            <span className="price-total">
-                              <Amount amount={wo.amount} />
-                              /total
-                            </span>
                           </div>
-                          <Link
-                            className="btnnote"
-                            onClick={() => {
-                              handleShow(wo.notes_text, wo.notes_admin);
-                            }}
-                          >
-                            View Notes
-                          </Link>
-                          {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
-                            <Link
-                              className="btnnote ms-2"
-                              onClick={() => {
-                                handleComplete(wo._id);
-                              }}
-                            >
-                              {Rowloading == wo._id ? (
-                                <span
-                                  className="spinner-border spinner-border-sm"
-                                  role="status"
-                                  aria-hidden="true"
-                                ></span>
-                              ) : (
-                                "Mark Complete"
-                              )}
-                            </Link>
+                          {wo.bend_count > 0 && (
+                            <div className="custom-checkbox-container text-center">
+                              <label
+                                className="custom-label-tag"
+                                htmlFor={`${wo._id}-POST`}
+                                style={getMaterialColor(
+                                  wo?.material_name + " " + wo?.material_grade
+                                )}
+                              >
+                                Bend
+                              </label>
+                              <Form.Check
+                                type="checkbox"
+                                id={`${wo._id}-POST`}
+                                checked={wo.isChecked_bend == 1}
+                                onChange={(event) =>
+                                  handleCheckboxChangeEvent(
+                                    event,
+                                    wo._id,
+                                    "isChecked_bend"
+                                  )
+                                }
+                              />
+                            </div>
                           )}
-                          {wo.isCompleted == 1 && (
-                            <Link className="ms-2 text-success text-decoration-none">
-                              Completed
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="list-checkboxes  d-inline-flex gap-3">
-                        <div className="custom-checkbox-container text-center">
-                          <label
-                            className="custom-label-tag"
-                            htmlFor={`${wo.material_code}${wo._id}`}
-                            style={getMaterialColor(
-                              wo?.material_name + " " + wo?.material_grade
-                            )}
-                          >
-                            {wo.material_code}
-                          </label>
-                          <Form.Check
-                            type="checkbox"
-                            id={`${wo.material_code}${wo._id}`}
-                            checked={wo.isChecked_material == 1}
-                            onChange={(event) =>
-                              handleCheckboxChangeEvent(
-                                event,
-                                wo._id,
-                                "isChecked_material"
-                              )
-                            }
-                          />
-                        </div>
-                        {wo.bend_count > 0 && (
                           <div className="custom-checkbox-container text-center">
                             <label
                               className="custom-label-tag"
@@ -706,90 +751,66 @@ const OrdersDetail = () => {
                                 wo?.material_name + " " + wo?.material_grade
                               )}
                             >
-                              Bend
+                              Post OP
                             </label>
                             <Form.Check
                               type="checkbox"
                               id={`${wo._id}-POST`}
-                              checked={wo.isChecked_bend == 1}
+                              checked={wo.isChecked_PO == 1}
                               onChange={(event) =>
                                 handleCheckboxChangeEvent(
                                   event,
                                   wo._id,
-                                  "isChecked_bend"
+                                  "isChecked_PO"
                                 )
                               }
                             />
                           </div>
-                        )}
-                        <div className="custom-checkbox-container text-center">
-                          <label
-                            className="custom-label-tag"
-                            htmlFor={`${wo._id}-POST`}
-                            style={getMaterialColor(
-                              wo?.material_name + " " + wo?.material_grade
-                            )}
-                          >
-                            Post OP
-                          </label>
-                          <Form.Check
-                            type="checkbox"
-                            id={`${wo._id}-POST`}
-                            checked={wo.isChecked_PO == 1}
-                            onChange={(event) =>
-                              handleCheckboxChangeEvent(
-                                event,
-                                wo._id,
-                                "isChecked_PO"
-                              )
-                            }
-                          />
+                          {wo.finishing_desc && (
+                            <div className="custom-checkbox-container text-center">
+                              <label
+                                className="custom-label-tag"
+                                htmlFor={`${wo._id}-${wo.finishing_desc}`}
+                                style={getMaterialColor(
+                                  wo?.material_name + " " + wo?.material_grade
+                                )}
+                              >
+                                {wo.finishing_desc}
+                              </label>
+                              <Form.Check
+                                type="checkbox"
+                                id={`${wo._id}-${wo.finishing_desc}`}
+                                checked={wo.isChecked_finish == 1}
+                                onChange={(event) =>
+                                  handleCheckboxChangeEvent(
+                                    event,
+                                    wo._id,
+                                    "isChecked_finish"
+                                  )
+                                }
+                              />
+                            </div>
+                          )}
                         </div>
-                        {wo.finishing_desc && (
-                          <div className="custom-checkbox-container text-center">
-                            <label
-                              className="custom-label-tag"
-                              htmlFor={`${wo._id}-${wo.finishing_desc}`}
-                              style={getMaterialColor(
-                                wo?.material_name + " " + wo?.material_grade
-                              )}
-                            >
-                              {wo.finishing_desc}
-                            </label>
-                            <Form.Check
-                              type="checkbox"
-                              id={`${wo._id}-${wo.finishing_desc}`}
-                              checked={wo.isChecked_finish == 1}
-                              onChange={(event) =>
-                                handleCheckboxChangeEvent(
-                                  event,
-                                  wo._id,
-                                  "isChecked_finish"
-                                )
-                              }
-                            />
+                        {wo.bend_count > 0 ? (
+                          <a href={wo.bendupload_url} download="filename.pdf">
+                            <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                              <Image
+                                src={attachment}
+                                className="img-fluid"
+                                alt=""
+                              />
+                              <span>Attachments</span>
+                            </div>
+                          </a>
+                        ) : (
+                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                            {/* <Image src={attachment} className="img-fluid" alt="" />
+                        <span>Attachments</span> */}
                           </div>
                         )}
                       </div>
-                      {wo.bend_count > 0 ? (
-                        <a href={wo.bendupload_url} download="filename.pdf">
-                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                            <Image
-                              src={attachment}
-                              className="img-fluid"
-                              alt=""
-                            />
-                            <span>Attachments</span>
-                          </div>
-                        </a>
-                      ) : (
-                        <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                          {/* <Image src={attachment} className="img-fluid" alt="" />
-                        <span>Attachments</span> */}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </CardBody>
             </Card>

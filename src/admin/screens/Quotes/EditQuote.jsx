@@ -32,6 +32,7 @@ import AddBend from "../../components/Addbend";
 import AdminAddNote from "../../components/AddNote";
 import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
+import DimensionsToggle from "../../../components/DimensionsToggle";
 const EditRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -768,6 +769,14 @@ const EditRFQS = () => {
                         </p>
                       </div>
                     </div>
+                    <span className="num-dim">
+                      <DimensionsToggle
+                        dimensions={quote.dimensions}
+                        id={quote._id}
+                        type={quote.dimension_type}
+                        // isEdit={true}
+                      />
+                    </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
                       <p>
                         Qty : {quote.quantity}{" "}

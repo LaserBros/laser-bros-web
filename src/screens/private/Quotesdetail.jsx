@@ -759,6 +759,8 @@ export default function QuotesDetail() {
                       <DimensionsToggle
                         dimensions={quote.dimensions}
                         id={quote._id}
+                        type={quote.dimension_type}
+                        isEdit={true}
                       />
                     </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">

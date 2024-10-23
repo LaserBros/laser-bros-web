@@ -29,6 +29,19 @@ export const UsergetParticularOrderDetails = async (data) => {
   }
 };
 
+export const updateDimensionType = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/updateDimensionType`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getParticularRFQDetails = async (data) => {
   try {
     const response = await axiosInstance.post(
