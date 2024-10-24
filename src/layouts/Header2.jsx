@@ -22,8 +22,9 @@ const Header = () => {
   //   setName(name);
   // }, []);
   const handleLogout = async () => {
+    console.log("Dsdsdsdsdsdd");
     try {
-      // const response = await axiosInstance.get("/logout");
+      await new Promise((resolve) => setTimeout(resolve, 100));
       localStorage.removeItem("authToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");

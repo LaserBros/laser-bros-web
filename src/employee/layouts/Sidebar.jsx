@@ -10,7 +10,7 @@ const Sidebar = () => {
     e.preventDefault();
     try {
       // const response = await axiosEmployeeInstance.get("/logout");
-
+      await new Promise((resolve) => setTimeout(resolve, 100));
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");

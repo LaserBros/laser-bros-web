@@ -11,6 +11,7 @@ const Header = ({ title }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
+      await new Promise((resolve) => setTimeout(resolve, 100));
       // const response = await axiosInstance.get("/logout");
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("full_name");
