@@ -128,7 +128,7 @@ const Orders = () => {
       });
       setTimeout(() => {
         setLoadingQueue(false);
-        loadOrders();
+        loadOrders(currentPage);
       }, 4000);
     }
   };

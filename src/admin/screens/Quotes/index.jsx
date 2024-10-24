@@ -109,7 +109,7 @@ const Quotes = () => {
       "setItemelementDataAdmin",
       JSON.stringify(res.data.requestQuoteDB)
     );
-    navigate("/admin/quote/view-quote");
+    navigate("/admin/quotes/view-quote");
   };
 
   const onPageChange = (pageNumber) => {

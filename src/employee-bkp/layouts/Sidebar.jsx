@@ -8,7 +8,7 @@ const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const handleLogout = async () => {
     try {
-      const response = await axiosInstance.get("/logout");
+      // const response = await axiosInstance.get("/logout");
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");

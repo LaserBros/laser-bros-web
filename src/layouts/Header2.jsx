@@ -23,7 +23,7 @@ const Header = () => {
   // }, []);
   const handleLogout = async () => {
     try {
-      const response = await axiosInstance.get("/logout");
+      // const response = await axiosInstance.get("/logout");
       localStorage.removeItem("authToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");

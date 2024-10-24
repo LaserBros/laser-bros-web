@@ -58,9 +58,11 @@ const Queue = () => {
   const loadOrders = async (selectedValue = "") => {
     try {
       setLoading(true);
+      setOrders([]);
       const response = await fetchOrdersInQueue(selectedValue);
       setOrders(response.data.data.result);
     } catch (error) {
+      setOrders([]);
       console.error("Error fetching cards:", error);
     } finally {
       setLoading(false);

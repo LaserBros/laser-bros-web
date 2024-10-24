@@ -12,7 +12,7 @@ const Header = ({ title }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosEmployeeInstance.get("/logout");
+      // const response = await axiosEmployeeInstance.get("/logout");
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");

@@ -310,7 +310,7 @@ function App() {
                     }
                   ></Route>
                   <Route
-                    path="/admin/quote/view-quote"
+                    path="/admin/quotes/view-quote"
                     element={
                       <AdminRoute
                         element={

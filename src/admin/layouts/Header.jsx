@@ -12,7 +12,7 @@ const Header = ({ title }) => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosAdminInstance.get("/logout");
+      // const response = await axiosAdminInstance.get("/logout");
       localStorage.removeItem("adminToken");
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");
