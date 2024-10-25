@@ -69,10 +69,12 @@ body.dark .modal .modal-dialog .modal-content .modal-body .form-control {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .modal .modal-dialog .modal-content .modal-body .form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 1;
 }
 body.dark .modal .modal-dialog .modal-content .modal-body .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 1;
 }
 body.dark .modal .modal-dialog .modal-content .modal-body h2 {
   color: #ffffff;
@@ -82,6 +84,9 @@ body.dark .login-main .loginform {
 }
 body.dark .login-main .loginform .headlogin_div h2 {
   color: #ffffff;
+}
+body.dark .login-main .loginform .headlogin_div p {
+  color: #bfbfbf;
 }
 body.dark .login-main .loginform .form-group label {
   color: #ffffff;
@@ -93,9 +98,11 @@ body.dark .login-main .loginform .form-group .form-control {
 }
 body.dark .login-main .loginform .form-group .form-control::-moz-placeholder {
   color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
 }
 body.dark .login-main .loginform .form-group .form-control::placeholder {
   color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
 }
 body.dark .login-main .loginform .form-group.forgotpassword a {
   color: #ffffff;
@@ -134,7 +141,7 @@ body.dark .wrapper header.header .headerright .dropdown .dropdown-menu {
   background: #000000;
 }
 body.dark .wrapper header.header .headerright .dropdown .dropdown-menu .dropdown-item {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .wrapper header.header .headerright .dropdown .dropdown-menu .dropdown-item:hover {
   background: transparent;
@@ -198,6 +205,9 @@ body.dark .wrapper .card .card-header {
 body.dark .wrapper .card .card-header h5 {
   color: #ffffff;
 }
+body.dark .wrapper .card .card-header .OrderCount_Date {
+  color: #bfbfbf;
+}
 body.dark .wrapper .card .card-body .profileuser {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.1);
@@ -207,6 +217,9 @@ body.dark .wrapper .card .card-body .profileuser .userinfo {
 }
 body.dark .wrapper .card .card-body .profileuser h4 {
   color: #ffffff;
+}
+body.dark .wrapper .card .card-body .profileuser p {
+  color: #bfbfbf;
 }
 body.dark .wrapper .card .card-body .customtabs.nav-tabs li.nav-item button.nav-link {
   border-color: rgba(255, 255, 255, 0.1);
@@ -261,6 +274,9 @@ body.dark .wrapper .card .card-body .download-wo-allfiles p {
 body.dark .wrapper .card .card-body .orders-shipping {
   border-color: rgba(255, 255, 255, 0.2);
 }
+body.dark .wrapper .card .card-body .orders-shipping span {
+  color: #bfbfbf;
+}
 body.dark .wrapper .card .card-body .orders-shipping b {
   color: rgba(255, 255, 255, 0.7);
 }
@@ -277,12 +293,12 @@ body.dark .wrapper .card .card-body .orders-detail .list-main .list-left .list-i
   color: #ffffff;
 }
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-checkboxes .form-check-input {
-  background: transparent !important;
+  background-color: transparent !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
 }
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-checkboxes .form-check-input:checked {
-  background: #000000 !important;
-  border-color: #000000 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-checkboxes .form-check .form-check-label {
   color: rgba(255, 255, 255, 0.7) !important;
@@ -300,6 +316,10 @@ body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .btn
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-content h2 {
   color: #ffffff !important;
 }
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-content span.num-dim,
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-content p.num-dim-main {
+  color: #bfbfbf;
+}
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .list-qty .qty {
   background: rgba(255, 255, 255, 0.1) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
@@ -310,6 +330,10 @@ body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .lis
 }
 body.dark .wrapper .card .card-body .form-group .form-label {
   color: #ffffff;
+}
+body.dark .wrapper .card .card-body .form-group .password-input-group svg {
+  color: #ffffff;
+  opacity: 0.7;
 }
 body.dark .wrapper .card .card-body .form-group svg {
   color: #ffffff;
@@ -347,7 +371,10 @@ body.dark .wrapper .card .card-body .recharts-wrapper .recharts-cartesian-axis-t
   fill: #ffffff;
 }
 body.dark .wrapper .card .card-body .recharts-wrapper .recharts-legend-wrapper {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+}
+body.dark .wrapper .card .card-body .recharts-wrapper .recharts-legend-wrapper li.recharts-legend-item {
+  opacity: 1;
 }
 body.dark .wrapper .card .card-body .recharts-wrapper .recharts-legend-wrapper li span.recharts-legend-item-text {
   color: rgba(255, 255, 255, 0.7) !important;
@@ -411,4 +438,8 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:
 }
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:last-child {
   border-color: #4F8CCA;
+}
+
+.toggle-switch-container p {
+  color: #bfbfbf;
 }/*# sourceMappingURL=style-dark.css.map */

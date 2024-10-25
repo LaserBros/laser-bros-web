@@ -431,6 +431,11 @@ body {
   width: 4px;
 }
 
+.inactive.active {
+  color: #000000;
+  background-color: #4F8CCA;
+}
+
 @media only screen and (max-width: 767.98px) {
   .header,
   .maincontent_div {
@@ -1008,20 +1013,6 @@ body {
   margin-bottom: 7px;
   white-space: nowrap;
 }
-
-.custom-label-tag {
-  height: 25px;
-  padding: 0px 10px;
-  font-size: 12px;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  line-height: 25px;
-  border-radius: 30px;
-  margin-bottom: 7px;
-  white-space: nowrap;
-}
-
 .wrapper .maincontent_div .card .card-body .list-main .list-attachment img {
   height: 32px;
   -o-object-fit: contain;
@@ -1329,6 +1320,19 @@ body {
 }
 .wrapper .maincontent_div .card .card-body .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell > div {
   white-space: pre-wrap;
+}
+
+.custom-label-tag {
+  height: 25px;
+  padding: 0px 10px;
+  font-size: 12px;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 25px;
+  border-radius: 30px;
+  margin-bottom: 7px;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 767.98px) {

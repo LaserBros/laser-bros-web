@@ -244,7 +244,7 @@ html {
                     position: absolute;
                     top     : 17px;
                     right   : 20px;
-                    opacity : 0.30;
+                    opacity : 0.8;
                 }
             }
 
@@ -605,6 +605,10 @@ html {
                 svg{
                     margin-right: 5px;
                 }
+                &.active {
+                    color: $primary-color;
+                    background: transparent;
+                }
             }
         }
 
@@ -831,6 +835,12 @@ html {
                     font-weight  : 600;
                     margin-bottom: 0;
                     color        : $black-color;
+                }
+                .OrderCount_Date {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: $black-color;
+                    margin: 0px 10px;
                 }
                 .btnaccept , .btnreject{
                     font-size: 14px;

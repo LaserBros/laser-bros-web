@@ -77,10 +77,6 @@ body.dark .modal .modal-dialog .modal-content .modal-body .form-control::placeho
 body.dark .modal .modal-dialog .modal-content .modal-body h2 {
   color: #ffffff;
 }
-.error-text,.error-feedback {
-  color: red;
-  font-size: 14px;
-}
 body.dark .login-main .loginform {
   background: #212121;
 }
@@ -148,11 +144,11 @@ body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu 
   background: #212121;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu .dropdown-item {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu .dropdown-item img {
   filter: brightness(0) invert(1);
-  opacity: 0.5;
+  opacity: 0.7;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu .dropdown-item:hover {
   color: #4F8CCA;
@@ -196,11 +192,20 @@ body.dark .our-services .services-grid {
 body.dark .our-services .services-grid h2 {
   color: #ffffff;
 }
+body.dark .our-services .services-grid p {
+  color: #bfbfbf;
+}
 body.dark .our-services .services-grid:hover {
   background: #4F8CCA;
 }
+body.dark .our-services .services-grid:hover p {
+  color: #ffffff;
+}
 body.dark .heading h2 {
   color: #ffffff;
+}
+body.dark .heading p {
+  color: #bfbfbf;
 }
 body.dark .materials-grid {
   background: rgba(255, 255, 255, 0.1);
@@ -230,6 +235,9 @@ body.dark .get-instant-quote .features-content-box {
 body.dark .get-instant-quote .features-content-box .content h3 {
   color: #ffffff;
 }
+body.dark .get-instant-quote .features-content-box .content p {
+  color: #bfbfbf;
+}
 body.dark .get-instant-quote .get-parts-img:after {
   opacity: 1;
 }
@@ -242,8 +250,14 @@ body.dark .our-testimonials .testimonials-grid .userinfo h3 {
 body.dark .our-testimonials .testimonials-grid .userinfo p {
   color: rgba(255, 255, 255, 0.75);
 }
+body.dark .our-testimonials .testimonials-grid .testimonials-content p {
+  color: #bfbfbf;
+}
 body.dark footer.footer .copyright-area {
   border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark footer.footer .copyright-area p {
+  color: #bfbfbf;
 }
 body.dark footer.footer .footer-top-area {
   border-color: rgba(255, 255, 255, 0.2);
@@ -260,6 +274,12 @@ body.dark footer.footer .footer-top-area .right-area a.mailtext {
 body.dark footer.footer .footer-heading {
   color: #ffffff;
 }
+body.dark footer.footer ul.footer-menu li a {
+  color: #bfbfbf;
+}
+body.dark footer.footer ul.help-support li a {
+  color: #bfbfbf;
+}
 body.dark .our-history .history-grid {
   border-color: rgba(255, 255, 255, 0.2);
 }
@@ -267,13 +287,16 @@ body.dark .our-history .history-grid h3 {
   color: #ffffff;
 }
 body.dark .our-history .history-grid p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .our-mission .mission-img:after {
   background: rgba(255, 255, 255, 0.2);
 }
 body.dark .our-mission .mission-content h4 {
-  color: #6C6A72;
+  color: #bfbfbf;
+}
+body.dark .our-mission .mission-content p {
+  color: #bfbfbf;
 }
 body.dark .values-grid {
   background: rgba(255, 255, 255, 0.1);
@@ -281,6 +304,9 @@ body.dark .values-grid {
 }
 body.dark .values-grid h3 {
   color: #ffffff;
+}
+body.dark .values-grid p {
+  color: #bfbfbf;
 }
 body.dark .resources-main .resources-search-field svg {
   color: #ffffff;
@@ -313,8 +339,11 @@ body.dark .resources-main .accordion .accordion-item .accordion-header button.ac
 body.dark .resources-main .accordion .accordion-item .accordion-header button.accordion-button::after {
   background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
 }
+body.dark .resources-main .accordion .accordion-item .accordion-body {
+  color: #bfbfbf;
+}
 body.dark .resources-main .accordion .accordion-item .accordion-body a {
-  color: #6C6A72;
+  color: #bfbfbf;
 }
 body.dark .resources-main .accordion .accordion-item .accordion-body a.active, body.dark .resources-main .accordion .accordion-item .accordion-body a:hover {
   color: #4F8CCA;
@@ -363,13 +392,19 @@ body.dark .resources-main .resources-body .resources-content .custom-table .rdt_
   border-color: rgba(255, 255, 255, 0.2);
 }
 body.dark .resources-main .resources-body .resources-content .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-body .resources-content h2 {
   color: #ffffff;
 }
+body.dark .resources-main .resources-body .resources-content p {
+  color: #bfbfbf;
+}
+body.dark .resources-main .resources-body .resources-content ul li {
+  color: #bfbfbf;
+}
 body.dark .resources-main .resources-body .resources-content .resources-alerts p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-body .resources-content .resources-alerts p span {
   color: #ffffff;
@@ -407,6 +442,9 @@ body.dark .btnicon:hover svg {
 body.dark .list-quotes-main {
   border-color: rgba(255, 255, 255, 0.2);
 }
+body.dark .list-quotes-main p {
+  color: #bfbfbf;
+}
 body.dark .list-quotes-main .input-group .form-control {
   background: transparent;
   color: #ffffff;
@@ -425,11 +463,11 @@ body.dark .list-quotes-main .input-group button:hover svg {
   color: #000000;
 }
 body.dark .list-quotes-main .list-quotes .right-quote p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .list-quotes-main .list-quotes .right-quote .quote-off {
   border-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .list-quotes-main .list-quotes .content-quotes h2 {
   color: #ffffff;
@@ -441,10 +479,10 @@ body.dark .list-quotes-main .list-quotes .content-quotes p {
   color: #ffffff;
 }
 body.dark .list-quotes-main .list-quotes .content-quotes p .num-dim-indicator {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .list-quotes-main .list-quotes .content-quotes p.num-dim-main span.num-dim span {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .list-quotes-main .list-quotes .content-quotes .quotes-services h4 {
   color: #ffffff;
@@ -472,6 +510,9 @@ body.dark .list-quotes-main .list-quotes .content-quotes .quotes-dropdown .selec
 body.dark .list-quotes-main .list-quotes .content-quotes .quotes-dropdown .selectdropdown span + div + div:hover {
   color: #ffffff !important;
 }
+body.dark .totaltable p {
+  color: #bfbfbf;
+}
 body.dark .quotes-sidebar .customtabs li.nav-item button.nav-link {
   border-color: rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.1);
@@ -485,6 +526,12 @@ body.dark .quotes-sidebar .quotes-inner {
 }
 body.dark .quotes-sidebar .quotes-inner .head-quotes h2 {
   color: #ffffff;
+}
+body.dark .quotes-sidebar .quotes-inner .quotesitem {
+  color: #bfbfbf;
+}
+body.dark .quotes-sidebar .quotes-inner .quotessubtotal {
+  color: #bfbfbf;
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .react-tel-input .country-list {
   background: #212121;
@@ -565,6 +612,9 @@ body.dark .quotes-list .quotes-content p span {
 body.dark .accountform .form-group .form-label {
   color: #ffffff;
 }
+body.dark .accountform .form-group .paymentCard_border {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
 body.dark .accountform .form-group .form-control, body.dark .accountform .form-group .form-select {
   background: transparent;
   border-color: rgba(255, 255, 255, 0.2);
@@ -574,10 +624,10 @@ body.dark .accountform .form-group .form-control option, body.dark .accountform 
   color: rgba(0, 0, 0, 0.75);
 }
 body.dark .accountform .form-group .form-control::-moz-placeholder, body.dark .accountform .form-group .form-select::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .accountform .form-group .form-control::placeholder, body.dark .accountform .form-group .form-select::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .accountform .form-group .form-select {
   background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3e%3cpath fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/%3e%3c/svg%3e");
@@ -600,6 +650,7 @@ body.dark .card .no-cart h3 {
 }
 body.dark .card .card-body .tablelist li {
   border-color: rgba(255, 255, 255, 0.1);
+  color: #bfbfbf;
 }
 body.dark .card .card-body .addresses-grid {
   background: rgba(255, 255, 255, 0.1);
@@ -608,7 +659,7 @@ body.dark .card .card-body .addresses-grid h2 {
   color: #ffffff;
 }
 body.dark .card .card-body .addresses-grid p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 body.dark .card .card-body .addresses-grid .btn-bottom .btn-address, body.dark .card .card-body .addresses-grid .btn-bottom .btn-set-default {
   border-color: rgba(255, 255, 255, 0.2);
@@ -618,6 +669,9 @@ body.dark .card .card-body .addresses-grid .btn-bottom .btn-address:hover, body.
   border-color: #ffffff;
   background: #ffffff;
   color: #000000;
+}
+body.dark .card .card-body .addresses-grid.payment-grids .card-actions .card-info {
+  color: #bfbfbf;
 }
 body.dark .card .card-body .addresses-grid.payment-grids .card-actions .card-info strong {
   color: #ffffff;

@@ -218,7 +218,7 @@ body {
   position: absolute;
   top: 17px;
   right: 20px;
-  opacity: 0.3;
+  opacity: 0.8;
 }
 .login-main .loginform .form-group .form-control {
   height: 50px;
@@ -431,6 +431,11 @@ body {
   width: 4px;
 }
 
+.inactive.active {
+  color: #000000;
+  background-color: #4F8CCA;
+}
+
 @media only screen and (max-width: 767.98px) {
   .header,
   .maincontent_div {
@@ -528,6 +533,10 @@ body {
 }
 .header .headerright .dropdown .dropdown-item svg {
   margin-right: 5px;
+}
+.header .headerright .dropdown .dropdown-item.active {
+  color: #4F8CCA;
+  background: transparent;
 }
 .header .headerright a {
   display: inline-flex;
@@ -707,6 +716,12 @@ body {
   font-weight: 600;
   margin-bottom: 0;
   color: #000000;
+}
+.wrapper .maincontent_div .card .card-header .OrderCount_Date {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  margin: 0px 10px;
 }
 .wrapper .maincontent_div .card .card-header .btnaccept, .wrapper .maincontent_div .card .card-header .btnreject {
   font-size: 14px;
@@ -1008,20 +1023,6 @@ body {
   margin-bottom: 7px;
   white-space: nowrap;
 }
-
-.custom-label-tag {
-  height: 25px;
-  padding: 0px 10px;
-  font-size: 12px;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  line-height: 25px;
-  border-radius: 30px;
-  margin-bottom: 7px;
-  white-space: nowrap;
-}
-
 .wrapper .maincontent_div .card .card-body .list-main .list-attachment img {
   height: 32px;
   -o-object-fit: contain;
@@ -1329,6 +1330,19 @@ body {
 }
 .wrapper .maincontent_div .card .card-body .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell > div {
   white-space: pre-wrap;
+}
+
+.custom-label-tag {
+  height: 25px;
+  padding: 0px 10px;
+  font-size: 12px;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 25px;
+  border-radius: 30px;
+  margin-bottom: 7px;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 767.98px) {

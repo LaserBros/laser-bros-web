@@ -28,6 +28,7 @@ import {
 } from "../../../api/api";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../../components/Themecontext";
 const Queue = () => {
   const [expandedRow, setExpandedRow] = useState(null);
   const [checkedItems, setCheckedItems] = useState({});
@@ -35,15 +36,21 @@ const Queue = () => {
   const [loading, setLoading] = useState(true);
   const [materialCodes, setMaterialCodes] = useState([]);
   const [selectedCode, setSelectedCode] = useState("");
+  const { theme, togglenewTheme } = useTheme();
 
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: "1px solid rgba(0, 0, 0, 0.15)",
+      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`,
+      background:theme =='dark' ? '#212121':'#fff',
       boxShadow: "none",
       minHeight: "50px",
       borderRadius: "40px",
       fontSize: "14px",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: theme =='dark' ? '#bfbfbf':'#6C6A72', // Text color change
     }),
     multiValue: (provided, state) => ({
       ...provided,

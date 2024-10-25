@@ -9,11 +9,13 @@ import {
 } from "@stripe/react-stripe-js";
 import { addCard } from "../api/api";
 import { toast } from "react-toastify";
+import { useTheme } from "./Themecontext";
 
 // Your Stripe public key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
 const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
+  const { theme, togglenewTheme } = useTheme();
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -119,15 +121,21 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
               <Col md={12}>
                 <Form.Group className="mb-3 form-group">
                   <Form.Label>Card Details</Form.Label>
+                  <div className="paymentCard_border">
                   <CardElement
                     options={{
                       style: {
                         base: {
+                          color:theme =='dark' ? '#fff':'#000',
+                          "::placeholder": {
+                            color: theme === 'dark' ? '#bfbfbf' : 'rgba(0,0,0,0.5)' // adjust color as needed
+                          },
                           fontSize: "16px",
                         },
                       },
                     }}
                   />
+                  </div>
                 </Form.Group>
               </Col>
             </Row>

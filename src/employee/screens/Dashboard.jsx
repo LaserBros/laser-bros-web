@@ -261,6 +261,7 @@ const Dashboard = () => {
               <h5>Orders Workflow Stage Counts</h5>
             </Col>
             <Col md={4} className=" text-md-end">
+            <div className="d-flex align-items-center">
               <Link
                 className="btnedit me-1"
                 to={``}
@@ -270,10 +271,11 @@ const Dashboard = () => {
               >
                 <Icon icon="icon-park-solid:left-c" width="20" height="20" />
               </Link>
-              {format(fromDate, "dd MMMM")} - {format(toDate, "dd MMMM")}
+              <p className="OrderCount_Date">{format(fromDate, "dd MMMM")} - {format(toDate, "dd MMMM")}</p>
               <Link className="btnedit ms-1" to={``} onClick={goToNextWeek}>
                 <Icon icon="icon-park-solid:right-c" width="20" height="20" />
               </Link>
+              </div>
             </Col>
           </Row>
         </CardHeader>

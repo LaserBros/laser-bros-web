@@ -216,7 +216,7 @@ body {
 }
 .login-main .loginform .form-group .password-input-group svg {
   position: absolute;
-  top: 17px;
+  top: 14px;
   right: 20px;
   opacity: 0.3;
 }
@@ -297,12 +297,12 @@ body {
   text-align: end;
 }
 .modal-custom .modal-dialog .modal-content .modal-body .form-control {
-  height: auto;
+  height: 50px;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   color: #000000;
   padding-left: 20px;
-  padding-top: 10px;
+  padding-top: 6px;
   padding-right: 20px;
   font-size: 14px;
   resize: none;
@@ -1132,7 +1132,7 @@ body {
 }
 .wrapper .maincontent_div .card .card-body .form-group .password-input-group svg {
   position: absolute;
-  top: 17px;
+  top: 14px;
   right: 20px;
   opacity: 0.3;
 }
@@ -1315,6 +1315,19 @@ body {
 }
 .wrapper .maincontent_div .card .card-body .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell > div {
   white-space: pre-wrap;
+}
+
+.custom-label-tag {
+  height: 25px;
+  padding: 0px 10px;
+  font-size: 12px;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  line-height: 25px;
+  border-radius: 30px;
+  margin-bottom: 7px;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 767.98px) {

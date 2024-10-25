@@ -2748,7 +2748,14 @@ textarea.form-control {
                 opacity: 0.30;
             }
         }
-
+        .paymentCard_border {
+            border-radius: 12px;
+            border: 1px solid rgba($black-color, .15);
+            padding-left: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 20px;
+        }
         .react-tel-input {
             .form-control {
                 padding-left: 50px !important;
