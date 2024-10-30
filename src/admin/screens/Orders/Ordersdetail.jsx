@@ -661,10 +661,10 @@ const OrdersDetail = () => {
                           </Col>
                           <Col md={6}>
                             <Form.Group className="mb-3 form-group">
-                              <Form.Label>Weight (in inches)</Form.Label>
+                              <Form.Label>Weight (in pound)</Form.Label>
                               <Form.Control
                                 type="text"
-                                placeholder="Enter Weight in inches"
+                                placeholder="Enter Weight in pound"
                                 value={weight}
                                 onChange={(e) => setWeight(e.target.value)}
                                 isInvalid={!!errors.Weight}
@@ -692,10 +692,10 @@ const OrdersDetail = () => {
 
                           <Col md={6}>
                             <Form.Group className="mb-3 form-group">
-                              <Form.Label>Length (in pound)</Form.Label>
+                              <Form.Label>Length (in inches)</Form.Label>
                               <Form.Control
                                 type="text"
-                                placeholder="Enter Length in pound"
+                                placeholder="Enter Length in inches"
                                 value={length}
                                 onChange={(e) => setLength(e.target.value)}
                                 isInvalid={!!errors.Length}
