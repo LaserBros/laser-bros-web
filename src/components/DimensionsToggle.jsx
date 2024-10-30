@@ -6,8 +6,8 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit }) => {
   const [isInches, setIsInches] = useState(true);
 
   // Conversion factor: 1 inch = 25.4 mm
-  const inchesToMm = (mm) => (mm * 25.4).toFixed(2);
-
+  // const inchesToMm = (mm) => (mm * 25.4).toFixed(2);
+  const inchesToMm = (mm) => mm;
   const handleToggle = () => {
     setIsInches(!isInches);
   };
