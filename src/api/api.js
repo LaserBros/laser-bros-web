@@ -409,6 +409,19 @@ export const copySubQuote = async (data) => {
   }
 };
 
+export const trackingDetails = async (id) => {
+  try {
+    const response = await axiosInstance.get(
+      `users/trackingDetails?label_id=` + id
+    );
+    console.log("responseeee----", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 ////// Admin API START ////////////
 
 export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
@@ -532,6 +545,23 @@ export const fetchOrdersInComplete = async (page, search, sort) => {
   }
 };
 
+export const fetchOrdersInPackaging = async (page, search, sort) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/fetchOrdersInPackaging?page=` +
+        page +
+        "&query=" +
+        search +
+        "&ascending=" +
+        sort
+    );
+    return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getAllEmployees = async (page, search, sort) => {
   try {
     const response = await axiosAdminInstance.get(
@@ -631,6 +661,16 @@ export const getParticularOrderDetails = async (data) => {
       `/getParticularOrderDetails`,
       data
     );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const startPackaging = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/startPackaging`, data);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
@@ -1145,6 +1185,18 @@ export const EmpgetDashboardDetails = async (fromDate, toDate) => {
     return response.data;
   } catch (error) {
     console.error("Error setting employee as default:");
+    throw error;
+  }
+};
+export const uploadQuoteAdmin = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.post(`/uploaddxfFiles`, formData);
+    // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
+    console.log("responseeee ------", response.data);
+    // return;
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
     throw error;
   }
 };

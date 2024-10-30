@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { getOrdersAdmin, moveOrderToQueue } from "../../../api/api";
 import { toast } from "react-toastify";
 import Pagination from "../../components/Pagination";
+import OrderStatus from "../../components/OrderStatus";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -270,17 +271,7 @@ const Orders = () => {
                             </td>
                             <td className="text-nowrap">
                               <span className="statusnew">
-                                {row.status == 0
-                                  ? "New"
-                                  : row.status == 1
-                                  ? "In Progress"
-                                  : row.status == 2
-                                  ? "Order Completed"
-                                  : row.status == 3
-                                  ? "Shipped"
-                                  : row.status == 3
-                                  ? "Delivered"
-                                  : ""}
+                                <OrderStatus status={row.status} />
                               </span>
                             </td>
                             <td className="text-nowrap">

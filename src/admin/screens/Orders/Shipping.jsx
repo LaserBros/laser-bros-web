@@ -13,13 +13,14 @@ import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import {
   fetchOrdersInComplete,
+  fetchOrdersInPackaging,
   getOrdersAdmin,
   moveOrderToQueue,
 } from "../../../api/api";
 import { toast } from "react-toastify";
 import Pagination from "../../components/Pagination";
 import OrderStatus from "../../components/OrderStatus";
-const CompleteOrders = () => {
+const ShippingAddress = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPage, settotalPage] = useState(1);
@@ -39,7 +40,7 @@ const CompleteOrders = () => {
       setLoading(true);
       setOrders([]);
       settotalPage(1);
-      const response = await fetchOrdersInComplete(page, search, sortOrder);
+      const response = await fetchOrdersInPackaging(page, search, sortOrder);
       setOrders(response.data.data.updatedQuotes);
       settotalPage(response.data.data.total);
     } catch (error) {
@@ -143,7 +144,7 @@ const CompleteOrders = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="py-4">
-          <h5>Complete Orders</h5>
+          <h5>Shipping Orders</h5>
         </CardHeader>
         <CardBody>
           <Form>
@@ -336,4 +337,4 @@ const CompleteOrders = () => {
   );
 };
 
-export default CompleteOrders;
+export default ShippingAddress;

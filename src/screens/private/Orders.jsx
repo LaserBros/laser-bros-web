@@ -7,6 +7,7 @@ import nocart from "../../assets/img/no-cart.svg";
 import { getOrders, reOrder } from "../../api/api";
 import { toast } from "react-toastify";
 import Pagination from "../../admin/components/Pagination";
+import OrderStatus from "../../admin/components/OrderStatus";
 export default function Orders() {
   // const navigate = useNavigation();
   const navigate = useNavigate();
@@ -78,17 +79,7 @@ export default function Orders() {
       name: "Status",
       selector: (row) => (
         <div className="badgestatus" style={getStatusColor(row.status)}>
-          {row.status == 0
-            ? "Order Placed"
-            : row.status == 1
-            ? "In Progress"
-            : row.status == 2
-            ? "Order Completed"
-            : row.status == 3
-            ? "Shipped"
-            : row.status == 4
-            ? "Delivered"
-            : ""}
+          <OrderStatus status={row.status} />
         </div>
       ),
       sortable: false,

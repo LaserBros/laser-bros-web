@@ -33,6 +33,7 @@ import AdminAddNote from "../../components/AddNote";
 import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
 import DimensionsToggle from "../../../components/DimensionsToggle";
+import FileUpload from "../../components/FileUploadAdmin";
 const EditRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -397,12 +398,17 @@ const EditRFQS = () => {
 
       const finalQuoteData = updatedQuoteData.map((quote) => {
         if (quote._id === id) {
-          let part_number = quote.subquote_number.toString();
+          let part_number = quote.subquote_number
+            ? quote.subquote_number.toString()
+            : "";
+          if (part_number != "") {
+            let parts = part_number.split("-");
+            parts[1] = quantity;
 
-          let parts = part_number.split("-");
-          parts[1] = quantity;
-
-          let total_parts = parts.join("-");
+            var total_parts = parts.join("-");
+          } else {
+            var total_parts = "";
+          }
           return {
             ...quote,
             quantity: quote.quantity,
@@ -539,7 +545,9 @@ const EditRFQS = () => {
           } else if (type === "thickness") {
             updatedFields.thickness_id = selectedOption.value;
             updatedFields.finishing_id = null;
-            let part_number = quote.subquote_number.toString();
+            let part_number = quote.subquote_number
+              ? quote.subquote_number.toString()
+              : "";
 
             let parts = part_number.split("-");
             parts[0] = selectedOption.selectedValue;
@@ -641,6 +649,12 @@ const EditRFQS = () => {
           </div>
           <Row>
             <Col lg={8} xl={9}>
+              <FileUpload
+                acceptedFiles={[".dxf"]}
+                onFileDrop={handleFileDrop}
+                error={error}
+                className={"mb-4"}
+              />
               {quoteData &&
                 quoteData.length > 0 &&
                 quoteData.map((quote, index) => (
@@ -657,7 +671,19 @@ const EditRFQS = () => {
                         <h2>{quote.quote_name}</h2>
                         <p className="num-dim-main">
                           <span className="num-dim">
-                            {quote.subquote_number}
+                            {quote.thickness_id
+                              ? quote?.subquote_number?.includes(
+                                  quoteList.search_quote +
+                                    "-" +
+                                    String(index + 1).padStart(3, "0")
+                                )
+                                ? quote?.subquote_number
+                                : quote.subquote_number +
+                                  "-" +
+                                  quoteList.search_quote +
+                                  "-" +
+                                  String(index + 1).padStart(3, "0")
+                              : ""}
                           </span>
                         </p>
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">

@@ -104,6 +104,7 @@ import ViewRFQS from "./admin/screens/Quotes/viewRFQ";
 import CompleteOrders from "./admin/screens/Orders/complete";
 import Employe from "./admin/screens/Employe";
 import AddEmp from "./admin/screens/Employe/AddEmp";
+import ShippingAddress from "./admin/screens/Orders/Shipping";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -218,6 +219,18 @@ function App() {
                         element={
                           <AdminLayout title={"Complete Orders"}>
                             <CompleteOrders />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/shipping-orders"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Shipping Orders"}>
+                            <ShippingAddress />
                           </AdminLayout>
                         }
                       />

@@ -469,6 +469,9 @@ body.dark .list-quotes-main .list-quotes .right-quote .quote-off {
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
 }
+body.dark h2.quotes-head {
+  color: #ffffff;
+}
 body.dark .list-quotes-main .list-quotes .content-quotes h2 {
   color: #ffffff;
 }

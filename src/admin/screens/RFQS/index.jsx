@@ -345,7 +345,7 @@ const RFQS = () => {
                             </div>
                           </td>
                           <td>
-                            {row.status == 1 && (
+                            {(row.status == 1 || row.status == 2) && (
                               <Link
                                 className="btnaccept"
                                 onClick={() => EditQuote(row._id)}

@@ -7,9 +7,12 @@ import {
   UsergetParticularOrderDetails,
   getOrders,
   getParticularOrderDetails,
+  trackingDetails,
 } from "../../api/api";
 import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
+import OrderStatus from "../../admin/components/OrderStatus";
+import ShippingStatus from "../../components/ShippingStatus";
 export default function OrdersDetail() {
   const { id } = useParams();
   const [orders, setOrders] = useState([]);
@@ -32,6 +35,21 @@ export default function OrdersDetail() {
       setLoading(false);
     }
   };
+  const handleClose = () => setModalShow(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [loadingOrder, setLoadingOrder] = useState(false);
+  const [ordersTrack, setordersTrack] = useState([]);
+  const handleShow = async () => {
+    setLoadingOrder(true);
+    try {
+      const res = await trackingDetails(orderDetails?.label_id);
+      setordersTrack(res.data);
+      setModalShow(true);
+    } catch (error) {
+    } finally {
+      setLoadingOrder(false);
+    }
+  };
   const formatDate = (dateCreate) => {
     const dateObj = new Date(dateCreate);
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
@@ -48,12 +66,37 @@ export default function OrdersDetail() {
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap">
               <h5>Orders Detail</h5>{" "}
-              <Link
-                to="/orders"
-                className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
-              >
-                Back To Orders
-              </Link>
+              <div className="">
+                <Link
+                  to=""
+                  onClick={handleShow}
+                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
+                  style={{ marginRight: "4px" }}
+                  disabled={loadingOrder}
+                >
+                  {loadingOrder ? (
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      className="spinner-border spinner-border-sm text-center"
+                      style={{
+                        margin: "0 auto",
+                        display: "block",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    ></span>
+                  ) : (
+                    "Track your order"
+                  )}
+                </Link>
+                <Link
+                  to="/orders"
+                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
+                >
+                  Back To Orders
+                </Link>
+              </div>
             </Card.Header>
             {loading ? (
               <span
@@ -86,17 +129,7 @@ export default function OrdersDetail() {
                   <li>
                     Status{" "}
                     <span className="badge-status">
-                      {orderDetails.status == 0
-                        ? "Order Placed"
-                        : orderDetails.status == 1
-                        ? "In Progress"
-                        : orderDetails.status == 2
-                        ? "Order Completed"
-                        : orderDetails.status == 3
-                        ? "Shipped"
-                        : orderDetails.status == 4
-                        ? "Delivered"
-                        : ""}
+                      <OrderStatus status={orderDetails.status} />
                     </span>
                   </li>
                 </ul>
@@ -213,6 +246,11 @@ export default function OrdersDetail() {
           </Card>
         </Container>
       </section>
+      <ShippingStatus
+        show={modalShow}
+        handleClose={handleClose}
+        data={ordersTrack}
+      />
     </React.Fragment>
   );
 }

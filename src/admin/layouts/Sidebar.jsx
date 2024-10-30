@@ -110,6 +110,12 @@ const Sidebar = () => {
       icon: "carbon:task-complete",
     },
     {
+      id: "shipping",
+      title: "Shipping Orders",
+      link: "/admin/shipping-orders",
+      icon: "carbon:task-complete",
+    },
+    {
       id: "payment-history",
       title: "Payment History",
       link: "/admin/payment-history",

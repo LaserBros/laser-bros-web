@@ -26,6 +26,7 @@ import {
   getParticularOrderDetails,
   markCompleteQuote,
   moveOrderStatus,
+  startPackaging,
   updateWorkStatus,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
@@ -35,6 +36,7 @@ import html2canvas from "html2canvas";
 import { toast } from "react-toastify";
 import DimensionsToggle from "../../../components/DimensionsToggle";
 import { useTheme } from "../../../components/Themecontext";
+
 const OrdersDetail = () => {
   const pdfRef = useRef();
 
@@ -67,6 +69,58 @@ const OrdersDetail = () => {
       }
     });
     return Promise.all(promises);
+  };
+
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [width, setWidth] = useState("");
+  const [length, setLength] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loadingWeight, setLoadingWeight] = useState(false);
+
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!height || isNaN(height)) {
+      newErrors.height = "Height must be a number.";
+    }
+
+    if (!weight || isNaN(weight)) {
+      newErrors.Weight = "Weight must be a number.";
+    }
+
+    if (!width || isNaN(width)) {
+      newErrors.Width = "Width must be a number.";
+    }
+
+    if (!length || isNaN(length)) {
+      newErrors.Length = "Length must be a number.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateFields()) {
+      setLoadingWeight(true);
+      // console.log(height, weight, width, length);
+      try {
+        const data = {
+          id: order?.orderedQuote._id,
+          weight: weight,
+          length: length,
+          width: width,
+          height: height,
+        };
+        const res = await startPackaging(data);
+        setLoadingWeight(false);
+        navigate("/admin/complete-orders");
+      } catch (error) {
+        setLoadingWeight(false);
+      }
+    }
   };
 
   const downloadPDF = async () => {
@@ -244,7 +298,7 @@ const OrdersDetail = () => {
     try {
       const res = await AdminmoveOrderStatus(data);
       toast.success("Order move sucessfully.");
-      navigate("/admin/complete-orders");
+      navigate("/admin/shipping-orders");
     } catch (error) {
       toast.error("Something wents wrong.");
     }
@@ -317,8 +371,10 @@ const OrdersDetail = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`,
-      background:theme =='dark' ? '#212121':'#fff',
+      border: `1px solid ${
+        theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
+      }`,
+      background: theme == "dark" ? "#212121" : "#fff",
       boxShadow: "none",
       minHeight: "50px",
       borderRadius: "40px",
@@ -326,7 +382,7 @@ const OrdersDetail = () => {
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: theme =='dark' ? '#bfbfbf':'#6C6A72', // Text color change
+      color: theme == "dark" ? "#bfbfbf" : "#6C6A72", // Text color change
     }),
     multiValue: (provided, state) => ({
       ...provided,
@@ -507,6 +563,24 @@ const OrdersDetail = () => {
                     </div>
                   </Col>
                 </Row>
+                {order?.orderedQuote.tracking_number && (
+                  <div className="orders-shipping align-items-center justify-content-between flex-wrap my-2">
+                    <div className="d-flex">
+                      <p>Tracking Number : &nbsp;&nbsp;</p>
+                      <p> {order?.orderedQuote.tracking_number}</p>
+                    </div>
+                    <div className="d-flex">
+                      <p>Download Label :&nbsp;&nbsp;</p>
+                      <a
+                        href={order?.orderedQuote.label_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <p>{order?.orderedQuote.label_url}</p>
+                      </a>
+                    </div>
+                  </div>
+                )}
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
                   {order?.orderedQuote.status == 0 ? (
                     <>
@@ -563,6 +637,95 @@ const OrdersDetail = () => {
                     </>
                   )}
                 </div>
+
+                {order?.orderedQuote.move_status === 2 && (
+                  <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
+                    <h5 className="py-3">Add Shipping Information </h5>
+                    <div className="d-inline-flex align-items-center gap-2 my-1">
+                      <Form className="accountform" onSubmit={handleSubmit}>
+                        <Row>
+                          <Col md={6}>
+                            <Form.Group className="mb-3 form-group">
+                              <Form.Label>Height (in inches)</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter height in inches"
+                                value={height}
+                                onChange={(e) => setHeight(e.target.value)}
+                                isInvalid={!!errors.height}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.height}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                          <Col md={6}>
+                            <Form.Group className="mb-3 form-group">
+                              <Form.Label>Weight (in inches)</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Weight in inches"
+                                value={weight}
+                                onChange={(e) => setWeight(e.target.value)}
+                                isInvalid={!!errors.Weight}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.Weight}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                          <Col md={6}>
+                            <Form.Group className="mb-3 form-group">
+                              <Form.Label>Width (in inches)</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Width in inches"
+                                value={width}
+                                onChange={(e) => setWidth(e.target.value)}
+                                isInvalid={!!errors.Width}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.Width}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+
+                          <Col md={6}>
+                            <Form.Group className="mb-3 form-group">
+                              <Form.Label>Length (in pound)</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Length in pound"
+                                value={length}
+                                onChange={(e) => setLength(e.target.value)}
+                                isInvalid={!!errors.Length}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.Length}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                        <Button
+                          type="submit"
+                          className=" mt-2"
+                          disabled={loadingWeight}
+                        >
+                          {loadingWeight ? (
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                          ) : (
+                            "Add Information"
+                          )}
+                        </Button>
+                      </Form>
+                    </div>
+                  </div>
+                )}
+
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">
                   <div className="d-inline-flex align-items-center gap-2 my-1">
                     <b>In this order:</b>
@@ -577,6 +740,7 @@ const OrdersDetail = () => {
                       </span>
                     ))}
                   </div>
+
                   {order?.orderedQuote.status == 2 &&
                     order?.orderedQuote.move_status != 2 && (
                       <Link
@@ -593,7 +757,7 @@ const OrdersDetail = () => {
                             aria-hidden="true"
                           ></span>
                         ) : (
-                          " Move To Complete Order"
+                          " Move To Shipping Order"
                         )}
                       </Link>
                     )}
@@ -623,6 +787,10 @@ const OrdersDetail = () => {
                                 src={wo.image_url}
                                 alt={wo.image_url}
                                 className="img-fluid"
+                                style={{
+                                  objectFit: "contain", // use camelCase for CSS properties
+                                  height: "65px", // specify values as strings
+                                }}
                               />
                             </div>
                             {/* <span>{wo.dimension}</span> */}

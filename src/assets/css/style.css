@@ -3416,14 +3416,14 @@ textarea.form-control {
 .toggle-switch-container .inner:before {
   content: "mm";
   padding-left: 6px;
-  background-color: red;
+  background-color: #4F8CCA;
   color: #fff;
 }
 
 .toggle-switch-container .inner:after {
   content: "in";
   padding-right: 6px;
-  background-color: #4F8CCA;
+  background-color:red ;
   color: #fff;
   text-align: right;
 }

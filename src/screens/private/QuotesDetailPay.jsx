@@ -381,7 +381,9 @@ export default function QuotesDetailPay() {
                           </strong>
                           /each
                         </p>
-                        <span className="quote-off">0% Saved</span>
+                        <span className="quote-off">
+                          {quote.discount}% Saved
+                        </span>
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>

@@ -36,6 +36,7 @@ export default function QuotesDetail() {
   const [addLoading, setaddLoading] = useState(false);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
+  const [indexPart, setindexPart] = useState();
 
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
@@ -797,7 +798,9 @@ export default function QuotesDetail() {
                         </Link>
                         <Link
                           className="btnicon"
-                          onClick={() => handleDuplicateQuote(quote, quote._id)} // Pass the quote to be duplicated
+                          onClick={() => {
+                            handleDuplicateQuote(quote, quote._id);
+                          }}
                         >
                           <Icon icon="heroicons:document-duplicate" />
                         </Link>
@@ -825,7 +828,7 @@ export default function QuotesDetail() {
         handleClose={handleClose}
         quote={selectedQuote}
         onSave={(newName) => updateQuoteName(selectedPartId, newName)}
-        title="Rename Part 24-05-771-224"
+        title={"Rename Part"}
       />
       <AddBend
         show2={modalShow2}
