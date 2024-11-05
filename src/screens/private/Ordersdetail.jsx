@@ -180,12 +180,15 @@ export default function OrdersDetail() {
                                 <h4>Services</h4>
                                 <label>
                                   Bending :{" "}
-                                  <a
-                                    href={`${row.bendupload_url}`}
-                                    target="_blank"
-                                  >
-                                    Attachment
-                                  </a>
+                                  {row.bendupload_url.map((url, index) => (
+                                    <a
+                                      href={`${url}`}
+                                      target="_blank"
+                                      style={{ paddingRight: "5px" }}
+                                    >
+                                      Attachment {String(index + 1)}
+                                    </a>
+                                  ))}
                                 </label>
                               </div>
                             )}

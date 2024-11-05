@@ -7,14 +7,52 @@ import "react-phone-input-2/lib/style.css";
 import cards from "../assets/img/cards.png";
 import cvv from "../assets/img/cvv.png";
 import PaymentDone from "./Paymentdone";
-import { fetchAddress, getCard, payment } from "../api/api";
+import { fetchAddress, getCard, payment, shippingCost } from "../api/api";
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
 import Amount from "./Amount";
-const QuotesSidebar = ({ amount, showDiv }) => {
+import ShippingRates from "./ShippingRates";
+const QuotesSidebar = ({
+  amount,
+  showDiv,
+  buttonText,
+  divideWeight,
+  ShippingDBdataPay,
+  quoteData,
+}) => {
   const [modalShow, setModalShow] = useState(false);
-  // const handleShow = () => setModalShow(true);
+  const [quoteDataVal, setquoteData] = useState(false);
+  const [rateVal, setrateVal] = useState("");
+  useEffect(() => {
+    setquoteData(quoteData);
+    setrateVal(quoteDataVal?.service_code);
+  }, [quoteData]);
+  const handleRateSelected = async (rate) => {
+    setrateVal(rate);
+    const elementId = localStorage.getItem("setItemelementDataPay");
+    var getId = "";
+    if (elementId) {
+      getId = JSON.parse(elementId);
+    }
+
+    const data = {
+      service_code: rate,
+      id: getId._id,
+    };
+    try {
+      const res = await shippingCost(data);
+
+      setquoteData(res.data);
+      console.log("----=====quoteDataVal", quoteDataVal);
+      localStorage.setItem("setItemelementDataPay", JSON.stringify(res.data));
+    } catch (error) {}
+  };
   const PaymentSubmit = async () => {
+    console.log("SDsdsddssd", rateVal);
+    if (rateVal == "" || rateVal == null) {
+      toast.error("Please Select Shipping Option.");
+      return;
+    }
     setLoading(true);
     const elementId = localStorage.getItem("setItemelementDataPay");
     var getId = "";
@@ -32,6 +70,8 @@ const QuotesSidebar = ({ amount, showDiv }) => {
         setLoading(false);
         localStorage.removeItem("setItemelementDataPay");
         localStorage.removeItem("setItempartsDBdataPay");
+        localStorage.removeItem("ShippingDBdataPay");
+        localStorage.removeItem("divideWeight");
       } else {
         toast.error(res.message);
         setLoading(false);
@@ -111,14 +151,28 @@ const QuotesSidebar = ({ amount, showDiv }) => {
         try {
           setLoading(true);
           const response_local = await axiosInstance.post(
-            "/users/updateQuoteState",
+            "/users/updateRequestQuote",
             data_id
           );
-          localStorage.setItem("setItemelementData", "");
-          localStorage.setItem("setItempartsDBdata", "");
-          toast.success("Request quote sent successfully");
-          setLoading(false);
-          navigate("/rfqs");
+
+          if (response_local.data.data.check_status == 1) {
+            localStorage.setItem("setItemelementData", "");
+            localStorage.setItem("setItempartsDBdata", "");
+            toast.success("Request quote sent successfully");
+            setLoading(false);
+            navigate("/rfqs");
+          }
+          if (response_local.data.data.check_status == 0) {
+            var setItemelementData = localStorage.getItem("setItemelementData");
+            var setItempartsDBdata = localStorage.getItem("setItempartsDBdata");
+            localStorage.setItem("setItemelementDataPay", setItemelementData);
+            localStorage.setItem("setItempartsDBdataPay", setItempartsDBdata);
+            localStorage.setItem("setItemelementData", "");
+            localStorage.setItem("setItempartsDBdata", "");
+            toast.success("Request quote sent successfully");
+            setLoading(false);
+            navigate("/quotes/pay");
+          }
         } catch (error) {
           toast.error("Something went wrong.");
         }
@@ -157,6 +211,7 @@ const QuotesSidebar = ({ amount, showDiv }) => {
     loadCards();
     setShowDiv2(showDiv);
     setShowDiv1(!showDiv);
+    console.log("sdsdsd-sds-d-sd-d-sd-sd-ds-d", ShippingDBdataPay);
   }, []);
 
   const HandleName = () => {
@@ -203,6 +258,13 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                 <Amount amount={amount} />
               </span>
             </div>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="quotesitem">Bending</span>
+              <span className="quotesitem quotesright">
+                <Amount amount={quoteDataVal.total_bend_price} />{" "}
+              </span>
+            </div>
+
             <hr className="quotes-separator" />
             {/* When Not Login Start*/}
             {/* <div className='quotes-login mb-3'>
@@ -223,7 +285,12 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                 <div className="d-flex align-items-center justify-content-between">
                   <span className="quotessubtotal">Subtotal</span>
                   <span className="quotesprice">
-                    <Amount amount={amount} />
+                    <Amount
+                      amount={
+                        parseFloat(amount || 0) +
+                        parseFloat(quoteDataVal.total_bend_price || 0)
+                      }
+                    />
                   </span>
                 </div>
                 <Button
@@ -237,8 +304,10 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                       role="status"
                       aria-hidden="true"
                     ></span>
-                  ) : (
+                  ) : buttonText == 1 ? (
                     "Request a Quote"
+                  ) : (
+                    "Proceed to checkout"
                   )}
                 </Button>
                 {/* <Button
@@ -299,12 +368,37 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                     <Amount amount={amount} />{" "}
                   </span>
                 </div>
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">Bending</span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={quoteDataVal.total_bend_price} />{" "}
+                  </span>
+                </div>
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">Shipping</span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={quoteDataVal.shipping_price} />{" "}
+                  </span>
+                </div>
                 <div className="d-flex align-items-center justify-content-between">
                   <span className="quotessubtotal">Subtotal</span>
                   <span className="quotesprice">
-                    <Amount amount={amount} />
+                    <Amount
+                      amount={
+                        parseFloat(amount || 0) +
+                        parseFloat(quoteDataVal.total_bend_price || 0) +
+                        parseFloat(quoteDataVal.shipping_price || 0)
+                      }
+                    />
                   </span>
                 </div>
+
+                <ShippingRates
+                  shippingRates={ShippingDBdataPay}
+                  divideWeight={divideWeight}
+                  onRateSelected={handleRateSelected}
+                  service_code={quoteDataVal.service_code}
+                />
                 <hr className="quotes-separator" />
                 <small className=" mb-3 d-block">
                   <i>
@@ -345,7 +439,6 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                     ) : null
                   )
                 )}
-
                 {/* <Tabs
                   defaultActiveKey="basicinfo"
                   id="uncontrolled-tab-example"
@@ -497,7 +590,13 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                     <>
                       Proceed To Pay{" "}
                       <b>
-                        <Amount amount={amount} />
+                        <Amount
+                          amount={
+                            parseFloat(amount || 0) +
+                            parseFloat(quoteDataVal.total_bend_price || 0) +
+                            parseFloat(quoteDataVal.shipping_price || 0)
+                          }
+                        />
                       </b>
                     </>
                   )}

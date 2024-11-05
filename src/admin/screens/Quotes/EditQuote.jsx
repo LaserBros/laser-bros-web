@@ -685,6 +685,18 @@ const EditRFQS = () => {
                                   String(index + 1).padStart(3, "0")
                               : ""}
                           </span>
+                          {quote.pierce_count && (
+                            <>
+                              <br></br>
+                              <span
+                                className="num-dim mt-2"
+                                style={{ fontSize: "12px" }}
+                              >
+                                Pierce Count : {quote.pierce_count}
+                                {/* </span> */}
+                              </span>
+                            </>
+                          )}
                         </p>
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
@@ -716,9 +728,15 @@ const EditRFQS = () => {
                           <p style={{ fontSize: "12px", color: "#00000080" }}>
                             Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
                             {"   "}
-                            {quote.bend_count >= 1 && (
-                              <a href={`${quote.bendupload_url}`}>Attachment</a>
-                            )}
+                            {quote.bend_count >= 1 &&
+                              quote.bendupload_url.map((url, index) => (
+                                <a
+                                  href={`${url}`}
+                                  style={{ paddingLeft: "5px" }}
+                                >
+                                  Attachment {String(index + 1)}
+                                </a>
+                              ))}
                           </p>
                           {/* {quote.binding_option == "no" ? (
                             <p></p>
@@ -857,7 +875,10 @@ const EditRFQS = () => {
             </Col>
             {quoteData && quoteData.length > 0 && (
               <Col lg={4} xl={3}>
-                <QuotesSidebar amount={getTotalAmount().toFixed(2)} />
+                <QuotesSidebar
+                  amount={getTotalAmount().toFixed(2)}
+                  quoteData={quoteList}
+                />
               </Col>
             )}
           </Row>

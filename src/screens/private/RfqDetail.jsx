@@ -13,6 +13,31 @@ import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
 export default function RfqDetail() {
   const { id } = useParams();
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Approved!":
+        return {
+          backgroundColor: "rgba(1,148,60,0.10)",
+          color: "#01943C",
+          padding: "0px 6px",
+        };
+      case "Rejected":
+        return {
+          backgroundColor: "rgb(225, 31, 38)",
+          color: "#fff",
+          padding: "0px 6px",
+        };
+
+      case "Pending":
+        return {
+          backgroundColor: "rgba(255,186,22,0.10)",
+          color: "#FFBA16",
+          padding: "0px 6px",
+        };
+      default:
+        return {};
+    }
+  };
   const [orders, setOrders] = useState([]);
   const [orderDetails, setOrdersDetail] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +78,7 @@ export default function RfqDetail() {
                 to="/rfqs"
                 className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159"
               >
-                Back To Rfq's
+                Back To RFQ's
               </Link>
             </Card.Header>
             {loading ? (
@@ -86,8 +111,22 @@ export default function RfqDetail() {
                   {/* <li>Payment Method <span>Credit Card</span></li> */}
                   <li>
                     Status{" "}
-                    <span className="badge-status">
-                      {orderDetails.status == 0
+                    <span
+                      className="badgestatus"
+                      style={getStatusColor(
+                        orderDetails.status == 1
+                          ? "Pending"
+                          : orderDetails.status == 2
+                          ? "Approved!"
+                          : "Rejected"
+                      )}
+                    >
+                      {orderDetails.status == 1
+                        ? "Pending"
+                        : orderDetails.status == 2
+                        ? "Approved!"
+                        : "Rejected"}
+                      {/* {orderDetails.status == 0
                         ? "Order Placed"
                         : orderDetails.status == 1
                         ? "In Progress"
@@ -95,7 +134,7 @@ export default function RfqDetail() {
                         ? "Shipped"
                         : orderDetails.status == 3
                         ? "Delivered"
-                        : ""}
+                        : ""}  */}
                     </span>
                   </li>
                 </ul>
@@ -154,12 +193,15 @@ export default function RfqDetail() {
                                 <h4>Services</h4>
                                 <label>
                                   Bending :{" "}
-                                  <a
-                                    href={`${row.bendupload_url}`}
-                                    target="_blank"
-                                  >
-                                    Attachment
-                                  </a>
+                                  {row.bendupload_url.map((url, index) => (
+                                    <a
+                                      href={`${url}`}
+                                      target="_blank"
+                                      style={{ paddingRight: "5px" }}
+                                    >
+                                      Attachment {String(index + 1)}
+                                    </a>
+                                  ))}
                                 </label>
                               </div>
                             )}
@@ -202,11 +244,23 @@ export default function RfqDetail() {
                         <Amount amount={orderDetails.total_amount} />
                       </span>
                     </p>
+                    <p>
+                      Bending{" "}
+                      <span>
+                        {" "}
+                        <Amount amount={orderDetails.total_bend_price} />
+                      </span>
+                    </p>
                     <p className="grandtotal">
                       Total{" "}
                       <span>
                         {" "}
-                        <Amount amount={orderDetails.total_amount} />
+                        <Amount
+                          amount={
+                            parseFloat(orderDetails.total_amount || 0) +
+                            parseFloat(orderDetails.total_bend_price || 0)
+                          }
+                        />
                       </span>
                     </p>
                   </Col>

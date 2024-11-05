@@ -36,18 +36,18 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit }) => {
         <p>
           Height :
           {isChecked
-            ? `${dimensions.height} in`
-            : `${inchesToMm(dimensions.height)} mm`}{" "}
+            ? `${parseFloat(dimensions.height).toFixed(2)} in`
+            : `${inchesToMm(parseFloat(dimensions.height).toFixed(2))} mm`}{" "}
         </p>
         <p>
           Width :{" "}
           {isChecked
-            ? `${dimensions.width} in`
-            : `${inchesToMm(dimensions.width)} mm`}
+            ? `${parseFloat(dimensions.width).toFixed(2)} in`
+            : `${inchesToMm(parseFloat(dimensions.width).toFixed(2))} mm`}
         </p>
         {isEdit && (
           <p className="d-flex align-items-center">
-            Units:
+            Change Units:
             <div className="toggle-switch">
               <input
                 type="checkbox"

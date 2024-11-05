@@ -511,6 +511,10 @@ const OrdersDetail = () => {
                           }).format(order?.orderedQuote.total_amount)}
                         </span>
                       </div>
+                      <div className="d-flex align-items-center mb-3">
+                        <label>Shipping Type: </label>{" "}
+                        <span>{order?.serviceCode?.name || "N/A"}</span>
+                      </div>
                       <div className="d-flex align-items-center">
                         <label>Status: </label>{" "}
                         <span className="statusnew fw-medium">
@@ -821,7 +825,18 @@ const OrdersDetail = () => {
                             >
                               {wo?.subquote_number}
                             </span>
-
+                            {wo.pierce_count && (
+                              <>
+                                <br></br>
+                                <span
+                                  className="num-dim mb-2"
+                                  style={{ fontSize: "12px" }}
+                                >
+                                  Pierce Count : {wo.pierce_count}
+                                  {/* </span> */}
+                                </span>
+                              </>
+                            )}
                             <div className="list-qty d-flex align-items-center gap-3 mb-3 pt-3">
                               <span className="qty">
                                 <strong>QTY:</strong> {wo.quantity}
@@ -902,7 +917,7 @@ const OrdersDetail = () => {
                                   wo?.material_name + " " + wo?.material_grade
                                 )}
                               >
-                                Bend
+                                Bend ({wo.bend_count})
                               </label>
                               <Form.Check
                                 type="checkbox"
@@ -968,21 +983,26 @@ const OrdersDetail = () => {
                           )}
                         </div>
                         {wo.bend_count > 0 ? (
-                          <a href={wo.bendupload_url} download="filename.pdf">
-                            <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                              <Image
-                                src={attachment}
-                                className="img-fluid"
-                                alt=""
-                              />
-                              <span>Attachments</span>
-                            </div>
-                          </a>
-                        ) : (
-                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                            {/* <Image src={attachment} className="img-fluid" alt="" />
-                        <span>Attachments</span> */}
+                          <div>
+                            {wo.bendupload_url.map((url, index) => (
+                              <a
+                                href={url}
+                                download="filename.pdf"
+                                style={{ paddingLeft: "9px" }}
+                              >
+                                <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                                  <Image
+                                    src={attachment}
+                                    className="img-fluid"
+                                    alt=""
+                                  />
+                                  <span>Attachment {String(index + 1)}</span>
+                                </div>
+                              </a>
+                            ))}
                           </div>
+                        ) : (
+                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center"></div>
                         )}
                       </div>
                     ))}

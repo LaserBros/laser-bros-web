@@ -16,7 +16,12 @@ const ShippingStatus = ({ show, handleClose, data }) => {
         <Modal.Body className="px-lg-5 px-4 pb-4">
           <div className="tracking-info">
             <h5>Tracking Number: {data?.tracking_number}</h5>
-            <p>Status: {data?.status_description}</p>
+            <p>
+              Status:{" "}
+              {data?.status_description == null
+                ? "In Progress"
+                : data?.status_description}
+            </p>
             <a
               href={data?.tracking_url}
               target="_blank"

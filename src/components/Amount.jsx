@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { Button, InputGroup, FormControl } from "react-bootstrap";
-import { Icon } from "@iconify/react";
+import React from "react";
+
 const Amount = ({ amount }) => {
-  return new Intl.NumberFormat("en-US", {
+  const formattedAmount = new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD", // Change to your desired currency
+    currency: "USD",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
+
+  return <span>{formattedAmount}</span>;
 };
 
 export default Amount;

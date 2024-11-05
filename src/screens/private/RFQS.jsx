@@ -3,7 +3,12 @@ import { Card, Container } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { fetchRFQ, getEditQuote, reOrder } from "../../api/api";
+import {
+  fetchRFQ,
+  getEditQuote,
+  getEditQuotePay,
+  reOrder,
+} from "../../api/api";
 import Quotes from "./Quotes";
 import { toast } from "react-toastify";
 export default function RFQS() {
@@ -43,7 +48,7 @@ export default function RFQS() {
     const data = {
       id: id,
     };
-    const response = await getEditQuote(data);
+    const response = await getEditQuotePay(data);
     console.log("resss-----", response.data);
     localStorage.setItem(
       "setItemelementDataPay",
@@ -53,6 +58,15 @@ export default function RFQS() {
     localStorage.setItem(
       "setItempartsDBdataPay",
       JSON.stringify(response.data.partsDBdata)
+    );
+    console.log("response.data.shippingRates", response.data.shippingRates);
+    localStorage.setItem(
+      "ShippingDBdataPay",
+      JSON.stringify(response.data.shippingRates)
+    );
+    localStorage.setItem(
+      "divideWeight",
+      JSON.stringify(response.data.divideWeight)
     );
 
     navigate("/quotes/pay");
@@ -126,8 +140,9 @@ export default function RFQS() {
       minWidth: "160px",
       cell: (row) => (
         <div>
-          <Link className="btnview" to={`/rfq/rfq-detail/${row._id}`}>
-            <Icon icon="hugeicons:view"></Icon>
+          <Link className="btnpay" to={`/rfq/rfq-detail/${row._id}`}>
+            {/* <Icon icon="hugeicons:view"></Icon> */}
+            View
           </Link>
           {row.status === 2 && (
             <Link className="btnpay" onClick={() => RequestQuote(row._id)}>

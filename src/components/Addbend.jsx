@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Image, Modal, Button } from "react-bootstrap";
-import file1 from "../assets/img/file1.jpg";
 import { Icon } from "@iconify/react";
 import QuantitySelector from "./Quantityselector";
-import pdf from "../assets/img/file.png";
+import pdfIcon from "../assets/img/file.png";
+
 const AddBend = ({
   show2,
   handleClose2,
@@ -11,7 +11,6 @@ const AddBend = ({
   image,
   name,
   count,
-  pdf_url,
   id,
   onUpload,
   loading,
@@ -19,52 +18,34 @@ const AddBend = ({
   const [quantities, setQuantities] = useState(
     count == 0 || count == null ? 1 : count
   );
-  const [quantitiesVal, setQuantitiesVal] = useState(
-    count == 0 || count == null ? 1 : count
-  );
+  const [filePreviews, setFilePreviews] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  useEffect(() => {
+    setFilePreviews([]);
+    setQuantities(1);
+    setErrorMessage("");
+  }, [show2]);
 
-  const handleSave = () => {
-    onUpload(file1, id, quantities, pdfPreviewUrl);
-  };
   useEffect(() => {
     setQuantities(count == 0 || count == null ? 1 : count);
-    setQuantitiesVal(count == 0 || count == null ? 1 : count);
-    setPdfPreviewUrl(pdf_url);
-    console.log(image, name, count, pdf_url, "image, name, count, pdf_url");
-  }, [image, name, count, pdf_url]);
-
-  const incrementQuantity = () => {
-    setQuantities((prevQuantities) => prevQuantities + 1);
-    setQuantitiesVal((prevQuantities) => prevQuantities + 1);
+  }, [count]);
+  const getFileExtension = (filename) => {
+    const parts = filename.split(".");
+    return parts.length > 1 ? parts.pop() : "No extension"; // Return "No extension" if none exists
   };
-
-  // Decrement quantity (make sure it doesn't go below 1)
-  const decrementQuantity = () => {
-    setQuantities((prevQuantities) => {
-      return prevQuantities > 1 ? prevQuantities - 1 : prevQuantities;
-    });
-    setQuantitiesVal((prevQuantities) => {
-      return prevQuantities > 1 ? prevQuantities - 1 : prevQuantities;
-    });
-  };
-
-  const [file1, setFile1] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
-
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const newFile = e.target.files[0];
     const validFileTypes = [
       "application/pdf",
       "image/jpeg",
       "image/png",
       "application/octet-stream",
-    ]; // Add MIME types for STEP if applicable
-    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step"]; // Add extensions for STEP if applicable
+    ];
+    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step"];
 
-    if (file) {
-      const fileType = file.type;
-      const fileName = file.name;
+    if (newFile) {
+      const fileType = newFile.type;
+      const fileName = newFile.name;
       const isValidType = validFileTypes.includes(fileType);
       const isValidExtension = validExtensions.some((ext) =>
         fileName.endsWith(ext)
@@ -72,15 +53,28 @@ const AddBend = ({
 
       if (isValidType || isValidExtension) {
         setErrorMessage("");
-        setFile1(file);
-        setPdfPreviewUrl(URL.createObjectURL(file)); // Create file preview URL
+        const newPreview = {
+          file: newFile,
+          previewUrl: URL.createObjectURL(newFile),
+        };
+        setFilePreviews((prevPreviews) => [...prevPreviews, newPreview]);
       } else {
         setErrorMessage("Please upload a valid PDF, STEP, JPG, or PNG file.");
       }
     }
   };
 
-  // console.log(, "kddd");
+  const handleSave = () => {
+    const files = filePreviews.map((preview) => preview.file);
+    onUpload(files, id, quantities);
+  };
+
+  const removePreview = (index) => {
+    setFilePreviews((prevPreviews) =>
+      prevPreviews.filter((_, i) => i !== index)
+    );
+  };
+
   return (
     <React.Fragment>
       <Modal
@@ -95,10 +89,6 @@ const AddBend = ({
               <div className="bend-img">
                 <Image src={image} className="img-fluid" alt="" />
               </div>
-              {/* <p>
-                Dimensions <span>1.00 in x 1.00 in</span>
-              </p> */}
-              <p></p>
               <h2>{name}</h2>
             </div>
             <div className="bend-content text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-4 flex-grow-1">
@@ -124,40 +114,61 @@ const AddBend = ({
               </div>
               <div className="bend-quantity mb-3">
                 <h5 className="mb-0 me-4">Number of bends: </h5>
-
                 <QuantitySelector
                   quantity={quantities}
-                  onIncrement={() => incrementQuantity("item1")}
-                  onDecrement={() => decrementQuantity("item1")}
+                  onIncrement={() => setQuantities((prev) => prev + 1)}
+                  onDecrement={() =>
+                    setQuantities((prev) => Math.max(1, prev - 1))
+                  }
                 />
               </div>
-              {pdfPreviewUrl ? (
-                <div style={{ position: "relative", display: "inline-block" }}>
-                  <Image
-                    src={pdf}
-                    className="img-fluid"
-                    alt="PDF Preview"
-                    height={60}
-                    width={60}
-                  />
-
-                  <button
-                    onClick={() => setPdfPreviewUrl(null)}
+              <div className="file-previews">
+                {filePreviews.map((preview, index) => (
+                  <div
+                    key={index}
                     style={{
-                      position: "absolute",
-                      top: -13,
-                      right: -6,
-                      background: "transparent",
-                      border: "none",
-                      fontSize: "18px",
-                      cursor: "pointer",
+                      position: "relative",
+                      display: "inline-block",
+                      marginRight: 10,
                     }}
                   >
-                    &times;
-                  </button>
-                </div>
-              ) : (
-                <div className="bends-upload-file mb-2">
+                    <Image
+                      src={pdfIcon}
+                      className="img-fluid"
+                      alt="Preview"
+                      height={60}
+                      width={60}
+                    />
+                    <p
+                      style={{
+                        marginTop: 5,
+                        fontSize: "12px",
+                        wordBreak: "break-word",
+                        textAlign: "center",
+                      }}
+                    >
+                      {getFileExtension(preview.file.name)}
+                    </p>
+
+                    <button
+                      onClick={() => removePreview(index)}
+                      style={{
+                        position: "absolute",
+                        top: -13,
+                        right: -6,
+                        background: "transparent",
+                        border: "none",
+                        fontSize: "18px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {filePreviews.length < 2 && (
+                <div className="bends-upload-file mb-2 mt-3">
                   <Icon icon="mage:file-plus" />
                   <p>
                     <label htmlFor="uploadfileBend">Browse Files</label>
@@ -166,7 +177,7 @@ const AddBend = ({
                       id="uploadfileBend"
                       name="uploadfileBend"
                       className="d-none"
-                      accept=".pdf,.jpg,.jpeg,.png,.PNG,.JPG,.JPEG,.step"
+                      accept=".pdf,.jpg,.jpeg,.png,.step"
                       onChange={handleFileChange}
                     />
                     <span> or Drag or Drop</span>
@@ -181,6 +192,8 @@ const AddBend = ({
                   </small>
                 </div>
               )}
+
+              {/* Display uploaded file previews */}
             </div>
           </div>
         </Modal.Body>
@@ -188,4 +201,5 @@ const AddBend = ({
     </React.Fragment>
   );
 };
+
 export default AddBend;

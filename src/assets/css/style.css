@@ -3381,7 +3381,9 @@ textarea.form-control {
   top: 0;
   margin-left: 5px;
 }
-
+.custom_tooltip .tooltip-inner {
+  max-width: 305px;
+}
 .toggle-switch-container .checkbox {
   display: none;
 }
@@ -3414,16 +3416,17 @@ textarea.form-control {
 }
 
 .toggle-switch-container .inner:before {
-  content: "mm";
+  content: "in";
   padding-left: 6px;
-  background-color: #4F8CCA;
+  background-color:red ;
+ 
   color: #fff;
 }
 
 .toggle-switch-container .inner:after {
-  content: "in";
+  content: "mm";
   padding-right: 6px;
-  background-color:red ;
+  background-color: #4F8CCA;
   color: #fff;
   text-align: right;
 }

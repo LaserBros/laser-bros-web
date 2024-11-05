@@ -34,6 +34,7 @@ export default function QuotesDetail() {
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
   const [addLoading, setaddLoading] = useState(false);
+  const [btnText, setbtnText] = useState(0);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
   const [indexPart, setindexPart] = useState();
@@ -60,24 +61,48 @@ export default function QuotesDetail() {
 
   const handleUpload = async (file, id, quantities, pdf_url) => {
     console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
-    if (!pdf_url) {
+    if (file.length == 0) {
       alert("Please upload a PDF file before saving.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("quote_image", file);
+    for (let i = 0; i < file.length; i++) {
+      formData.append("quote_image", file[i]);
+    }
     formData.append("id", id);
     formData.append("bend_count", quantities);
     try {
       setaddLoading(true);
       const response = await bendQuotes(formData);
-      setQuoteData(response.data.data);
       setquoteDataCon(true);
       localStorage.setItem(
         "setItempartsDBdata",
         JSON.stringify(response.data.data)
       );
+      setQuoteData(response.data.data);
+      var data_val = response.data.data;
+      let total = 0; // Change 'const' to 'let' to allow reassignment
+      for (const quote of data_val) {
+        total += quote.bend_count; // Accumulate bend_count values
+      }
+
+      const quoteList = localStorage.getItem("setItemelementData");
+
+      if (quoteList) {
+        // Parse the stored JSON data
+        const parsedQuoteList = JSON.parse(quoteList);
+
+        // Update the total_bend_price in the object
+        parsedQuoteList.total_bend_price = total * 5;
+        console.log("total * 15", total * 5, parsedQuoteList);
+        localStorage.setItem(
+          "setItemelementData",
+          JSON.stringify(parsedQuoteList)
+        );
+        setQuoteList(parsedQuoteList);
+      }
+
       setaddLoading(false);
       setModalShow2(false);
     } catch (error) {
@@ -145,10 +170,12 @@ export default function QuotesDetail() {
   const fetchFinish = async (materialId, quoteId) => {
     try {
       const data = {
-        id: materialId,
+        thickness_id: materialId,
+        id: quoteId,
       };
-      const response = await fetchSelectedFinishes(data); // Your API call function
+      const response = await fetchSelectedFinishes(data);
       const res_status = response.data;
+      setbtnText(response.check_status);
       const fetchedOptions = res_status.map((item) => ({
         value: item._id,
         label: item.finishing_desc,
@@ -272,6 +299,7 @@ export default function QuotesDetail() {
       formData.append("quote_image", "");
       try {
         const response = bendQuotes(formData);
+
         setQuoteData((prevState) =>
           prevState.map((quote) =>
             quote._id === id
@@ -815,9 +843,14 @@ export default function QuotesDetail() {
                   </div>
                 ))}
             </Col>
+
             {quoteData && quoteData.length > 0 && (
               <Col lg={4} xl={3}>
-                <QuotesSidebar amount={getTotalAmount().toFixed(2)} />
+                <QuotesSidebar
+                  amount={getTotalAmount().toFixed(2)}
+                  buttonText={btnText}
+                  quoteData={quoteList}
+                />
               </Col>
             )}
           </Row>

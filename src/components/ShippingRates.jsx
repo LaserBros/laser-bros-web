@@ -1,0 +1,68 @@
+import React, { useState } from "react";
+
+const ShippingRates = ({
+  shippingRates,
+  divideWeight,
+  onRateSelected,
+  service_code,
+}) => {
+  const [selectedRate, setSelectedRate] = useState(service_code);
+
+  // Handle checkbox selection (only one at a time)
+  const handleCheckboxChange = (carrierId, rate) => {
+    const newSelectedRate = selectedRate === carrierId ? null : carrierId;
+    setSelectedRate(newSelectedRate);
+
+    // Trigger the callback only if a rate is selected (not deselected)
+    if (newSelectedRate) {
+      onRateSelected(rate);
+    }
+  };
+
+  return (
+    <div className="mt-3">
+      <hr />
+      <div className="head-quotes d-flex align-items-center justify-content-between">
+        <span className="quotessubtotal">Shipping method</span>
+      </div>
+      <div className="rate-option">
+        <label>
+          <input
+            type="checkbox"
+            value="local_pickup"
+            checked={selectedRate === "local_pickup"}
+            onChange={() =>
+              handleCheckboxChange("local_pickup", "local_pickup")
+            }
+          />
+          &nbsp;&nbsp;Local Pickup
+        </label>
+      </div>
+      {shippingRates && shippingRates.length > 0 ? (
+        <>
+          {shippingRates.map((rate, index) => (
+            <div key={index} className="rate-option">
+              <label>
+                <input
+                  type="checkbox"
+                  value={rate.service_code}
+                  checked={selectedRate === rate.service_code}
+                  onChange={() =>
+                    handleCheckboxChange(rate.service_code, rate.service_code)
+                  }
+                />
+                &nbsp;&nbsp;{rate.carrier_friendly_name} - {rate.service_type}{" "}
+                ($
+                {divideWeight * rate.shipping_amount.amount})
+              </label>
+            </div>
+          ))}
+        </>
+      ) : (
+        <p> </p>
+      )}
+    </div>
+  );
+};
+
+export default ShippingRates;

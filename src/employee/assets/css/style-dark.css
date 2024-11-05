@@ -441,5 +441,6 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:
 }
 
 .toggle-switch-container p {
-  color: #bfbfbf;
+  color: #000;
+  font-weight: 500;
 }/*# sourceMappingURL=style-dark.css.map */

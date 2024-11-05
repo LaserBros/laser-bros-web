@@ -1,5 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { NavDropdown, Navbar, Nav, Container, Image } from "react-bootstrap";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import {
+  NavDropdown,
+  Navbar,
+  Nav,
+  Container,
+  Image,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import logo from "../assets/img/logo.svg";
 import User from "../assets/img/user-3.jpg";
@@ -16,6 +24,28 @@ const Header = () => {
   const handleToggle = () => setExpanded(!expanded);
   const closeNav = () => setExpanded(false);
   const [modalShow, setModalShow] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const navLinkRef = useRef(null);
+
+  const handleTooltipClick = () => {
+    setShowTooltip((prev) => !prev);
+  };
+
+  const handleClickOutside = (event) => {
+    if (navLinkRef.current && !navLinkRef.current.contains(event.target)) {
+      setShowTooltip(false);
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener to detect clicks outside the Nav.Link
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Clean up the event listener on component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // const [name, setName] = useState("");
   // useEffect(() => {
   //   var name = localStorage.getItem("full_name");
@@ -77,10 +107,38 @@ const Header = () => {
               </Nav>
               <Nav className="ms-auto align-items-lg-center right-menu">
                 <ThemeToggle />
-                <Nav.Link as={Link} className="px-3">
+                <Nav.Link
+                  as={Link}
+                  className="px-3"
+                  onClick={handleTooltipClick}
+                  ref={navLinkRef}
+                >
+                  <OverlayTrigger
+                    show={showTooltip}
+                    placement="bottom"
+                    overlay={
+                      <Tooltip
+                        id="help-tooltip"
+                        className="custom_tooltip"
+                        style={{ maxWidth: "305px", whiteSpace: "normal" }}
+                      >
+                        If you need any help please email us at:&nbsp;
+                        <a href="mailto:info@LaserBros.com">
+                          info@LaserBros.com
+                        </a>{" "}
+                        or text/call us at 919-495-2902
+                      </Tooltip>
+                    }
+                  >
+                    <span>
+                      <Icon icon="material-symbols:help-outline" /> Help
+                    </span>
+                  </OverlayTrigger>
+                </Nav.Link>
+                {/* <Nav.Link as={Link} className="px-3">
                   {" "}
                   <Icon icon="material-symbols:help-outline" /> Help
-                </Nav.Link>
+                </Nav.Link> */}
                 {/* <Nav.Link as={Link} onClick={closeNav} className="btn btn-outline-primary min-width-148 d-inline-flex align-items-center justify-content-center">Login</Nav.Link>
                                 <Nav.Link as={Link} onClick={closeNav} className="btn btn-primary min-width-148 d-inline-flex align-items-center justify-content-center ms-0 ms-lg-2">Sign Up</Nav.Link> */}
                 <NavDropdown

@@ -10,8 +10,13 @@ import PaymentDone from "./Paymentdone";
 import { editSubQuote, fetchAddress, getCard, payment } from "../../api/api";
 import axiosAdminInstance from "../axios/axiosadminInstanse";
 import { toast } from "react-toastify";
-const QuotesSidebar = ({ amount, showDiv }) => {
+import Amount from "../../components/Amount";
+const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
   const [modalShow, setModalShow] = useState(false);
+  const [quoteDataVal, setquoteData] = useState(false);
+  useEffect(() => {
+    setquoteData(quoteData);
+  }, [quoteData]);
   // const handleShow = () => setModalShow(true);
   const updateQuote = async () => {
     console.log("sdsdsdd =-=-=-=-=-=-=-");
@@ -87,6 +92,23 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                   style: "currency",
                   currency: "USD",
                 }).format(amount)}
+              </span>
+            </div>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="quotesitem">Bending</span>
+              <span className="quotesitem quotesright">
+                <Amount amount={quoteDataVal.total_bend_price} />{" "}
+              </span>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <span className="quotessubtotal">Subtotal</span>
+              <span className="quotesprice">
+                <Amount
+                  amount={
+                    parseFloat(amount || 0) +
+                    parseFloat(quoteDataVal.total_bend_price || 0)
+                  }
+                />
               </span>
             </div>
             <hr className="quotes-separator" />

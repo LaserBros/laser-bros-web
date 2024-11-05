@@ -146,7 +146,8 @@ export default function QuotesDetailPay() {
   const fetchFinish = async (materialId, quoteId) => {
     try {
       const data = {
-        id: materialId,
+        thickness_id: materialId,
+        id: quoteId,
       };
       const response = await fetchSelectedFinishes(data); // Your API call function
 
@@ -184,6 +185,8 @@ export default function QuotesDetailPay() {
   });
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
+  const [ShippingDBdataPay, setShippingDBdataPay] = useState(null);
+  const [divideWeight, setdivideWeight] = useState(null);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -201,11 +204,16 @@ export default function QuotesDetailPay() {
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataPay");
     const quote_list = localStorage.getItem("setItemelementDataPay");
+    const ShippingDBdataPay = localStorage.getItem("ShippingDBdataPay");
+    const divideWeight = localStorage.getItem("divideWeight");
 
     if (storedData) {
-      // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
+      const ShippingDBdataPays = JSON.parse(ShippingDBdataPay);
+      const divideWeights = JSON.parse(divideWeight);
+      setShippingDBdataPay(ShippingDBdataPays);
+      setdivideWeight(divideWeights);
       setQuoteList(quote_list_val);
 
       setQuoteData(parsedData);
@@ -387,33 +395,38 @@ export default function QuotesDetailPay() {
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>
-                        <div className="quotes-services mt-3">
-                          {quote.bend_count > 0 ? (
-                            <>
-                              <h4>
-                                <a href={`${quote.bendupload_url}`}>
-                                  <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                                    <Image
-                                      src={attachment}
-                                      className="img-fluid"
-                                      alt=""
-                                    />
-                                    <span
-                                      style={{
-                                        fontSize: "12px",
-                                        color: "rgba(0, 0, 0, 0.5)",
-                                        marginBottom: "10px",
-                                      }}
-                                    >
-                                      Attachment
-                                    </span>
-                                  </div>
-                                </a>
-                              </h4>
-                            </>
-                          ) : (
-                            ""
-                          )}
+                        <div
+                          className={`quotes-services mt-3 ${
+                            quote.bendupload_url?.length > 1 ? "d-flex" : ""
+                          }  align-items-center justify-content-between`}
+                          style={{ paddingLeft: "3px" }}
+                        >
+                          {quote.bend_count > 0
+                            ? quote.bendupload_url.map((url) => (
+                                <>
+                                  <h4>
+                                    <a href={`${url}`}>
+                                      <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                                        <Image
+                                          src={attachment}
+                                          className="img-fluid"
+                                          alt=""
+                                        />
+                                        <span
+                                          style={{
+                                            fontSize: "12px",
+                                            color: "rgba(0, 0, 0, 0.5)",
+                                            marginBottom: "10px",
+                                          }}
+                                        >
+                                          Attachment
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </h4>
+                                </>
+                              ))
+                            : ""}
                         </div>
                       </div>
                     </div>
@@ -457,6 +470,9 @@ export default function QuotesDetailPay() {
                 <QuotesSidebar
                   showDiv={true}
                   amount={getTotalAmount().toFixed(2)}
+                  ShippingDBdataPay={ShippingDBdataPay}
+                  divideWeight={divideWeight}
+                  quoteData={quoteList}
                 />
               </Col>
             )}
