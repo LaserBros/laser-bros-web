@@ -105,7 +105,12 @@ export default function RfqDetail() {
                   <li>
                     Order Amount{" "}
                     <span>
-                      <Amount amount={orderDetails.total_amount} />
+                      <Amount
+                        amount={
+                          parseFloat(orderDetails.total_amount || 0) +
+                          parseFloat(orderDetails.total_bend_price || 0)
+                        }
+                      />
                     </span>
                   </li>
                   {/* <li>Payment Method <span>Credit Card</span></li> */}

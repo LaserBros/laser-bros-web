@@ -15,6 +15,7 @@ import OrderStatus from "../../admin/components/OrderStatus";
 import ShippingStatus from "../../components/ShippingStatus";
 export default function OrdersDetail() {
   const { id } = useParams();
+  const [Shipping, setShipping] = useState(0);
   const [orders, setOrders] = useState([]);
   const [orderDetails, setOrdersDetail] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,7 @@ export default function OrdersDetail() {
     };
     try {
       const res = await UsergetParticularOrderDetails(data);
+      setShipping(res.data);
       setOrders(res.data.newUpdatedData);
       setOrdersDetail(res.data.orderedQuote);
       console.log(orders, "Sdsdsdsddsddsdssddssd");
@@ -228,7 +230,29 @@ export default function OrdersDetail() {
                       Subtotal{" "}
                       <span>
                         {" "}
-                        <Amount amount={orderDetails.total_amount} />
+                        <Amount
+                          amount={
+                            parseFloat(orderDetails.total_amount || 0) -
+                            parseFloat(Shipping.bendPrice || 0) -
+                            parseFloat(Shipping.shippingPrice || 0)
+                          }
+                        />
+                      </span>
+                    </p>
+                    <p>
+                      Bending{" "}
+                      <span>
+                        {" "}
+                        <Amount amount={parseFloat(Shipping.bendPrice || 0)} />
+                      </span>
+                    </p>
+                    <p>
+                      Shipping{" "}
+                      <span>
+                        {" "}
+                        <Amount
+                          amount={parseFloat(Shipping.shippingPrice || 0)}
+                        />
                       </span>
                     </p>
                     <p className="grandtotal">
