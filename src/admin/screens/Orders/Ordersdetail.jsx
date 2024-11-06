@@ -36,6 +36,8 @@ import html2canvas from "html2canvas";
 import { toast } from "react-toastify";
 import DimensionsToggle from "../../../components/DimensionsToggle";
 import { useTheme } from "../../../components/Themecontext";
+import ConfirmationModal from "../../../components/ConfirmationModal";
+import ConfirmationModal2 from "../../../components/ConfirmationModal";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -77,7 +79,11 @@ const OrdersDetail = () => {
   const [length, setLength] = useState("");
   const [errors, setErrors] = useState({});
   const [loadingWeight, setLoadingWeight] = useState(false);
-
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const [title, setTitle] = useState("");
+  const [Ids, setIds] = useState("");
+  const [typeId, setType] = useState("");
+  const [eventId, setevent] = useState({});
   const validateFields = () => {
     const newErrors = {};
 
@@ -160,6 +166,8 @@ const OrdersDetail = () => {
   };
 
   const [modalShow, setModalShow] = useState(false);
+  const [modalShow2, setModalShow2] = useState(false);
+  const [modalShow3, setModalShow3] = useState(false);
   const [customer_note, setcustomer_note] = useState(false);
   const [admin_note, setadmin_note] = useState(false);
   const navigate = useNavigate();
@@ -171,21 +179,26 @@ const OrdersDetail = () => {
   };
 
   const [Rowloading, setLoadingRow] = useState(true);
-  const handleComplete = async (id) => {
-    setLoadingRow(id);
+  const handleComplete = async () => {
+    const id = Ids;
+    setLoadingBtn(true);
     try {
       const data = {
         id: id,
       };
       const res = await markCompleteQuote(data);
       await fetchOrder();
-      setLoadingRow("");
+      setModalShow3(false);
+      setLoadingBtn(false);
     } catch (error) {
-      setLoadingRow("");
-      toast.error("Something wents wrong..");
+      setLoadingBtn(false);
+
+      toast.error(error.response.data.message);
     }
   };
   const handleClose = () => setModalShow(false);
+  const handleClose2 = () => setModalShow2(false);
+  const handleClose3 = () => setModalShow3(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const fetchOrder = async () => {
@@ -303,17 +316,23 @@ const OrdersDetail = () => {
       toast.error("Something wents wrong.");
     }
   };
-  const handleCheckboxChangeEvent = async (event, id, type) => {
+  const handleCheckboxChangeEvent = async () => {
+    const event = eventId;
+    const id = Ids;
+    const type = typeId;
+
     const isChecked = event.target.checked;
     var checked = 0;
-    if (isChecked) {
+    console.log("setevent", isChecked);
+    setLoadingBtn(true);
+    if (!isChecked) {
       checked = 1;
     } else {
       checked = 0;
     }
     const updatedMaterials = order.newUpdatedData.map((wo) => {
       if (wo._id === id) {
-        return { ...wo, [type]: isChecked };
+        return { ...wo, [type]: checked };
       }
       return wo; // Return original object if not matching
     });
@@ -338,7 +357,8 @@ const OrdersDetail = () => {
       checked: checked,
     };
     const res = await updateWorkStatus(data);
-    console.log(res.data);
+    setModalShow2(false);
+    setLoadingBtn(false);
   };
   const MAX_LENGTH = 20;
   const shortenName = (materialCode, quoteName) => {
@@ -862,7 +882,9 @@ const OrdersDetail = () => {
                               <Link
                                 className="btnnote ms-2"
                                 onClick={() => {
-                                  handleComplete(wo._id);
+                                  setIds(wo._id);
+                                  setModalShow3(true);
+                                  // handleComplete(wo._id);
                                 }}
                               >
                                 {Rowloading == wo._id ? (
@@ -899,13 +921,20 @@ const OrdersDetail = () => {
                               type="checkbox"
                               id={`${wo.material_code}${wo._id}`}
                               checked={wo.isChecked_material == 1}
-                              onChange={(event) =>
-                                handleCheckboxChangeEvent(
-                                  event,
-                                  wo._id,
-                                  "isChecked_material"
-                                )
+                              disabled={
+                                order?.orderedQuote.status == 3 ? true : false
                               }
+                              onChange={(event) => {
+                                // handleCheckboxChangeEvent(
+                                //   event,
+                                //   wo._id,
+                                //   "isChecked_material"
+                                // )
+                                setIds(wo._id);
+                                setevent(event);
+                                setType("isChecked_material");
+                                setModalShow2(true);
+                              }}
                             />
                           </div>
                           {wo.bend_count > 0 && (
@@ -922,14 +951,21 @@ const OrdersDetail = () => {
                               <Form.Check
                                 type="checkbox"
                                 id={`${wo._id}-POST`}
-                                checked={wo.isChecked_bend == 1}
-                                onChange={(event) =>
-                                  handleCheckboxChangeEvent(
-                                    event,
-                                    wo._id,
-                                    "isChecked_bend"
-                                  )
+                                disabled={
+                                  order?.orderedQuote.status == 3 ? true : false
                                 }
+                                checked={wo.isChecked_bend == 1}
+                                onChange={(event) => {
+                                  // handleCheckboxChangeEvent(
+                                  //   event,
+                                  //   wo._id,
+                                  //   "isChecked_bend"
+                                  // )
+                                  setIds(wo._id);
+                                  setevent(event);
+                                  setType("isChecked_bend");
+                                  setModalShow2(true);
+                                }}
                               />
                             </div>
                           )}
@@ -947,13 +983,20 @@ const OrdersDetail = () => {
                               type="checkbox"
                               id={`${wo._id}-POST`}
                               checked={wo.isChecked_PO == 1}
-                              onChange={(event) =>
-                                handleCheckboxChangeEvent(
-                                  event,
-                                  wo._id,
-                                  "isChecked_PO"
-                                )
+                              disabled={
+                                order?.orderedQuote.status == 3 ? true : false
                               }
+                              onChange={(event) => {
+                                // handleCheckboxChangeEvent(
+                                //   event,
+                                //   wo._id,
+                                //   "isChecked_bend"
+                                // )
+                                setIds(wo._id);
+                                setevent(event);
+                                setType("isChecked_PO");
+                                setModalShow2(true);
+                              }}
                             />
                           </div>
                           {wo.finishing_desc && (
@@ -971,13 +1014,20 @@ const OrdersDetail = () => {
                                 type="checkbox"
                                 id={`${wo._id}-${wo.finishing_desc}`}
                                 checked={wo.isChecked_finish == 1}
-                                onChange={(event) =>
-                                  handleCheckboxChangeEvent(
-                                    event,
-                                    wo._id,
-                                    "isChecked_finish"
-                                  )
+                                disabled={
+                                  order?.orderedQuote.status == 3 ? true : false
                                 }
+                                onChange={(event) => {
+                                  // handleCheckboxChangeEvent(
+                                  //   event,
+                                  //   wo._id,
+                                  //   "isChecked_bend"
+                                  // )
+                                  setIds(wo._id);
+                                  setevent(event);
+                                  setType("isChecked_finish");
+                                  setModalShow2(true);
+                                }}
                               />
                             </div>
                           )}
@@ -1032,6 +1082,26 @@ const OrdersDetail = () => {
             ></span>
           </>
         )}
+        <ConfirmationModal
+          show={modalShow2}
+          onHide={handleClose2}
+          title={"Are you sure?"}
+          desc={title}
+          yesBtnText={"Yes"}
+          noBtnText={"No"}
+          onConfirm={handleCheckboxChangeEvent}
+          loading={loadingBtn}
+        />
+        <ConfirmationModal2
+          show={modalShow3}
+          onHide={handleClose3}
+          title={"Are you sure?"}
+          desc={title}
+          yesBtnText={"Yes"}
+          noBtnText={"No"}
+          onConfirm={handleComplete}
+          loading={loadingBtn}
+        />
       </React.Fragment>
     </div>
   );

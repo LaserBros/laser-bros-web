@@ -300,17 +300,56 @@ export default function QuotesDetail() {
       try {
         const response = bendQuotes(formData);
 
-        setQuoteData((prevState) =>
-          prevState.map((quote) =>
-            quote._id === id
-              ? {
-                  ...quote,
-                  bend_count: 0,
-                  bendupload_url: "",
-                }
-              : quote
-          )
+        const updatedQuoteData = quoteData.map((quote) => {
+          if (quote._id === id) {
+            const bend_count = 0;
+            const bendupload_url = "";
+
+            return {
+              ...quote,
+              bend_count: bend_count,
+              bendupload_url: bendupload_url,
+            };
+          }
+          return quote;
+        });
+        localStorage.setItem(
+          "setItemelementData",
+          JSON.stringify(updatedQuoteData)
         );
+        const quoteDataVal = JSON.parse(
+          localStorage.getItem("setItemelementData")
+        );
+
+        let total = 0;
+        for (const quote of quoteDataVal) {
+          total += quote.bend_count; // Accumulate bend_count values
+        }
+
+        const quoteList = localStorage.getItem("setItemelementData");
+
+        if (quoteList) {
+          // Parse the stored JSON data
+          const parsedQuoteList = JSON.parse(quoteList);
+
+          console.log("parsedQuoteList", parsedQuoteList);
+          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+
+          console.log(
+            "total * 15",
+            total * 5,
+            parsedQuoteList,
+            "dsdsdsdsdsddsd"
+          );
+          localStorage.setItem(
+            "setItemelementData",
+            JSON.stringify(parsedQuoteList)
+          );
+          setQuoteList(parsedQuoteList);
+        }
+
+        setquoteDataCon(true);
+        setQuoteData(updatedQuoteData);
       } catch {}
     }
   };

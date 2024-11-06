@@ -103,16 +103,17 @@ const Sidebar = () => {
     //   link: "/admin/archive",
     //   icon: "fluent:laser-tool-20-regular",
     // },
-    {
-      id: "complete-orders",
-      title: "Complete Orders",
-      link: "/admin/complete-orders",
-      icon: "carbon:task-complete",
-    },
+
     {
       id: "shipping",
       title: "Shipping Orders",
       link: "/admin/shipping-orders",
+      icon: "gridicons:shipping",
+    },
+    {
+      id: "complete-orders",
+      title: "Complete Orders",
+      link: "/admin/complete-orders",
       icon: "carbon:task-complete",
     },
     {

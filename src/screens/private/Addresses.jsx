@@ -9,6 +9,7 @@ import {
 } from "../../api/api";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import Loader from "../../layouts/Loader";
 
 export default function Addresses() {
   const [address, setAddresss] = useState([]);
@@ -88,8 +89,12 @@ export default function Addresses() {
             </Card.Header>
             <Card.Body>
               <Row>
-                {address.length === 0 ? (
-                  <Col>
+                {loading ? (
+                  <Col className="text-center mt-5 mb-5">
+                    <p>No Addresses Found.</p>
+                  </Col>
+                ) : address.length === 0 ? (
+                  <Col className="text-center">
                     <p>No addresses found</p>
                   </Col>
                 ) : (

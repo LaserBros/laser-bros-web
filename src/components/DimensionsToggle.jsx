@@ -25,9 +25,22 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit }) => {
         id: id,
         dimension_type: event.target.checked ? 1 : 0,
       };
+      let quoteData = JSON.parse(localStorage.getItem("setItempartsDBdata"));
+      const updatedQuoteData = quoteData.map((quote) =>
+        quote._id === id
+          ? { ...quote, dimension_type: event.target.checked ? 1 : 0 }
+          : quote
+      );
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(updatedQuoteData)
+      );
       const res = await updateDimensionType(data);
-      console.log("updateDimensionType", res.data);
-    } catch (error) {}
+
+      console.log("updateDimensionType", res.data, updatedQuoteData);
+    } catch (error) {
+      console.log("SDsdsdsdsd", error);
+    }
   };
 
   return (

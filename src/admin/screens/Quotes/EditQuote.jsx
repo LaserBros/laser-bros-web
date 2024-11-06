@@ -28,12 +28,13 @@ import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
 import QuotesSidebar from "../../components/Quotessidebar";
 import RenamePart from "../../components/Renamepart";
-import AddBend from "../../components/Addbend";
+
 import AdminAddNote from "../../components/AddNote";
 import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
 import DimensionsToggle from "../../../components/DimensionsToggle";
 import FileUpload from "../../components/FileUploadAdmin";
+import AddBend from "../../../components/Addbend";
 const EditRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -82,7 +83,67 @@ const EditRFQS = () => {
   useEffect(() => {
     // fetchOptions();
   }, []);
+  const [addLoading, setaddLoading] = useState(false);
+  const handleUpload = async (file, id, quantities, pdf_url) => {
+    console.log(
+      file,
+      id,
+      quantities,
+      pdf_url,
+      "pdf_urlpdf_urlpdf_urlpdf_url ---"
+    );
+    if (file.length == 0) {
+      alert("Please upload a PDF file before saving.");
+      return;
+    }
 
+    const formData = new FormData();
+    for (let i = 0; i < file.length; i++) {
+      formData.append("quote_image", file[i]);
+    }
+    formData.append("id", id);
+    formData.append("bend_count", quantities);
+    try {
+      console.log("SDsdsdsdsdsdsdd-s-dsd0sd0sd0-");
+      setaddLoading(true);
+      const response = await AdminbendQuotes(formData);
+
+      console.log("response.data.data  response.data.data", response.data.data);
+      localStorage.setItem(
+        "setItemelementDataAdmin",
+        JSON.stringify(response.data.data)
+      );
+
+      setQuoteData(response.data.data);
+      var data_val = response.data.data;
+      let total = 0; // Change 'const' to 'let' to allow reassignment
+      for (const quote of data_val) {
+        total += quote.bend_count; // Accumulate bend_count values
+      }
+
+      const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+      if (quoteList) {
+        // Parse the stored JSON data
+        const parsedQuoteList = JSON.parse(quoteList);
+
+        // Update the total_bend_price in the object
+        parsedQuoteList.total_bend_price = total * 5;
+        console.log("total * 15", total * 5, parsedQuoteList);
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(parsedQuoteList)
+        );
+        setQuoteList(parsedQuoteList);
+      }
+      setquoteDataCon(true);
+      setaddLoading(false);
+      setModalShow2(false);
+    } catch (error) {
+      setaddLoading(false);
+      console.log("errororoor ----", error);
+    }
+  };
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
@@ -282,19 +343,84 @@ const EditRFQS = () => {
   const [bendupload_url, setbendupload_url] = useState(null);
   const [id_quote, setid_quote] = useState(null);
 
-  const handleShow2 = (
+  const handleShow2 = async (
     image_url,
     quote_name,
     bend_count,
     bendupload_url,
-    id
+    id,
+    checked
   ) => {
-    setimage_url(image_url);
-    setquote_name(quote_name);
-    setbend_count(bend_count);
-    setbendupload_url(bendupload_url);
-    setid_quote(id);
-    setModalShow2(true);
+    if (checked) {
+      setimage_url(image_url);
+      setquote_name(quote_name);
+      setbend_count(bend_count);
+      setbendupload_url(bendupload_url);
+      setid_quote(id);
+      setModalShow2(true);
+    } else {
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("bend_count", 0);
+      formData.append("quote_image", "");
+      try {
+        const response = AdminbendQuotes(formData);
+
+        const updatedQuoteData = quoteData.map((quote) => {
+          if (quote._id === id) {
+            const bend_count = 0;
+            const bendupload_url = "";
+
+            return {
+              ...quote,
+              bend_count: bend_count,
+              bendupload_url: bendupload_url,
+            };
+          }
+          return quote;
+        });
+
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(updatedQuoteData)
+        );
+        const quoteDataVal = JSON.parse(
+          localStorage.getItem("setItemelementDataAdmin")
+        );
+
+        let total = 0;
+        for (const quote of quoteDataVal) {
+          total += quote.bend_count; // Accumulate bend_count values
+        }
+
+        const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+        if (quoteList) {
+          // Parse the stored JSON data
+          const parsedQuoteList = JSON.parse(quoteList);
+
+          console.log("parsedQuoteList", parsedQuoteList);
+          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+
+          console.log(
+            "total * 15",
+            total * 5,
+            parsedQuoteList,
+            "dsdsdsdsdsddsd"
+          );
+          localStorage.setItem(
+            "setItemelementDataAdmin",
+            JSON.stringify(parsedQuoteList)
+          );
+          setQuoteList(parsedQuoteList);
+        }
+
+        setquoteDataCon(true);
+        setQuoteData(updatedQuoteData);
+      } catch (error) {
+        console.log("Dsdsdsdsdsdd", error);
+      }
+    }
   };
   const handleClose2 = () => setModalShow2(false);
 
@@ -725,11 +851,46 @@ const EditRFQS = () => {
                           />
                         </div>
                         <div className="quotes-services mt-3">
+                          {quote.binding_option == "no" ? (
+                            <p></p>
+                          ) : (
+                            <>
+                              {quote.thickness_id && (
+                                <>
+                                  <h4>Services</h4>
+
+                                  <Form.Check
+                                    type="checkbox"
+                                    label="Bending"
+                                    name={`options-${quote._id}`}
+                                    value={`options-${quote._id}`}
+                                    id={`options-${quote._id}`}
+                                    className="d-inline-flex align-items-center me-2"
+                                    onChange={(e) =>
+                                      handleShow2(
+                                        quote.image_url,
+                                        quote.quote_name,
+                                        quote.bend_count,
+                                        quote.bendupload_url,
+                                        quote._id,
+                                        e.target.checked
+                                      )
+                                    }
+                                    checked={quote.bend_count >= 1}
+                                  />
+                                </>
+                              )}
+                            </>
+                          )}
+                          {/* </> */}
+                          {/* )} */}
+                        </div>
+                        <div className="quotes-services mt-3">
                           <p style={{ fontSize: "12px", color: "#00000080" }}>
                             Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
                             {"   "}
-                            {quote.bend_count >= 1 &&
-                              quote.bendupload_url.map((url, index) => (
+                            {quote.bendupload_url?.length > 0 &&
+                              quote.bendupload_url?.map((url, index) => (
                                 <a
                                   href={`${url}`}
                                   style={{ paddingLeft: "5px" }}
@@ -931,6 +1092,18 @@ const EditRFQS = () => {
         id={selectedPartId}
         handleClose={handleClose3}
         title="Notes"
+      />
+      <AddBend
+        show2={modalShow2}
+        handleClose2={handleClose2}
+        image={image_url}
+        name={quote_name}
+        count={bend_count}
+        pdf_url={bendupload_url}
+        title="Specify Bend Details"
+        id={id_quote}
+        onUpload={handleUpload}
+        loading={addLoading}
       />
     </React.Fragment>
   );

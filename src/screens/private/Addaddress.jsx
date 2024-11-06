@@ -16,7 +16,58 @@ export default function AddAddress() {
     pincode: "",
     phone_number: "",
   });
-
+  const usStates = [
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming",
+  ];
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -66,8 +117,8 @@ export default function AddAddress() {
     if (!formData.pincode) {
       formErrors.zipCode = "Zip Code is required.";
       valid = false;
-    } else if (!/^\d{6}$/.test(formData.pincode)) {
-      formErrors.zipCode = "Zip Code must be a 6-digit number.";
+    } else if (!/^\d{5}$/.test(formData.pincode)) {
+      formErrors.zipCode = "Zip Code must be a 5-digit number.";
       valid = false;
     }
 
@@ -124,7 +175,7 @@ export default function AddAddress() {
                 to="/my-addresses"
                 className="btn btn-primary d-inline-flex align-items-center justify-content-center min-width-18"
               >
-                Back To Addresses
+                Back To Address
               </Link>
             </Card.Header>
             <Card.Body>
@@ -175,12 +226,48 @@ export default function AddAddress() {
                           Select
                         </option>
                         <option value="USA">USA</option>
-                        <option value="UK">UK</option>
-                        <option value="Canada">Canada</option>
-                        <option value="India">India</option>
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {errors.country}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>State</Form.Label>
+                      <Form.Select
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        isInvalid={!!errors.state}
+                      >
+                        <option disabled value="">
+                          Select
+                        </option>
+                        {usStates.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.state}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>City</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="Enter your city"
+                        isInvalid={!!errors.city}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.city}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
@@ -212,42 +299,7 @@ export default function AddAddress() {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        placeholder="Enter your city"
-                        isInvalid={!!errors.city}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.city}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>State</Form.Label>
-                      <Form.Select
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        isInvalid={!!errors.state}
-                      >
-                        <option disabled value="">
-                          Select
-                        </option>
-                        <option value="California">California</option>
-                        <option value="New York">New York</option>
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        {errors.state}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
+
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
                       <Form.Label>Zip Code</Form.Label>
@@ -266,13 +318,13 @@ export default function AddAddress() {
                   </Col>
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
-                      <Form.Label>Phone No</Form.Label>
+                      <Form.Label>Phone No.</Form.Label>
                       <Form.Control
                         type="tel"
                         name="phone_number"
                         value={formData.phone_number}
                         onChange={handleChange}
-                        placeholder="Enter your phone no"
+                        placeholder="Enter your phone no."
                         isInvalid={!!errors.phoneNo}
                       />
                       <Form.Control.Feedback type="invalid">

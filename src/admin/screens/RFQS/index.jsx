@@ -18,6 +18,8 @@ import {
   updateQuoteState,
 } from "../../../api/api";
 import Pagination from "../../components/Pagination";
+import CommonModal from "../../../components/Modal";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -30,18 +32,28 @@ const RFQS = () => {
       [id]: !prevState[id],
     }));
   };
+
   const [loadingRows, setLoadingRows] = useState({});
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const handleClose = () => setModalShow(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [title, setTitle] = useState("");
+  const [Ids, setIds] = useState("");
+  const [type, setType] = useState("");
 
   const [totalPage, settotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-  const changeStatus = async (status, id) => {
+  const changeStatus = async () => {
+    const id = Ids;
+    const status = type;
     setLoadingRows((prevState) => ({
       ...prevState,
       [id]: true,
     }));
     try {
+      setLoadingBtn(true);
       const res = await updateQuoteState(id, status);
       if (status == 2) {
         toast.success("RFQ accepted successfully");
@@ -57,6 +69,8 @@ const RFQS = () => {
         ...prevState,
         [id]: false,
       }));
+      setLoadingBtn(false);
+      setModalShow(false);
       loadData();
     }
   };
@@ -296,7 +310,15 @@ const RFQS = () => {
                                 <>
                                   <Link
                                     className="btnaccept"
-                                    onClick={() => changeStatus(2, row._id)}
+                                    // onClick={() => changeStatus(2, row._id)}
+                                    onClick={() => {
+                                      setModalShow(true);
+                                      setTitle(
+                                        "Are you sure you want to accept this quote?"
+                                      );
+                                      setIds(row._id);
+                                      setType(2);
+                                    }}
                                   >
                                     {loadingRows[row._id] ? (
                                       <span
@@ -313,7 +335,15 @@ const RFQS = () => {
                                   </Link>
                                   <Link
                                     className="btnreject"
-                                    onClick={() => changeStatus(3, row._id)}
+                                    // onClick={() => changeStatus(3, row._id)}
+                                    onClick={() => {
+                                      setModalShow(true);
+                                      setTitle(
+                                        "Are you sure you want to reject this quote?"
+                                      );
+                                      setIds(row._id);
+                                      setType(3);
+                                    }}
                                   >
                                     {loadingRows[row._id] ? (
                                       <span
@@ -381,6 +411,16 @@ const RFQS = () => {
           )}
         </CardBody>
       </Card>
+      <ConfirmationModal
+        show={modalShow}
+        onHide={handleClose}
+        title={"Are you sure?"}
+        desc={title}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={changeStatus}
+        loading={loadingBtn}
+      />
     </React.Fragment>
   );
 };

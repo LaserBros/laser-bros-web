@@ -332,10 +332,10 @@ const EditProfile = () => {
                       </Col>
                       <Col lg={6}>
                         <Form.Group className="mb-3 form-group">
-                          <Form.Label>Phone No</Form.Label>
+                          <Form.Label>Phone No.</Form.Label>
                           <Form.Control
                             type="tel"
-                            placeholder="Enter phone no"
+                            placeholder="Enter phone no."
                             value={phoneNo}
                             isInvalid={!!errors.phoneNo}
                             onChange={(e) => setPhoneNo(e.target.value)}
