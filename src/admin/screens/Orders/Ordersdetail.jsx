@@ -26,6 +26,7 @@ import {
   getParticularOrderDetails,
   markCompleteQuote,
   moveOrderStatus,
+  moveOrderToComplete,
   startPackaging,
   updateWorkStatus,
 } from "../../../api/api";
@@ -107,27 +108,27 @@ const OrdersDetail = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateFields()) {
-      setLoadingWeight(true);
-      // console.log(height, weight, width, length);
-      try {
-        const data = {
-          id: order?.orderedQuote._id,
-          weight: weight,
-          length: length,
-          width: width,
-          height: height,
-        };
-        const res = await startPackaging(data);
-        setLoadingWeight(false);
-        navigate("/admin/complete-orders");
-      } catch (error) {
-        setLoadingWeight(false);
-      }
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (validateFields()) {
+  //     setLoadingWeight(true);
+  //     // console.log(height, weight, width, length);
+  //     try {
+  //       const data = {
+  //         id: order?.orderedQuote._id,
+  //         weight: weight,
+  //         length: length,
+  //         width: width,
+  //         height: height,
+  //       };
+  //       const res = await startPackaging(data);
+  //       setLoadingWeight(false);
+  //       navigate("/admin/complete-orders");
+  //     } catch (error) {
+  //       setLoadingWeight(false);
+  //     }
+  //   }
+  // };
 
   const downloadPDF = async () => {
     await loadImagesAsBase64(); // Ensure all images are converted to base64
@@ -278,6 +279,132 @@ const OrdersDetail = () => {
         };
       default:
         return {};
+    }
+  };
+
+  const [shippingInfo, setShippingInfo] = useState([
+    { height: "", weight: "", width: "", length: "" },
+  ]);
+  // const [errors, setErrors] = useState({}); // Initialize errors state
+
+  // Add new empty shipping info section
+  const handleAddMore = () => {
+    setShippingInfo([
+      ...shippingInfo,
+      { height: "", weight: "", width: "", length: "" },
+    ]);
+  };
+
+  // Remove specific shipping info section by index
+  const handleRemove = (index) => {
+    // Remove the shipping info at the specified index
+    const newShippingInfo = [...shippingInfo];
+    newShippingInfo.splice(index, 1);
+    setShippingInfo(newShippingInfo);
+
+    // Filter out errors related to the removed index
+    const newErrors = { ...errors };
+    delete newErrors[`height-${index}`];
+    delete newErrors[`weight-${index}`];
+    delete newErrors[`width-${index}`];
+    delete newErrors[`length-${index}`];
+
+    // Shift any remaining error keys down by one
+    Object.keys(newErrors).forEach((key) => {
+      const errorIndex = parseInt(key.split("-")[1], 10);
+      if (errorIndex > index) {
+        newErrors[`${key.split("-")[0]}-${errorIndex - 1}`] = newErrors[key];
+        delete newErrors[key];
+      }
+    });
+
+    setErrors(newErrors);
+  };
+
+  // Handle input change for specific fields in shipping info sections
+  const handleInputChange = (index, field, value) => {
+    const updatedInfo = [...shippingInfo];
+    updatedInfo[index][field] = value;
+    setShippingInfo(updatedInfo);
+  };
+
+  // Validate fields and submit the form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let hasError = false;
+    const newErrors = {};
+
+    // Validate each field in every shipping info entry
+    shippingInfo.forEach((info, index) => {
+      // Regular expression to check if a value is a number or float
+      const numberRegex = /^[0-9]+(\.[0-9]+)?$/;
+
+      if (!info.height) {
+        hasError = true;
+        newErrors[`height-${index}`] = "Height is required";
+      } else if (!numberRegex.test(info.height)) {
+        hasError = true;
+        newErrors[`height-${index}`] = "Height must be a number or decimal";
+      }
+
+      if (!info.weight) {
+        hasError = true;
+        newErrors[`weight-${index}`] = "Weight is required";
+      } else if (!numberRegex.test(info.weight)) {
+        hasError = true;
+        newErrors[`weight-${index}`] = "Weight must be a number or decimal";
+      }
+
+      if (!info.width) {
+        hasError = true;
+        newErrors[`width-${index}`] = "Width is required";
+      } else if (!numberRegex.test(info.width)) {
+        hasError = true;
+        newErrors[`width-${index}`] = "Width must be a number or decimal";
+      }
+
+      if (!info.length) {
+        hasError = true;
+        newErrors[`length-${index}`] = "Length is required";
+      } else if (!numberRegex.test(info.length)) {
+        hasError = true;
+        newErrors[`length-${index}`] = "Length must be a number or decimal";
+      }
+    });
+
+    if (hasError) {
+      setErrors(newErrors);
+    } else {
+      // Submit form data
+      console.log("Submitting data:", shippingInfo);
+      try {
+        // Prepare an array of data for each shippingInfo item
+        const dataArray = shippingInfo.map((info) => ({
+          id: order?.orderedQuote._id,
+          weight: info.weight,
+          length: info.length,
+          width: info.width,
+          height: info.height,
+        }));
+
+        // Send each data entry in a loop
+        for (const data of dataArray) {
+          await startPackaging(data);
+        }
+        const new_data = {
+          id: order?.orderedQuote._id,
+          move_status: 3,
+          status: 3,
+        };
+        await moveOrderToComplete(new_data);
+        setLoadingWeight(false);
+        navigate("/admin/complete-orders");
+      } catch (error) {
+        console.error("Error submitting data:", error);
+        setLoadingWeight(false);
+      }
+
+      setErrors({});
     }
   };
   const handleDownload = async (url, name) => {
@@ -663,90 +790,142 @@ const OrdersDetail = () => {
                 </div>
 
                 {order?.orderedQuote.move_status === 2 && (
-                  <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
-                    <h5 className="py-3">Add Shipping Information </h5>
-                    <div className="d-inline-flex align-items-center gap-2 my-1">
-                      <Form className="accountform" onSubmit={handleSubmit}>
-                        <Row>
-                          <Col md={6}>
-                            <Form.Group className="mb-3 form-group">
-                              <Form.Label>Height (in inches)</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter height in inches"
-                                value={height}
-                                onChange={(e) => setHeight(e.target.value)}
-                                isInvalid={!!errors.height}
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {errors.height}
-                              </Form.Control.Feedback>
-                            </Form.Group>
-                          </Col>
-                          <Col md={6}>
-                            <Form.Group className="mb-3 form-group">
-                              <Form.Label>Weight (in pound)</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Weight in pound"
-                                value={weight}
-                                onChange={(e) => setWeight(e.target.value)}
-                                isInvalid={!!errors.Weight}
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {errors.Weight}
-                              </Form.Control.Feedback>
-                            </Form.Group>
-                          </Col>
-                          <Col md={6}>
-                            <Form.Group className="mb-3 form-group">
-                              <Form.Label>Width (in inches)</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Width in inches"
-                                value={width}
-                                onChange={(e) => setWidth(e.target.value)}
-                                isInvalid={!!errors.Width}
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {errors.Width}
-                              </Form.Control.Feedback>
-                            </Form.Group>
-                          </Col>
+                  <div className="orders-shipping">
+                    <h5 className="py-3">Add Shipping Information</h5>
 
-                          <Col md={6}>
-                            <Form.Group className="mb-3 form-group">
-                              <Form.Label>Length (in inches)</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Length in inches"
-                                value={length}
-                                onChange={(e) => setLength(e.target.value)}
-                                isInvalid={!!errors.Length}
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {errors.Length}
-                              </Form.Control.Feedback>
-                            </Form.Group>
-                          </Col>
-                        </Row>
-                        <Button
-                          type="submit"
-                          className=" mt-2"
-                          disabled={loadingWeight}
+                    <Form className="accountform" onSubmit={handleSubmit}>
+                      {shippingInfo.map((info, index) => (
+                        <div
+                          key={index}
+                          className="shipping-info-section position-relative mb-4"
                         >
-                          {loadingWeight ? (
-                            <span
-                              className="spinner-border spinner-border-sm"
-                              role="status"
-                              aria-hidden="true"
-                            ></span>
-                          ) : (
-                            "Add Information"
+                          <Row>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Height (in inches)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter height in inches"
+                                  value={info.height}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "height",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`height-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`height-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Weight (in pounds)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter weight in pounds"
+                                  value={info.weight}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "weight",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`weight-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`weight-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Width (in inches)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter width in inches"
+                                  value={info.width}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "width",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`width-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`width-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Length (in inches)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter length in inches"
+                                  value={info.length}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "length",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`length-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`length-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+
+                          {/* Remove button */}
+                          {index != 0 && shippingInfo.length > 1 && (
+                            <Button
+                              variant="danger"
+                              className="remove-section-btn position-absolute"
+                              style={{ top: "-17px", right: "10px" }}
+                              onClick={() => handleRemove(index)}
+                            >
+                              - Remove
+                            </Button>
                           )}
-                        </Button>
-                      </Form>
-                    </div>
+                        </div>
+                      ))}
+
+                      {/* Add more button */}
+                      <Button
+                        variant="primary"
+                        className="my-2"
+                        onClick={handleAddMore}
+                      >
+                        + Add More Shipping Info
+                      </Button>
+
+                      {/* Submit button */}
+                      <Button
+                        type="submit"
+                        className="my-3 ms-3"
+                        disabled={loadingWeight}
+                      >
+                        {loadingWeight ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : (
+                          "Submit Shipping Information"
+                        )}
+                      </Button>
+                    </Form>
                   </div>
                 )}
 

@@ -3273,6 +3273,8 @@ textarea.form-control {
                 font-weight    : 600;
                 margin-bottom  : 10px;
                 padding        : 0px 7px;
+                background-color: rgba(1, 148, 60, 0.1);
+                color: rgb(1, 148, 60);
             }
 
             p {
@@ -3379,6 +3381,7 @@ textarea.form-control {
 
                     .form-check-input {
                         margin: 0 5px 0 0;
+                        border:0.9px solid #000;
 
                         &:checked {
                             background-color: $primary-color;
@@ -3388,7 +3391,8 @@ textarea.form-control {
 
                     label {
                         font-size: 13px;
-                        color    : rgba($black-color, .5);
+                        color    : rgba($black-color, 0.8);
+                        font-weight: 500;
 
                         @media only screen and (max-width:1199.98px) {
                             font-size: 11px;
@@ -3938,6 +3942,22 @@ textarea.form-control {
   }
   .custom_tooltip .tooltip-inner {
     max-width: 305px;
+    border: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+    border-radius: 12px;
+    padding: 10px 10px;
+    background-color: white;
+    color: #000;
+}
+  .custom_tooltip {
+    padding: 9px 0px;
+    opacity: 0.99 !important;
+  }
+  .custom_tooltip .tooltip-arrow{
+    top: 0px !important;
+  }
+  .custom_tooltip .tooltip-arrow:before {
+    border-bottom-color: white !important;
   }
   .toggle-switch-container .inner:before {
     content: "in";

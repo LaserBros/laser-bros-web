@@ -81,7 +81,6 @@ export default function QuotesDetailPay() {
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
-      console.log("---- -- - -- amount -----", quote.amount);
       const amount = parseFloat(quote.amount);
       return sum + (isNaN(amount) ? 0 : amount);
     }, 0);
@@ -400,34 +399,7 @@ export default function QuotesDetailPay() {
                             quote.bendupload_url?.length > 1 ? "d-flex" : ""
                           }  align-items-center justify-content-between`}
                           style={{ paddingLeft: "3px" }}
-                        >
-                          {quote.bend_count > 0
-                            ? quote.bendupload_url.map((url) => (
-                                <>
-                                  <h4>
-                                    <a href={`${url}`}>
-                                      <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                                        <Image
-                                          src={attachment}
-                                          className="img-fluid"
-                                          alt=""
-                                        />
-                                        <span
-                                          style={{
-                                            fontSize: "12px",
-                                            color: "rgba(0, 0, 0, 0.5)",
-                                            marginBottom: "10px",
-                                          }}
-                                        >
-                                          Attachment
-                                        </span>
-                                      </div>
-                                    </a>
-                                  </h4>
-                                </>
-                              ))
-                            : ""}
-                        </div>
+                        ></div>
                       </div>
                     </div>
                     <span className="num-dim">

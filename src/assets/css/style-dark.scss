@@ -697,7 +697,8 @@ body {
 
                     .quote-off {
                         border-color: rgba($white-color, 0.2);
-                        color       : rgba($white-color, 0.7);
+                        background-color: rgba(1, 148, 60, 0.3);
+                        color: rgb(1, 148, 60);
                     }
                 }
 
@@ -734,11 +735,13 @@ body {
 
                         .form-check {
                             label {
-                                color: rgba($white-color, 0.5);
+                                color: rgba($white-color, 0.8);
+                                font-weight: 500;
                             }
 
                             .form-check-input {
-                                --bs-form-check-bg: transparent
+                                --bs-form-check-bg: transparent;
+                                border:0.9px solid #fff;
                             }
                         }
                     }
@@ -1011,5 +1014,25 @@ body {
                     }
                 }
         }
+        
+.custom_tooltip .tooltip-inner {
+    max-width: 305px;
+    border: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+    border-radius: 12px;
+    padding: 10px 10px;
+    background-color: #212121;
+    color: rgba(255, 255, 255, 0.7);
+}
+  .custom_tooltip {
+    padding: 9px 0px;
+    opacity: 0.99 !important;
+  }
+  .custom_tooltip .tooltip-arrow{
+    top: 0px !important;
+  }
+  .custom_tooltip .tooltip-arrow:before {
+    border-bottom-color: #212121 !important;
+  }
     }
 }

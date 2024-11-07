@@ -719,6 +719,19 @@ export const startPackaging = async (data) => {
   }
 };
 
+export const moveOrderToComplete = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/moveOrderToComplete`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const fetchOrdersInQueue = async (selectedValue) => {
   try {
     const response = await axiosAdminInstance.get(

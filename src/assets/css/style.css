@@ -2839,6 +2839,8 @@ textarea.form-control {
   font-weight: 600;
   margin-bottom: 10px;
   padding: 0px 7px;
+  background-color: rgba(1, 148, 60, 0.1);
+  color: rgb(1, 148, 60);
 }
 .list-quotes-main .list-quotes .right-quote p {
   font-size: 12px;
@@ -3383,6 +3385,12 @@ textarea.form-control {
 }
 .custom_tooltip .tooltip-inner {
   max-width: 305px;
+}
+.custom_tooltip {
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  padding: 10px 0px;
 }
 .toggle-switch-container .checkbox {
   display: none;

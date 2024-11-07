@@ -25,7 +25,6 @@ const QuotesSidebar = ({
   const [rateVal, setrateVal] = useState("");
   useEffect(() => {
     setquoteData(quoteData);
-    setrateVal(quoteDataVal?.service_code);
   }, [quoteData]);
   const handleRateSelected = async (rate) => {
     setrateVal(rate);
@@ -43,7 +42,6 @@ const QuotesSidebar = ({
       const res = await shippingCost(data);
 
       setquoteData(res.data);
-      console.log("----=====quoteDataVal", quoteDataVal);
       localStorage.setItem("setItemelementDataPay", JSON.stringify(res.data));
     } catch (error) {}
   };
@@ -374,12 +372,24 @@ const QuotesSidebar = ({
                     <Amount amount={quoteDataVal.total_bend_price} />{" "}
                   </span>
                 </div>
-                <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Shipping</span>
-                  <span className="quotesitem quotesright">
-                    <Amount amount={quoteDataVal.shipping_price} />{" "}
-                  </span>
-                </div>
+                {rateVal != "" ? (
+                  <div className="d-flex align-items-center justify-content-between mb-2">
+                    <span className="quotesitem">Shipping</span>
+                    <span className="quotesitem quotesright">
+                      <Amount amount={quoteDataVal.shipping_price} />{" "}
+                    </span>
+                  </div>
+                ) : (
+                  ""
+                )}
+                {quoteDataVal.transactionFees && (
+                  <div className="d-flex align-items-center justify-content-between mb-2">
+                    <span className="quotesitem">Sales Tax</span>
+                    <span className="quotesitem quotesright">
+                      <Amount amount={quoteDataVal.transactionFees} />{" "}
+                    </span>
+                  </div>
+                )}
                 <div className="d-flex align-items-center justify-content-between">
                   <span className="quotessubtotal">Subtotal</span>
                   <span className="quotesprice">
@@ -387,17 +397,19 @@ const QuotesSidebar = ({
                       amount={
                         parseFloat(amount || 0) +
                         parseFloat(quoteDataVal.total_bend_price || 0) +
-                        parseFloat(quoteDataVal.shipping_price || 0)
+                        parseFloat(
+                          rateVal == "" ? 0 : quoteDataVal.shipping_price || 0
+                        ) +
+                        parseFloat(quoteDataVal.transactionFees || 0)
                       }
                     />
                   </span>
                 </div>
-
                 <ShippingRates
                   shippingRates={ShippingDBdataPay}
                   divideWeight={divideWeight}
                   onRateSelected={handleRateSelected}
-                  service_code={quoteDataVal.service_code}
+                  // service_code={quoteDataVal.service_code}
                 />
                 <hr className="quotes-separator" />
                 <small className=" mb-3 d-block">
@@ -594,7 +606,12 @@ const QuotesSidebar = ({
                           amount={
                             parseFloat(amount || 0) +
                             parseFloat(quoteDataVal.total_bend_price || 0) +
-                            parseFloat(quoteDataVal.shipping_price || 0)
+                            parseFloat(
+                              rateVal == ""
+                                ? 0
+                                : quoteDataVal.shipping_price || 0
+                            ) +
+                            parseFloat(quoteDataVal.transactionFees || 0)
                           }
                         />
                       </b>

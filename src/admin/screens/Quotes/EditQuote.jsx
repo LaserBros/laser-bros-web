@@ -967,7 +967,7 @@ const EditRFQS = () => {
                           </Link>
                         </p>
                         <span className="quote-off">
-                          {quote.discount}% Saved
+                          {quote.discount} % Saved
                         </span>
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
