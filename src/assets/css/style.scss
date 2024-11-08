@@ -3896,7 +3896,11 @@ textarea.form-control {
         width: calc(100% - 258px) !important
     }
 }
-
+.custom_h2{
+    font-size: 22px;
+    color: #000000;
+    font-weight: bold;
+}
 .toggle-switch-container .container {
     text-align: center;
   }
@@ -4006,3 +4010,26 @@ textarea.form-control {
   .submenu-item:hover {
     color: #000;
   }
+  .quote_div_main_sect {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+.quote_div_main_sect .custom_bend_div {
+    margin-top: 25px;
+    margin-right: 10px;
+}
+.quote_div_main_sect a.btnicon {
+    margin-top: 15px;
+    width: 24px;
+    height: 24px;
+}
+.quote_div_main_sect .custom_bend_div p {
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 500;
+}
+.quote_div_main_sect a.btnicon svg {
+    font-size: 14px;
+}

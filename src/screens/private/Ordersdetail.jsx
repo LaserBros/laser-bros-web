@@ -41,10 +41,10 @@ export default function OrdersDetail() {
   const [modalShow, setModalShow] = useState(false);
   const [loadingOrder, setLoadingOrder] = useState(false);
   const [ordersTrack, setordersTrack] = useState([]);
-  const handleShow = async () => {
+  const handleShow = async (value) => {
     setLoadingOrder(true);
     try {
-      const res = await trackingDetails(orderDetails?.label_id);
+      const res = await trackingDetails(value);
       setordersTrack(res.data);
       setModalShow(true);
     } catch (error) {
@@ -68,8 +68,27 @@ export default function OrdersDetail() {
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap">
               <h5>Orders Detail</h5>{" "}
-              <div className="">
-                <Link
+              <div className="d-flex">
+                {orderDetails.status == 3 && (
+                  <select
+                    // className="form-select me-2"
+                    className="form-select"
+                    onChange={(e) => handleShow(e.target.value)}
+                    // disabled={
+                    //   loadingOrder || !orders?.orderedQuote?.tracking_number
+                    // }
+                  >
+                    <option value="">Select Tracking Number</option>
+                    {orderDetails?.tracking_number?.map(
+                      (trackingNumber, index) => (
+                        <option value={orderDetails?.label_id[index]}>
+                          Tracking {trackingNumber}
+                        </option>
+                      )
+                    )}
+                  </select>
+                )}
+                {/* <Link
                   to=""
                   onClick={handleShow}
                   className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
@@ -91,10 +110,10 @@ export default function OrdersDetail() {
                   ) : (
                     "Track your order"
                   )}
-                </Link>
+                </Link> */}
                 <Link
                   to="/orders"
-                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
+                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
                 >
                   Back To Orders
                 </Link>

@@ -11,7 +11,13 @@ import {
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import { getOrdersAdmin, moveOrderToQueue } from "../../../api/api";
+import {
+  getAllMaterialCodesFilter,
+  getBendingFilter,
+  getFinishingFilter,
+  getOrdersAdmin,
+  moveOrderToQueue,
+} from "../../../api/api";
 import { toast } from "react-toastify";
 import Pagination from "../../components/Pagination";
 import OrderStatus from "../../components/OrderStatus";
@@ -23,17 +29,68 @@ const Orders = () => {
   const [itemsPerPage] = useState(10);
   const [name, searchName] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [filter, setFilter] = useState("");
+  const [filter_select, setfilterSelect] = useState("");
+  const [filterOptions, setFilterOptions] = useState([]);
+
   const indexOfLastItem = currentPage * itemsPerPage;
+  const handleFilterApply = (e) => {
+    const selectedValue = e.target.value;
+    settotalPage(1);
+    setfilterSelect(selectedValue);
+    setCurrentPage(1);
+    loadOrders(1, name, sortOrder, filter, selectedValue);
+  };
+
+  const handleFilterChange = async (e) => {
+    const selectedValue = e.target.value;
+    setFilter(selectedValue);
+    let res = "";
+
+    if (selectedValue === "Bending") {
+      res = await getBendingFilter();
+    }
+    if (selectedValue === "Cutting") {
+      res = await getAllMaterialCodesFilter();
+    }
+    if (selectedValue === "Finishing") {
+      res = await getFinishingFilter();
+    }
+
+    if (res?.data) {
+      setFilterOptions(res.data);
+    } else {
+      setFilterOptions([]);
+    }
+    if (selectedValue == "post_ops") {
+      setFilterOptions([
+        { value: "Yes", _id: "1" },
+        { value: "No", _id: "0" },
+      ]);
+    }
+  };
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
     setSortOrder(selectedValue);
-    loadOrders(1, name, selectedValue);
+    loadOrders(1, name, selectedValue, filter, filter_select);
   };
-  const loadOrders = async (page, search = "", sortOrder = "") => {
+  const loadOrders = async (
+    page,
+    search = "",
+    sortOrder = "",
+    type = "",
+    type_filter = ""
+  ) => {
     try {
       setLoading(true);
       setOrders([]);
-      const response = await getOrdersAdmin(page, search, sortOrder);
+      const response = await getOrdersAdmin(
+        page,
+        search,
+        sortOrder,
+        type,
+        type_filter
+      );
       setOrders(response.data.data.updatedQuotes);
       settotalPage(response.data.data.total);
     } catch (error) {
@@ -142,7 +199,7 @@ const Orders = () => {
         <CardBody>
           <Form>
             <Row className="px-2 gx-3">
-              <Col lg={3} xxl={3}>
+              <Col lg={2} xxl={2}>
                 <Form.Group className="form-group mb-2 searchfield">
                   <div className=" position-relative">
                     <Icon
@@ -156,14 +213,20 @@ const Orders = () => {
                       onChange={(e) => {
                         setCurrentPage(1);
                         searchName(e.target.value);
-                        loadOrders(1, e.target.value, sortOrder);
+                        loadOrders(
+                          1,
+                          e.target.value,
+                          sortOrder,
+                          filter,
+                          filter_select
+                        );
                       }}
                       className="rounded-5"
                     />
                   </div>
                 </Form.Group>
               </Col>
-              <Col lg={4} xxl={3}>
+              <Col lg={2} xxl={2}>
                 <Form.Group className="form-group mb-2">
                   <Form.Select
                     className="rounded-5"
@@ -178,7 +241,38 @@ const Orders = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col lg={2} xxl={3}>
+              <Col lg={2} xxl={2}>
+                <Form.Group className="form-group mb-2">
+                  <Form.Select
+                    className="rounded-5"
+                    value={filter}
+                    onChange={handleFilterChange}
+                  >
+                    <option selected value="">
+                      Sort By Filter
+                    </option>
+                    <option value="Cutting">Cutting</option>
+                    <option value="Finishing">Finishing</option>
+                    <option value="Bending">Bending</option>
+                    <option value="post_ops">Post Ops</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col lg={2} xxl={2}>
+                <Form.Group className="form-group mb-2">
+                  <Form.Select
+                    className="rounded-5"
+                    value={filter_select}
+                    onChange={handleFilterApply}
+                  >
+                    <option value="">Choose options</option>
+                    {filterOptions.map((option) => (
+                      <option value={option._id}>{option.value}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col lg={2} xxl={2}>
                 <Link
                   to={""}
                   className="btn btn-primary d-inline-flex align-items-center justify-content-center"
@@ -187,13 +281,15 @@ const Orders = () => {
                     setSortOrder("value1");
                     searchName("");
                     loadOrders(1);
+                    setfilterSelect("");
+                    setFilter("");
                   }}
                 >
                   {" "}
                   Clear
                 </Link>
               </Col>
-              <Col lg={3} xxl={3} className="text-lg-end">
+              <Col lg={2} xxl={2} className="text-lg-end">
                 <Button
                   variant={null}
                   onClick={moveQueue}

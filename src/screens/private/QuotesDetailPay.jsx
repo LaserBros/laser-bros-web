@@ -351,6 +351,26 @@ export default function QuotesDetailPay() {
                             // onOptionSelect={handleOptionSelect}
                           />
                         </div>
+                        {Array.isArray(quote.bendupload_url) && (
+                          <div className="quotes-services mt-3">
+                            <h4>Services</h4>
+                            <label>
+                              Bending :{" "}
+                              {Array.isArray(quote.bendupload_url) &&
+                              quote.bendupload_url.length > 0
+                                ? quote.bendupload_url.map((url, index) => (
+                                    <a
+                                      href={`${url}`}
+                                      target="_blank"
+                                      style={{ paddingRight: "5px" }}
+                                    >
+                                      Attachment {String(index + 1)}
+                                    </a>
+                                  ))
+                                : ""}
+                            </label>
+                          </div>
+                        )}
                         <div className="quotes-services mt-3">
                           <Link
                             className="btnshare"
@@ -394,12 +414,6 @@ export default function QuotesDetailPay() {
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>
-                        <div
-                          className={`quotes-services mt-3 ${
-                            quote.bendupload_url?.length > 1 ? "d-flex" : ""
-                          }  align-items-center justify-content-between`}
-                          style={{ paddingLeft: "3px" }}
-                        ></div>
                       </div>
                     </div>
                     <span className="num-dim">

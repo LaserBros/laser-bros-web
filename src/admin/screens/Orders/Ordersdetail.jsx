@@ -329,6 +329,23 @@ const OrdersDetail = () => {
   };
 
   // Validate fields and submit the form
+  const handleCompleteShip = async (e) => {
+    setLoadingWeight(true);
+    try {
+      const new_data = {
+        id: order?.orderedQuote._id,
+        move_status: 3,
+        status: 3,
+      };
+      await moveOrderToComplete(new_data);
+      setLoadingWeight(false);
+      navigate("/admin/complete-orders");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      setLoadingWeight(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let hasError = false;
@@ -605,24 +622,49 @@ const OrdersDetail = () => {
                   WO# LB-
                   {order?.newUpdatedData[0]?.search_quote}
                 </h5>
-                {order?.orderedQuote.status == 2 &&
-                order?.orderedQuote.move_status == 2 ? (
-                  <Button
-                    as={Link}
-                    to="/admin/complete-orders"
-                    className="d-inline-flex align-items-center justify-content-center"
-                  >
-                    Back
-                  </Button>
-                ) : (
-                  <Button
-                    as={Link}
-                    to="/admin/orders"
-                    className="d-inline-flex align-items-center justify-content-center"
-                  >
-                    Back To Orders
-                  </Button>
-                )}
+                <div className="d-flex">
+                  {order?.serviceCode?.name == "Local Pickup" &&
+                    order?.orderedQuote.move_status === 2 && (
+                      <>
+                        <div className="orders-shipping mb-2">
+                          <Button
+                            type="submit"
+                            // className="my-3 ms-3"
+                            onClick={handleCompleteShip}
+                            disabled={loadingWeight}
+                          >
+                            {loadingWeight ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              "Move To Complete"
+                            )}
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  {order?.orderedQuote.status == 2 &&
+                  order?.orderedQuote.move_status == 2 ? (
+                    <Button
+                      as={Link}
+                      to="/admin/complete-orders"
+                      className="d-inline-flex align-items-center justify-content-center ms-2"
+                    >
+                      Back
+                    </Button>
+                  ) : (
+                    <Button
+                      as={Link}
+                      to="/admin/orders"
+                      className="d-inline-flex align-items-center justify-content-center"
+                    >
+                      Back To Orders
+                    </Button>
+                  )}
+                </div>
               </CardHeader>
               <CardBody>
                 <Row>
@@ -714,24 +756,32 @@ const OrdersDetail = () => {
                     </div>
                   </Col>
                 </Row>
-                {order?.orderedQuote.tracking_number && (
-                  <div className="orders-shipping align-items-center justify-content-between flex-wrap my-2">
-                    <div className="d-flex">
-                      <p>Tracking Number : &nbsp;&nbsp;</p>
-                      <p> {order?.orderedQuote.tracking_number}</p>
+                {order?.serviceCode?.name != "Local Pickup" &&
+                  order?.orderedQuote.status == 3 &&
+                  order?.orderedQuote.tracking_number && (
+                    <div className="orders-shipping align-items-center justify-content-between flex-wrap my-2">
+                      <div className="d-flex">
+                        <p>Tracking Number : &nbsp;&nbsp;</p>
+                        <p>
+                          {order?.orderedQuote?.tracking_number?.join(", ")}
+                        </p>
+                      </div>
+                      <div className="d-flex">
+                        <p>Download Labels:&nbsp;&nbsp;</p>
+                        {order?.orderedQuote?.label_url?.map((url, index) => (
+                          <a
+                            key={index}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="me-2" // Add some margin between links if needed
+                          >
+                            <p>Label {index + 1}</p>
+                          </a>
+                        ))}
+                      </div>
                     </div>
-                    <div className="d-flex">
-                      <p>Download Label :&nbsp;&nbsp;</p>
-                      <a
-                        href={order?.orderedQuote.label_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <p>{order?.orderedQuote.label_url}</p>
-                      </a>
-                    </div>
-                  </div>
-                )}
+                  )}
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
                   {order?.orderedQuote.status == 0 ? (
                     <>
@@ -788,145 +838,148 @@ const OrdersDetail = () => {
                     </>
                   )}
                 </div>
+                {order?.serviceCode?.name != "Local Pickup" ? (
+                  order?.orderedQuote.move_status === 2 && (
+                    <div className="orders-shipping">
+                      <h5 className="py-3">Add Shipping Information</h5>
 
-                {order?.orderedQuote.move_status === 2 && (
-                  <div className="orders-shipping">
-                    <h5 className="py-3">Add Shipping Information</h5>
+                      <Form className="accountform" onSubmit={handleSubmit}>
+                        {shippingInfo.map((info, index) => (
+                          <div
+                            key={index}
+                            className="shipping-info-section position-relative mb-4"
+                          >
+                            <Row>
+                              <Col md={6}>
+                                <Form.Group className="mb-3 form-group">
+                                  <Form.Label>Height (in inches)</Form.Label>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter height in inches"
+                                    value={info.height}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        index,
+                                        "height",
+                                        e.target.value
+                                      )
+                                    }
+                                    isInvalid={!!errors[`height-${index}`]}
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[`height-${index}`]}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                              </Col>
+                              <Col md={6}>
+                                <Form.Group className="mb-3 form-group">
+                                  <Form.Label>Weight (in pounds)</Form.Label>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter weight in pounds"
+                                    value={info.weight}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        index,
+                                        "weight",
+                                        e.target.value
+                                      )
+                                    }
+                                    isInvalid={!!errors[`weight-${index}`]}
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[`weight-${index}`]}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                              </Col>
+                              <Col md={6}>
+                                <Form.Group className="mb-3 form-group">
+                                  <Form.Label>Width (in inches)</Form.Label>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter width in inches"
+                                    value={info.width}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        index,
+                                        "width",
+                                        e.target.value
+                                      )
+                                    }
+                                    isInvalid={!!errors[`width-${index}`]}
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[`width-${index}`]}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                              </Col>
+                              <Col md={6}>
+                                <Form.Group className="mb-3 form-group">
+                                  <Form.Label>Length (in inches)</Form.Label>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter length in inches"
+                                    value={info.length}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        index,
+                                        "length",
+                                        e.target.value
+                                      )
+                                    }
+                                    isInvalid={!!errors[`length-${index}`]}
+                                  />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[`length-${index}`]}
+                                  </Form.Control.Feedback>
+                                </Form.Group>
+                              </Col>
+                            </Row>
 
-                    <Form className="accountform" onSubmit={handleSubmit}>
-                      {shippingInfo.map((info, index) => (
-                        <div
-                          key={index}
-                          className="shipping-info-section position-relative mb-4"
+                            {/* Remove button */}
+                            {index != 0 && shippingInfo.length > 1 && (
+                              <Button
+                                variant="danger"
+                                className="remove-section-btn position-absolute"
+                                style={{ top: "-17px", right: "10px" }}
+                                onClick={() => handleRemove(index)}
+                              >
+                                - Remove
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+
+                        {/* Add more button */}
+                        <Button
+                          variant="primary"
+                          className="my-2"
+                          onClick={handleAddMore}
                         >
-                          <Row>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Height (in inches)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter height in inches"
-                                  value={info.height}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "height",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`height-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`height-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Weight (in pounds)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter weight in pounds"
-                                  value={info.weight}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "weight",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`weight-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`weight-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Width (in inches)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter width in inches"
-                                  value={info.width}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "width",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`width-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`width-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Length (in inches)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter length in inches"
-                                  value={info.length}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "length",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`length-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`length-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                          </Row>
+                          + Add More Shipping Info
+                        </Button>
 
-                          {/* Remove button */}
-                          {index != 0 && shippingInfo.length > 1 && (
-                            <Button
-                              variant="danger"
-                              className="remove-section-btn position-absolute"
-                              style={{ top: "-17px", right: "10px" }}
-                              onClick={() => handleRemove(index)}
-                            >
-                              - Remove
-                            </Button>
+                        {/* Submit button */}
+                        <Button
+                          type="submit"
+                          className="my-3 ms-3"
+                          disabled={loadingWeight}
+                        >
+                          {loadingWeight ? (
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                          ) : (
+                            "Submit Shipping Information"
                           )}
-                        </div>
-                      ))}
-
-                      {/* Add more button */}
-                      <Button
-                        variant="primary"
-                        className="my-2"
-                        onClick={handleAddMore}
-                      >
-                        + Add More Shipping Info
-                      </Button>
-
-                      {/* Submit button */}
-                      <Button
-                        type="submit"
-                        className="my-3 ms-3"
-                        disabled={loadingWeight}
-                      >
-                        {loadingWeight ? (
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true"
-                          ></span>
-                        ) : (
-                          "Submit Shipping Information"
-                        )}
-                      </Button>
-                    </Form>
-                  </div>
+                        </Button>
+                      </Form>
+                    </div>
+                  )
+                ) : (
+                  <div></div>
                 )}
 
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">

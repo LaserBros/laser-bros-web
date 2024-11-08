@@ -293,64 +293,66 @@ export default function QuotesDetail() {
       setid_quote(id);
       setModalShow2(true);
     } else {
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("bend_count", 0);
-      formData.append("quote_image", "");
-      try {
-        const response = bendQuotes(formData);
+      const isConfirmed = window.confirm(
+        "Are you sure you want to remove bending?"
+      );
 
-        const updatedQuoteData = quoteData.map((quote) => {
-          if (quote._id === id) {
-            const bend_count = 0;
-            const bendupload_url = "";
+      if (isConfirmed) {
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("bend_count", 0);
+        formData.append("quote_image", "");
+        try {
+          const response = bendQuotes(formData);
 
-            return {
-              ...quote,
-              bend_count: bend_count,
-              bendupload_url: bendupload_url,
-            };
-          }
-          return quote;
-        });
-        localStorage.setItem(
-          "setItemelementData",
-          JSON.stringify(updatedQuoteData)
-        );
-        const quoteDataVal = JSON.parse(
-          localStorage.getItem("setItemelementData")
-        );
+          const updatedQuoteData = quoteData.map((quote) => {
+            if (quote._id === id) {
+              const bend_count = 0;
+              const bendupload_url = "";
 
-        let total = 0;
-        for (const quote of quoteDataVal) {
-          total += quote.bend_count; // Accumulate bend_count values
-        }
-
-        const quoteList = localStorage.getItem("setItemelementData");
-
-        if (quoteList) {
-          // Parse the stored JSON data
-          const parsedQuoteList = JSON.parse(quoteList);
-
-          console.log("parsedQuoteList", parsedQuoteList);
-          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
-
-          console.log(
-            "total * 15",
-            total * 5,
-            parsedQuoteList,
-            "dsdsdsdsdsddsd"
-          );
+              return {
+                ...quote,
+                bend_count: bend_count,
+                bendupload_url: bendupload_url,
+              };
+            }
+            return quote;
+          });
           localStorage.setItem(
             "setItemelementData",
-            JSON.stringify(parsedQuoteList)
+            JSON.stringify(updatedQuoteData)
           );
-          setQuoteList(parsedQuoteList);
-        }
+          const quoteDataVal = JSON.parse(
+            localStorage.getItem("setItemelementData")
+          );
 
-        setquoteDataCon(true);
-        setQuoteData(updatedQuoteData);
-      } catch {}
+          let total = 0;
+          for (const quote of quoteDataVal) {
+            total += quote.bend_count; // Accumulate bend_count values
+          }
+
+          const quoteList = localStorage.getItem("setItemelementData");
+
+          if (quoteList) {
+            // Parse the stored JSON data
+            const parsedQuoteList = JSON.parse(quoteList);
+
+            console.log("parsedQuoteList", parsedQuoteList);
+            parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+            if (total == 0) {
+              parsedQuoteList.check_status = 0;
+            }
+            localStorage.setItem(
+              "setItemelementData",
+              JSON.stringify(parsedQuoteList)
+            );
+            setQuoteList(parsedQuoteList);
+          }
+
+          setquoteDataCon(true);
+          setQuoteData(updatedQuoteData);
+        } catch {}
+      }
     }
   };
   const handleClose2 = () => setModalShow2(false);
@@ -767,34 +769,65 @@ export default function QuotesDetail() {
                             onOptionSelect={handleOptionSelect}
                           />
                         </div>
-                        <div className="quotes-services mt-3">
+                        <div className="quotes-services quote_div_main_sect mt-3">
                           {quote.binding_option == "no" ? (
                             <p></p>
                           ) : (
                             <>
                               {quote.thickness_id && (
                                 <>
-                                  <h4>Services</h4>
+                                  <div className="flex-shrink-0">
+                                    <h4>Services </h4>
 
-                                  <Form.Check
-                                    type="checkbox"
-                                    label="Bending"
-                                    name={`options-${quote._id}`}
-                                    value={`options-${quote._id}`}
-                                    id={`options-${quote._id}`}
-                                    className="d-inline-flex align-items-center me-2"
-                                    onChange={(e) =>
-                                      handleShow2(
-                                        quote.image_url,
-                                        quote.quote_name,
-                                        quote.bend_count,
-                                        quote.bendupload_url,
-                                        quote._id,
-                                        e.target.checked
-                                      )
-                                    }
-                                    checked={quote.bend_count >= 1}
-                                  />
+                                    <Form.Check
+                                      type="checkbox"
+                                      label="Bending"
+                                      name={`options-${quote._id}`}
+                                      value={`options-${quote._id}`}
+                                      id={`options-${quote._id}`}
+                                      className="d-inline-flex align-items-center me-2"
+                                      onChange={(e) =>
+                                        handleShow2(
+                                          quote.image_url,
+                                          quote.quote_name,
+                                          quote.bend_count,
+                                          quote.bendupload_url,
+                                          quote._id,
+                                          e.target.checked
+                                        )
+                                      }
+                                      checked={quote.bend_count >= 1}
+                                    />
+                                  </div>
+                                  {quote.bend_count != 0 && (
+                                    <>
+                                      <div className="custom_bend_div">
+                                        <p>
+                                          Number of bends : {quote.bend_count}
+                                        </p>
+                                        <p>Price per bend : $5.00</p>
+                                        <p>
+                                          Total :{" "}
+                                          <Amount amount={quote.bend_price} />
+                                        </p>
+                                      </div>
+                                      <Link
+                                        className="btnicon flex-shrink-0"
+                                        onClick={() => {
+                                          setimage_url(quote.image_url);
+                                          setquote_name(quote.quote_name);
+                                          setbend_count(quote.bend_count);
+                                          setbendupload_url(
+                                            quote.bendupload_url
+                                          );
+                                          setid_quote(quote._id);
+                                          setModalShow2(true);
+                                        }}
+                                      >
+                                        <Icon icon="mynaui:edit" />
+                                      </Link>
+                                    </>
+                                  )}
                                 </>
                               )}
                             </>
@@ -832,20 +865,24 @@ export default function QuotesDetail() {
                       />
                     </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
-                      <QuantitySelector
-                        quantity={quote.quantity}
-                        onIncrement={() =>
-                          handleQuantityChange(quote._id, true)
-                        }
-                        onDecrement={() =>
-                          quote.quantity === 1
-                            ? null
-                            : handleQuantityChange(quote._id, false)
-                        }
-                        onQuantityChange={(newQuantity) =>
-                          handleQuantityChangeAPI(quote._id, newQuantity)
-                        }
-                      />
+                      {quote.thickness_id ? (
+                        <QuantitySelector
+                          quantity={quote.quantity}
+                          onIncrement={() =>
+                            handleQuantityChange(quote._id, true)
+                          }
+                          onDecrement={() =>
+                            quote.quantity === 1
+                              ? null
+                              : handleQuantityChange(quote._id, false)
+                          }
+                          onQuantityChange={(newQuantity) =>
+                            handleQuantityChangeAPI(quote._id, newQuantity)
+                          }
+                        />
+                      ) : (
+                        <div></div>
+                      )}
                       <div className="rightbtns gap-2 d-inline-flex flex-wrap">
                         <Link
                           className="btnshare"

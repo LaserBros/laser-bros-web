@@ -52,6 +52,19 @@ export const shippingCost = async (data) => {
   }
 };
 
+export const deleteBendQuoteImage = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/deleteBendQuoteImage`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getParticularRFQDetails = async (data) => {
   try {
     const response = await axiosInstance.post(
@@ -557,10 +570,39 @@ export const updateRequestQuote = async (id, status) => {
   }
 };
 
-export const getOrdersAdmin = async (page, search, sort) => {
+export const getOrdersAdmin = async (page, search, sort, type, type_filter) => {
   try {
+    var status = "";
+    var material_code = "";
+    var finish_id = "";
+    if (type == "post_ops") {
+      status = type_filter;
+    } else if (type == "Finishing") {
+      type = "finish";
+      finish_id = type_filter;
+    } else if (type == "Cutting") {
+      type = "cutting";
+      material_code = type_filter;
+    } else if (type == "Bending") {
+      type = "bend";
+      material_code = type_filter;
+    }
+
     const response = await axiosAdminInstance.get(
-      `/getOrdersAdmin?page=` + page + "&query=" + search + "&ascending=" + sort
+      `/getOrdersAdmin?page=` +
+        page +
+        "&query=" +
+        search +
+        "&ascending=" +
+        sort +
+        "&type=" +
+        type +
+        "&status=" +
+        status +
+        "&finish_id=" +
+        finish_id +
+        "&material_code=" +
+        material_code
     );
     return response;
   } catch (error) {
@@ -896,6 +938,28 @@ export const getAllMaterialCodes = async () => {
   }
 };
 
+export const getAllMaterialCodesFilter = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/getAllMaterialCodesFilter`);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getFinishingFilter = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/getFinishingFilter`);
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const AdmingetThicknessMaterialFinish = async (data, type, params) => {
   try {
     var response_api = await axiosAdminInstance.post(
@@ -914,6 +978,17 @@ export const AdmingetThicknessMaterialFinish = async (data, type, params) => {
 export const AdminupdateQuantity = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/updateQuantity`, data);
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getBendingFilter = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(`/getBendingFilter`);
     // console.log("responseeee", response.data);
     return response.data;
   } catch (error) {
