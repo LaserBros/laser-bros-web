@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Switch from "react-switch";
 import { updateDimensionType } from "../api/api";
 
-const DimensionsToggle = ({ dimensions, id, type, isEdit }) => {
+const DimensionsToggle = ({ dimensions, id, type, isEdit, onApiResponse }) => {
   const [isInches, setIsInches] = useState(true);
 
   // Conversion factor: 1 inch = 25.4 mm
@@ -15,7 +15,6 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit }) => {
   const [isChecked, setIsChecked] = useState(false);
   useEffect(() => {
     setIsChecked(type == 1 ? true : false);
-    console.log("typetypetypetypetype", type);
   }, [type]);
   // Function to handle checkbox change
   const handleCheckboxChange = async (event) => {
@@ -36,7 +35,7 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit }) => {
         JSON.stringify(updatedQuoteData)
       );
       const res = await updateDimensionType(data);
-
+      onApiResponse(res.data);
       console.log("updateDimensionType", res.data, updatedQuoteData);
     } catch (error) {
       console.log("SDsdsdsdsd", error);

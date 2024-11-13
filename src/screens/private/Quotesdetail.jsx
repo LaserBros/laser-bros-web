@@ -392,6 +392,41 @@ export default function QuotesDetail() {
       setQuoteData(parsedData);
     }
   }, []);
+
+  const [apiResponse, setApiResponse] = useState(null);
+  const handleApiResponse = (response) => {
+    console.log("Received response in ParentComponent:", response);
+    setApiResponse(response);
+    localStorage.setItem(
+      "setItemelementData",
+      JSON.stringify(response.updated_data)
+    );
+    setQuoteList(response.updated_data);
+    const storedData = localStorage.getItem("setItempartsDBdata");
+    const parsedData = storedData ? JSON.parse(storedData) : [];
+
+    // Check if data exists and update based on _id match
+    const updatedLocalStorageData = parsedData.map((quote) => {
+      if (quote._id === response.updateSubQuote._id) {
+        console.log(
+          "response.updateSubQuote.amount",
+          response.updateSubQuote.amount
+        );
+        const update_amount = response.updateSubQuote.amount;
+        return {
+          ...quote,
+          amount: update_amount,
+        };
+      }
+      return quote; // Return unchanged if no match
+    });
+    setQuoteData(updatedLocalStorageData);
+    localStorage.setItem(
+      "setItempartsDBdata",
+      JSON.stringify(updatedLocalStorageData)
+    );
+  };
+
   const [quoteDataCon, setquoteDataCon] = useState(true);
   useEffect(() => {
     setTimeout(async () => {
@@ -862,6 +897,7 @@ export default function QuotesDetail() {
                         id={quote._id}
                         type={quote.dimension_type}
                         isEdit={true}
+                        onApiResponse={handleApiResponse}
                       />
                     </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">

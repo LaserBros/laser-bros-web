@@ -7,7 +7,15 @@ import "react-phone-input-2/lib/style.css";
 import cards from "../assets/img/cards.png";
 import cvv from "../assets/img/cvv.png";
 import PaymentDone from "./Paymentdone";
-import { fetchAddress, getCard, payment, shippingCost } from "../api/api";
+import CheckoutPopup from "./CheckoutPopup";
+
+import {
+  fetchAddress,
+  getCard,
+  getEditQuotePay,
+  payment,
+  shippingCost,
+} from "../api/api";
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
 import Amount from "./Amount";
@@ -105,6 +113,64 @@ const QuotesSidebar = ({
   const [zipcode, setZipcode] = useState("10001");
   const [phoneno, setPhoneno] = useState("1 9876231221");
   const [loading, setLoading] = useState(true);
+  const [loadingPay, setLoadingPay] = useState(false);
+  const [modalShowPay, setModalShowPay] = useState(false);
+  const [PayLoad, setPayLoad] = useState(false);
+  const [shippingInfo, setshippingInfo] = useState(false);
+  const handleUpdateQuoteChange = async () => {
+    const elementId = localStorage.getItem("setItemelementData");
+    const updatedQuoteData = JSON.parse(
+      localStorage.getItem("setItempartsDBdata")
+    );
+
+    let isValid = true; // Assume everything is valid initially
+
+    // Use a for...of loop to allow breaking out of the loop
+    for (const quote of updatedQuoteData) {
+      if (!quote.material_id) {
+        isValid = false;
+        toast.error(`Please select Material.`);
+        break; // Stop the loop if validation fails
+      }
+      if (!quote.thickness_id) {
+        isValid = false;
+        toast.error(`Please select Thickness.`);
+        break; // Stop the loop if validation fails
+      }
+      if (!quote.finishing_id) {
+        isValid = false;
+        toast.error(`Please select Finish.`);
+        break; // Stop the loop if validation fails
+      }
+    }
+
+    // Only proceed with submission if all required fields are selected
+    if (isValid) {
+      let getId = "";
+
+      if (elementId) {
+        getId = JSON.parse(elementId);
+      }
+      if (getId && getId._id) {
+        var id = getId._id;
+      }
+      const data = {
+        id: id,
+      };
+      try {
+        setPayLoad(true);
+        const response = await getEditQuotePay(data);
+        setshippingInfo(response.data);
+        setModalShowPay(true);
+        setPayLoad(false);
+        // setModalShowPay(false);
+      } catch (error) {
+        setPayLoad(false);
+        // setModalShowPay(false);
+        toast.error("Something wents wrong.");
+      }
+    }
+  };
 
   const handleUpdateQuote = async () => {
     const updatedQuoteData = JSON.parse(
@@ -161,13 +227,36 @@ const QuotesSidebar = ({
             navigate("/rfqs");
           }
           if (response_local.data.data.check_status == 0) {
-            var setItemelementData = localStorage.getItem("setItemelementData");
-            var setItempartsDBdata = localStorage.getItem("setItempartsDBdata");
-            localStorage.setItem("setItemelementDataPay", setItemelementData);
-            localStorage.setItem("setItempartsDBdataPay", setItempartsDBdata);
             localStorage.setItem("setItemelementData", "");
             localStorage.setItem("setItempartsDBdata", "");
-            toast.success("Request quote sent successfully");
+            const data = {
+              id: getId._id,
+            };
+            const response = await getEditQuotePay(data);
+            console.log("resss-----", response.data);
+            localStorage.setItem(
+              "setItemelementDataPay",
+              JSON.stringify(response.data.requestQuoteDB)
+            );
+
+            localStorage.setItem(
+              "setItempartsDBdataPay",
+              JSON.stringify(response.data.partsDBdata)
+            );
+            console.log(
+              "response.data.shippingRates",
+              response.data.shippingRates
+            );
+            localStorage.setItem(
+              "ShippingDBdataPay",
+              JSON.stringify(response.data.shippingRates)
+            );
+            localStorage.setItem(
+              "divideWeight",
+              JSON.stringify(response.data.divideWeight)
+            );
+
+            // toast.success("Request quote sent successfully");
             setLoading(false);
             navigate("/quotes/pay");
           }
@@ -257,7 +346,7 @@ const QuotesSidebar = ({
               </span>
             </div>
             <div className="d-flex align-items-center justify-content-between mb-2">
-              <span className="quotesitem">Bending</span>
+              <span className="quotesitem">Services</span>
               <span className="quotesitem quotesright">
                 <Amount amount={quoteDataVal.total_bend_price} />{" "}
               </span>
@@ -291,12 +380,30 @@ const QuotesSidebar = ({
                     />
                   </span>
                 </div>
+
+                <div className="text-color-shipping">
+                  {buttonText == 1 ? (
+                    <>
+                      <hr />
+                      <p>
+                        An item in your quote requires approval. Please submit
+                        your RFQ and we’ll get back to you ASAP!
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <hr />
+                      <span>Price is for cutting only.</span>
+                      <p>Shipping & Taxes will be calculated at checkout</p>
+                    </>
+                  )}
+                </div>
                 <Button
                   className="w-100 mt-3"
-                  onClick={() => handleUpdateQuote()}
-                  disabled={loading}
+                  onClick={() => handleUpdateQuoteChange()}
+                  disabled={PayLoad}
                 >
-                  {loading ? (
+                  {PayLoad ? (
                     <span
                       className="spinner-border spinner-border-sm"
                       role="status"
@@ -367,7 +474,7 @@ const QuotesSidebar = ({
                   </span>
                 </div>
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Bending</span>
+                  <span className="quotesitem">Services</span>
                   <span className="quotesitem quotesright">
                     <Amount amount={quoteDataVal.total_bend_price} />{" "}
                   </span>
@@ -630,6 +737,13 @@ const QuotesSidebar = ({
         </>
       )}
       <PaymentDone show={modalShow} handleClose={handleClose} />
+      <CheckoutPopup
+        show={modalShowPay}
+        handleClose={handleClose}
+        address={address}
+        shippingInfo={shippingInfo}
+        cardsData={cardsData}
+      />
     </>
   );
 };

@@ -110,7 +110,7 @@ const EditRFQS = () => {
 
       console.log("response.data.data  response.data.data", response.data.data);
       localStorage.setItem(
-        "setItemelementDataAdmin",
+        "setItempartsDBdataAdmin",
         JSON.stringify(response.data.data)
       );
 
@@ -135,6 +135,7 @@ const EditRFQS = () => {
           JSON.stringify(parsedQuoteList)
         );
         setQuoteList(parsedQuoteList);
+        console.log("Sdssdsdsdsd", quoteList, "quoteList");
       }
       setquoteDataCon(true);
       setaddLoading(false);
@@ -359,66 +360,72 @@ const EditRFQS = () => {
       setid_quote(id);
       setModalShow2(true);
     } else {
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("bend_count", 0);
-      formData.append("quote_image", "");
-      try {
-        const response = AdminbendQuotes(formData);
+      const isConfirmed = window.confirm(
+        "Are you sure you want to remove bending?"
+      );
 
-        const updatedQuoteData = quoteData.map((quote) => {
-          if (quote._id === id) {
-            const bend_count = 0;
-            const bendupload_url = "";
+      if (isConfirmed) {
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("bend_count", 0);
+        formData.append("quote_image", "");
+        try {
+          const response = AdminbendQuotes(formData);
 
-            return {
-              ...quote,
-              bend_count: bend_count,
-              bendupload_url: bendupload_url,
-            };
-          }
-          return quote;
-        });
+          const updatedQuoteData = quoteData.map((quote) => {
+            if (quote._id === id) {
+              const bend_count = 0;
+              const bendupload_url = "";
 
-        localStorage.setItem(
-          "setItemelementDataAdmin",
-          JSON.stringify(updatedQuoteData)
-        );
-        const quoteDataVal = JSON.parse(
-          localStorage.getItem("setItemelementDataAdmin")
-        );
+              return {
+                ...quote,
+                bend_count: bend_count,
+                bendupload_url: bendupload_url,
+              };
+            }
+            return quote;
+          });
 
-        let total = 0;
-        for (const quote of quoteDataVal) {
-          total += quote.bend_count; // Accumulate bend_count values
-        }
-
-        const quoteList = localStorage.getItem("setItemelementDataAdmin");
-
-        if (quoteList) {
-          // Parse the stored JSON data
-          const parsedQuoteList = JSON.parse(quoteList);
-
-          console.log("parsedQuoteList", parsedQuoteList);
-          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
-
-          console.log(
-            "total * 15",
-            total * 5,
-            parsedQuoteList,
-            "dsdsdsdsdsddsd"
-          );
           localStorage.setItem(
             "setItemelementDataAdmin",
-            JSON.stringify(parsedQuoteList)
+            JSON.stringify(updatedQuoteData)
           );
-          setQuoteList(parsedQuoteList);
-        }
+          const quoteDataVal = JSON.parse(
+            localStorage.getItem("setItemelementDataAdmin")
+          );
 
-        setquoteDataCon(true);
-        setQuoteData(updatedQuoteData);
-      } catch (error) {
-        console.log("Dsdsdsdsdsdd", error);
+          let total = 0;
+          for (const quote of quoteDataVal) {
+            total += quote.bend_count; // Accumulate bend_count values
+          }
+
+          const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+          if (quoteList) {
+            // Parse the stored JSON data
+            const parsedQuoteList = JSON.parse(quoteList);
+
+            console.log("parsedQuoteList", parsedQuoteList);
+            parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+
+            console.log(
+              "total * 15",
+              total * 5,
+              parsedQuoteList,
+              "dsdsdsdsdsddsd"
+            );
+            localStorage.setItem(
+              "setItemelementDataAdmin",
+              JSON.stringify(parsedQuoteList)
+            );
+            setQuoteList(parsedQuoteList);
+          }
+
+          setquoteDataCon(true);
+          setQuoteData(updatedQuoteData);
+        } catch (error) {
+          console.log("Dsdsdsdsdsdd", error);
+        }
       }
     }
   };
@@ -555,64 +562,64 @@ const EditRFQS = () => {
     }
   };
 
-  const handleQuantityChange = async (Id, increment = true) => {
-    let data = "";
-    let type = "";
-    let params = "";
+  // const handleQuantityChange = async (Id, increment = true) => {
+  //   let data = "";
+  //   let type = "";
+  //   let params = "";
 
-    const updatedQuoteData = quoteData.map((quote) => {
-      if (quote._id === Id) {
-        const updatedQuantity = increment
-          ? quote.quantity + 1
-          : Math.max(0, quote.quantity - 1);
-        params = {
-          id: quote._id,
-          quantity: updatedQuantity,
-          material_id: quote.material_id,
-          thickness_id: quote.thickness_id,
-          finishing_id: quote.finishing_id,
-        };
+  //   const updatedQuoteData = quoteData.map((quote) => {
+  //     if (quote._id === Id) {
+  //       const updatedQuantity = increment
+  //         ? quote.quantity + 1
+  //         : Math.max(0, quote.quantity - 1);
+  //       params = {
+  //         id: quote._id,
+  //         quantity: updatedQuantity,
+  //         material_id: quote.material_id,
+  //         thickness_id: quote.thickness_id,
+  //         finishing_id: quote.finishing_id,
+  //       };
 
-        return {
-          ...quote,
-          quantity: updatedQuantity,
-        };
-      }
-      return quote;
-    });
+  //       return {
+  //         ...quote,
+  //         quantity: updatedQuantity,
+  //       };
+  //     }
+  //     return quote;
+  //   });
 
-    setQuoteData(updatedQuoteData);
-    localStorage.setItem(
-      "setItempartsDBdataAdmin",
-      JSON.stringify(updatedQuoteData)
-    );
-    const response = await AdmingetThicknessMaterialFinish(data, type, params);
+  //   setQuoteData(updatedQuoteData);
+  //   localStorage.setItem(
+  //     "setItempartsDBdataAdmin",
+  //     JSON.stringify(updatedQuoteData)
+  //   );
+  //   const response = await AdmingetThicknessMaterialFinish(data, type, params);
 
-    if (response && response.data) {
-      const discount = response.data.data.updateData.discount;
-      const price = response.data.data.updateData.price;
-      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+  //   if (response && response.data) {
+  //     const discount = response.data.data.updateData.discount;
+  //     const price = response.data.data.updateData.price;
+  //     //   console.log("response.data.discount;", response.data.data.updateData.discount);
 
-      const finalQuoteData = updatedQuoteData.map((quote) =>
-        quote._id === Id
-          ? {
-              ...quote,
-              quantity: quote.quantity,
-              discount: discount,
-              amount: price,
-            }
-          : quote
-      );
+  //     const finalQuoteData = updatedQuoteData.map((quote) =>
+  //       quote._id === Id
+  //         ? {
+  //             ...quote,
+  //             quantity: quote.quantity,
+  //             discount: discount,
+  //             amount: price,
+  //           }
+  //         : quote
+  //     );
 
-      setQuoteData(finalQuoteData);
-      localStorage.setItem(
-        "setItempartsDBdataAdmin",
-        JSON.stringify(finalQuoteData)
-      );
-    } else {
-      console.error("Error updating quote:", response);
-    }
-  };
+  //     setQuoteData(finalQuoteData);
+  //     localStorage.setItem(
+  //       "setItempartsDBdataAdmin",
+  //       JSON.stringify(finalQuoteData)
+  //     );
+  //   } else {
+  //     console.error("Error updating quote:", response);
+  //   }
+  // };
 
   const handleOptionSelect = async (selectedOption, type, id) => {
     try {
@@ -850,34 +857,58 @@ const EditRFQS = () => {
                             onOptionSelect={handleOptionSelect}
                           />
                         </div>
-                        <div className="quotes-services mt-3">
+                        <div className="quotes-services quote_div_main_sect mt-3">
                           {quote.binding_option == "no" ? (
                             <p></p>
                           ) : (
                             <>
                               {quote.thickness_id && (
                                 <>
-                                  <h4>Services</h4>
+                                  <div className="flex-shrink-0">
+                                    <h4>Services</h4>
 
-                                  <Form.Check
-                                    type="checkbox"
-                                    label="Bending"
-                                    name={`options-${quote._id}`}
-                                    value={`options-${quote._id}`}
-                                    id={`options-${quote._id}`}
-                                    className="d-inline-flex align-items-center me-2"
-                                    onChange={(e) =>
-                                      handleShow2(
-                                        quote.image_url,
-                                        quote.quote_name,
-                                        quote.bend_count,
-                                        quote.bendupload_url,
-                                        quote._id,
-                                        e.target.checked
-                                      )
-                                    }
-                                    checked={quote.bend_count >= 1}
-                                  />
+                                    <Form.Check
+                                      type="checkbox"
+                                      label="Bending"
+                                      name={`options-${quote._id}`}
+                                      value={`options-${quote._id}`}
+                                      id={`options-${quote._id}`}
+                                      className="d-inline-flex align-items-center me-2"
+                                      onChange={(e) =>
+                                        handleShow2(
+                                          quote.image_url,
+                                          quote.quote_name,
+                                          quote.bend_count,
+                                          quote.bendupload_url,
+                                          quote._id,
+                                          e.target.checked
+                                        )
+                                      }
+                                      checked={quote.bend_count >= 1}
+                                    />
+                                  </div>
+                                </>
+                              )}
+                              {quote.bend_count != 0 && (
+                                <>
+                                  <div className="custom_bend_div">
+                                    <p>Number of bends : {quote.bend_count}</p>
+                                    <p>Price per bend : $5.00</p>
+                                    <p>Total : {quote.bend_price}</p>
+                                  </div>
+                                  <Link
+                                    className="btnicon flex-shrink-0"
+                                    onClick={() => {
+                                      setimage_url(quote.image_url);
+                                      setquote_name(quote.quote_name);
+                                      setbend_count(quote.bend_count);
+                                      setbendupload_url(quote.bendupload_url);
+                                      setid_quote(quote._id);
+                                      setModalShow2(true);
+                                    }}
+                                  >
+                                    <Icon icon="mynaui:edit" />
+                                  </Link>
                                 </>
                               )}
                             </>

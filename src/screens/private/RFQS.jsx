@@ -20,7 +20,7 @@ export default function RFQS() {
   const [perPage] = useState(10);
   const [loadingRowId, setLoadingRowId] = useState(null);
   const [loadingResend, setLoadingResend] = useState(false);
-
+  const [loadingPay, setLoadingPay] = useState();
   const fetchData = async (page) => {
     try {
       const data = {
@@ -48,6 +48,7 @@ export default function RFQS() {
     const data = {
       id: id,
     };
+    setLoadingPay(id);
     const response = await getEditQuotePay(data);
     console.log("resss-----", response.data);
     localStorage.setItem(
@@ -68,7 +69,7 @@ export default function RFQS() {
       "divideWeight",
       JSON.stringify(response.data.divideWeight)
     );
-
+    setLoadingPay(false);
     navigate("/quotes/pay");
   };
   const columns = [
@@ -145,8 +146,20 @@ export default function RFQS() {
             View
           </Link>
           {row.status === 2 && (
-            <Link className="btnpay" onClick={() => RequestQuote(row._id)}>
-              Pay
+            <Link
+              className="btnpay"
+              onClick={() => RequestQuote(row._id)}
+              disabled={loadingPay}
+            >
+              {loadingPay === row._id ? (
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              ) : (
+                "Pay"
+              )}
             </Link>
           )}
         </div>

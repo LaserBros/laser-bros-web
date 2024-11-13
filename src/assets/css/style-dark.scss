@@ -8,6 +8,18 @@ body {
         .quotes-head {
             color       : $white-color;
         }
+        .text-color-shipping span{
+            font-size: 14px;
+            color:rgba($white-color, .50);;
+            margin-bottom: 10px;
+        }
+        
+        .text-color-shipping p{
+            font-size: 14px;
+            color: $white-color;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
         .modal {
             .modal-dialog {
                 .modal-content {
@@ -886,6 +898,7 @@ body {
                 }
             }
         }
+        
     }
     .accountform{
         .form-group{
@@ -1036,3 +1049,4 @@ body {
   }
     }
 }
+

@@ -481,7 +481,27 @@ const ViewRFQS = () => {
       console.error("Error updating quote:", response);
     }
   };
+  const handleDownload = async (url, name) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
 
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", name);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl); // Revoke the blob URL after the download
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   const handleOptionSelect = async (selectedOption, type, id) => {
     try {
       const data = {
@@ -654,7 +674,15 @@ const ViewRFQS = () => {
                         />
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                        <h2>{quote.quote_name}</h2>
+                        <h2>
+                          {quote.quote_name}{" "}
+                          <Icon
+                            icon="material-symbols-light:download-sharp"
+                            onClick={() =>
+                              handleDownload(quote?.dxf_url, quote.quote_name)
+                            }
+                          />
+                        </h2>
                         <p className="num-dim-main">
                           <span className="num-dim">
                             {quote.type_option[0]?.material_code}-
@@ -662,6 +690,7 @@ const ViewRFQS = () => {
                             {String(index + 1).padStart(3, "0")}
                           </span>
                         </p>
+
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
                             options={materials}

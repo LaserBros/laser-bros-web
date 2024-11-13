@@ -9,13 +9,11 @@ const ShippingRates = ({
   const [selectedRate, setSelectedRate] = useState(service_code);
 
   // Handle checkbox selection (only one at a time)
-  const handleCheckboxChange = (carrierId, rate) => {
+  const handleCheckboxChange = (carrierId, rate, price) => {
     const newSelectedRate = selectedRate === carrierId ? null : carrierId;
     setSelectedRate(newSelectedRate);
-
-    // Trigger the callback only if a rate is selected (not deselected)
     if (newSelectedRate) {
-      onRateSelected(rate);
+      onRateSelected(rate, price);
     }
   };
 
@@ -32,7 +30,7 @@ const ShippingRates = ({
             value="local_pickup"
             checked={selectedRate === "local_pickup"}
             onChange={() =>
-              handleCheckboxChange("local_pickup", "local_pickup")
+              handleCheckboxChange("local_pickup", "local_pickup", 0.0)
             }
           />
           &nbsp;&nbsp;Local Pickup
@@ -48,12 +46,21 @@ const ShippingRates = ({
                   value={rate.service_code}
                   checked={selectedRate === rate.service_code}
                   onChange={() =>
-                    handleCheckboxChange(rate.service_code, rate.service_code)
+                    handleCheckboxChange(
+                      rate.service_code,
+                      rate.service_code,
+                      parseFloat(
+                        divideWeight * rate.shipping_amount.amount
+                      ).toFixed(2)
+                    )
                   }
                 />
                 &nbsp;&nbsp;{rate.carrier_friendly_name} - {rate.service_type}{" "}
                 ($
-                {divideWeight * rate.shipping_amount.amount})
+                {parseFloat(divideWeight * rate.shipping_amount.amount).toFixed(
+                  2
+                )}
+                )
               </label>
             </div>
           ))}

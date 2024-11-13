@@ -41,11 +41,22 @@ export default function SignUp() {
     setFormData({ ...formData, [name]: value });
   };
   const isStrongPassword = (password) => {
-    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character
-    const strongPasswordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return strongPasswordRegex.test(password);
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    // Allow a wider range of special characters
+    const hasSpecialChar = /[\p{P}\p{S}]/u.test(password);
+
+    return (
+      password.length >= minLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber &&
+      hasSpecialChar
+    );
   };
+
   const validate = () => {
     const newErrors = {};
     if (!formData.full_name) newErrors.fullName = "Full Name is required";

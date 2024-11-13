@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 export default function AddAddress() {
   const [formData, setFormData] = useState({
     full_name: "",
+    nickname: "",
     email: "",
     country: "",
     address_line_1: "",
@@ -83,6 +84,10 @@ export default function AddAddress() {
 
     if (!formData.full_name) {
       formErrors.fullName = "Full Name is required.";
+      valid = false;
+    }
+    if (!formData.nickname) {
+      formErrors.nickName = "Address Nickname is required.";
       valid = false;
     }
 
@@ -194,6 +199,22 @@ export default function AddAddress() {
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.fullName}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>Address Nickname</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="nickname"
+                        value={formData.nickName}
+                        onChange={handleChange}
+                        placeholder="Enter Address Nickname"
+                        isInvalid={!!errors.nickName}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.nickName}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>

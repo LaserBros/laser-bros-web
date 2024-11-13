@@ -39,9 +39,81 @@ import DimensionsToggle from "../../../components/DimensionsToggle";
 import { useTheme } from "../../../components/Themecontext";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import ConfirmationModal2 from "../../../components/ConfirmationModal";
+import html2pdf from "html2pdf.js";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
+
+  const apiData = {
+    quoteNumber: "11-24-0703",
+    customerName: "Cort Van Wingerden",
+    companyName: "Van Welder LLC",
+    addressLine1: "909 E. Elm St.",
+    addressLine2: "Suite 102",
+    city: "Graham",
+    state: "NC",
+    zip: "27253",
+    billingName: "Cort Van Wingerden",
+    billingCompany: "Van Welder LLC",
+    billingAddressLine1: "909 E. Elm St.",
+    billingAddressLine2: "Suite 102",
+    billingCity: "Graham",
+    billingState: "NC",
+    billingZip: "27253",
+    shippingName: "Cort Van Wingerden",
+    shippingCompany: "Van Welder LLC",
+    shippingAddressLine1: "909 E. Elm St.",
+    shippingAddressLine2: "Suite 102",
+    shippingCity: "Graham",
+    shippingState: "NC",
+    shippingZip: "27253",
+    orderDate: "09-11-2024",
+    poNumber: "123987",
+    shippingType: "UPS Ground",
+    items: [
+      {
+        description: "Item 1",
+        quantity: 3,
+        priceEach: 3.25,
+        totalPrice: 9.75,
+        image: "https://via.placeholder.com/150",
+      },
+      {
+        description: "Item 2",
+        quantity: 3,
+        priceEach: 3.25,
+        totalPrice: 9.75,
+        image:
+          "https://laserbros-image-upload.s3.amazonaws.com/1730885032049-bridge/1730885032049-bridge.svg",
+      },
+      {
+        description: "Item 3",
+        quantity: 3,
+        priceEach: 4.0,
+        totalPrice: 12.0,
+        image:
+          "https://laserbros-image-upload.s3.amazonaws.com/1730885032049-bridge/1730885032049-bridge.svg",
+      },
+    ],
+  };
+  const [quoteData, setQuoteData] = useState(null);
+
+  useEffect(() => {
+    // Assuming `apiData` is the response you get from your API call
+    setQuoteData(apiData);
+  }, [apiData]);
+
+  const generatePDF = async () => {
+    const pdfElement = document.getElementById("quotePdf");
+    const doc = new jsPDF("p", "pt", "a4");
+
+    const canvas = await html2canvas(pdfElement);
+    const imgData = canvas.toDataURL("image/png");
+
+    // Add canvas image to PDF
+    doc.addImage(imgData, "PNG", 0, 0, 595, 842);
+    doc.save("Quote.pdf");
+  };
 
   const loadImagesAsBase64 = async () => {
     const images = document.querySelectorAll("#pdf-content img");
@@ -506,14 +578,14 @@ const OrdersDetail = () => {
   };
   const MAX_LENGTH = 20;
   const shortenName = (materialCode, quoteName) => {
-    const combinedLength = materialCode.length + quoteName.length;
+    // const combinedLength = materialCode.length + quoteName.length;
 
-    if (combinedLength > MAX_LENGTH) {
-      const truncatedMaterialCode =
-        materialCode.slice(0, Math.floor(19)) + "...";
-      const truncatedQuoteName = quoteName.slice(0, Math.floor(MAX_LENGTH / 2));
-      return `${truncatedMaterialCode}-${truncatedQuoteName}`;
-    }
+    // if (combinedLength > MAX_LENGTH) {
+    //   const truncatedMaterialCode =
+    //     materialCode.slice(0, Math.floor(19)) + "...";
+    //   const truncatedQuoteName = quoteName.slice(0, Math.floor(MAX_LENGTH / 2));
+    //   return `${truncatedMaterialCode}-${truncatedQuoteName}`;
+    // }
 
     return `${materialCode}-${quoteName}`;
   };
@@ -614,6 +686,123 @@ const OrdersDetail = () => {
   return (
     <div id="pdf-content">
       <React.Fragment>
+        <div
+          id="quote-pdf"
+          style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}
+        >
+          <h2>Quote #{quoteData?.quoteNumber}</h2>
+
+          {/* Customer Details */}
+          <div style={{ marginBottom: "20px" }}>
+            <strong>{quoteData?.customerName}</strong>
+            <br />
+            {quoteData?.companyName}
+            <br />
+            {quoteData?.addressLine1}
+            <br />
+            {quoteData?.addressLine2}
+            <br />
+            {quoteData?.city}, {quoteData?.state} {quoteData?.zip}
+          </div>
+
+          {/* Billing and Shipping Details */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "20px",
+            }}
+          >
+            <div>
+              <strong>Bill To:</strong>
+              <br />
+              {quoteData?.billingName}
+              <br />
+              {quoteData?.billingCompany}
+              <br />
+              {quoteData?.billingAddressLine1}
+              <br />
+              {quoteData?.billingAddressLine2}
+              <br />
+              {quoteData?.billingCity}, {quoteData?.billingState}{" "}
+              {quoteData?.billingZip}
+            </div>
+            <div>
+              <strong>Ship To:</strong>
+              <br />
+              {quoteData?.shippingName}
+              <br />
+              {quoteData?.shippingCompany}
+              <br />
+              {quoteData?.shippingAddressLine1}
+              <br />
+              {quoteData?.shippingAddressLine2}
+              <br />
+              {quoteData?.shippingCity}, {quoteData?.shippingState}{" "}
+              {quoteData?.shippingZip}
+            </div>
+          </div>
+
+          {/* Order Information */}
+          <div style={{ marginBottom: "20px" }}>
+            <strong>Order Date:</strong> {quoteData?.orderDate || "N/A"}
+            <br />
+            <strong>PO Number:</strong> {quoteData?.poNumber || "N/A"}
+            <br />
+            <strong>Shipping Type:</strong> {quoteData?.shippingType || "N/A"}
+          </div>
+
+          {/* Table for Items */}
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
+                  Item Description
+                </th>
+                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
+                  Qty
+                </th>
+                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
+                  $ / Each
+                </th>
+                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
+                  $ / Total
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {quoteData?.items?.map((item, index) => (
+                <tr key={index}>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
+                  >
+                    <img src={item.image} height={100} width={100} />
+                  </td>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
+                  >
+                    {item.description}
+                  </td>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
+                  >
+                    {item.quantity}
+                  </td>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
+                  >
+                    ${item.priceEach}
+                  </td>
+                  <td
+                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
+                  >
+                    ${item.totalPrice}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {!loading ? (
           <>
             <Card>
@@ -745,6 +934,7 @@ const OrdersDetail = () => {
                         <Icon icon="solar:file-download-linear" />
                         <p className="mb-0">Download WO</p>
                       </div>
+                      <button onClick={generatePDF}>Generate Quote PDF</button>
                       <div
                         className="text-center download-wo-allfiles"
                         style={{ cursor: "pointer" }}

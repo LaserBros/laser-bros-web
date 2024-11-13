@@ -3150,6 +3150,7 @@ textarea.form-control {
         img {
             object-fit: contain;
             max-width: 100px;
+            height: 120px;
         }
     }
 
@@ -3741,6 +3742,7 @@ textarea.form-control {
                         img {
 
                             object-fit: contain;
+                            height: 130px;
 
                         }
                     }
@@ -3750,6 +3752,8 @@ textarea.form-control {
                         font-size  : 20px;
                         color      : $black-color;
                         font-weight: 700;
+                        white-space: normal;
+                        word-break: break-all;
                     }
 
                     p {
@@ -4032,4 +4036,20 @@ textarea.form-control {
 }
 .quote_div_main_sect a.btnicon svg {
     font-size: 14px;
+}
+
+.text-color-shipping{
+    text-align: center;
+}
+.text-color-shipping span{
+    font-size: 14px;
+    color:rgba($black-color, .50);;
+    margin-bottom: 10px;
+}
+
+.text-color-shipping p{
+    font-size: 14px;
+    color: $black-color;
+    margin-bottom: 10px;
+    font-weight: 600;
 }

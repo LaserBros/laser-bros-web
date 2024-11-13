@@ -11,6 +11,7 @@ export default function AddAddress() {
   const [formValues, setFormValues] = useState({
     _id: "",
     full_name: "",
+    nickname: "",
     email: "",
     address_line_1: "",
     address_line_2: "",
@@ -101,6 +102,8 @@ export default function AddAddress() {
   const validateForm = () => {
     const newErrors = {};
     if (!formValues.full_name) newErrors.name = "Full Name is required";
+    if (!formValues.nickname)
+      newErrors.nickname = "Address Nickname is required";
     if (!formValues.email) newErrors.email = "Email Address is required";
     if (!formValues.address_line_1)
       newErrors.address1 = "Address Line 1 is required";
@@ -161,6 +164,22 @@ export default function AddAddress() {
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.name}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>Address Nickname</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="nickname"
+                        placeholder="Enter full name"
+                        value={formValues.nickname}
+                        onChange={handleChange}
+                        isInvalid={!!errors.nickname}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.nickname}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>

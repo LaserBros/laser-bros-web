@@ -286,14 +286,14 @@ const OrdersDetail = () => {
   };
   const MAX_LENGTH = 20;
   const shortenName = (materialCode, quoteName) => {
-    const combinedLength = materialCode.length + quoteName.length;
+    // const combinedLength = materialCode.length + quoteName.length;
 
-    if (combinedLength > MAX_LENGTH) {
-      const truncatedMaterialCode =
-        materialCode.slice(0, Math.floor(19)) + "...";
-      const truncatedQuoteName = quoteName.slice(0, Math.floor(MAX_LENGTH / 2));
-      return `${truncatedMaterialCode}-${truncatedQuoteName}`;
-    }
+    // if (combinedLength > MAX_LENGTH) {
+    //   const truncatedMaterialCode =
+    //     materialCode.slice(0, Math.floor(19)) + "...";
+    //   const truncatedQuoteName = quoteName.slice(0, Math.floor(MAX_LENGTH / 2));
+    //   return `${truncatedMaterialCode}-${truncatedQuoteName}`;
+    // }
 
     return `${materialCode}-${quoteName}`;
   };

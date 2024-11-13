@@ -252,6 +252,7 @@ const Quotes = () => {
                             )}
                             {/* ))} */}
                           </td>
+                          <td>{row.customer_name}</td>
                           <td className="text-end">
                             <div className="d-inline-flex align-items-center gap-3">
                               <Link
