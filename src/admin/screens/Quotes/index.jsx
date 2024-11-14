@@ -15,6 +15,7 @@ import {
   AdmingetUnAllRequestQuotes,
 } from "../../../api/api";
 import Pagination from "../../components/Pagination";
+import DateFormat from "../../components/DateFormat";
 const Quotes = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -109,6 +110,7 @@ const Quotes = () => {
       "setItemelementDataAdmin",
       JSON.stringify(res.data.requestQuoteDB)
     );
+    localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
     navigate("/admin/quotes/view-quote");
   };
 
@@ -229,6 +231,9 @@ const Quotes = () => {
                                 {row.search_quote}
                               </b>
                             </Link>
+                          </td>
+                          <td>
+                            <DateFormat dateString={row.createdAt} />
                           </td>
                           <td className="text-nowrap">
                             {/* {row.material.map((materials, index) => ( */}

@@ -246,7 +246,38 @@ export default function QuotesDetail() {
           "setItempartsDBdata",
           JSON.stringify(updatedQuoteData)
         );
-      } catch (error) {}
+        const quoteDataVal = JSON.parse(
+          localStorage.getItem("setItempartsDBdata")
+        );
+        console.log("quoteDataVal =-=-=- quoteList -=-", quoteDataVal);
+        let total = 0;
+        for (const quote of quoteDataVal) {
+          total += quote.bend_count; // Accumulate bend_count values
+        }
+
+        const quoteList = localStorage.getItem("setItemelementData");
+        console.log("quoteDataVal =-=-=- quoteList", quoteList);
+        if (quoteList) {
+          // Parse the stored JSON data
+          const parsedQuoteList = JSON.parse(quoteList);
+
+          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+          if (total == 0) {
+            parsedQuoteList.check_status = 0;
+          }
+          console.log("parsedQuoteList", parsedQuoteList);
+          localStorage.setItem(
+            "setItempartsDBdata",
+            JSON.stringify(parsedQuoteList)
+          );
+          setQuoteList(parsedQuoteList);
+        }
+
+        setquoteDataCon(true);
+        setQuoteData(updatedQuoteData);
+      } catch (error) {
+        console.log(error);
+      }
 
       return updatedQuoteData;
     });

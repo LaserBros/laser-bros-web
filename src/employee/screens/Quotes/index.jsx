@@ -109,6 +109,7 @@ const Quotes = () => {
       "setItemelementDataAdmin",
       JSON.stringify(res.data.requestQuoteDB)
     );
+    localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
     // navigate("/admin/quote/view-quote");
   };
 
