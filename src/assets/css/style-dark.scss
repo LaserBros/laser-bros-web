@@ -8,7 +8,9 @@ body {
         .quotes-head {
             color       : $white-color;
         }
-
+        .shipping_info b,.shipping_info i {
+            color: $white-color;
+        }
         .proceedCheckout_modal {
             .modal-content {
                 .modal-body {

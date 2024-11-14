@@ -77,9 +77,11 @@ const CheckoutPopup = ({
         toast.error("Please select a shipping method.");
         return;
       }
-      if (!selectedCard) {
-        toast.error("Please select a payment card.");
-        return;
+      if (shippingInfo?.requestQuoteDB?.check_status == 0) {
+        if (!selectedCard) {
+          toast.error("Please select a payment card.");
+          return;
+        }
       }
       const billingAddressId = isSameAsShipping
         ? address.find((addr) => addr.is_default === 1)?._id // Default shipping address `_id`
@@ -187,216 +189,220 @@ const CheckoutPopup = ({
       >
         <Modal.Body className="w-100">
           <div className="shipping_info">
-              <Row>
-                <Col lg={6}>
-                  {/* Shipping Address */}
-                  <div className="shipping_addr_name">
-                    <h2 className="shipping_head">Shipping Address</h2>
-                    {address.length === 0 ? (
+            <Row>
+              <Col lg={6}>
+                {/* Shipping Address */}
+                <div className="shipping_addr_name">
+                  <h2 className="shipping_head">Shipping Address</h2>
+                  {address.length === 0 ? (
+                    <Col>
+                      <p>No addresses found</p>
+                    </Col>
+                  ) : (
+                    address.map((addr) =>
+                      addr.is_default === 1 ? (
+                        <Col
+                          xl={12}
+                          lg={12}
+                          md={12}
+                          className="mb-4"
+                          key={addr._id}
+                        >
+                          <div className="addresses-grid">
+                            <div className="d-flex align-items-center justify-content-between mb-3">
+                              <h2 className="mb-0">{addr.full_name}</h2>
+                            </div>
+                            <p className="mb-2">{addr.phone_number}</p>
+                            <p className="mb-3">
+                              {addr.address_line_1}, {addr.city}, {addr.pincode}
+                              , {addr.country}
+                            </p>
+                            <div className="btn-bottom">
+                              <Link
+                                className="btn-address"
+                                to={`/my-address/edit-address/${addr._id}`}
+                              >
+                                <Icon icon="mynaui:edit" />
+                              </Link>
+                            </div>
+                          </div>
+                        </Col>
+                      ) : null
+                    )
+                  )}
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className="ship_methods mb-4">
+                  <h2 className="shipping_head">Shipping Method</h2>
+                  <ShippingRates
+                    shippingRates={shippingInfo.shippingRates}
+                    divideWeight={shippingInfo.divideWeight}
+                    onRateSelected={handleRateSelected}
+                  />
+                </div>
+              </Col>
+              <Col lg={6}>
+                {/* Billing Address */}
+                <div className="bill_addr_name">
+                  <h2 className="shipping_head">Billing Address</h2>
+
+                  {/* Checkbox for "Same as Shipping Address" */}
+                  <Form.Check
+                    type="checkbox"
+                    label="Same as Shipping Address"
+                    checked={isSameAsShipping}
+                    onChange={handleCheckboxChange}
+                    className="mb-3"
+                  />
+
+                  {/* If checkbox is unchecked, show dropdown */}
+                  {!isSameAsShipping && (
+                    <Form.Select
+                      aria-label="Select Address"
+                      onChange={handleAddressChange}
+                      className="mb-3"
+                    >
+                      <option value="">Select Address</option>
+                      {address.map((addr) => (
+                        <option key={addr._id} value={addr._id}>
+                          {addr.full_name} - {addr.address_line_1}, {addr.city}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  )}
+
+                  {/* Show Address Details */}
+                  {selectedAddress ? (
+                    <Col xl={12} lg={12} md={12} className="mb-4">
+                      <div className="addresses-grid">
+                        <div className="d-flex align-items-center justify-content-between mb-3">
+                          <h2 className="mb-0">{selectedAddress.full_name}</h2>
+                        </div>
+                        <p className="mb-2">{selectedAddress.phone_number}</p>
+                        <p className="mb-3">
+                          {selectedAddress.address_line_1},{" "}
+                          {selectedAddress.city}, {selectedAddress.pincode},{" "}
+                          {selectedAddress.country}
+                        </p>
+                        <div className="btn-bottom">
+                          <Link
+                            className="btn-address"
+                            to={`/my-address/edit-address/${selectedAddress._id}`}
+                          >
+                            <Icon icon="mynaui:edit" />
+                          </Link>
+                        </div>
+                      </div>
+                    </Col>
+                  ) : (
+                    !isSameAsShipping && (
                       <Col>
-                        <p>No addresses found</p>
+                        <p>No address selected</p>
                       </Col>
-                    ) : (
-                      address.map((addr) =>
-                        addr.is_default === 1 ? (
+                    )
+                  )}
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className="cards_sect">
+                  <h2 className="shipping_head">Payment Method :</h2>
+                  {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
+                    <>
+                      <div className="text-center mt-2">
+                        <b>
+                          Once your RFQ has been approved you can proceed with
+                          your payment.
+                        </b>
+                      </div>
+                    </>
+                  ) : cardsData.length === 0 ? (
+                    <Col>
+                      <p>No cards found</p>
+                    </Col>
+                  ) : (
+                    cardsData.map(
+                      (card) =>
+                        card.is_default === 1 && (
                           <Col
                             xl={12}
                             lg={12}
                             md={12}
                             className="mb-4"
-                            key={addr._id}
+                            key={card.id}
                           >
-                            <div className="addresses-grid">
-                              <div className="d-flex align-items-center justify-content-between mb-3">
-                                <h2 className="mb-0">{addr.full_name}</h2>
-                              </div>
-                              <p className="mb-2">{addr.phone_number}</p>
-                              <p className="mb-3">
-                                {addr.address_line_1}, {addr.city},{" "}
-                                {addr.pincode}, {addr.country}
+                            <div className="addresses-grids payment-grids">
+                              {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
+                              {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
+                              {/* </div> */}
+                              <p
+                                className="mb-2 card-no"
+                                style={{ fontSize: "13px" }}
+                              >
+                                **** **** **** {card.last4}
                               </p>
-                              <div className="btn-bottom">
-                                <Link
-                                  className="btn-address"
-                                  to={`/my-address/edit-address/${addr._id}`}
-                                >
-                                  <Icon icon="mynaui:edit" />
-                                </Link>
+
+                              <div className="card-actions">
+                                <div className="card-info">
+                                  <strong>Expiry Date</strong> {card.exp_month}/
+                                  {card.exp_year}
+                                </div>
+                                <div className="card-info">
+                                  <strong>Name</strong>{" "}
+                                  {card.full_name.toUpperCase()}
+                                </div>
                               </div>
                             </div>
                           </Col>
-                        ) : null
-                      )
-                    )}
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  <div className="ship_methods mb-4">
-                    <h2 className="shipping_head">Shipping Method</h2>
-                    <ShippingRates
-                      shippingRates={shippingInfo.shippingRates}
-                      divideWeight={shippingInfo.divideWeight}
-                      onRateSelected={handleRateSelected}
-                    />
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  {/* Billing Address */}
-                  <div className="bill_addr_name">
-                    <h2 className="shipping_head">Billing Address</h2>
-
-                    {/* Checkbox for "Same as Shipping Address" */}
-                    <Form.Check
-                      type="checkbox"
-                      label="Same as Shipping Address"
-                      checked={isSameAsShipping}
-                      onChange={handleCheckboxChange}
-                      className="mb-3"
-                    />
-
-                    {/* If checkbox is unchecked, show dropdown */}
-                    {!isSameAsShipping && (
-                      <Form.Select
-                        aria-label="Select Address"
-                        onChange={handleAddressChange}
-                        className="mb-3"
-                      >
-                        <option value="">Select Address</option>
-                        {address.map((addr) => (
-                          <option key={addr._id} value={addr._id}>
-                            {addr.full_name} - {addr.address_line_1},{" "}
-                            {addr.city}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    )}
-
-                    {/* Show Address Details */}
-                    {selectedAddress ? (
-                      <Col xl={12} lg={12} md={12} className="mb-4">
-                        <div className="addresses-grid">
-                          <div className="d-flex align-items-center justify-content-between mb-3">
-                            <h2 className="mb-0">
-                              {selectedAddress.full_name}
-                            </h2>
-                          </div>
-                          <p className="mb-2">{selectedAddress.phone_number}</p>
-                          <p className="mb-3">
-                            {selectedAddress.address_line_1},{" "}
-                            {selectedAddress.city}, {selectedAddress.pincode},{" "}
-                            {selectedAddress.country}
-                          </p>
-                          <div className="btn-bottom">
-                            <Link
-                              className="btn-address"
-                              to={`/my-address/edit-address/${selectedAddress._id}`}
-                            >
-                              <Icon icon="mynaui:edit" />
-                            </Link>
-                          </div>
-                        </div>
-                      </Col>
-                    ) : (
-                      !isSameAsShipping && (
-                        <Col>
-                          <p>No address selected</p>
-                        </Col>
-                      )
-                    )}
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  <div className="cards_sect">
-                    <h2 className="shipping_head">Payment Method :</h2>
-                    {cardsData.length === 0 ? (
-                      <Col>
-                        <p>No cards found</p>
-                      </Col>
-                    ) : (
-                      cardsData.map(
-                        (card) =>
-                          card.is_default === 1 && (
-                            <Col
-                              xl={12}
-                              lg={12}
-                              md={12}
-                              className="mb-4"
-                              key={card.id}
-                            >
-                              <div className="addresses-grids payment-grids">
-                                {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
-                                  {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                                {/* </div> */}
-                                <p
-                                  className="mb-2 card-no"
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  **** **** **** {card.last4}
-                                </p>
-
-                                <div className="card-actions">
-                                  <div className="card-info">
-                                    <strong>Expiry Date</strong>{" "}
-                                    {card.exp_month}/{card.exp_year}
-                                  </div>
-                                  <div className="card-info">
-                                    <strong>Name</strong>{" "}
-                                    {card.full_name.toUpperCase()}
-                                  </div>
-                                </div>
-                              </div>
-                            </Col>
-                          )
-                      )
-                    )}
-                  </div>
-                </Col>
-              </Row>
-              <div className="main_price text-center">
-                <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Laser Cutting</span>
-                  <span className="quotesitem quotesright">
-                    <Amount
-                      amount={shippingInfo?.requestQuoteDB?.total_amount}
-                    />{" "}
-                  </span>
+                        )
+                    )
+                  )}
                 </div>
-                <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Services</span>
-                  <span className="quotesitem quotesright">
-                    <Amount
-                      amount={shippingInfo?.requestQuoteDB?.total_bend_price}
-                    />{" "}
-                  </span>
-                </div>
-                {rateVal != "" ? (
-                  <div className="d-flex align-items-center justify-content-between mb-2">
-                    <span className="quotesitem">Shipping</span>
-                    <span className="quotesitem quotesright">
-                      <Amount amount={rateVal || 0} />{" "}
-                    </span>
-                  </div>
-                ) : (
-                  ""
-                )}
-                <div className="d-flex align-items-center justify-content-between">
-                  <span className="quotessubtotal">Subtotal</span>
-                  <span className="quotesprice">
-                    <Amount
-                      amount={
-                        parseFloat(
-                          shippingInfo?.requestQuoteDB?.total_amount || 0
-                        ) +
-                        parseFloat(
-                          shippingInfo?.requestQuoteDB?.total_bend_price || 0
-                        ) +
-                        parseFloat(rateVal == "" ? 0 : rateVal || 0)
-                      }
-                    />
-                  </span>
-                </div>
+              </Col>
+            </Row>
+            <div className="main_price text-center">
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <span className="quotesitem">Laser Cutting</span>
+                <span className="quotesitem quotesright">
+                  <Amount amount={shippingInfo?.requestQuoteDB?.total_amount} />{" "}
+                </span>
               </div>
-              <div className="footer_btn">
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <span className="quotesitem">Services</span>
+                <span className="quotesitem quotesright">
+                  <Amount
+                    amount={shippingInfo?.requestQuoteDB?.total_bend_price}
+                  />{" "}
+                </span>
+              </div>
+              {rateVal != "" ? (
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">Shipping</span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={rateVal || 0} />{" "}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="d-flex align-items-center justify-content-between">
+                <span className="quotessubtotal">Subtotal</span>
+                <span className="quotesprice">
+                  <Amount
+                    amount={
+                      parseFloat(
+                        shippingInfo?.requestQuoteDB?.total_amount || 0
+                      ) +
+                      parseFloat(
+                        shippingInfo?.requestQuoteDB?.total_bend_price || 0
+                      ) +
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                    }
+                  />
+                </span>
+              </div>
+            </div>
+            <div className="footer_btn">
               {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
                 <>
                   <Button
@@ -452,8 +458,15 @@ const CheckoutPopup = ({
                   </Button>
                 </>
               )}
-              <Button className="mt-3" variant="lt-primary ms-2"> Cancel</Button>
-              </div>
+              <Button
+                className="mt-3"
+                variant="lt-primary ms-2"
+                onClick={handleClose}
+              >
+                {" "}
+                Cancel
+              </Button>
+            </div>
           </div>
           <PaymentDone show={modalShow} handleClose={handleCloseTrigger} />
         </Modal.Body>

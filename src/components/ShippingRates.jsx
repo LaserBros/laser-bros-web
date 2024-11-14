@@ -21,7 +21,10 @@ const ShippingRates = ({
     <div className="mt-3">
       <hr />
       <div className="head-quotes d-flex align-items-center justify-content-between">
-        <span className="quotessubtotal">Shipping method</span>
+        <span className="quotessubtotal">Shipping methodss</span>
+      </div>
+      <div className="quotessubtotal text-center">
+        <i>Shipping rates will be calculates during the review of your quote</i>
       </div>
       <div className="rate-option">
         <label>
