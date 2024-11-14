@@ -62,6 +62,18 @@ export const updateBendPrice = async (data) => {
   }
 };
 
+export const generateOrderPDF = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/generateOrderPDF?orderId=` + data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const deleteBendQuoteImage = async (data) => {
   try {
     const response = await axiosInstance.post(

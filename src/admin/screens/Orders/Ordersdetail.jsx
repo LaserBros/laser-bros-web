@@ -28,6 +28,7 @@ import {
   moveOrderStatus,
   moveOrderToComplete,
   startPackaging,
+  generateOrderPDF,
   updateWorkStatus,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
@@ -203,39 +204,73 @@ const OrdersDetail = () => {
   // };
 
   const downloadPDF = async () => {
-    await loadImagesAsBase64(); // Ensure all images are converted to base64
-    const input = document.getElementById("pdf-content");
+    const url = `${process.env.REACT_APP_API_URL}/admin/generateOrderPDF`;
 
-    // Use html2canvas to create a canvas from the content
-    const canvas = await html2canvas(input, { useCORS: true });
-    const imgData = canvas.toDataURL("image/png");
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Set as JSON
+        },
+        body: JSON.stringify({
+          orderId: order?.orderedQuote._id, // Convert to JSON string
+        }),
+      });
 
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "pt",
-      format: "a4",
-    });
-
-    const imgWidth = 595.28; // A4 page width in points
-    const imgHeight = (canvas.height * imgWidth) / canvas.width; // Scale height according to width
-
-    // Calculate how many pages are needed
-    const pageHeight = pdf.internal.pageSize.height; // Height of the PDF page
-    let heightLeft = imgHeight; // Remaining height for the image
-
-    let position = 0;
-
-    // Add image to PDF, creating new pages as needed
-    while (heightLeft >= 0) {
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight; // Decrease height left by one page height
-      position -= pageHeight; // Move position for next page
-      if (heightLeft >= 0) {
-        pdf.addPage(); // Add a new page if there's still more content
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
       }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      // Create a link element to trigger the download
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "Order.pdf"; // Set the desired file name
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
     }
 
-    pdf.save("download.pdf");
+    // await loadImagesAsBase64(); // Ensure all images are converted to base64
+    // const input = document.getElementById("pdf-content");
+
+    // // Use html2canvas to create a canvas from the content
+    // const canvas = await html2canvas(input, { useCORS: true });
+    // const imgData = canvas.toDataURL("image/png");
+
+    // const pdf = new jsPDF({
+    //   orientation: "portrait",
+    //   unit: "pt",
+    //   format: "a4",
+    // });
+
+    // const imgWidth = 595.28; // A4 page width in points
+    // const imgHeight = (canvas.height * imgWidth) / canvas.width; // Scale height according to width
+
+    // // Calculate how many pages are needed
+    // const pageHeight = pdf.internal.pageSize.height; // Height of the PDF page
+    // let heightLeft = imgHeight; // Remaining height for the image
+
+    // let position = 0;
+
+    // // Add image to PDF, creating new pages as needed
+    // while (heightLeft >= 0) {
+    //   pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    //   heightLeft -= pageHeight; // Decrease height left by one page height
+    //   position -= pageHeight; // Move position for next page
+    //   if (heightLeft >= 0) {
+    //     pdf.addPage(); // Add a new page if there's still more content
+    //   }
+    // }
+
+    // pdf.save("download.pdf");
   };
 
   const [modalShow, setModalShow] = useState(false);
@@ -686,7 +721,6 @@ const OrdersDetail = () => {
   return (
     <div id="pdf-content">
       <React.Fragment>
-      
         {!loading ? (
           <>
             <Card>
@@ -818,7 +852,7 @@ const OrdersDetail = () => {
                         <Icon icon="solar:file-download-linear" />
                         <p className="mb-0">Download WO</p>
                       </div>
-                 
+
                       <div
                         className="text-center download-wo-allfiles"
                         style={{ cursor: "pointer" }}

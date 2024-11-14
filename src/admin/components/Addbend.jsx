@@ -160,42 +160,52 @@ const AddBend = ({
 
               <div className="file-previews">
                 <div className="addbend_flex">
-                {!editPrice ? (
-                  <>
-                    <p>
-                      Price per bend : <Amount amount={bendPrice} />
-                    </p>
-                  </>
-                ) : (
-                  <input
-                    type="number"
-                    className="addNumber_input"
-                    value={newBendPrice}
-                    onChange={handlePriceChange}
-                    min="0"
-                    step="0.01"
-                  />
-                )}
-                <Link
-                  className="btnicon flex-shrink-0"
-                  onClick={() => {
-                    setEditPrice(!editPrice);
-                  }}
-                >
-                  <Icon icon="mynaui:edit" />
-                </Link>
+                  {!editPrice ? (
+                    <>
+                      <p>
+                        Price per bend : <Amount amount={bendPrice} />
+                      </p>
+                    </>
+                  ) : (
+                    <input
+                      type="number"
+                      className="addNumber_input"
+                      value={newBendPrice}
+                      onChange={handlePriceChange}
+                      min="0"
+                      step="0.01"
+                    />
+                  )}
+                  {!editPrice && (
+                    <Link
+                      className="btnicon flex-shrink-0"
+                      onClick={() => {
+                        setEditPrice(!editPrice);
+                      }}
+                    >
+                      <Icon icon="mynaui:edit" />
+                    </Link>
+                  )}
 
-                {/* Save button to save the price */}
-                {editPrice && (
-                  <>
-                    <Button onClick={handleSavePrice} variant={null} className="save-price-btn">
-                      <Icon icon="lucide:check" />
-                    </Button>
-                    <Button onClick={handleCancel} variant={null} className="cancel-price-btn">
-                      <Icon icon="majesticons:close" />
-                    </Button>
-                  </>
-                )}
+                  {/* Save button to save the price */}
+                  {editPrice && (
+                    <>
+                      <Button
+                        onClick={handleSavePrice}
+                        variant={null}
+                        className="save-price-btn"
+                      >
+                        <Icon icon="lucide:check" />
+                      </Button>
+                      <Button
+                        onClick={handleCancel}
+                        variant={null}
+                        className="cancel-price-btn"
+                      >
+                        <Icon icon="majesticons:close" />
+                      </Button>
+                    </>
+                  )}
                 </div>
                 <h2 className="custom_h2_clr">
                   Total: <Amount amount={quantities * newBendPrice} />

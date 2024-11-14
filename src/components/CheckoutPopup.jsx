@@ -436,7 +436,7 @@ const CheckoutPopup = ({
                       ></span>
                     ) : (
                       <>
-                        Proceed To Pay
+                        Proceed To Pay&nbsp;
                         <b>
                           <Amount
                             amount={
