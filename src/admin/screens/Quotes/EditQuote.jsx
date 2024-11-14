@@ -23,6 +23,7 @@ import {
   AdmingetThicknessMaterialFinish,
   AdminupdateQuantity,
   AdminupdateSubQuoteDetails,
+  updateBendPrice,
 } from "../../../api/api";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -34,7 +35,8 @@ import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
 import DimensionsToggle from "../../../components/DimensionsToggle";
 import FileUpload from "../../components/FileUploadAdmin";
-import AddBend from "../../../components/Addbend";
+import AddBend from "../../components/Addbend";
+import Amount from "../../../components/Amount";
 const EditRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -84,7 +86,7 @@ const EditRFQS = () => {
     // fetchOptions();
   }, []);
   const [addLoading, setaddLoading] = useState(false);
-  const handleUpload = async (file, id, quantities, pdf_url) => {
+  const handleUpload = async (file, id, quantities, pdf_url, new_price) => {
     console.log(
       file,
       id,
@@ -96,53 +98,62 @@ const EditRFQS = () => {
       alert("Please upload a PDF file before saving.");
       return;
     }
-
-    const formData = new FormData();
-    for (let i = 0; i < file.length; i++) {
-      formData.append("quote_image", file[i]);
-    }
-    formData.append("id", id);
-    formData.append("bend_count", quantities);
     try {
-      console.log("SDsdsdsdsdsdsdd-s-dsd0sd0sd0-");
       setaddLoading(true);
-      const response = await AdminbendQuotes(formData);
-
-      console.log("response.data.data  response.data.data", response.data.data);
-      localStorage.setItem(
-        "setItempartsDBdataAdmin",
-        JSON.stringify(response.data.data)
-      );
-
-      setQuoteData(response.data.data);
-      var data_val = response.data.data;
-      let total = 0; // Change 'const' to 'let' to allow reassignment
-      for (const quote of data_val) {
-        total += quote.bend_count; // Accumulate bend_count values
+      const data_val_new = {
+        id: id,
+        bendAmount: new_price,
+      };
+      const res = await updateBendPrice(data_val_new);
+      const formData = new FormData();
+      for (let i = 0; i < file.length; i++) {
+        formData.append("quote_image", file[i]);
       }
+      formData.append("id", id);
+      formData.append("bend_count", quantities);
+      try {
+        const response = await AdminbendQuotes(formData);
 
-      const quoteList = localStorage.getItem("setItemelementDataAdmin");
-
-      if (quoteList) {
-        // Parse the stored JSON data
-        const parsedQuoteList = JSON.parse(quoteList);
-
-        // Update the total_bend_price in the object
-        parsedQuoteList.total_bend_price = total * 5;
-        console.log("total * 15", total * 5, parsedQuoteList);
-        localStorage.setItem(
-          "setItemelementDataAdmin",
-          JSON.stringify(parsedQuoteList)
+        console.log(
+          "response.data.data  response.data.data",
+          response.data.data
         );
-        setQuoteList(parsedQuoteList);
-        console.log("Sdssdsdsdsd", quoteList, "quoteList");
+        localStorage.setItem(
+          "setItempartsDBdataAdmin",
+          JSON.stringify(response.data.data)
+        );
+
+        setQuoteData(response.data.data);
+        var data_val = response.data.data;
+        let total = 0; // Change 'const' to 'let' to allow reassignment
+        for (const quote of data_val) {
+          total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+        }
+
+        const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+        if (quoteList) {
+          // Parse the stored JSON data
+          const parsedQuoteList = JSON.parse(quoteList);
+
+          // Update the total_bend_price in the object
+          parsedQuoteList.total_bend_price = total;
+          localStorage.setItem(
+            "setItemelementDataAdmin",
+            JSON.stringify(parsedQuoteList)
+          );
+          setQuoteList(parsedQuoteList);
+          console.log("Sdssdsdsdsd", quoteList, "quoteList");
+        }
+        setquoteDataCon(true);
+        setaddLoading(false);
+        setModalShow2(false);
+      } catch (error) {
+        setaddLoading(false);
+        console.log("errororoor ----", error);
       }
-      setquoteDataCon(true);
-      setaddLoading(false);
-      setModalShow2(false);
     } catch (error) {
       setaddLoading(false);
-      console.log("errororoor ----", error);
     }
   };
   const getTotalAmount = () => {
@@ -343,14 +354,16 @@ const EditRFQS = () => {
   const [bend_count, setbend_count] = useState(null);
   const [bendupload_url, setbendupload_url] = useState(null);
   const [id_quote, setid_quote] = useState(null);
-
+  const [bend_amount, setebendAmount] = useState("");
+  const [UserData, setUserData] = useState("");
   const handleShow2 = async (
     image_url,
     quote_name,
     bend_count,
     bendupload_url,
     id,
-    checked
+    checked,
+    amount
   ) => {
     if (checked) {
       setimage_url(image_url);
@@ -359,6 +372,7 @@ const EditRFQS = () => {
       setbendupload_url(bendupload_url);
       setid_quote(id);
       setModalShow2(true);
+      setebendAmount(amount);
     } else {
       const isConfirmed = window.confirm(
         "Are you sure you want to remove bending?"
@@ -455,13 +469,14 @@ const EditRFQS = () => {
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
+    const userDataVal = JSON.parse(localStorage.getItem("UserDataAdmin"));
 
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
       setQuoteList(quote_list_val);
-
+      setUserData(userDataVal);
       setQuoteData(parsedData);
     }
   }, []);
@@ -771,6 +786,17 @@ const EditRFQS = () => {
                 </h2>
               </>
             )}
+            <div className="">
+              {UserData.full_name}
+              {UserData.email}
+              {UserData.phone_number}
+              {UserData.company_name}
+              <br />
+              Address = :{UserData.addressDetails?.full_name}
+              {UserData.addressDetails?.address_line_1}
+              {UserData.addressDetails?.city}
+              {UserData.addressDetails?.country}
+            </div>
             <div className="d-inline-flex gap-2">
               <Link className="btnshare" to={"/admin/rfqs"}>
                 Back RFQ's
@@ -924,7 +950,8 @@ const EditRFQS = () => {
                                           quote.bend_count,
                                           quote.bendupload_url,
                                           quote._id,
-                                          e.target.checked
+                                          e.target.checked,
+                                          quote.per_bend_price
                                         )
                                       }
                                       checked={quote.bend_count >= 1}
@@ -936,18 +963,29 @@ const EditRFQS = () => {
                                 <>
                                   <div className="custom_bend_div">
                                     <p>Number of bends : {quote.bend_count}</p>
-                                    <p>Price per bend : $5.00</p>
-                                    <p>Total : {quote.bend_price}</p>
+                                    <p>
+                                      Price per bend :{" "}
+                                      <Amount amount={quote.per_bend_price} />
+                                    </p>
+                                    <p>
+                                      Total :{" "}
+                                      <Amount amount={quote.bend_price} />
+                                    </p>
                                   </div>
                                   <Link
                                     className="btnicon flex-shrink-0"
                                     onClick={() => {
+                                      console.log(
+                                        quote.per_bend_price,
+                                        "quote.per_bend_price"
+                                      );
                                       setimage_url(quote.image_url);
                                       setquote_name(quote.quote_name);
                                       setbend_count(quote.bend_count);
                                       setbendupload_url(quote.bendupload_url);
                                       setid_quote(quote._id);
                                       setModalShow2(true);
+                                      setebendAmount(quote.per_bend_price);
                                     }}
                                   >
                                     <Icon icon="mynaui:edit" />
@@ -1178,6 +1216,7 @@ const EditRFQS = () => {
         id={id_quote}
         onUpload={handleUpload}
         loading={addLoading}
+        amount={bend_amount}
       />
     </React.Fragment>
   );

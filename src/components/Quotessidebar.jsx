@@ -685,7 +685,7 @@ const QuotesSidebar = ({
                                     <p className='text-center'>Payment options will be made available after bending has been approved. Please submit your RFQ!</p>
                                 </div>  */}
                 {/* Request  A Quote before Payment Ends*/}
-                <Form.Check
+                {/* <Form.Check
                   type="checkbox"
                   id="checkbox2"
                   name="checkbox2"
@@ -693,7 +693,7 @@ const QuotesSidebar = ({
                   checked={isChecked}
                   onChange={handleCheckboxChange}
                   label={<>Billing is same as shipping information</>}
-                />
+                /> */}
                 <Button
                   className="w-100 mt-3"
                   onClick={PaymentSubmit}

@@ -6,7 +6,7 @@ const OrderStatus = ({ status }) => {
     : status == 3
     ? "Order Completed"
     : status == 2
-    ? "Under Shipping Process"
+    ? "Ready For Shipping"
     : status == 3
     ? "Delivered"
     : "";

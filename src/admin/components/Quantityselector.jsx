@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 const QuantitySelector = ({
@@ -8,7 +8,9 @@ const QuantitySelector = ({
   updateQuantityAPI,
 }) => {
   const [inputValue, setInputValue] = useState(quantity);
-
+  useEffect(() => {
+    setInputValue(quantity);
+  }, [quantity]);
   const handleInputChange = (e) => {
     const value = e.target.value;
     console.log("Sdsddsd", value);

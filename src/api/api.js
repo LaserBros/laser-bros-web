@@ -52,6 +52,16 @@ export const shippingCost = async (data) => {
   }
 };
 
+export const updateBendPrice = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/updateBendPrice`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const deleteBendQuoteImage = async (data) => {
   try {
     const response = await axiosInstance.post(

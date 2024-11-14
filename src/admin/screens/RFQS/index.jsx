@@ -97,6 +97,7 @@ const RFQS = () => {
       "setItemelementDataAdmin",
       JSON.stringify(res.data.requestQuoteDB)
     );
+    localStorage.setItem("UserDataAdmin", JSON.stringify(res.data.userDBdata));
     navigate("/admin/rfqs/edit-quote");
   };
   const getMaterialColor = (materials) => {
