@@ -87,6 +87,7 @@ const QuotesSidebar = ({
     }
   };
   const handleClose = () => setModalShow(false);
+  const handleClosePay = () => setModalShowPay(false);
   const [key, setKey] = useState("card");
   const navigate = useNavigate();
   const [showDiv1, setShowDiv1] = useState(true);
@@ -739,7 +740,7 @@ const QuotesSidebar = ({
       <PaymentDone show={modalShow} handleClose={handleClose} />
       <CheckoutPopup
         show={modalShowPay}
-        handleClose={handleClose}
+        handleClose={handleClosePay}
         address={address}
         shippingInfo={shippingInfo}
         cardsData={cardsData}
