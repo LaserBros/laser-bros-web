@@ -135,7 +135,7 @@ const Quotes = () => {
             })
           ) : (
             <div className="text-center mt-4">
-              <i>No quotes found.</i>
+              <i className="noQuotesFound_text">No quotes found.</i>
             </div>
           )}
         </Container>

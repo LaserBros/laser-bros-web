@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Modal } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import paymentdone from "../assets/img/paymentdone.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -182,16 +182,16 @@ const CheckoutPopup = ({
         show={show}
         onHide={handleClose}
         centered
-        className="reset-success"
+        className="proceedCheckout_modal"
+        size="lg"
       >
         <Modal.Body className="w-100">
           <div className="shipping_info">
-            <div className="container">
-              <div className="row">
-                <div className="col">
+              <Row>
+                <Col lg={6}>
                   {/* Shipping Address */}
                   <div className="shipping_addr_name">
-                    <h2>Shipping Address</h2>
+                    <h2 className="shipping_head">Shipping Address</h2>
                     {address.length === 0 ? (
                       <Col>
                         <p>No addresses found</p>
@@ -229,10 +229,21 @@ const CheckoutPopup = ({
                       )
                     )}
                   </div>
-
+                </Col>
+                <Col lg={6}>
+                  <div className="ship_methods mb-4">
+                    <h2 className="shipping_head">Shipping Method</h2>
+                    <ShippingRates
+                      shippingRates={shippingInfo.shippingRates}
+                      divideWeight={shippingInfo.divideWeight}
+                      onRateSelected={handleRateSelected}
+                    />
+                  </div>
+                </Col>
+                <Col lg={6}>
                   {/* Billing Address */}
                   <div className="bill_addr_name">
-                    <h2>Billing Address</h2>
+                    <h2 className="shipping_head">Billing Address</h2>
 
                     {/* Checkbox for "Same as Shipping Address" */}
                     <Form.Check
@@ -293,18 +304,10 @@ const CheckoutPopup = ({
                       )
                     )}
                   </div>
-                </div>
-                <div className="col">
-                  <div className="ship_methods">
-                    <h2>Shipping Method</h2>
-                    <ShippingRates
-                      shippingRates={shippingInfo.shippingRates}
-                      divideWeight={shippingInfo.divideWeight}
-                      onRateSelected={handleRateSelected}
-                    />
-                  </div>
+                </Col>
+                <Col lg={6}>
                   <div className="cards_sect">
-                    <h2>Payment Method :</h2>
+                    <h2 className="shipping_head">Payment Method :</h2>
                     {cardsData.length === 0 ? (
                       <Col>
                         <p>No cards found</p>
@@ -321,9 +324,9 @@ const CheckoutPopup = ({
                               key={card.id}
                             >
                               <div className="addresses-grids payment-grids">
-                                <div className="d-flex align-items-center justify-content-between mb-3">
+                                {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
                                   {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                                </div>
+                                {/* </div> */}
                                 <p
                                   className="mb-2 card-no"
                                   style={{ fontSize: "13px" }}
@@ -347,8 +350,8 @@ const CheckoutPopup = ({
                       )
                     )}
                   </div>
-                </div>
-              </div>
+                </Col>
+              </Row>
               <div className="main_price text-center">
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Laser Cutting</span>
@@ -393,10 +396,11 @@ const CheckoutPopup = ({
                   </span>
                 </div>
               </div>
+              <div className="footer_btn">
               {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
                 <>
                   <Button
-                    className="w-100 mt-3"
+                    className="mt-3"
                     onClick={PaymentSubmit}
                     disabled={loading}
                   >
@@ -414,7 +418,7 @@ const CheckoutPopup = ({
               ) : (
                 <>
                   <Button
-                    className="w-100 mt-3"
+                    className="mt-3"
                     onClick={PaymentSubmit}
                     disabled={loading}
                   >
@@ -448,7 +452,8 @@ const CheckoutPopup = ({
                   </Button>
                 </>
               )}
-            </div>
+              <Button className="mt-3" variant="lt-primary ms-2"> Cancel</Button>
+              </div>
           </div>
           <PaymentDone show={modalShow} handleClose={handleCloseTrigger} />
         </Modal.Body>

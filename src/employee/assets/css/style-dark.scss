@@ -144,7 +144,7 @@ body {
                         color       : rgba($white-color, 0.75);
 
                         &::placeholder {
-                            color: rgba($white-color, 0.50);
+                            color: rgba($white-color, 0.75);
                             opacity: 1;
                         }
                     }
@@ -520,7 +520,8 @@ body {
                             }
 
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75);
+                                opacity: 1;
                             }
                         }
 
@@ -577,20 +578,36 @@ body {
 
                     .table {
                         &.tablecustom {
+                            thead {
+                               tr {
+                                    th {
+                                        border-color    : rgba($white-color, 0.1);
+                                        background-color: rgba($white-color, 0.05);
+                                        color           : rgba($white-color, 0.75);
+                                        .form-check-input
+                                        {
+                                            &:checked {
+                                                background-color: $primary-color;
+                                                border-color: $primary-color;
+                                            }
+                                        }
+                                    } 
+                               } 
+                            }
                             tbody {
                                 tr {
                                     td {
                                         border-color    : rgba($white-color, 0.1);
                                         background-color: rgba($white-color, 0.05);
-                                        color           : rgba($white-color, 0.50);
+                                        color           : rgba($white-color, 0.75);
 
                                         .workorders {
-                                            color: rgba($white-color, 0.50)
+                                            color: rgba($white-color, 0.75)
                                         }
 
                                         .btn-link {
                                             svg {
-                                                color: rgba($white-color, 0.50);
+                                                color: rgba($white-color, 0.75);
                                             }
                                         }
 
@@ -669,7 +686,7 @@ body {
 }
 .toggle-switch-container {
     p {
-        color:  $black-color;
+        color:  rgba($white-color, 0.5);
         font-weight: 500;
     }
 }

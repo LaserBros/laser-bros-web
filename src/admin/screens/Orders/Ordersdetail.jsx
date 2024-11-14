@@ -686,123 +686,7 @@ const OrdersDetail = () => {
   return (
     <div id="pdf-content">
       <React.Fragment>
-        <div
-          id="quote-pdf"
-          style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}
-        >
-          <h2>Quote #{quoteData?.quoteNumber}</h2>
-
-          {/* Customer Details */}
-          <div style={{ marginBottom: "20px" }}>
-            <strong>{quoteData?.customerName}</strong>
-            <br />
-            {quoteData?.companyName}
-            <br />
-            {quoteData?.addressLine1}
-            <br />
-            {quoteData?.addressLine2}
-            <br />
-            {quoteData?.city}, {quoteData?.state} {quoteData?.zip}
-          </div>
-
-          {/* Billing and Shipping Details */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: "20px",
-            }}
-          >
-            <div>
-              <strong>Bill To:</strong>
-              <br />
-              {quoteData?.billingName}
-              <br />
-              {quoteData?.billingCompany}
-              <br />
-              {quoteData?.billingAddressLine1}
-              <br />
-              {quoteData?.billingAddressLine2}
-              <br />
-              {quoteData?.billingCity}, {quoteData?.billingState}{" "}
-              {quoteData?.billingZip}
-            </div>
-            <div>
-              <strong>Ship To:</strong>
-              <br />
-              {quoteData?.shippingName}
-              <br />
-              {quoteData?.shippingCompany}
-              <br />
-              {quoteData?.shippingAddressLine1}
-              <br />
-              {quoteData?.shippingAddressLine2}
-              <br />
-              {quoteData?.shippingCity}, {quoteData?.shippingState}{" "}
-              {quoteData?.shippingZip}
-            </div>
-          </div>
-
-          {/* Order Information */}
-          <div style={{ marginBottom: "20px" }}>
-            <strong>Order Date:</strong> {quoteData?.orderDate || "N/A"}
-            <br />
-            <strong>PO Number:</strong> {quoteData?.poNumber || "N/A"}
-            <br />
-            <strong>Shipping Type:</strong> {quoteData?.shippingType || "N/A"}
-          </div>
-
-          {/* Table for Items */}
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
-                  Item Description
-                </th>
-                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
-                  Qty
-                </th>
-                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
-                  $ / Each
-                </th>
-                <th style={{ borderBottom: "1px solid #ccc", padding: "8px" }}>
-                  $ / Total
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {quoteData?.items?.map((item, index) => (
-                <tr key={index}>
-                  <td
-                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
-                  >
-                    <img src={item.image} height={100} width={100} />
-                  </td>
-                  <td
-                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
-                  >
-                    {item.description}
-                  </td>
-                  <td
-                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
-                  >
-                    {item.quantity}
-                  </td>
-                  <td
-                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
-                  >
-                    ${item.priceEach}
-                  </td>
-                  <td
-                    style={{ padding: "8px", borderBottom: "1px solid #eee" }}
-                  >
-                    ${item.totalPrice}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      
         {!loading ? (
           <>
             <Card>
@@ -934,7 +818,7 @@ const OrdersDetail = () => {
                         <Icon icon="solar:file-download-linear" />
                         <p className="mb-0">Download WO</p>
                       </div>
-                      <button onClick={generatePDF}>Generate Quote PDF</button>
+                 
                       <div
                         className="text-center download-wo-allfiles"
                         style={{ cursor: "pointer" }}

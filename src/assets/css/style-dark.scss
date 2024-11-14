@@ -8,9 +8,132 @@ body {
         .quotes-head {
             color       : $white-color;
         }
+
+        .proceedCheckout_modal {
+            .modal-content {
+                .modal-body {
+                    .shipping_info {
+                        .shipping_head {
+                            color: $white-color;
+                        }
+                        .addresses-grid {
+                            background:rgba($white-color, 0.07);
+                            h2 {
+                                color: rgba($white-color, 0.75);
+                            }
+                            p {
+                                color: rgba($white-color, 0.75);
+                            }
+                            .btn-bottom {
+                                .btn-address {
+                                    border: 1px solid rgba($white-color, 0.75);
+                                    color: rgba($white-color, 0.75);
+                                    &:hover {
+                                        border: 1px solid $white-color;
+                                        background: $white-color;
+                                        color: $black-color;
+                                    }
+                                }
+                            }
+                        }
+                        .bill_addr_name {
+                            .form-check {
+                                label {
+                                    font-size: 14px;
+                                    color:rgba($white-color, 0.75);
+                                }
+                            }
+                            .form-select {
+                                border: 1px solid rgba($white-color, 0.1);
+                                background-color: transparent;
+                                background-image: url("data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27><path fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/></svg>");
+                                color: rgba($white-color, 0.75);
+                                option{
+                                    color:rgba($black-color, 0.75)
+                                }
+                            }
+                            p {
+                                color:rgba($white-color, 0.75)
+                            }
+                        }
+                        .ship_methods {
+                            .rate-option {
+                                label {
+                                    color: rgba($white-color, 0.75);
+                                }
+                            }
+                        }
+                        .cards_sect {
+                            .payment-grids {
+                                background:rgba($white-color, 0.07);
+                                p.card-no {
+                                    color: rgba($white-color, 0.75);
+                                }
+                                .card-actions {
+                                    .card-info {
+                                        strong {
+                                            color: rgba($white-color, 0.75);
+                                        }
+                                        color: rgba($white-color, 0.75);
+                                    }
+                                }
+                            }
+                        }
+                        .main_price  {
+                            background: rgba($white-color, 0.04);
+                            .quotesitem {
+                                color: rgba($white-color, 0.75);
+                            }
+                            .quotessubtotal , .quotesprice {
+                                color: $white-color;
+                            }
+                        }
+                    }
+                }
+            }
+        }    
+        .QuoteBillMain_div {
+            background: rgba($white-color, 0.07);
+            border: 1px solid rgba($white-color, 0.04);
+            .QuoteBill_box {
+                h4 {
+                    color: $white-color;
+                }
+                p {
+                    color: rgba($white-color, 0.75);
+                }
+            }
+            .QuoteBillInfo_box {
+                p {
+                    color: rgba($white-color, 0.75);
+                    b {
+                        color: $white-color;
+                    }
+                }
+            }
+        }  
+
+        .AddBendDtl_Modal {
+            .modal-content {
+                .modal-body {
+                    .bend-content {
+                        .file-previews {
+                            .addNumber_input {
+                                border: 1px solid rgba($white-color, 0.1); 
+                                background-color: transparent;
+                                color: rgba($white-color, 0.75);               
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+        .noQuotesFound_text {
+            color:rgba($white-color, 0.75);
+        }          
         .text-color-shipping span{
             font-size: 14px;
-            color:rgba($white-color, .50);;
+            color:rgba($white-color, .50);
             margin-bottom: 10px;
         }
         
@@ -112,7 +235,7 @@ body {
                             color       : rgba($white-color, 0.75);
 
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75)
                             }
                         }
                         h2 {
@@ -144,7 +267,7 @@ body {
                         color       : rgba($white-color, 0.75);
 
                         &::placeholder {
-                            color: rgba($white-color, 0.50)
+                            color: rgba($white-color, 0.75)
                         }
                     }
 
@@ -195,7 +318,7 @@ body {
                                     color       : rgba($white-color, 0.75);
                                     background: $dark-color;
                                     &::placeholder {
-                                        color: rgba($white-color, 0.50)
+                                        color: rgba($white-color, 0.75)
                                     }
                                 }
 
@@ -498,7 +621,7 @@ body {
                     color     : rgba($white-color, 0.75);
 
                     &::placeholder {
-                        color: rgba($white-color, 0.50)
+                        color: rgba($white-color, 0.75)
                     }
                 }
             }
@@ -572,7 +695,7 @@ body {
                         color       : rgba($white-color, 0.75);
 
                         &::placeholder {
-                            color: rgba($white-color, 0.50)
+                            color: rgba($white-color, 0.75)
                         }
                     }
                 }
@@ -809,6 +932,47 @@ body {
                         color:$white-color;
                     }
                 }
+                .rate-option {
+                    label {
+                        color: $light-color;
+                    }
+                }
+                
+                .addresses-grid {
+                    background:rgba($white-color, 0.07);
+                    h2 {
+                        color: rgba($white-color, 0.75);
+                    }
+                    p {
+                        color: rgba($white-color, 0.75);
+                    }
+                    .btn-bottom {
+                        .btn-address {
+                            border: 1px solid rgba($white-color, 0.75);
+                            color: rgba($white-color, 0.75);
+                            &:hover {
+                                border: 1px solid $white-color;
+                                background: $white-color;
+                                color: $black-color;
+                            }
+                        }
+                    }
+                }
+                
+                .payment-grids {
+                    background:rgba($white-color, 0.07);
+                    p.card-no {
+                        color: rgba($white-color, 0.75);
+                    }
+                    .card-actions {
+                        .card-info {
+                            strong {
+                                color: rgba($white-color, 0.75);
+                            }
+                            color: rgba($white-color, 0.75);
+                        }
+                    }
+                }
                 .quotesitem {
                     color: $light-color;
                 }
@@ -827,7 +991,7 @@ body {
                             border-color: rgba($white-color, 0.2);
                             color       : rgba($white-color, 0.75);
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75)
                             }
                             }
                         }
@@ -860,7 +1024,7 @@ body {
                             border-color: rgba($white-color, 0.2);
                             color       : rgba($white-color, 0.75);
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75)
                             }
                         }
                     }
@@ -897,8 +1061,7 @@ body {
                     color:$white-color;
                 }
             }
-        }
-        
+        }       
     }
     .accountform{
         .form-group{
@@ -942,6 +1105,10 @@ body {
                     }
                 }
                 .card-body{
+                    .spinner-border {
+                        border-color: #fff;
+                        border-right-color: transparent;
+                    }
                     .tablelist{
                         li{
                             border-color: rgba($white-color, 0.1);
@@ -951,6 +1118,10 @@ body {
                     .addresses-grid{
                         background: rgba($white-color, 0.1);
                         h2{
+                            color:$white-color
+                        }
+                        .statusdefault {
+                            background: rgba($white-color, 0.1);
                             color:$white-color
                         }
                         p{
@@ -1049,4 +1220,3 @@ body {
   }
     }
 }
-
