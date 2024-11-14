@@ -2730,6 +2730,7 @@ textarea.form-control {
   -o-object-fit: contain;
      object-fit: contain;
   max-width: 100px;
+  height: 120px;
 }
 .quotes-list .quotes-content {
   flex-grow: 1;
@@ -2937,6 +2938,7 @@ textarea.form-control {
 }
 .list-quotes-main .list-quotes .content-quotes .quotes-services .form-check .form-check-input {
   margin: 0 5px 0 0;
+  border: 0.9px solid #000;
 }
 .list-quotes-main .list-quotes .content-quotes .quotes-services .form-check .form-check-input:checked {
   background-color: #4F8CCA;
@@ -2944,7 +2946,8 @@ textarea.form-control {
 }
 .list-quotes-main .list-quotes .content-quotes .quotes-services .form-check label {
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
 }
 @media only screen and (max-width: 1199.98px) {
   .list-quotes-main .list-quotes .content-quotes .quotes-services .form-check label {
@@ -3237,12 +3240,15 @@ textarea.form-control {
 .benddetailsmodal .modal-dialog .modal-content .modal-body .bend-img-main .bend-img img {
   -o-object-fit: contain;
      object-fit: contain;
+  height: 130px;
 }
 .benddetailsmodal .modal-dialog .modal-content .modal-body .bend-img-main h2 {
   text-align: center;
   font-size: 20px;
   color: #000000;
   font-weight: 700;
+  white-space: normal;
+  word-break: break-all;
 }
 .benddetailsmodal .modal-dialog .modal-content .modal-body .bend-img-main p {
   font-size: 11px;
@@ -3365,6 +3371,12 @@ textarea.form-control {
     width: calc(100% - 258px) !important;
   }
 }
+.custom_h2 {
+  font-size: 22px;
+  color: #000000;
+  font-weight: bold;
+}
+
 .toggle-switch-container .container {
   text-align: center;
 }
@@ -3383,15 +3395,7 @@ textarea.form-control {
   top: 0;
   margin-left: 5px;
 }
-.custom_tooltip .tooltip-inner {
-  max-width: 305px;
-}
-.custom_tooltip {
-  border: none;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
-  border-radius: 12px;
-  padding: 10px 0px;
-}
+
 .toggle-switch-container .checkbox {
   display: none;
 }
@@ -3423,11 +3427,33 @@ textarea.form-control {
   box-sizing: border-box;
 }
 
+.custom_tooltip .tooltip-inner {
+  max-width: 305px;
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  padding: 10px 10px;
+  background-color: white;
+  color: #000;
+}
+
+.custom_tooltip {
+  padding: 9px 0px;
+  opacity: 0.99 !important;
+}
+
+.custom_tooltip .tooltip-arrow {
+  top: 0px !important;
+}
+
+.custom_tooltip .tooltip-arrow:before {
+  border-bottom-color: white !important;
+}
+
 .toggle-switch-container .inner:before {
   content: "in";
   padding-left: 6px;
-  background-color:red ;
- 
+  background-color: red;
   color: #fff;
 }
 
@@ -3473,4 +3499,163 @@ textarea.form-control {
 
 .submenu-item:hover {
   color: #000;
+}
+
+.quote_div_main_sect {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.quote_div_main_sect .custom_bend_div {
+  margin-top: 25px;
+  margin-right: 10px;
+}
+
+.quote_div_main_sect a.btnicon {
+  margin-top: 15px;
+  width: 24px;
+  height: 24px;
+}
+
+.quote_div_main_sect .custom_bend_div p {
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+.quote_div_main_sect a.btnicon svg {
+  font-size: 14px;
+}
+
+.text-color-shipping {
+  text-align: center;
+}
+
+.text-color-shipping span {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+}
+
+.text-color-shipping p {
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.proceedCheckout_modal .modal-content .modal-body {
+  padding: 20px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .shipping_head {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #000000;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid {
+  min-height: 200px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid h2 {
+  font-size: 18px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .bill_addr_name .form-check label {
+  font-size: 14px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .bill_addr_name .form-select {
+  height: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+  font-size: 14px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods hr {
+  display: none;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .head-quotes {
+  display: none !important;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option label {
+  font-size: 14px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids p.card-no {
+  margin: 0px 0px 10px !important;
+  line-height: normal;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids .card-actions {
+  margin-bottom: 0px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 10px;
+  border-radius: 10px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesitem {
+  font-size: 14px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotessubtotal, .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesprice {
+  font-size: 14px;
+  font-weight: 600;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .footer_btn {
+  text-align: center;
+  margin-top: 15px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .footer_btn .btn {
+  min-width: 120px;
+}
+
+.QuoteBillMain_div {
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+.QuoteBillMain_div .QuoteBill_box {
+  margin-bottom: 15px;
+}
+.QuoteBillMain_div .QuoteBill_box h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 10px;
+}
+.QuoteBillMain_div .QuoteBill_box p {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 0px;
+}
+.QuoteBillMain_div .QuoteBillInfo_box {
+  margin-bottom: 15px;
+}
+.QuoteBillMain_div .QuoteBillInfo_box p {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 5px;
+}
+.QuoteBillMain_div .QuoteBillInfo_box p b {
+  color: #000000;
+  font-weight: 600;
+  display: inline-block;
+}
+.QuoteBillMain_div .QuoteBillInfo_box p b.minWidth_110 {
+  min-width: 110px;
+}
+.QuoteBillMain_div .QuoteBillInfo_box p .badge_success {
+  display: inline-block;
+  background-color: rgba(1, 148, 60, 0.3);
+  color: rgb(1, 148, 60);
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 20px;
 }/*# sourceMappingURL=style.css.map */

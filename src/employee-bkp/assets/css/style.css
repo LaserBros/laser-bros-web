@@ -974,6 +974,7 @@ body {
   color: #000000;
   font-weight: 500;
   margin-bottom: 3px;
+  max-width: 200px;
 }
 .wrapper .maincontent_div .card .card-body .list-main .list-left .list-content h2 svg {
   font-size: 26px;

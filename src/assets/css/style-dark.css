@@ -3,6 +3,97 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .quotes-head {
+  color: #ffffff;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .shipping_head {
+  color: #ffffff;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid {
+  background: rgba(255, 255, 255, 0.07);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid h2 {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid p {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid .btn-bottom .btn-address {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .addresses-grid .btn-bottom .btn-address:hover {
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .bill_addr_name .form-check label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .bill_addr_name .form-select {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27><path fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m2 5 6 6 6-6%27/></svg>");
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .bill_addr_name .form-select option {
+  color: rgba(0, 0, 0, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .bill_addr_name p {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option label {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids {
+  background: rgba(255, 255, 255, 0.07);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids p.card-no {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids .card-actions .card-info {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids .card-actions .card-info strong {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price {
+  background: rgba(255, 255, 255, 0.04);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesitem {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotessubtotal, body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesprice {
+  color: #ffffff;
+}
+body.dark .QuoteBillMain_div {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+body.dark .QuoteBillMain_div .QuoteBill_box h4 {
+  color: #ffffff;
+}
+body.dark .QuoteBillMain_div .QuoteBill_box p {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .QuoteBillMain_div .QuoteBillInfo_box p {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .QuoteBillMain_div .QuoteBillInfo_box p b {
+  color: #ffffff;
+}
+body.dark .text-color-shipping span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+}
+body.dark .text-color-shipping p {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
 body.dark .modal .modal-dialog .modal-content {
   background: #212121;
 }
@@ -467,12 +558,8 @@ body.dark .list-quotes-main .list-quotes .right-quote p {
 }
 body.dark .list-quotes-main .list-quotes .right-quote .quote-off {
   border-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.7);
-  background-color: rgba(1, 148, 60, 0.1);
+  background-color: rgba(1, 148, 60, 0.3);
   color: rgb(1, 148, 60);
-}
-body.dark h2.quotes-head {
-  color: #ffffff;
 }
 body.dark .list-quotes-main .list-quotes .content-quotes h2 {
   color: #ffffff;
@@ -493,10 +580,12 @@ body.dark .list-quotes-main .list-quotes .content-quotes .quotes-services h4 {
   color: #ffffff;
 }
 body.dark .list-quotes-main .list-quotes .content-quotes .quotes-services .form-check label {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
 }
 body.dark .list-quotes-main .list-quotes .content-quotes .quotes-services .form-check .form-check-input {
-  --bs-form-check-bg: transparent ;
+  --bs-form-check-bg: transparent;
+  border: 0.9px solid #fff;
 }
 body.dark .list-quotes-main .list-quotes .content-quotes .quotes-dropdown .selectdropdown span + div {
   background: transparent !important;
@@ -715,4 +804,23 @@ body.dark .card .card-body .custom-table.custom-table2 .rdt_TableBody .rdt_Table
 }
 body.dark .card .card-body .custom-table.custom-table2 .rdt_TableBody .rdt_TableRow .rdt_TableCell {
   color: rgba(255, 255, 255, 0.5);
+}
+body.dark .custom_tooltip .tooltip-inner {
+  max-width: 305px;
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  padding: 10px 10px;
+  background-color: #212121;
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark .custom_tooltip {
+  padding: 9px 0px;
+  opacity: 0.99 !important;
+}
+body.dark .custom_tooltip .tooltip-arrow {
+  top: 0px !important;
+}
+body.dark .custom_tooltip .tooltip-arrow:before {
+  border-bottom-color: #212121 !important;
 }/*# sourceMappingURL=style-dark.css.map */

@@ -441,6 +441,18 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:
 }
 
 .toggle-switch-container p {
-  color: #000;
+  color: #000000;
   font-weight: 500;
+}
+
+.custom_h2 {
+  font-size: 22px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.custom_h2_clr {
+  font-size: 16px;
+  color: #1F2E60;
+  font-weight: 600;
 }/*# sourceMappingURL=style-dark.css.map */
