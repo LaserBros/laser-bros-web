@@ -131,7 +131,7 @@ const AddBend = ({
         centered
         show={show2}
         onHide={handleClose2}
-        className="modal-custom benddetailsmodal"
+        className="modal-custom benddetailsmodal AddBendDtl_Modal"
       >
         <Modal.Body>
           <h2 className="mb-3 text-center custom_h2"> {title} </h2>
@@ -159,6 +159,7 @@ const AddBend = ({
               </div>
 
               <div className="file-previews">
+                <div className="addbend_flex">
                 {!editPrice ? (
                   <>
                     <p>
@@ -168,6 +169,7 @@ const AddBend = ({
                 ) : (
                   <input
                     type="number"
+                    className="addNumber_input"
                     value={newBendPrice}
                     onChange={handlePriceChange}
                     min="0"
@@ -186,17 +188,15 @@ const AddBend = ({
                 {/* Save button to save the price */}
                 {editPrice && (
                   <>
-                    <button
-                      onClick={handleSavePrice}
-                      className="save-price-btn"
-                    >
-                      Save Price
-                    </button>
-                    <button onClick={handleCancel} className="save-price-btn">
-                      Cancel
-                    </button>
+                    <Button onClick={handleSavePrice} variant={null} className="save-price-btn">
+                      <Icon icon="lucide:check" />
+                    </Button>
+                    <Button onClick={handleCancel} variant={null} className="cancel-price-btn">
+                      <Icon icon="majesticons:close" />
+                    </Button>
                   </>
                 )}
+                </div>
                 <h2 className="custom_h2_clr">
                   Total: <Amount amount={quantities * newBendPrice} />
                 </h2>

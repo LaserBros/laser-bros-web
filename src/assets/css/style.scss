@@ -4136,7 +4136,73 @@ textarea.form-control {
         }
     }
 }
-
+.AddBendDtl_Modal {
+    .modal-content {
+        .modal-body {
+            .bend-content {
+                .file-previews {
+                    .addNumber_input {
+                        height: 42px;
+                        border-radius: 5px;
+                        padding: 4px 10px;
+                        box-sizing: border-box;
+                        display: inline-block;
+                        outline: 0px;
+                        border: 1px solid rgba($black-color, 0.1);
+                        font-size: 14px;     
+                        width: auto;                   
+                    }
+                    .addbend_flex {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .save-price-btn {
+                        width: 42px;
+                        height: 42px;
+                        border: 1px solid rgb(1, 148, 60);
+                        border-radius: 6px;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: transparent;
+                        color: rgb(1, 148, 60);
+                        font-size: 24px;
+                        padding: 0px;
+                        outline: 0px;
+                        box-shadow: none;
+                        &:hover {
+                            border: 1px solid rgb(1, 148, 60);
+                            background-color:  rgb(1, 148, 60);
+                            color: $white-color;
+                        }
+                    }
+                    .cancel-price-btn {
+                        width: 42px;
+                        height: 42px;
+                        border: 1px solid rgba($danger-color, 0.6);
+                        border-radius: 6px;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: transparent;
+                        color: rgba($danger-color, 0.6);
+                        font-size: 24px;
+                        padding: 0px;
+                        outline: 0px;
+                        box-shadow: none;
+                        &:hover {
+                            border: 1px solid $danger-color;
+                            background-color: $danger-color;
+                            color: $white-color;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 .QuoteBillMain_div {
     background: $white-color;
     border: 1px solid #e6e6e6;

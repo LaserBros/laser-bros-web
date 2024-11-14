@@ -56,6 +56,7 @@ const SelectDropdowns = ({
         ...provided,
         display: "flex",
         alignItems: "center",
+        backgroundColor: state.isFocused ? "#4F8CCA" : "transparent",
         ":before": {
           content: '""',
           display: "inline-block",

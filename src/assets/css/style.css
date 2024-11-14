@@ -3612,6 +3612,64 @@ textarea.form-control {
   min-width: 120px;
 }
 
+.AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .addNumber_input {
+  height: 42px;
+  border-radius: 5px;
+  padding: 4px 10px;
+  box-sizing: border-box;
+  display: inline-block;
+  outline: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  width: auto;
+}
+.AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .addbend_flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .save-price-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgb(1, 148, 60);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: rgb(1, 148, 60);
+  font-size: 24px;
+  padding: 0px;
+  outline: 0px;
+  box-shadow: none;
+}
+.AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .save-price-btn:hover {
+  border: 1px solid rgb(1, 148, 60);
+  background-color: rgb(1, 148, 60);
+  color: #ffffff;
+}
+.AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .cancel-price-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(225, 31, 38, 0.6);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: rgba(225, 31, 38, 0.6);
+  font-size: 24px;
+  padding: 0px;
+  outline: 0px;
+  box-shadow: none;
+}
+.AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .cancel-price-btn:hover {
+  border: 1px solid #E11F26;
+  background-color: #E11F26;
+  color: #ffffff;
+}
+
 .QuoteBillMain_div {
   background: #ffffff;
   border: 1px solid #e6e6e6;

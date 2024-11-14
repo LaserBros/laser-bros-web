@@ -111,10 +111,29 @@ body {
                     }
                 }
             }
-        }     
+        }  
+
+        .AddBendDtl_Modal {
+            .modal-content {
+                .modal-body {
+                    .bend-content {
+                        .file-previews {
+                            .addNumber_input {
+                                border: 1px solid rgba($white-color, 0.1); 
+                                background-color: transparent;
+                                color: rgba($white-color, 0.75);               
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+        .noQuotesFound_text {
+            color:rgba($white-color, 0.75);
+        }          
         .text-color-shipping span{
             font-size: 14px;
-            color:rgba($white-color, .50);;
+            color:rgba($white-color, .50);
             margin-bottom: 10px;
         }
         
@@ -216,7 +235,7 @@ body {
                             color       : rgba($white-color, 0.75);
 
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75)
                             }
                         }
                         h2 {
@@ -248,7 +267,7 @@ body {
                         color       : rgba($white-color, 0.75);
 
                         &::placeholder {
-                            color: rgba($white-color, 0.50)
+                            color: rgba($white-color, 0.75)
                         }
                     }
 
@@ -299,7 +318,7 @@ body {
                                     color       : rgba($white-color, 0.75);
                                     background: $dark-color;
                                     &::placeholder {
-                                        color: rgba($white-color, 0.50)
+                                        color: rgba($white-color, 0.75)
                                     }
                                 }
 
@@ -602,7 +621,7 @@ body {
                     color     : rgba($white-color, 0.75);
 
                     &::placeholder {
-                        color: rgba($white-color, 0.50)
+                        color: rgba($white-color, 0.75)
                     }
                 }
             }
@@ -676,7 +695,7 @@ body {
                         color       : rgba($white-color, 0.75);
 
                         &::placeholder {
-                            color: rgba($white-color, 0.50)
+                            color: rgba($white-color, 0.75)
                         }
                     }
                 }
@@ -913,6 +932,47 @@ body {
                         color:$white-color;
                     }
                 }
+                .rate-option {
+                    label {
+                        color: $light-color;
+                    }
+                }
+                
+                .addresses-grid {
+                    background:rgba($white-color, 0.07);
+                    h2 {
+                        color: rgba($white-color, 0.75);
+                    }
+                    p {
+                        color: rgba($white-color, 0.75);
+                    }
+                    .btn-bottom {
+                        .btn-address {
+                            border: 1px solid rgba($white-color, 0.75);
+                            color: rgba($white-color, 0.75);
+                            &:hover {
+                                border: 1px solid $white-color;
+                                background: $white-color;
+                                color: $black-color;
+                            }
+                        }
+                    }
+                }
+                
+                .payment-grids {
+                    background:rgba($white-color, 0.07);
+                    p.card-no {
+                        color: rgba($white-color, 0.75);
+                    }
+                    .card-actions {
+                        .card-info {
+                            strong {
+                                color: rgba($white-color, 0.75);
+                            }
+                            color: rgba($white-color, 0.75);
+                        }
+                    }
+                }
                 .quotesitem {
                     color: $light-color;
                 }
@@ -931,7 +991,7 @@ body {
                             border-color: rgba($white-color, 0.2);
                             color       : rgba($white-color, 0.75);
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75)
                             }
                             }
                         }
@@ -964,7 +1024,7 @@ body {
                             border-color: rgba($white-color, 0.2);
                             color       : rgba($white-color, 0.75);
                             &::placeholder {
-                                color: rgba($white-color, 0.50)
+                                color: rgba($white-color, 0.75)
                             }
                         }
                     }
@@ -1045,6 +1105,10 @@ body {
                     }
                 }
                 .card-body{
+                    .spinner-border {
+                        border-color: #fff;
+                        border-right-color: transparent;
+                    }
                     .tablelist{
                         li{
                             border-color: rgba($white-color, 0.1);
@@ -1054,6 +1118,10 @@ body {
                     .addresses-grid{
                         background: rgba($white-color, 0.1);
                         h2{
+                            color:$white-color
+                        }
+                        .statusdefault {
+                            background: rgba($white-color, 0.1);
                             color:$white-color
                         }
                         p{

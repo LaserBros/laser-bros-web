@@ -83,6 +83,14 @@ body.dark .QuoteBillMain_div .QuoteBillInfo_box p {
 body.dark .QuoteBillMain_div .QuoteBillInfo_box p b {
   color: #ffffff;
 }
+body.dark .AddBendDtl_Modal .modal-content .modal-body .bend-content .file-previews .addNumber_input {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .noQuotesFound_text {
+  color: rgba(255, 255, 255, 0.75);
+}
 body.dark .text-color-shipping span {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.5);
@@ -160,10 +168,10 @@ body.dark .modal .modal-dialog .modal-content .modal-body .form-control {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .modal .modal-dialog .modal-content .modal-body .form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .modal .modal-dialog .modal-content .modal-body .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .modal .modal-dialog .modal-content .modal-body h2 {
   color: #ffffff;
@@ -183,10 +191,10 @@ body.dark .login-main .loginform .form-group .form-control {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .login-main .loginform .form-group .form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .login-main .loginform .form-group .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .login-main .loginform .form-group.forgotpassword a {
   color: #ffffff;
@@ -220,10 +228,10 @@ body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link.header-search .
   background: #212121;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link.header-search .form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link.header-search .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link.header-search.search-expanded.form-control {
   background: #000000;
@@ -407,10 +415,10 @@ body.dark .resources-main .resources-search-field .form-control {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-search-field .form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-search-field .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .accordion .accordion-item {
   background: rgba(255, 255, 255, 0.1);
@@ -459,11 +467,11 @@ body.dark .resources-main .resources-body .searchfaq .form-control {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-body .searchfield .form-control::-moz-placeholder, body.dark .resources-main .resources-body .searchfaq .form-control::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-body .searchfield .form-control::placeholder,
 body.dark .resources-main .resources-body .searchfaq .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .resources-main .resources-body .resources-content .map-resources {
   background: rgba(255, 255, 255, 0.1);
@@ -621,6 +629,39 @@ body.dark .quotes-sidebar .quotes-inner {
 body.dark .quotes-sidebar .quotes-inner .head-quotes h2 {
   color: #ffffff;
 }
+body.dark .quotes-sidebar .quotes-inner .rate-option label {
+  color: #bfbfbf;
+}
+body.dark .quotes-sidebar .quotes-inner .addresses-grid {
+  background: rgba(255, 255, 255, 0.07);
+}
+body.dark .quotes-sidebar .quotes-inner .addresses-grid h2 {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .quotes-sidebar .quotes-inner .addresses-grid p {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .quotes-sidebar .quotes-inner .addresses-grid .btn-bottom .btn-address {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .quotes-sidebar .quotes-inner .addresses-grid .btn-bottom .btn-address:hover {
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+}
+body.dark .quotes-sidebar .quotes-inner .payment-grids {
+  background: rgba(255, 255, 255, 0.07);
+}
+body.dark .quotes-sidebar .quotes-inner .payment-grids p.card-no {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .quotes-sidebar .quotes-inner .payment-grids .card-actions .card-info {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .quotes-sidebar .quotes-inner .payment-grids .card-actions .card-info strong {
+  color: rgba(255, 255, 255, 0.75);
+}
 body.dark .quotes-sidebar .quotes-inner .quotesitem {
   color: #bfbfbf;
 }
@@ -640,10 +681,10 @@ body.dark .quotes-sidebar .quotes-inner .accountform .react-tel-input .country-l
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .react-tel-input .country-list .search .search-box::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .react-tel-input .country-list .search .search-box::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .react-tel-input .country-list li {
   color: #ffffff;
@@ -668,10 +709,10 @@ body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control, 
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control::-moz-placeholder, body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control::placeholder, body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform small {
   color: rgba(255, 255, 255, 0.5);
@@ -742,6 +783,10 @@ body.dark .card .card-header h5 {
 body.dark .card .no-cart h3 {
   color: #ffffff;
 }
+body.dark .card .card-body .spinner-border {
+  border-color: #fff;
+  border-right-color: transparent;
+}
 body.dark .card .card-body .tablelist li {
   border-color: rgba(255, 255, 255, 0.1);
   color: #bfbfbf;
@@ -750,6 +795,10 @@ body.dark .card .card-body .addresses-grid {
   background: rgba(255, 255, 255, 0.1);
 }
 body.dark .card .card-body .addresses-grid h2 {
+  color: #ffffff;
+}
+body.dark .card .card-body .addresses-grid .statusdefault {
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
 }
 body.dark .card .card-body .addresses-grid p {
