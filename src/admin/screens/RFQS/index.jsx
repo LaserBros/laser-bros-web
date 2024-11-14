@@ -20,6 +20,7 @@ import {
 import Pagination from "../../components/Pagination";
 import CommonModal from "../../../components/Modal";
 import ConfirmationModal from "../../../components/ConfirmationModal";
+import DateFormat from "../../components/DateFormat";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -156,6 +157,7 @@ const RFQS = () => {
   const loadData = async (page, search = "", sortOrder = "") => {
     setLoading(true);
     try {
+      setQuotes([]);
       const [response] = await Promise.all([
         AdminfetchRFQ(page, search, sortOrder),
       ]);
@@ -284,6 +286,9 @@ const RFQS = () => {
                                 {row.search_quote}
                               </b>
                             </Link>
+                          </td>
+                          <td>
+                            <DateFormat dateString={row.createdAt} />
                           </td>
                           <td className="text-nowrap">
                             <span

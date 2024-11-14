@@ -16,6 +16,7 @@ import {
 } from "../../../api/api";
 import Pagination from "../../components/Pagination";
 import DateFormat from "../../components/DateFormat";
+import Amount from "../../../components/Amount";
 const Quotes = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -256,6 +257,14 @@ const Quotes = () => {
                               </span>
                             )}
                             {/* ))} */}
+                          </td>
+                          <td>
+                            <Amount
+                              amount={
+                                parseFloat(row.total_amount || 0) +
+                                parseFloat(row.total_bend_price || 0)
+                              }
+                            />
                           </td>
                           <td>{row.customer_name}</td>
                           <td className="text-end">

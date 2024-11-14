@@ -19,6 +19,7 @@ import {
 import { toast } from "react-toastify";
 import Pagination from "../../components/Pagination";
 import OrderStatus from "../../components/OrderStatus";
+import DateFormat from "../../components/DateFormat";
 const CompleteOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -252,6 +253,9 @@ const CompleteOrders = () => {
                                   {row.search_quote}
                                 </b>
                               </Link>
+                            </td>
+                            <td>
+                              <DateFormat dateString={row.createdAt} />
                             </td>
                             <td className="text-nowrap">
                               <span
