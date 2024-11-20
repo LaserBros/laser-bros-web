@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import Pagination from "../../components/Pagination";
 import OrderStatus from "../../components/OrderStatus";
 import DateFormat from "../../components/DateFormat";
+import MaterialBadge from "../../components/MaterialBadge";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -348,26 +349,9 @@ const Orders = () => {
                               <DateFormat dateString={row.createdAt} />
                             </td>
                             <td className="text-nowrap">
-                              <span
-                                className="badgestatus me-2"
-                                style={getMaterialColor(
-                                  row.material_name1 + " " + row.material_grade1
-                                )}
-                              >
-                                {row.material_code1}
-                              </span>
-                              {row.material_code2 && (
-                                <span
-                                  className="badgestatus me-2"
-                                  style={getMaterialColor(
-                                    row.material_name2 +
-                                      " " +
-                                      row.material_grade2
-                                  )}
-                                >
-                                  {row.material_code2}
-                                </span>
-                              )}
+                              <MaterialBadge
+                                materialDetails={row.material_details}
+                              />
                             </td>
                             <td className="text-nowrap">
                               <span className="statusnew">

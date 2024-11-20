@@ -117,6 +117,12 @@ const Sidebar = () => {
       icon: "carbon:task-complete",
     },
     {
+      id: "customers",
+      title: "Customers",
+      link: "/admin/customers",
+      icon: "raphael:customer",
+    },
+    {
       id: "payment-history",
       title: "Payment History",
       link: "/admin/payment-history",

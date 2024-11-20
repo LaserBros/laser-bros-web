@@ -456,6 +456,7 @@ export default function QuotesDetail() {
       "setItempartsDBdata",
       JSON.stringify(updatedLocalStorageData)
     );
+    setquoteDataCon(true);
   };
 
   const [quoteDataCon, setquoteDataCon] = useState(true);
@@ -609,11 +610,11 @@ export default function QuotesDetail() {
         console.log("quoteDataVal =-=-=- quoteList -=-", quoteDataVal);
         let total = 0;
         for (const quote of quoteDataVal) {
-          total += quote.bend_count; // Accumulate bend_count values
+          total += quote.bend_count;
         }
 
         const quoteList = localStorage.getItem("setItemelementData");
-        console.log("quoteDataVal =-=-=- quoteList", quoteList);
+        // console.log("quoteDataVal =-=-=- quoteList", quoteList);
         if (quoteList) {
           // Parse the stored JSON data
           const parsedQuoteList = JSON.parse(quoteList);
@@ -632,7 +633,7 @@ export default function QuotesDetail() {
         }
       });
     } catch (error) {
-      console.error("Error duplicating quote:", error);
+      console.log("Error duplicating quote:", error);
     }
   };
 
@@ -928,6 +929,7 @@ export default function QuotesDetail() {
                           {/* )} */}
                         </div>
                       </div>
+
                       <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
                         <p className=" text-md-end">
@@ -940,9 +942,36 @@ export default function QuotesDetail() {
                           </strong>
                           /each
                         </p>
-                        <span className="quote-off">
-                          {quote.discount}% Saved
-                        </span>
+                        <div className="d-flex align-item-center gap-2">
+                          <div className="quanityCount_btn">
+                            {quote.thickness_id ? (
+                              <>
+                                <QuantitySelector
+                                  quantity={quote.quantity}
+                                  onIncrement={() =>
+                                    handleQuantityChange(quote._id, true)
+                                  }
+                                  onDecrement={() =>
+                                    quote.quantity === 1
+                                      ? null
+                                      : handleQuantityChange(quote._id, false)
+                                  }
+                                  onQuantityChange={(newQuantity) =>
+                                    handleQuantityChangeAPI(
+                                      quote._id,
+                                      newQuantity
+                                    )
+                                  }
+                                />
+                              </>
+                            ) : (
+                              <div></div>
+                            )}
+                          </div>
+                          <span className="quote-off">
+                            {quote.discount}% Saved
+                          </span>
+                        </div>
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>
@@ -957,25 +986,9 @@ export default function QuotesDetail() {
                         onApiResponse={handleApiResponse}
                       />
                     </span>
-                    <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
-                      {quote.thickness_id ? (
-                        <QuantitySelector
-                          quantity={quote.quantity}
-                          onIncrement={() =>
-                            handleQuantityChange(quote._id, true)
-                          }
-                          onDecrement={() =>
-                            quote.quantity === 1
-                              ? null
-                              : handleQuantityChange(quote._id, false)
-                          }
-                          onQuantityChange={(newQuantity) =>
-                            handleQuantityChangeAPI(quote._id, newQuantity)
-                          }
-                        />
-                      ) : (
-                        <div></div>
-                      )}
+                    <div className="d-flex align-items-center justify-content-between  ps-0 mt-3 gap-2">
+                      <div></div>
+
                       <div className="rightbtns gap-2 d-inline-flex flex-wrap">
                         <Link
                           className="btnshare"

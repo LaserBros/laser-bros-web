@@ -37,6 +37,7 @@ import DimensionsToggle from "../../../components/DimensionsToggle";
 import FileUpload from "../../components/FileUploadAdmin";
 import AddBend from "../../components/Addbend";
 import Amount from "../../../components/Amount";
+import AddressDetails from "../../components/AddressDetails";
 const EditRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -806,64 +807,7 @@ const EditRFQS = () => {
               </Link> */}
             </div>
           </div>
-          <div className="QuoteBillMain_div">
-            <Row>
-              <Col lg={3} md={6}>
-                <div className="QuoteBill_box">
-                  <h4>Bill To:</h4>
-                  <p>
-                    Cort Van Wingerden <br />
-                    Van Welder LLC <br />
-                    909 E.Elm St. <br />
-                    Suite 102 <br />
-                    Graham, NC 27253
-                  </p>
-                </div>
-              </Col>
-              <Col lg={3} md={6}>
-                <div className="QuoteBill_box">
-                  <h4>Ship To:</h4>
-                  <p>
-                    Cort Van Wingerden <br />
-                    Van Welder LLC <br />
-                    909 E.Elm St. <br />
-                    Suite 102 <br />
-                    Graham, NC 27253
-                  </p>
-                </div>
-              </Col>
-              <Col lg={4} md={8}>
-                <div className="QuoteBillInfo_box">
-                  <p>
-                    <b className="minWidth_110">Order date:</b>09-11-2024
-                  </p>
-                  <p>
-                    <b className="minWidth_110">Shipping Type:</b>UPS Ground
-                  </p>
-                  <p>
-                    <b className="minWidth_110">PO Number:</b>123987
-                  </p>
-                  <p>
-                    <b className="minWidth_110">Status:</b>{" "}
-                    <span className="badge_success">New</span>
-                  </p>
-                  <p className="mb-0">
-                    <b className="minWidth_110">Order Amount:</b>$125.00
-                  </p>
-                </div>
-              </Col>
-              <Col lg={12}>
-                <div className="QuoteBillInfo_box mb-0">
-                  <p>
-                    <b>Phone Number:</b>919-495-2902
-                  </p>
-                  <p className="mb-0">
-                    <b>Email:</b>info@LaserBros.com
-                  </p>
-                </div>
-              </Col>
-            </Row>
-          </div>
+          <AddressDetails addressDetail={quoteList} />
           <Row>
             <Col lg={8} xl={9}>
               <FileUpload

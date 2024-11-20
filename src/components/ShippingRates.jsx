@@ -5,6 +5,7 @@ const ShippingRates = ({
   divideWeight,
   onRateSelected,
   service_code,
+  RequestQuote,
 }) => {
   const [selectedRate, setSelectedRate] = useState(service_code);
 
@@ -23,9 +24,13 @@ const ShippingRates = ({
       <div className="head-quotes d-flex align-items-center justify-content-between">
         <span className="quotessubtotal">Shipping methodss</span>
       </div>
-      <div className="quotessubtotal text-center">
-        <i>Shipping rates will be calculates during the review of your quote</i>
-      </div>
+      {RequestQuote == 1 && (
+        <div className="quotessubtotal text-center">
+          <i>
+            Shipping rates will be calculates during the review of your quote
+          </i>
+        </div>
+      )}
       <div className="rate-option">
         <label>
           <input
@@ -58,12 +63,13 @@ const ShippingRates = ({
                     )
                   }
                 />
-                &nbsp;&nbsp;{rate.carrier_friendly_name} - {rate.service_type}{" "}
-                ($
-                {parseFloat(divideWeight * rate.shipping_amount.amount).toFixed(
-                  2
-                )}
-                )
+                &nbsp;&nbsp;{rate.carrier_friendly_name} - {rate.service_type}
+                {RequestQuote == 0 &&
+                  " ($" +
+                    parseFloat(
+                      divideWeight * rate.shipping_amount.amount
+                    ).toFixed(2) +
+                    ")"}
               </label>
             </div>
           ))}

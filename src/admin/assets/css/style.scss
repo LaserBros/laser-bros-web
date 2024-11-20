@@ -112,7 +112,18 @@ html {
         color  : $primary-color !important;
     }
 }
-
+.badgestatus-more {
+    font-size      : 12px;
+    border-radius  : 30px;
+    min-width      : 62px;
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+    color          : $white-color;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+}
 /*Loader Css Start*/
 .loaderdiv {
     position       : fixed;

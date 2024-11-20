@@ -105,6 +105,8 @@ import CompleteOrders from "./admin/screens/Orders/complete";
 import Employe from "./admin/screens/Employe";
 import AddEmp from "./admin/screens/Employe/AddEmp";
 import ShippingAddress from "./admin/screens/Orders/Shipping";
+import Customers from "./admin/screens/Customers";
+import ViewCustomer from "./admin/screens/Customers/ViewCustomer";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -255,6 +257,30 @@ function App() {
                         element={
                           <AdminLayout title={"Employee"}>
                             <Employe />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/customers"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Customers"}>
+                            <Customers />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/customers/:id"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"View Customer"}>
+                            <ViewCustomer />
                           </AdminLayout>
                         }
                       />

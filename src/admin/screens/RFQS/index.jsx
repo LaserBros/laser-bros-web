@@ -21,6 +21,7 @@ import Pagination from "../../components/Pagination";
 import CommonModal from "../../../components/Modal";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import DateFormat from "../../components/DateFormat";
+import MaterialBadge from "../../components/MaterialBadge";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -101,49 +102,7 @@ const RFQS = () => {
     localStorage.setItem("UserDataAdmin", JSON.stringify(res.data.userDBdata));
     navigate("/admin/rfqs/edit-quote");
   };
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
   const [name, searchName] = useState("");
@@ -161,7 +120,6 @@ const RFQS = () => {
       const [response] = await Promise.all([
         AdminfetchRFQ(page, search, sortOrder),
       ]);
-      console.log(",response.data.data", response.data);
       setQuotes(response.data.updatedQuotes);
       settotalPage(response.data.total);
     } catch (error) {
@@ -290,26 +248,13 @@ const RFQS = () => {
                           <td>
                             <DateFormat dateString={row.createdAt} />
                           </td>
+
                           <td className="text-nowrap">
-                            <span
-                              className="badgestatus me-2"
-                              style={getMaterialColor(
-                                row.material_name1 + " " + row.material_grade1
-                              )}
-                            >
-                              {row.material_code1}
-                            </span>
-                            {row.material_code2 && (
-                              <span
-                                className="badgestatus me-2"
-                                style={getMaterialColor(
-                                  row.material_name2 + " " + row.material_grade2
-                                )}
-                              >
-                                {row.material_code2}
-                              </span>
-                            )}
+                            <MaterialBadge
+                              materialDetails={row.material_details}
+                            />
                           </td>
+
                           <td className="text-nowrap">
                             <div className="d-inline-flex align-items-center gap-3">
                               {row.status == 1 ? (

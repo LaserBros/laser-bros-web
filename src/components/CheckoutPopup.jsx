@@ -18,13 +18,19 @@ const CheckoutPopup = ({
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
-
+  const [selectedShippingAddress, setShippingSelectedAddress] = useState(null);
   const [handleCloseTrigger, sethandleCloseTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // Set default card using useEffect
+  useEffect(() => {
+    setSelectedAddress(null);
+    setShippingSelectedAddress(null);
+    setShippingSelectedAddress(null);
+    setIsSameAsShipping(false);
+  }, [show]);
+
   useEffect(() => {
     if (cardsData.length > 0) {
       const defaultCard = cardsData.find((card) => card.is_default === 1);
@@ -45,9 +51,7 @@ const CheckoutPopup = ({
       localStorage.getItem("setItempartsDBdata")
     );
 
-    let isValid = true; // Assume everything is valid initially
-
-    // Use a for...of loop to allow breaking out of the loop
+    let isValid = true;
     for (const quote of updatedQuoteData) {
       if (!quote.material_id) {
         isValid = false;
@@ -66,13 +70,22 @@ const CheckoutPopup = ({
       }
     }
 
-    // Only proceed with submission if all required fields are selected
     if (isValid) {
-      //   console.log("dassdasdsadadssadsadsds", selectedAddress, isSameAsShipping);
+      // console.log(
+      //   "dassdasdsadadssadsadsds",
+      //   selectedAddress,
+      //   selectedShippingAddress
+      // );
+      // return;
+      if (!selectedShippingAddress) {
+        toast.error("Please select a shipping address.");
+        return;
+      }
       if (!isSameAsShipping && !selectedAddress) {
         toast.error("Please select a billing address.");
         return;
       }
+
       if (rateVal === "") {
         toast.error("Please select a shipping method.");
         return;
@@ -84,8 +97,10 @@ const CheckoutPopup = ({
         }
       }
       const billingAddressId = isSameAsShipping
-        ? address.find((addr) => addr.is_default === 1)?._id // Default shipping address `_id`
+        ? selectedShippingAddress._id
         : selectedAddress?._id;
+
+      const selectedShippingAddressId = selectedShippingAddress._id;
       const elementId = localStorage.getItem("setItemelementData");
       let getId = "";
 
@@ -97,6 +112,7 @@ const CheckoutPopup = ({
           id: getId._id,
           status: 1,
           billing_id: billingAddressId,
+          address_id: selectedShippingAddressId,
         };
 
         try {
@@ -117,6 +133,7 @@ const CheckoutPopup = ({
             const data = {
               id: getId._id,
               billing_id: billingAddressId,
+              address_id: selectedShippingAddressId,
             };
             const res = await payment(data);
 
@@ -145,7 +162,17 @@ const CheckoutPopup = ({
       }
     }
   };
+
   // Handle selection change
+  const handleShippingAddressChange = (event) => {
+    const selectedId = event.target.value;
+    const selectedAddr = address.find((addr) => addr._id === selectedId);
+    setShippingSelectedAddress(selectedAddr || null);
+    if (isSameAsShipping && selectedAddress) {
+      setSelectedAddress(selectedAddr || null);
+    }
+  };
+
   const handleAddressChange = (event) => {
     const selectedId = event.target.value;
     const selectedAddr = address.find((addr) => addr._id === selectedId);
@@ -155,10 +182,12 @@ const CheckoutPopup = ({
     setIsSameAsShipping(event.target.checked);
     if (event.target.checked) {
       // Set the default shipping address as billing address
-      const defaultShipping = address.find((addr) => addr.is_default === 1);
+      const defaultShipping = address.find(
+        (addr) => addr._id === selectedShippingAddress?._id
+      );
       setSelectedAddress(defaultShipping || null);
     } else {
-      setSelectedAddress(null); // Clear selection when unchecked
+      setSelectedAddress(null);
     }
   };
   const [rateVal, setrateVal] = useState("");
@@ -192,9 +221,55 @@ const CheckoutPopup = ({
             <Row>
               <Col lg={6}>
                 {/* Shipping Address */}
-                <div className="shipping_addr_name">
+                <div className="shipping_addr_name bill_addr_name">
                   <h2 className="shipping_head">Shipping Address</h2>
-                  {address.length === 0 ? (
+                  <Form.Select
+                    aria-label="Select Address"
+                    onChange={handleShippingAddressChange}
+                    className="mb-3"
+                  >
+                    <option value="">Select Address</option>
+                    {address.map((addr) => (
+                      <option key={addr._id} value={addr._id}>
+                        {addr.full_name} - {addr.address_line_1}, {addr.city}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  {selectedShippingAddress ? (
+                    <Col xl={12} lg={12} md={12} className="mb-4">
+                      <div className="addresses-grid">
+                        <div className="d-flex align-items-center justify-content-between mb-3">
+                          <h2 className="mb-0">
+                            {selectedShippingAddress.full_name}
+                          </h2>
+                        </div>
+                        <p className="mb-2">
+                          {selectedShippingAddress.phone_number}
+                        </p>
+                        <p className="mb-3">
+                          {selectedShippingAddress.address_line_1},{" "}
+                          {selectedShippingAddress.city},{" "}
+                          {selectedShippingAddress.pincode},{" "}
+                          {selectedShippingAddress.country}
+                        </p>
+                        <div className="btn-bottom">
+                          <Link
+                            className="btn-address"
+                            to={`/my-address/edit-address/${selectedShippingAddress._id}`}
+                          >
+                            <Icon icon="mynaui:edit" />
+                          </Link>
+                        </div>
+                      </div>
+                    </Col>
+                  ) : (
+                    !isSameAsShipping && (
+                      <Col>
+                        <p>No address selected</p>
+                      </Col>
+                    )
+                  )}
+                  {/* {address.length === 0 ? (
                     <Col>
                       <p>No addresses found</p>
                     </Col>
@@ -229,7 +304,7 @@ const CheckoutPopup = ({
                         </Col>
                       ) : null
                     )
-                  )}
+                  )} */}
                 </div>
               </Col>
               <Col lg={6}>
@@ -239,6 +314,7 @@ const CheckoutPopup = ({
                     shippingRates={shippingInfo.shippingRates}
                     divideWeight={shippingInfo.divideWeight}
                     onRateSelected={handleRateSelected}
+                    RequestQuote={shippingInfo?.requestQuoteDB?.check_status}
                   />
                 </div>
               </Col>
@@ -248,13 +324,15 @@ const CheckoutPopup = ({
                   <h2 className="shipping_head">Billing Address</h2>
 
                   {/* Checkbox for "Same as Shipping Address" */}
-                  <Form.Check
-                    type="checkbox"
-                    label="Same as Shipping Address"
-                    checked={isSameAsShipping}
-                    onChange={handleCheckboxChange}
-                    className="mb-3"
-                  />
+                  {selectedShippingAddress && (
+                    <Form.Check
+                      type="checkbox"
+                      label="Same as Shipping Address"
+                      checked={isSameAsShipping}
+                      onChange={handleCheckboxChange}
+                      className="mb-3"
+                    />
+                  )}
 
                   {/* If checkbox is unchecked, show dropdown */}
                   {!isSameAsShipping && (

@@ -158,6 +158,8 @@ const QuotesSidebar = ({
       const data = {
         id: id,
       };
+      console.log("wswdwdwdwdwdwdwdwd", getId, elementId);
+      // return;
       try {
         setPayLoad(true);
         const response = await getEditQuotePay(data);
@@ -416,13 +418,6 @@ const QuotesSidebar = ({
                     "Proceed to checkout"
                   )}
                 </Button>
-                {/* <Button
-                  variant={null}
-                  className="w-100 btn-outline-primary mt-3"
-                >
-                  {" "}
-                  Forward to Purchaser
-                </Button> */}
               </>
             ) : (
               <>
@@ -517,6 +512,7 @@ const QuotesSidebar = ({
                   shippingRates={ShippingDBdataPay}
                   divideWeight={divideWeight}
                   onRateSelected={handleRateSelected}
+                  RequestQuote={buttonText}
                   // service_code={quoteDataVal.service_code}
                 />
                 <hr className="quotes-separator" />

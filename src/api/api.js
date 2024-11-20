@@ -684,6 +684,31 @@ export const getAllEmployees = async (page, search, sort) => {
   }
 };
 
+export const getAllCustomers = async (page, search, sort) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/getCustomerDetails?page=` + page
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getParticularProfile = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularProfile`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getEmployeeDetails = async () => {
   try {
     const response = await axiosAdminInstance.get(`/getEmployeeDetails`);

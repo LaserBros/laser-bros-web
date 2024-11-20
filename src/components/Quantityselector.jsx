@@ -22,20 +22,23 @@ const QuantitySelector = ({
     }
   };
   return (
-    <InputGroup>
-      <Button variant={null} onClick={onDecrement}>
-        <Icon icon="majesticons:minus-line" />
-      </Button>
-      <FormControl
-        value={inputQuantity}
-        style={{ textAlign: "center" }}
-        onChange={handleInputChange}
-        min={1}
-      />
-      <Button variant={null} onClick={onIncrement}>
-        <Icon icon="ic:round-plus" />
-      </Button>
-    </InputGroup>
+    <div className="d-flex">
+      <b className="mt-1">Qty.&nbsp;</b>
+      <InputGroup>
+        <Button variant={null} onClick={onDecrement}>
+          <Icon icon="majesticons:minus-line" />
+        </Button>
+        <FormControl
+          value={inputQuantity}
+          style={{ textAlign: "center" }}
+          onChange={handleInputChange}
+          min={1}
+        />
+        <Button variant={null} onClick={onIncrement}>
+          <Icon icon="ic:round-plus" />
+        </Button>
+      </InputGroup>
+    </div>
   );
 };
 export default QuantitySelector;

@@ -4,13 +4,16 @@ import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import {
+  fetchAddress,
   fetchRFQ,
+  getCard,
   getEditQuote,
   getEditQuotePay,
   reOrder,
 } from "../../api/api";
 import Quotes from "./Quotes";
 import { toast } from "react-toastify";
+import CheckoutPopup from "../../components/CheckoutPopup";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
@@ -39,6 +42,40 @@ export default function RFQS() {
   useEffect(() => {
     fetchData();
   }, []);
+  const handleClosePay = () => setModalShowPay(false);
+  const [modalShowPay, setModalShowPay] = useState(false);
+  const [shippingInfo, setshippingInfo] = useState(false);
+  const [cardsData, setCards] = useState([]);
+  const [address, setAddresss] = useState([]);
+  const loadCards = async () => {
+    try {
+      // setLoading(true);
+      const response = await getCard(); // Call your API function
+      setCards(response.data); // Assuming the data is in response.data
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    } finally {
+      // setLoading(false);
+    }
+  };
+  const loadData = async () => {
+    // setLoading(true);
+    try {
+      const [response] = await Promise.all([fetchAddress()]);
+      console.log(response.data.data);
+      setAddresss(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+    loadCards();
+  }, []);
+
   const handlePageChange = (page) => {
     console.log("SDsdsdsdddsdsds", page);
     setCurrentPage(page);
@@ -49,28 +86,38 @@ export default function RFQS() {
       id: id,
     };
     setLoadingPay(id);
-    const response = await getEditQuotePay(data);
-    console.log("resss-----", response.data);
-    localStorage.setItem(
-      "setItemelementDataPay",
-      JSON.stringify(response.data.requestQuoteDB)
-    );
 
-    localStorage.setItem(
-      "setItempartsDBdataPay",
-      JSON.stringify(response.data.partsDBdata)
-    );
-    console.log("response.data.shippingRates", response.data.shippingRates);
-    localStorage.setItem(
-      "ShippingDBdataPay",
-      JSON.stringify(response.data.shippingRates)
-    );
-    localStorage.setItem(
-      "divideWeight",
-      JSON.stringify(response.data.divideWeight)
-    );
-    setLoadingPay(false);
-    navigate("/quotes/pay");
+    try {
+      const response = await getEditQuotePay(data);
+      setshippingInfo(response.data);
+      setLoadingPay(false);
+      setModalShowPay(true);
+    } catch (error) {
+      setLoadingPay(false);
+      toast.error("Something wents wrong.");
+    }
+
+    // console.log("resss-----", response.data);
+    // localStorage.setItem(
+    //   "setItemelementDataPay",
+    //   JSON.stringify(response.data.requestQuoteDB)
+    // );
+
+    // localStorage.setItem(
+    //   "setItempartsDBdataPay",
+    //   JSON.stringify(response.data.partsDBdata)
+    // );
+    // console.log("response.data.shippingRates", response.data.shippingRates);
+    // localStorage.setItem(
+    //   "ShippingDBdataPay",
+    //   JSON.stringify(response.data.shippingRates)
+    // );
+    // localStorage.setItem(
+    //   "divideWeight",
+    //   JSON.stringify(response.data.divideWeight)
+    // );
+    // setLoadingPay(false);
+    // navigate("/quotes/pay");
   };
   const columns = [
     {
@@ -337,6 +384,13 @@ export default function RFQS() {
           </Card>
         </Container>
       </section>
+      <CheckoutPopup
+        show={modalShowPay}
+        handleClose={handleClosePay}
+        address={address}
+        shippingInfo={shippingInfo}
+        cardsData={cardsData}
+      />
     </React.Fragment>
   );
 }
