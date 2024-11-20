@@ -821,12 +821,22 @@ const EditRFQS = () => {
                 quoteData.map((quote, index) => (
                   <div className="list-quotes-main">
                     <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                      <div className="img-quote mx-auto mx-md-0">
-                        <Image
-                          src={quote.image_url}
-                          className="img-fluid"
-                          alt=""
-                        />
+                      <div className="flex-shrink-0">
+                        <div className="img-quote mx-auto mx-md-0">
+                          <Image
+                            src={quote.image_url}
+                            className="img-fluid"
+                            alt=""
+                          />
+                        </div>
+                        <span className="num-dim">
+                          <DimensionsToggle
+                            dimensions={quote.dimensions}
+                            id={quote._id}
+                            type={quote.dimension_type}
+                            // isEdit={true}
+                          />
+                        </span>
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
                         <h2>{quote.quote_name}</h2>
@@ -890,66 +900,76 @@ const EditRFQS = () => {
                             <p></p>
                           ) : (
                             <>
-                              {quote.thickness_id && (
-                                <>
-                                  <div className="flex-shrink-0">
-                                    <h4>Services</h4>
+                              <div
+                                className={`main_service_clr${
+                                  quote.bend_count <= 1 ? "s" : ""
+                                }`}
+                              >
+                                {quote.thickness_id && (
+                                  <>
+                                    <div className="flex-shrink-0">
+                                      {/* <h4>Services</h4> */}
 
-                                    <Form.Check
-                                      type="checkbox"
-                                      label="Bending"
-                                      name={`options-${quote._id}`}
-                                      value={`options-${quote._id}`}
-                                      id={`options-${quote._id}`}
-                                      className="d-inline-flex align-items-center me-2"
-                                      onChange={(e) =>
-                                        handleShow2(
-                                          quote.image_url,
-                                          quote.quote_name,
-                                          quote.bend_count,
-                                          quote.bendupload_url,
-                                          quote._id,
-                                          e.target.checked,
-                                          quote.per_bend_price
-                                        )
-                                      }
-                                      checked={quote.bend_count >= 1}
-                                    />
-                                  </div>
-                                </>
-                              )}
+                                      <Form.Check
+                                        type="checkbox"
+                                        label="Bending"
+                                        name={`options-${quote._id}`}
+                                        value={`options-${quote._id}`}
+                                        id={`options-${quote._id}`}
+                                        className="d-inline-flex align-items-center me-2"
+                                        onChange={(e) =>
+                                          handleShow2(
+                                            quote.image_url,
+                                            quote.quote_name,
+                                            quote.bend_count,
+                                            quote.bendupload_url,
+                                            quote._id,
+                                            e.target.checked,
+                                            quote.per_bend_price
+                                          )
+                                        }
+                                        checked={quote.bend_count >= 1}
+                                      />
+                                    </div>
+                                  </>
+                                )}
+                                {quote.bend_count != 0 && (
+                                  <>
+                                    <div className="custom_bend_div">
+                                      <p>
+                                        Number of bends : {quote.bend_count}
+                                      </p>
+                                      <p>
+                                        Price per bend :{" "}
+                                        <Amount amount={quote.per_bend_price} />
+                                      </p>
+                                      <p>
+                                        Total :{" "}
+                                        <Amount amount={quote.bend_price} />
+                                      </p>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
                               {quote.bend_count != 0 && (
-                                <>
-                                  <div className="custom_bend_div">
-                                    <p>Number of bends : {quote.bend_count}</p>
-                                    <p>
-                                      Price per bend :{" "}
-                                      <Amount amount={quote.per_bend_price} />
-                                    </p>
-                                    <p>
-                                      Total :{" "}
-                                      <Amount amount={quote.bend_price} />
-                                    </p>
-                                  </div>
-                                  <Link
-                                    className="btnicon flex-shrink-0"
-                                    onClick={() => {
-                                      console.log(
-                                        quote.per_bend_price,
-                                        "quote.per_bend_price"
-                                      );
-                                      setimage_url(quote.image_url);
-                                      setquote_name(quote.quote_name);
-                                      setbend_count(quote.bend_count);
-                                      setbendupload_url(quote.bendupload_url);
-                                      setid_quote(quote._id);
-                                      setModalShow2(true);
-                                      setebendAmount(quote.per_bend_price);
-                                    }}
-                                  >
-                                    <Icon icon="mynaui:edit" />
-                                  </Link>
-                                </>
+                                <Link
+                                  className="btnicon flex-shrink-0"
+                                  onClick={() => {
+                                    console.log(
+                                      quote.per_bend_price,
+                                      "quote.per_bend_price"
+                                    );
+                                    setimage_url(quote.image_url);
+                                    setquote_name(quote.quote_name);
+                                    setbend_count(quote.bend_count);
+                                    setbendupload_url(quote.bendupload_url);
+                                    setid_quote(quote._id);
+                                    setModalShow2(true);
+                                    setebendAmount(quote.per_bend_price);
+                                  }}
+                                >
+                                  <Icon icon="mynaui:edit" />
+                                </Link>
                               )}
                             </>
                           )}
@@ -1037,35 +1057,52 @@ const EditRFQS = () => {
                             <Icon icon="mynaui:edit" />
                           </Link>
                         </p>
-                        <span className="quote-off">
-                          {quote.discount} % Saved
-                        </span>
+                        <div className="d-flex align-items-center justify-content-end gap-2">
+                          <p className="fw-bold">
+                            Qty : {quote.quantity}{" "}
+                            <Link
+                              className="btnicons"
+                              onClick={() =>
+                                handleShowQty(quote.quantity, quote._id)
+                              }
+                            >
+                              <Icon icon="mynaui:edit" />
+                            </Link>
+                          </p>
+                          <span className="quote-off">
+                            {quote.discount} % Saved
+                          </span>
+                        </div>
                         <p className="mb-0 text-md-end">
                           Typical Lead Time 2-3 days
                         </p>
+                        <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
+                          <Link
+                            className="btnshare"
+                            onClick={() =>
+                              handleShow3(
+                                quote.notes_text,
+                                quote.notes_admin,
+                                quote._id
+                              )
+                            }
+                          >
+                            Add Note
+                          </Link>
+                          <Link
+                            className="btnicon"
+                            onClick={() =>
+                              handleShow(quote.quote_name, quote._id)
+                            }
+                          >
+                            <Icon icon="mynaui:edit" />
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                    <span className="num-dim">
-                      <DimensionsToggle
-                        dimensions={quote.dimensions}
-                        id={quote._id}
-                        type={quote.dimension_type}
-                        // isEdit={true}
-                      />
-                    </span>
-                    <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
-                      <p>
-                        Qty : {quote.quantity}{" "}
-                        <Link
-                          className="btnicons"
-                          onClick={() =>
-                            handleShowQty(quote.quantity, quote._id)
-                          }
-                        >
-                          <Icon icon="mynaui:edit" />
-                        </Link>
-                      </p>
-                      {/* <QuantitySelector
+
+                    {/* <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2"> */}
+                    {/* <QuantitySelector
                         quantity={quote.quantity}
                         onIncrement={() =>
                           handleQuantityChange(quote._id, true)
@@ -1079,29 +1116,8 @@ const EditRFQS = () => {
                           updateQuantityAPI(price, quote._id);
                         }}
                       /> */}
-                      <div className="rightbtns gap-2 d-inline-flex flex-wrap">
-                        <Link
-                          className="btnshare"
-                          onClick={() =>
-                            handleShow3(
-                              quote.notes_text,
-                              quote.notes_admin,
-                              quote._id
-                            )
-                          }
-                        >
-                          Add Note
-                        </Link>
-                        <Link
-                          className="btnicon"
-                          onClick={() =>
-                            handleShow(quote.quote_name, quote._id)
-                          }
-                        >
-                          <Icon icon="mynaui:edit" />
-                        </Link>
-                      </div>
-                    </div>
+
+                    {/* </div> */}
                   </div>
                 ))}
             </Col>

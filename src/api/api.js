@@ -709,6 +709,19 @@ export const getParticularProfile = async (data) => {
   }
 };
 
+export const getParticularUserQuotes = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularUserQuotes`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getEmployeeDetails = async () => {
   try {
     const response = await axiosAdminInstance.get(`/getEmployeeDetails`);

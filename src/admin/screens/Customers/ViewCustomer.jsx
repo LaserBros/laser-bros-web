@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container } from "react-bootstrap";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { Row, Col, Container, Tab, Nav, Tabs } from "react-bootstrap";
+// import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import { Link, useParams } from "react-router-dom";
-import { getAllCustomers, getParticularProfile } from "../../../api/api";
+import {
+  getAllCustomers,
+  getParticularProfile,
+  getParticularUserQuotes,
+} from "../../../api/api";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 const ViewCustomer = () => {
   const { id } = useParams();
@@ -38,8 +42,28 @@ const ViewCustomer = () => {
     }
   };
 
+  const getParticularUser = async () => {
+    try {
+      const data = {
+        id: id,
+        type: "quotes",
+      };
+      setLoading(true);
+      setCustomer([]);
+      const response = await getParticularUserQuotes(data);
+      //   setCustomer(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     loadCustomer(currentPage);
+    console.log("SFssfsffsfsfsfwfs      ");
+    getParticularUser();
   }, []);
 
   return (
@@ -67,20 +91,22 @@ const ViewCustomer = () => {
               </Col>
             </Row>
           </div>
+          <Tabs
+            defaultActiveKey="profile"
+            id="uncontrolled-tab-example"
+            className="viewCustomerTabs_div"
+          >
+            <Tab eventKey="home" title="Quotes">
+              Quotes
+            </Tab>
+            <Tab eventKey="profile" title="RFQ's">
+              RFQ's
+            </Tab>
+            <Tab eventKey="orders" title="Orders">
+              Orders
+            </Tab>
+          </Tabs>
         </Container>
-        <Tabs onSelect={(index) => console.log("setTabIndex", index)}>
-          <TabList>
-            <Tab>Title 1</Tab>
-            <Tab>Title 2</Tab>
-          </TabList>
-
-          <TabPanel>
-            <h2>Any content 1</h2>
-          </TabPanel>
-          <TabPanel>
-            <h2>Any content 2</h2>
-          </TabPanel>
-        </Tabs>
       </section>
     </React.Fragment>
   );

@@ -977,51 +977,57 @@ export default function QuotesDetail() {
                         </p>
                       </div>
                     </div>
-                    <span className="num-dim">
-                      <DimensionsToggle
-                        dimensions={quote.dimensions}
-                        id={quote._id}
-                        type={quote.dimension_type}
-                        isEdit={true}
-                        onApiResponse={handleApiResponse}
-                      />
-                    </span>
-                    <div className="d-flex align-items-center justify-content-between  ps-0 mt-3 gap-2">
-                      <div></div>
+                    <Row>
+                      <Col md={6}>
+                        <span className="num-dim">
+                          <DimensionsToggle
+                            dimensions={quote.dimensions}
+                            id={quote._id}
+                            type={quote.dimension_type}
+                            isEdit={true}
+                            onApiResponse={handleApiResponse}
+                          />
+                        </span>
+                      </Col>
+                      <Col md={6} className="align-self-end">
+                        <div className="d-flex align-items-center justify-content-between  ps-0 mt-3 gap-2 mb-2">
+                          <div></div>
 
-                      <div className="rightbtns gap-2 d-inline-flex flex-wrap">
-                        <Link
-                          className="btnshare"
-                          onClick={() =>
-                            handleShow3(quote.notes_text, quote._id)
-                          }
-                        >
-                          Add Note
-                        </Link>
-                        <Link
-                          className="btnicon"
-                          onClick={() =>
-                            handleShow(quote.quote_name, quote._id)
-                          }
-                        >
-                          <Icon icon="mynaui:edit" />
-                        </Link>
-                        <Link
-                          className="btnicon"
-                          onClick={() => {
-                            handleDuplicateQuote(quote, quote._id);
-                          }}
-                        >
-                          <Icon icon="heroicons:document-duplicate" />
-                        </Link>
-                        <Link
-                          className="btnicon"
-                          onClick={() => handleDeleteQuote(quote._id)}
-                        >
-                          <Icon icon="uiw:delete" />
-                        </Link>
-                      </div>
-                    </div>
+                          <div className="rightbtns gap-2 d-inline-flex flex-wrap">
+                            <Link
+                              className="btnshare"
+                              onClick={() =>
+                                handleShow3(quote.notes_text, quote._id)
+                              }
+                            >
+                              Add Note
+                            </Link>
+                            <Link
+                              className="btnicon"
+                              onClick={() =>
+                                handleShow(quote.quote_name, quote._id)
+                              }
+                            >
+                              <Icon icon="mynaui:edit" />
+                            </Link>
+                            <Link
+                              className="btnicon"
+                              onClick={() => {
+                                handleDuplicateQuote(quote, quote._id);
+                              }}
+                            >
+                              <Icon icon="heroicons:document-duplicate" />
+                            </Link>
+                            <Link
+                              className="btnicon"
+                              onClick={() => handleDeleteQuote(quote._id)}
+                            >
+                              <Icon icon="uiw:delete" />
+                            </Link>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
                   </div>
                 ))}
             </Col>

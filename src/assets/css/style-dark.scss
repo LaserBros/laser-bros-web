@@ -8,6 +8,13 @@ body {
         .quotes-head {
             color       : $white-color;
         }
+        .quote_div_main_sect .main_service_clr {
+            display: flex;
+            align-items: flex-start;
+            background-color: $black-color;
+            padding: 8px;
+        }
+        
         .shipping_info b,.shipping_info i {
             color: $white-color;
         }
