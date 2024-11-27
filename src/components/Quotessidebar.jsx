@@ -31,6 +31,7 @@ const QuotesSidebar = ({
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
   const [rateVal, setrateVal] = useState("");
+  const [loadingPayId, setLoadingPayID] = useState();
   useEffect(() => {
     setquoteData(quoteData);
   }, [quoteData]);
@@ -164,6 +165,7 @@ const QuotesSidebar = ({
         setPayLoad(true);
         const response = await getEditQuotePay(data);
         setshippingInfo(response.data);
+        setLoadingPayID(getId);
         setModalShowPay(true);
         setPayLoad(false);
         // setModalShowPay(false);
@@ -735,6 +737,7 @@ const QuotesSidebar = ({
       )}
       <PaymentDone show={modalShow} handleClose={handleClose} />
       <CheckoutPopup
+        loadingPayId={loadingPayId}
         show={modalShowPay}
         handleClose={handleClosePay}
         address={address}

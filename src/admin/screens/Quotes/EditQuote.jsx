@@ -9,6 +9,7 @@ import {
   Form,
   Row,
   Col,
+  Button,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,7 +39,79 @@ import FileUpload from "../../components/FileUploadAdmin";
 import AddBend from "../../components/Addbend";
 import Amount from "../../../components/Amount";
 import AddressDetails from "../../components/AddressDetails";
+// import { useDrag, useDrop } from "react-dnd";
+import DropZone from "../../components/DropZone";
+import DraggableItem from "../../components/DraggableListItem";
+
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import MultiSelectModal from "../../components/PostOps";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 const EditRFQS = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const options = [
+    "F0",
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10",
+    "MB1",
+    "MB2",
+    "MB3",
+    "MB4",
+    "MB5",
+    "MB6",
+    "MB7",
+    "MB8",
+    "MB9",
+    "MB10",
+  ];
+  const [idSelect, setidSelect] = useState("");
+  const [quotePost, setquotePost] = useState("");
+  const handleOpenModal = (id, post_ops) => {
+    setidSelect(id);
+    setquotePost(post_ops);
+    setShowModal(true);
+  };
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleSaveSelection = (selected) => {
+    setSelectedItems(selected);
+    let existingData = localStorage.getItem("setItempartsDBdataAdmin");
+
+    let parsedData = existingData ? JSON.parse(existingData) : [];
+    // console.log(parsedData, "parsedData");
+    let existingQuote = parsedData.find((item) => item._id === idSelect);
+    // console.log(existingQuote, "existingQuote", id);
+    if (existingQuote) {
+      // If the quote already exists, append the new postOps data
+      if (!existingQuote.post_ops) {
+        existingQuote.post_ops = ""; // Initialize postOps array if not present
+      }
+
+      // Add the selected data to the postOps array (avoid duplicates)
+      if (!existingQuote.post_ops.includes(selected)) {
+        existingQuote.post_ops = selected;
+      }
+    }
+    localStorage.setItem("setItempartsDBdataAdmin", JSON.stringify(parsedData));
+    setQuoteData(parsedData);
+    setquoteDataCon(true);
+  };
+
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
   var currentDate = new Date();
@@ -88,13 +161,6 @@ const EditRFQS = () => {
   }, []);
   const [addLoading, setaddLoading] = useState(false);
   const handleUpload = async (file, id, quantities, pdf_url, new_price) => {
-    console.log(
-      file,
-      id,
-      quantities,
-      pdf_url,
-      "pdf_urlpdf_urlpdf_urlpdf_url ---"
-    );
     if (file.length == 0) {
       alert("Please upload a PDF file before saving.");
       return;
@@ -453,7 +519,43 @@ const EditRFQS = () => {
     item3: 1,
     item4: 1,
   });
+  const onDeleteAction = (id) => {
+    const storedData =
+      JSON.parse(localStorage.getItem("setItempartsDBdataAdmin")) || [];
 
+    // Filter out the item with the matching _id
+    const updatedData = storedData.filter((item) => item._id !== id);
+
+    // Save the updated array back to localStorage
+    localStorage.setItem(
+      "setItempartsDBdataAdmin",
+      JSON.stringify(updatedData)
+    );
+    setQuoteData(updatedData);
+
+    let total = 0; // Change 'const' to 'let' to allow reassignment
+    for (const quote of updatedData) {
+      total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+    }
+    console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
+
+    const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+    if (quoteList) {
+      // Parse the stored JSON data
+      const parsedQuoteList = JSON.parse(quoteList);
+
+      // Update the total_bend_price in the object
+      parsedQuoteList.total_bend_price = total;
+      localStorage.setItem(
+        "setItemelementDataAdmin",
+        JSON.stringify(parsedQuoteList)
+      );
+      setQuoteList(parsedQuoteList);
+    }
+
+    setquoteDataCon(true);
+  };
   useEffect(() => {
     const handleStorageChange = () => {
       setQuoteData(localStorage.getItem("setItempartsDBdataAdmin"));
@@ -577,7 +679,27 @@ const EditRFQS = () => {
       console.error("Error updating quote:", response);
     }
   };
+  const handleDownload = async (url, name) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
 
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", name);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl); // Revoke the blob URL after the download
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   // const handleQuantityChange = async (Id, increment = true) => {
   //   let data = "";
   //   let type = "";
@@ -839,7 +961,15 @@ const EditRFQS = () => {
                         </span>
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                        <h2>{quote.quote_name}</h2>
+                        <h2>
+                          {quote.quote_name}
+                          <Icon
+                            icon="material-symbols-light:download-sharp"
+                            onClick={() =>
+                              handleDownload(quote?.dxf_url, quote.quote_name)
+                            }
+                          />
+                        </h2>
                         <p className="num-dim-main">
                           <span className="num-dim">
                             {quote.thickness_id
@@ -894,6 +1024,26 @@ const EditRFQS = () => {
                             placeholder={"Select a Finish"}
                             onOptionSelect={handleOptionSelect}
                           />
+                          <Button>Post Ops</Button>
+                          {quote?.post_ops?.length > 0 ? (
+                            <>
+                              <DraggableItem
+                                id={quote._id}
+                                dragoption={quote.post_ops}
+                              />
+                            </>
+                          ) : (
+                            <p>No items selected.</p>
+                          )}
+
+                          <Button
+                            variant="primary"
+                            onClick={() =>
+                              handleOpenModal(quote._id, quote.post_ops)
+                            }
+                          >
+                            +
+                          </Button>
                         </div>
                         <div className="quotes-services quote_div_main_sect mt-3">
                           {quote.binding_option == "no" ? (
@@ -902,7 +1052,7 @@ const EditRFQS = () => {
                             <>
                               <div
                                 className={`main_service_clr${
-                                  quote.bend_count <= 1 ? "s" : ""
+                                  quote.bend_count < 1 ? "s" : ""
                                 }`}
                               >
                                 {quote.thickness_id && (
@@ -990,41 +1140,6 @@ const EditRFQS = () => {
                                 </a>
                               ))}
                           </p>
-                          {/* {quote.binding_option == "no" ? (
-                            <p></p>
-                          ) : (
-                            <>
-                              {quote.thickness_id && (
-                                <>
-                                  <h4>Services</h4>
-
-                                  <Form.Check
-                                    type="checkbox"
-                                    label="Bending"
-                                    name={`options-${quote._id}`}
-                                    value={`options-${quote._id}`}
-                                    id={`options-${quote._id}`}
-                                    className="d-inline-flex align-items-center me-2"
-                                    onChange={(e) => {
-                                      if (e.target.checked) {
-                                        // Call your function to handle when the checkbox is checked
-                                        handleShow2(
-                                          quote.image_url,
-                                          quote.quote_name,
-                                          quote.bend_count,
-                                          quote.bendupload_url,
-                                          quote._id
-                                        );
-                                      }
-                                    }}
-                                    checked={quote.bend_count >= 1}
-                                  />
-                                </>
-                              )}
-                            </>
-                          )} */}
-                          {/* </> */}
-                          {/* )} */}
                         </div>
                       </div>
                       <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
@@ -1096,6 +1211,15 @@ const EditRFQS = () => {
                             }
                           >
                             <Icon icon="mynaui:edit" />
+                          </Link>
+                          <Link
+                            className="btnicon"
+                            // onClick={() => handleDeleteQuote(quote._id)}
+                            onClick={() => {
+                              onDeleteAction(quote._id);
+                            }}
+                          >
+                            <Icon icon="uiw:delete" />
                           </Link>
                         </div>
                       </div>
@@ -1192,6 +1316,14 @@ const EditRFQS = () => {
         onUpload={handleUpload}
         loading={addLoading}
         amount={bend_amount}
+      />
+      <MultiSelectModal
+        selectedArea={quotePost}
+        show={showModal}
+        id={idSelect}
+        onClose={handleCloseModal}
+        options={options}
+        onSave={handleSaveSelection}
       />
     </React.Fragment>
   );

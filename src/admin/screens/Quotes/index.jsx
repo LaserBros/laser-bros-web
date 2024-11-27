@@ -17,6 +17,7 @@ import {
 import Pagination from "../../components/Pagination";
 import DateFormat from "../../components/DateFormat";
 import Amount from "../../../components/Amount";
+import QuoteRow from "../../components/Quotes";
 const Quotes = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -219,66 +220,12 @@ const Quotes = () => {
                       dateObj.getFullYear()
                     ).slice(-2);
                     return (
-                      <React.Fragment>
-                        <tr>
-                          <td className="text-nowrap">
-                            <Link
-                              to=""
-                              onClick={() => EditQuote(row._id)}
-                              className="workorders"
-                            >
-                              <b>
-                                WO# LB-
-                                {row.search_quote}
-                              </b>
-                            </Link>
-                          </td>
-                          <td>
-                            <DateFormat dateString={row.createdAt} />
-                          </td>
-                          <td className="text-nowrap">
-                            {/* {row.material.map((materials, index) => ( */}
-                            <span
-                              className="badgestatus me-2"
-                              style={getMaterialColor(
-                                row.material_name1 + " " + row.material_grade1
-                              )}
-                            >
-                              {row.material_code1}
-                            </span>
-                            {row.material_code2 && (
-                              <span
-                                className="badgestatus me-2"
-                                style={getMaterialColor(
-                                  row.material_name2 + " " + row.material_grade2
-                                )}
-                              >
-                                {row.material_code2}
-                              </span>
-                            )}
-                            {/* ))} */}
-                          </td>
-                          <td>
-                            <Amount
-                              amount={
-                                parseFloat(row.total_amount || 0) +
-                                parseFloat(row.total_bend_price || 0)
-                              }
-                            />
-                          </td>
-                          <td>{row.customer_name}</td>
-                          <td className="text-end">
-                            <div className="d-inline-flex align-items-center gap-3">
-                              <Link
-                                className="btnedit"
-                                onClick={() => EditQuote(row._id)}
-                              >
-                                <Icon icon="teenyicons:eye-outline" />
-                              </Link>
-                            </div>
-                          </td>
-                        </tr>
-                      </React.Fragment>
+                      <QuoteRow
+                        key={row._id}
+                        row={row}
+                        EditQuote={EditQuote}
+                        getMaterialColor={getMaterialColor}
+                      />
                     );
                   })
                 )}

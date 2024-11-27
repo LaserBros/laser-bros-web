@@ -11,9 +11,11 @@ import { editSubQuote, fetchAddress, getCard, payment } from "../../api/api";
 import axiosAdminInstance from "../axios/axiosadminInstanse";
 import { toast } from "react-toastify";
 import Amount from "../../components/Amount";
+import CheckoutPopup from "./checkoutPopup";
 const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
+  const [checkOutmodal, setcheckOutmodal] = useState(false);
   useEffect(() => {
     setquoteData(quoteData);
   }, [quoteData]);
@@ -77,6 +79,12 @@ const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
       return () => clearTimeout(timer);
     }
   }, [modalShow]);
+  const EditCheckout = () => {
+    setcheckOutmodal(true);
+  };
+  const handleClosePop = () => {
+    setcheckOutmodal(false);
+  };
   return (
     <>
       {showDiv1 && (
@@ -146,6 +154,22 @@ const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
                     ) : (
                       " Update Quote"
                     )}
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    variant={null}
+                    className="w-100 me-2 btn-outline-primary mt-3"
+                    onClick={() => EditCheckout()}
+                    disabled={loading}
+                  >
+                    {/* {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span> */}
+                    Edit Checkout
                   </Button>
                 </div>
               </>
@@ -327,6 +351,11 @@ const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
         </>
       )}
       {/* <PaymentDone show={modalShow} handleClose={handleClose} /> */}
+      <CheckoutPopup
+        show={checkOutmodal}
+        handleClose={handleClosePop}
+        addressDetail={quoteData}
+      />
     </>
   );
 };

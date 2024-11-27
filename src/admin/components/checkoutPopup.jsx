@@ -1,0 +1,358 @@
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import paymentdone from "../../assets/img/paymentdone.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react";
+import ShippingRates from "../../components/ShippingRates";
+import Amount from "../../components/Amount";
+import { getEditQuotePay, payment, shippingCost } from "../../api/api";
+import axiosInstance from "../../axios/axiosInstance";
+import { toast } from "react-toastify";
+import PaymentDone from "./Paymentdone";
+const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isSameAsShipping, setIsSameAsShipping] = useState(false);
+  const [selectedShippingAddress, setShippingSelectedAddress] = useState(null);
+  const [handleCloseTrigger, sethandleCloseTrigger] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [shippingMethods, setShippingMethods] = useState([
+    {
+      id: "local_pickup",
+      name: "Local Pickup",
+      price: 0.0,
+      isChecked: false,
+      isEditing: false,
+    },
+    {
+      id: "ups_ground",
+      name: "UPS - UPS® Ground",
+      price: 59.64,
+      isChecked: false,
+      isEditing: false,
+    },
+    {
+      id: "ups_next_day_air",
+      name: "UPS - UPS Next Day Air®",
+      price: 297.51,
+      isChecked: false,
+      isEditing: false,
+    },
+    {
+      id: "custom_rates",
+      name: "Custom Rates",
+      price: 17.51,
+      isChecked: false,
+      isEditing: false,
+    },
+  ]);
+  const [selectedOptions, setSelectedOptions] = useState([]); // State to hold selected options
+  const [oldPrice, setOldPrice] = useState("");
+  // Handle checkbox change
+  const handleOptionChange = (option) => {
+    if (selectedOptions.includes(option)) {
+      // If option is already selected, remove it
+      setSelectedOptions(selectedOptions.filter((opt) => opt !== option));
+    } else {
+      // If option is not selected, add it
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+
+  // Handle submit to get the selected values
+  const handleSubmit = () => {
+    alert(`Selected Payment Options: ${selectedOptions.join(", ")}`);
+    console.log("Selected Payment Options:", selectedOptions);
+  };
+  const handleCancelClick = (id, price) => {
+    setShippingMethods((prev) =>
+      prev.map((method) =>
+        method.id === id
+          ? { ...method, price: oldPrice, isEditing: false }
+          : method
+      )
+    );
+  };
+  // Function to handle checkbox selection (only one at a time)
+  const handleCheckboxChange = (id) => {
+    setShippingMethods((prev) =>
+      prev.map((method) => {
+        const isSelected = method.id === id;
+        if (isSelected) {
+          setrateVal(method.price);
+        }
+        return {
+          ...method,
+          isChecked: isSelected, // Only the selected checkbox remains checked
+        };
+      })
+    );
+  };
+
+  // Function to handle edit/save button click
+  const handleEditSaveClick = (id, editedPrice) => {
+    setOldPrice(editedPrice);
+    setShippingMethods((prev) =>
+      prev.map((method) => {
+        if (method.id === id) {
+          if (method.isEditing) {
+            if (method.isChecked) {
+              setrateVal(editedPrice);
+            }
+            return {
+              ...method,
+              price: parseFloat(editedPrice),
+              isEditing: !method.isEditing, // Toggle editing mode
+            };
+          } else {
+            // If not editing, just toggle the editing mode
+            return { ...method, isEditing: !method.isEditing };
+          }
+        }
+        return method;
+      })
+    );
+  };
+
+  // Function to handle price change
+  const handlePriceChange = (id, newPrice) => {
+    setShippingMethods((prev) =>
+      prev.map((method) =>
+        method.id === id
+          ? { ...method, price: parseFloat(newPrice) || 0 }
+          : method
+      )
+    );
+  };
+  useEffect(() => {
+    setSelectedAddress(null);
+    setShippingSelectedAddress(null);
+    setShippingSelectedAddress(null);
+    setIsSameAsShipping(false);
+    console.log("addressDetail", addressDetail);
+  }, [show]);
+
+  const [modalShow, setModalShow] = useState(false);
+  useEffect(() => {
+    if (handleCloseTrigger) {
+      const timer = setTimeout(() => {
+        navigate("/orders");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [handleCloseTrigger]);
+
+  const [rateVal, setrateVal] = useState("");
+
+  return (
+    <React.Fragment>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        centered
+        className="proceedCheckout_modal"
+        size="lg"
+      >
+        <Modal.Body className="w-100">
+          <div className="shipping_info">
+            <Row>
+              <Col lg={6}>
+                {/* Shipping Address */}
+                <div className="shipping_addr_name bill_addr_name">
+                  <h2 className="shipping_head">Shipping Address</h2>
+                  <Col xl={12} lg={12} md={12} className="mb-4">
+                    <div className="addresses-grid">
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <h2 className="mb-0">
+                          {addressDetail?.address_details?.full_name}
+                        </h2>
+                      </div>
+                      <p className="mb-2">
+                        {addressDetail?.address_details?.phone_number}
+                      </p>
+                      <p className="mb-3">
+                        {addressDetail?.address_details?.address_line_1},{" "}
+                        {addressDetail?.address_details?.city},{" "}
+                        {addressDetail?.address_details?.pincode},{" "}
+                        {addressDetail?.address_details?.country}
+                      </p>
+                      {/* <div className="btn-bottom"> */}
+                      {/* <Link
+                            className="btn-address"
+                            to={`/my-address/edit-address/${addressDetail?.billing_details?._id}`}
+                          >
+                            <Icon icon="mynaui:edit" />
+                          </Link> */}
+                      {/* </div> */}
+                    </div>
+                  </Col>
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className="ship_methods mb-4">
+                  <h2 className="shipping_head">Shipping Method</h2>
+                  <div className="mt-3">
+                    <hr />
+                    <div className="head-quotes d-flex align-items-center justify-content-between">
+                      <span className="quotessubtotal">Shipping Methods</span>
+                    </div>
+                    {shippingMethods.map((method) => (
+                      <div className="rate-option" key={method.id}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={method.isChecked}
+                            onChange={() => handleCheckboxChange(method.id)}
+                          />
+                          &nbsp;&nbsp;
+                          {method.name} (
+                          {method.isEditing ? (
+                            <input
+                              type="number"
+                              value={method.price}
+                              onChange={(e) =>
+                                handlePriceChange(method.id, e.target.value)
+                              }
+                            />
+                          ) : (
+                            `$${method.price.toFixed(2)}`
+                          )}
+                          )
+                        </label>
+                        {method.isEditing && (
+                          <div>
+                            <button
+                              onClick={() =>
+                                handleEditSaveClick(method.id, method.price)
+                              }
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleCancelClick(method.id, method.price)
+                              }
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                        {!method.isEditing && (
+                          <button
+                            onClick={() =>
+                              handleEditSaveClick(method.id, method.price)
+                            }
+                          >
+                            Edit Price
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Col>
+              <Col lg={6}>
+                {/* Billing Address */}
+                <div className="bill_addr_name">
+                  <h2 className="shipping_head">Billing Address</h2>
+                  <div className="addresses-grid">
+                    <div className="d-flex align-items-center justify-content-between mb-3">
+                      <h2 className="mb-0">
+                        {addressDetail?.billing_details?.full_name}
+                      </h2>
+                    </div>
+                    <p className="mb-2">
+                      {addressDetail?.billing_details?.phone_number}
+                    </p>
+                    <p className="mb-3">
+                      {addressDetail?.billing_details?.address_line_1},{" "}
+                      {addressDetail?.billing_details?.city},{" "}
+                      {addressDetail?.billing_details?.pincode},{" "}
+                      {addressDetail?.billing_details?.country}
+                    </p>
+                    {/* <div className="btn-bottom"> */}
+                    {/* <Link
+                            className="btn-address"
+                            to={`/my-address/edit-address/${addressDetail?.billing_details?._id}`}
+                          >
+                            <Icon icon="mynaui:edit" />
+                          </Link> */}
+                    {/* </div> */}
+                  </div>
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className="cards_sect">
+                  <h2 className="shipping_head">Payment Method :</h2>
+                  <Form.Check
+                    type="checkbox"
+                    id="payWithCard"
+                    label="Pay with Card"
+                    checked={selectedOptions.includes("Pay with Card")}
+                    onChange={() => handleOptionChange("Pay with Card")}
+                  />
+                  <Form.Check
+                    type="checkbox"
+                    id="netTerm"
+                    label="NET Term"
+                    checked={selectedOptions.includes("NET Term")}
+                    onChange={() => handleOptionChange("NET Term")}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <div className="main_price text-center mt-3">
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <span className="quotesitem">Laser Cutting</span>
+                <span className="quotesitem quotesright">
+                  <Amount amount={addressDetail?.total_amount} />{" "}
+                </span>
+              </div>
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <span className="quotesitem">Services</span>
+                <span className="quotesitem quotesright">
+                  <Amount amount={addressDetail?.total_bend_price} />{" "}
+                </span>
+              </div>
+              {rateVal != "" ? (
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">Shipping</span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={rateVal || 0} />{" "}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="d-flex align-items-center justify-content-between">
+                <span className="quotessubtotal">Subtotal</span>
+                <span className="quotesprice">
+                  <Amount
+                    amount={
+                      parseFloat(addressDetail?.total_amount || 0) +
+                      parseFloat(addressDetail?.total_bend_price || 0) +
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                    }
+                  />
+                </span>
+              </div>
+            </div>
+            <div className="footer_btn">
+              <Button
+                className="mt-3"
+                variant="lt-primary ms-2"
+                onClick={handleClose}
+              >
+                {" "}
+                Cancel
+              </Button>
+            </div>
+          </div>
+          <PaymentDone show={modalShow} handleClose={handleCloseTrigger} />
+        </Modal.Body>
+      </Modal>
+    </React.Fragment>
+  );
+};
+export default CheckoutPopup;

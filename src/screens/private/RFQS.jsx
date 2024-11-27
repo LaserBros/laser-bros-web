@@ -14,6 +14,7 @@ import {
 import Quotes from "./Quotes";
 import { toast } from "react-toastify";
 import CheckoutPopup from "../../components/CheckoutPopup";
+import CheckOutPay from "../../components/checkOutPay";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
@@ -24,6 +25,7 @@ export default function RFQS() {
   const [loadingRowId, setLoadingRowId] = useState(null);
   const [loadingResend, setLoadingResend] = useState(false);
   const [loadingPay, setLoadingPay] = useState();
+  const [loadingPayId, setLoadingPayID] = useState();
   const fetchData = async (page) => {
     try {
       const data = {
@@ -86,6 +88,7 @@ export default function RFQS() {
       id: id,
     };
     setLoadingPay(id);
+    setLoadingPayID(id);
 
     try {
       const response = await getEditQuotePay(data);
@@ -384,8 +387,9 @@ export default function RFQS() {
           </Card>
         </Container>
       </section>
-      <CheckoutPopup
+      <CheckOutPay
         show={modalShowPay}
+        loadingPayId={loadingPayId}
         handleClose={handleClosePay}
         address={address}
         shippingInfo={shippingInfo}

@@ -9,9 +9,9 @@ import { getEditQuotePay, payment, shippingCost } from "../api/api";
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
-const CheckoutPopup = ({
-  loadingPayId,
+const CheckOutPay = ({
   show,
+  loadingPayId,
   handleClose,
   address,
   shippingInfo,
@@ -48,28 +48,7 @@ const CheckoutPopup = ({
     }
   }, [handleCloseTrigger]);
   const PaymentSubmit = async () => {
-    const updatedQuoteData = JSON.parse(
-      localStorage.getItem("setItempartsDBdata")
-    );
-    console.log("updatedQuoteData =-=-=-=-", updatedQuoteData);
     let isValid = true;
-    for (const quote of updatedQuoteData) {
-      if (!quote.material_id) {
-        isValid = false;
-        toast.error(`Please select Material.`);
-        break; // Stop the loop if validation fails
-      }
-      if (!quote.thickness_id) {
-        isValid = false;
-        toast.error(`Please select Thickness.`);
-        break; // Stop the loop if validation fails
-      }
-      if (!quote.finishing_id) {
-        isValid = false;
-        toast.error(`Please select Finish.`);
-        break; // Stop the loop if validation fails
-      }
-    }
 
     if (isValid) {
       // console.log(
@@ -102,13 +81,7 @@ const CheckoutPopup = ({
         : selectedAddress?._id;
 
       const selectedShippingAddressId = selectedShippingAddress._id;
-      const elementId = localStorage.getItem("setItemelementData");
-      // let getId = "";
 
-      // if (elementId) {
-      //   getId = JSON.parse(elementId);
-      // }
-      // if (getId && getId._id) {
       const data_id = {
         id: loadingPayId,
         status: 1,
@@ -160,7 +133,6 @@ const CheckoutPopup = ({
         console.log(error);
         toast.error("Something went wrong.");
       }
-      // }
     }
   };
 
@@ -200,12 +172,7 @@ const CheckoutPopup = ({
     }
     setrateVal(price);
     const elementId = localStorage.getItem("setItemelementData");
-    var getId = "";
-    if (elementId) {
-      getId = JSON.parse(elementId);
-    }
-    // console.log("selectedAddress?._id", selectedShippingAddress);
-    // return;
+
     const data = {
       service_code: rate,
       id: loadingPayId,
@@ -522,4 +489,4 @@ const CheckoutPopup = ({
     </React.Fragment>
   );
 };
-export default CheckoutPopup;
+export default CheckOutPay;

@@ -3,67 +3,43 @@ import { Modal, Button } from "react-bootstrap";
 
 const MaterialBadge = ({ materialDetails }) => {
   const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
     switch (materials) {
       case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
+        return { backgroundColor: "rgb(79 140 202)" };
       case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
       case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
+        return { backgroundColor: "rgb(225 31 38)" };
       case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
+        return { backgroundColor: "rgb(160 197 233)" };
       case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
       case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
       case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
+        return { backgroundColor: "rgb(42 92 23)" };
       case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
+        return { backgroundColor: "rgb(255 186 22)" };
       case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
+        return { backgroundColor: "rgb(115 103 240)" };
       default:
         return {};
     }
   };
+
   const [showModal, setShowModal] = useState(false);
 
-  // Show modal
   const handleShowModal = () => setShowModal(true);
-  // Hide modal
   const handleCloseModal = () => setShowModal(false);
 
-  // Determine the number of items to show initially
   const MAX_VISIBLE_ITEMS = 2;
-  const details = materialDetails ?? [];
+  const details = Array.isArray(materialDetails) ? materialDetails : []; // Fallback to empty array
   const isMoreThanTwo = details.length > MAX_VISIBLE_ITEMS;
   const visibleItems = details.slice(0, MAX_VISIBLE_ITEMS);
   const remainingItemsCount = details.length - MAX_VISIBLE_ITEMS;
 
   return (
     <>
-      {/* Render the first two items */}
       {visibleItems.map((item, index) => (
         <span
+          key={`visible-${index}`} // Add unique key
           className="badgestatus me-2"
           style={getMaterialColor(
             `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
@@ -73,7 +49,6 @@ const MaterialBadge = ({ materialDetails }) => {
         </span>
       ))}
 
-      {/* Show the "+N" badge if there are more than two items */}
       {isMoreThanTwo && (
         <span
           className="badgestatus more-badge"
@@ -84,7 +59,6 @@ const MaterialBadge = ({ materialDetails }) => {
         </span>
       )}
 
-      {/* Modal for showing all badges */}
       <Modal
         show={showModal}
         onHide={handleCloseModal}
@@ -94,8 +68,9 @@ const MaterialBadge = ({ materialDetails }) => {
           <Modal.Title>All Material Tags</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {materialDetails.map((item, index) => (
+          {details.map((item, index) => (
             <span
+              key={`modal-${index}`} // Add unique key
               className="badgestatus-more mt-1 me-2"
               style={getMaterialColor(
                 `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`

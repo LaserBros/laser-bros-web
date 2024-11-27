@@ -30,6 +30,8 @@ import {
   startPackaging,
   generateOrderPDF,
   updateWorkStatus,
+  getShippingRates,
+  fetchShippingBoxDetails,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -41,111 +43,10 @@ import { useTheme } from "../../../components/Themecontext";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import ConfirmationModal2 from "../../../components/ConfirmationModal";
 import html2pdf from "html2pdf.js";
+import axiosAdminInstance from "../../axios/axiosadminInstanse";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
-
-  const apiData = {
-    quoteNumber: "11-24-0703",
-    customerName: "Cort Van Wingerden",
-    companyName: "Van Welder LLC",
-    addressLine1: "909 E. Elm St.",
-    addressLine2: "Suite 102",
-    city: "Graham",
-    state: "NC",
-    zip: "27253",
-    billingName: "Cort Van Wingerden",
-    billingCompany: "Van Welder LLC",
-    billingAddressLine1: "909 E. Elm St.",
-    billingAddressLine2: "Suite 102",
-    billingCity: "Graham",
-    billingState: "NC",
-    billingZip: "27253",
-    shippingName: "Cort Van Wingerden",
-    shippingCompany: "Van Welder LLC",
-    shippingAddressLine1: "909 E. Elm St.",
-    shippingAddressLine2: "Suite 102",
-    shippingCity: "Graham",
-    shippingState: "NC",
-    shippingZip: "27253",
-    orderDate: "09-11-2024",
-    poNumber: "123987",
-    shippingType: "UPS Ground",
-    items: [
-      {
-        description: "Item 1",
-        quantity: 3,
-        priceEach: 3.25,
-        totalPrice: 9.75,
-        image: "https://via.placeholder.com/150",
-      },
-      {
-        description: "Item 2",
-        quantity: 3,
-        priceEach: 3.25,
-        totalPrice: 9.75,
-        image:
-          "https://laserbros-image-upload.s3.amazonaws.com/1730885032049-bridge/1730885032049-bridge.svg",
-      },
-      {
-        description: "Item 3",
-        quantity: 3,
-        priceEach: 4.0,
-        totalPrice: 12.0,
-        image:
-          "https://laserbros-image-upload.s3.amazonaws.com/1730885032049-bridge/1730885032049-bridge.svg",
-      },
-    ],
-  };
-  const [quoteData, setQuoteData] = useState(null);
-
-  useEffect(() => {
-    // Assuming `apiData` is the response you get from your API call
-    setQuoteData(apiData);
-  }, [apiData]);
-
-  const generatePDF = async () => {
-    const pdfElement = document.getElementById("quotePdf");
-    const doc = new jsPDF("p", "pt", "a4");
-
-    const canvas = await html2canvas(pdfElement);
-    const imgData = canvas.toDataURL("image/png");
-
-    // Add canvas image to PDF
-    doc.addImage(imgData, "PNG", 0, 0, 595, 842);
-    doc.save("Quote.pdf");
-  };
-
-  const loadImagesAsBase64 = async () => {
-    const images = document.querySelectorAll("#pdf-content img");
-    const promises = Array.from(images).map(async (img) => {
-      try {
-        if (
-          img.src.startsWith("http") &&
-          !img.src.includes(window.location.origin)
-        ) {
-          const response = await fetch(img.src, { mode: "cors" });
-          if (!response.ok)
-            throw new Error(`Failed to fetch image: ${img.src}`);
-
-          const blob = await response.blob();
-          const reader = new FileReader();
-
-          return new Promise((resolve) => {
-            reader.onload = () => {
-              img.src = reader.result; // Replace image src with base64 data
-              resolve();
-            };
-            reader.readAsDataURL(blob);
-          });
-        }
-      } catch (error) {
-        console.error(error); // Log the error for debugging
-        return Promise.resolve(); // Continue without breaking
-      }
-    });
-    return Promise.all(promises);
-  };
 
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -157,6 +58,7 @@ const OrdersDetail = () => {
   const [title, setTitle] = useState("");
   const [Ids, setIds] = useState("");
   const [typeId, setType] = useState("");
+  const [subPostId, setsubPostId] = useState("");
   const [eventId, setevent] = useState({});
   const validateFields = () => {
     const newErrors = {};
@@ -207,15 +109,20 @@ const OrdersDetail = () => {
     const url = `${process.env.REACT_APP_API_URL}/admin/generateOrderPDF`;
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Set as JSON
-        },
-        body: JSON.stringify({
-          orderId: order?.orderedQuote._id, // Convert to JSON string
-        }),
-      });
+      // const response = await fetch(url, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json", // Set as JSON
+      //     // "Authorization": `Bearer ${}`
+      //   },
+      //   body: JSON.stringify({
+      //     orderId: order?.orderedQuote._id, // Convert to JSON string
+      //   }),
+      // });
+      const data = {
+        orderId: order?.orderedQuote._id,
+      };
+      const response = await axiosAdminInstance.post(`/generateOrderPDF`, data);
 
       if (!response.ok) {
         throw new Error("Failed to download PDF");
@@ -273,6 +180,29 @@ const OrdersDetail = () => {
     // pdf.save("download.pdf");
   };
 
+  const [boxes, setBoxes] = useState([
+    { length: "", width: "", height: "", weight: "" },
+  ]);
+
+  // Add a new box
+  const addBox = () => {
+    setBoxes([...boxes, { length: "", width: "", height: "", weight: "" }]);
+  };
+
+  // Remove a box
+  const removeBox = (index) => {
+    const updatedBoxes = boxes.filter((_, i) => i !== index);
+    setBoxes(updatedBoxes);
+  };
+
+  // Handle input change for specific box
+  const handleInputChangeBox = (index, field, value) => {
+    const updatedBoxes = boxes?.map((box, i) =>
+      i === index ? { ...box, [field]: value } : box
+    );
+    setBoxes(updatedBoxes);
+  };
+
   const [modalShow, setModalShow] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
@@ -309,6 +239,7 @@ const OrdersDetail = () => {
   const handleClose3 = () => setModalShow3(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [orderInfo, setOrderInfo] = useState("");
   const fetchOrder = async () => {
     const data = {
       id: id,
@@ -317,7 +248,15 @@ const OrdersDetail = () => {
     setOrders(res.data);
     setLoading(false);
   };
+  const shipping = async () => {
+    const data = {
+      id: id,
+    };
+    const res = await fetchShippingBoxDetails(data);
+    setOrderInfo(res.data);
+  };
   useEffect(() => {
+    shipping();
     fetchOrder();
     loadEmp();
   }, []);
@@ -345,6 +284,44 @@ const OrdersDetail = () => {
       console.error("Error downloading or zipping files:", error);
     }
   };
+
+  const calculateRate = async (index) => {
+    const box = boxes[index];
+    if (!box.length || !box.width || !box.height || !box.weight) {
+      alert("Please fill in all fields for dimensions and weight.");
+      return;
+    }
+
+    // Example calculation logic (replace with actual API call if needed)
+    const rate =
+      parseFloat(box.length) +
+      parseFloat(box.width) +
+      parseFloat(box.height) +
+      parseFloat(box.weight);
+    const data = {
+      length: box.length,
+      width: box.width,
+      height: box.height,
+      weight: box.weight,
+      id: id,
+    };
+    const res = await getShippingRates(data);
+    const updatedBoxes = boxes.map((box, i) =>
+      i === index
+        ? {
+            ...box,
+            shippingMethods: res.data,
+          }
+        : box
+    );
+    setBoxes(updatedBoxes);
+    // // Update the rate for the specific box
+    // const updatedBoxes = boxes.map((box, i) =>
+    //   i === index ? { ...box, rate: `$${rate.toFixed(2)}` } : box
+    // );
+    // setBoxes(updatedBoxes);
+  };
+
   const getMaterialColor = (materials) => {
     // console.log("materials", materials);
     switch (materials) {
@@ -451,6 +428,40 @@ const OrdersDetail = () => {
       console.error("Error submitting data:", error);
       setLoadingWeight(false);
     }
+  };
+
+  const handleSubmitData = async (index) => {
+    const box = boxes[index];
+    if (!box.length || !box.width || !box.height || !box.weight) {
+      alert("Please fill in all fields for dimensions and weight.");
+      return;
+    }
+
+    // Example calculation logic (replace with actual API call if needed)
+    const rate =
+      parseFloat(box.length) +
+      parseFloat(box.width) +
+      parseFloat(box.height) +
+      parseFloat(box.weight);
+    const data = {
+      length: box.length,
+      width: box.width,
+      height: box.height,
+      weight: box.weight,
+      box_id: "box_" + id + "_" + (parseInt(orderInfo) + parseInt(index) + 1),
+      id: id,
+    };
+    const res = await startPackaging(data);
+    await fetchOrder();
+    const updatedBoxes = boxes.map((box, i) =>
+      i === index
+        ? {
+            ...box,
+            downloadLabel: res.data.box_details,
+          }
+        : box
+    );
+    setBoxes(updatedBoxes);
   };
 
   const handleSubmit = async (e) => {
@@ -598,16 +609,16 @@ const OrdersDetail = () => {
       type:
         type === "isChecked_material"
           ? "isChecked_material"
-          : type === "isChecked_bend"
-          ? "isChecked_bend"
+          : type === "isChecked_SubPo"
+          ? "isChecked_SubPo"
           : type === "isChecked_PO"
           ? "isChecked_PO"
-          : type === "isChecked_finish"
-          ? "isChecked_finish"
           : checked,
       checked: checked,
+      postOps_id: subPostId,
     };
     const res = await updateWorkStatus(data);
+    await fetchOrder();
     setModalShow2(false);
     setLoadingBtn(false);
   };
@@ -946,131 +957,189 @@ const OrdersDetail = () => {
                     </>
                   )}
                 </div>
-                {order?.serviceCode?.name != "Local Pickup" ? (
-                  order?.orderedQuote.move_status === 2 && (
-                    <div className="orders-shipping">
-                      <h5 className="py-3">Add Shipping Information</h5>
+                {/* {order?.serviceCode?.name != "Local Pickup" ? ( */}
+                {order?.orderedQuote.move_status === 2 ? (
+                  <div className="orders-shipping">
+                    <div className="shipping-container">
+                      {orderInfo?.map((Info, index) => (
+                        <div className="order_info d-flex">
+                          <div className="d-flex">
+                            <p>Height : {Info?.dimensions?.height}</p>
+                            <p>Width : {Info?.dimensions?.width}</p>
 
-                      <Form className="accountform" onSubmit={handleSubmit}>
-                        {shippingInfo.map((info, index) => (
-                          <div
-                            key={index}
-                            className="shipping-info-section position-relative mb-4"
-                          >
-                            <Row>
-                              <Col md={6}>
-                                <Form.Group className="mb-3 form-group">
-                                  <Form.Label>Height (in inches)</Form.Label>
-                                  <Form.Control
-                                    type="text"
-                                    placeholder="Enter height in inches"
-                                    value={info.height}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        index,
-                                        "height",
-                                        e.target.value
-                                      )
-                                    }
-                                    isInvalid={!!errors[`height-${index}`]}
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {errors[`height-${index}`]}
-                                  </Form.Control.Feedback>
-                                </Form.Group>
-                              </Col>
-                              <Col md={6}>
-                                <Form.Group className="mb-3 form-group">
-                                  <Form.Label>Weight (in pounds)</Form.Label>
-                                  <Form.Control
-                                    type="text"
-                                    placeholder="Enter weight in pounds"
-                                    value={info.weight}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        index,
-                                        "weight",
-                                        e.target.value
-                                      )
-                                    }
-                                    isInvalid={!!errors[`weight-${index}`]}
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {errors[`weight-${index}`]}
-                                  </Form.Control.Feedback>
-                                </Form.Group>
-                              </Col>
-                              <Col md={6}>
-                                <Form.Group className="mb-3 form-group">
-                                  <Form.Label>Width (in inches)</Form.Label>
-                                  <Form.Control
-                                    type="text"
-                                    placeholder="Enter width in inches"
-                                    value={info.width}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        index,
-                                        "width",
-                                        e.target.value
-                                      )
-                                    }
-                                    isInvalid={!!errors[`width-${index}`]}
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {errors[`width-${index}`]}
-                                  </Form.Control.Feedback>
-                                </Form.Group>
-                              </Col>
-                              <Col md={6}>
-                                <Form.Group className="mb-3 form-group">
-                                  <Form.Label>Length (in inches)</Form.Label>
-                                  <Form.Control
-                                    type="text"
-                                    placeholder="Enter length in inches"
-                                    value={info.length}
-                                    onChange={(e) =>
-                                      handleInputChange(
-                                        index,
-                                        "length",
-                                        e.target.value
-                                      )
-                                    }
-                                    isInvalid={!!errors[`length-${index}`]}
-                                  />
-                                  <Form.Control.Feedback type="invalid">
-                                    {errors[`length-${index}`]}
-                                  </Form.Control.Feedback>
-                                </Form.Group>
-                              </Col>
-                            </Row>
-
-                            {/* Remove button */}
-                            {index != 0 && shippingInfo.length > 1 && (
-                              <Button
-                                variant="danger"
-                                className="remove-section-btn position-absolute"
-                                style={{ top: "-17px", right: "10px" }}
-                                onClick={() => handleRemove(index)}
-                              >
-                                - Remove
-                              </Button>
-                            )}
+                            <p>Length : {Info?.dimensions?.length}</p>
+                            <p>Weight : {Info?.weight}</p>
                           </div>
-                        ))}
+                          <div>
+                            <a href={Info?.label_url} target="_blank">
+                              Download Label
+                            </a>
+                            <Link to={"/"}>Refund Label</Link>
+                          </div>
+                        </div>
+                      ))}
+                      {boxes?.map((box, index) => (
+                        <div key={index} className="section dimensions">
+                          <h4>Dimensions</h4>
+                          <div className="dimensions-inputs">
+                            <input
+                              type="number"
+                              placeholder="L"
+                              value={box.length}
+                              onChange={(e) =>
+                                handleInputChangeBox(
+                                  index,
+                                  "length",
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <span>X</span>
+                            <input
+                              type="number"
+                              placeholder="W"
+                              value={box.width}
+                              onChange={(e) =>
+                                handleInputChangeBox(
+                                  index,
+                                  "width",
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <span>X</span>
+                            <input
+                              type="number"
+                              placeholder="H"
+                              value={box.height}
+                              onChange={(e) =>
+                                handleInputChangeBox(
+                                  index,
+                                  "height",
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <select
+                              onChange={(e) =>
+                                handleInputChangeBox(
+                                  index,
+                                  "unit",
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="in">in</option>
+                            </select>
+                          </div>
+                          <p>Enter dimensions of package</p>
+                          <h4>Package Weight</h4>
+                          <div className="weight-inputs">
+                            <input
+                              type="number"
+                              placeholder="Weight"
+                              value={box.weight}
+                              onChange={(e) =>
+                                handleInputChangeBox(
+                                  index,
+                                  "weight",
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <select>
+                              <option value="lb">lb</option>
+                            </select>
+                          </div>
+                          <p>Includes packaging</p>
 
-                        {/* Add more button */}
-                        <Button
-                          variant="primary"
-                          className="my-2"
-                          onClick={handleAddMore}
-                        >
-                          + Add More Shipping Info
-                        </Button>
+                          {!box.shippingMethods ? (
+                            <>
+                              <button
+                                className="btn get-rate"
+                                onClick={() => calculateRate(index)}
+                              >
+                                Get Rates
+                              </button>
+                              {order?.serviceCode?.name != "Local Pickup" && (
+                                <button
+                                  className="btn remove-box"
+                                  onClick={() => removeBox(index)}
+                                  disabled={boxes.length === 1} // Disable removing if there's only one box
+                                >
+                                  Remove Box
+                                </button>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {order?.serviceCode?.name != "Local Pickup" &&
+                                (!box.downloadLabel ? (
+                                  <button
+                                    className="btn get-rate"
+                                    onClick={() => handleSubmitData(index)}
+                                  >
+                                    Purchase Label
+                                  </button>
+                                ) : (
+                                  <a
+                                    target="_blank"
+                                    class="btn get-rate"
+                                    href={box?.downloadLabel?.label_url}
+                                  >
+                                    Download Label
+                                  </a>
+                                ))}
+                            </>
+                          )}
+                          {box.shippingMethods ? (
+                            <>
+                              <div>
+                                <input
+                                  type="checkbox"
+                                  id="localPickup"
+                                  disabled
+                                  checked={
+                                    order?.serviceCode?.name == "Local Pickup"
+                                      ? true
+                                      : false
+                                  }
+                                />
+                                <label htmlFor="localPickup">
+                                  Local Pickup ($0.00)
+                                </label>
+                              </div>
 
-                        {/* Submit button */}
+                              {box.shippingMethods?.map((method) => (
+                                <div key={method.service_code}>
+                                  <input
+                                    type="checkbox"
+                                    id={method.service_code}
+                                    disabled
+                                    checked={
+                                      order?.serviceCode?.name ==
+                                      method.service_type
+                                        ? true
+                                        : false
+                                    }
+                                  />
+                                  <label htmlFor={method.service_code}>
+                                    {method.service_type} (
+                                    <Amount amount={method.shipping_amount} />)
+                                  </label>
+                                </div>
+                              ))}
+                            </>
+                          ) : (
+                            <p></p>
+                          )}
+                        </div>
+                      ))}
+                      {order?.serviceCode?.name == "Local Pickup" && (
                         <Button
                           type="submit"
-                          className="my-3 ms-3"
+                          // className="my-3 ms-3"
+                          onClick={handleCompleteShip}
                           disabled={loadingWeight}
                         >
                           {loadingWeight ? (
@@ -1080,20 +1149,180 @@ const OrdersDetail = () => {
                               aria-hidden="true"
                             ></span>
                           ) : (
-                            "Submit Shipping Information"
+                            "Move To Complete"
                           )}
                         </Button>
-                      </Form>
+                      )}
+                      {orderInfo?.length >= 1 && (
+                        <Button
+                          type="submit"
+                          // className="my-3 ms-3"
+                          onClick={handleCompleteShip}
+                          disabled={loadingWeight}
+                        >
+                          {loadingWeight ? (
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              role="status"
+                              aria-hidden="true"
+                            ></span>
+                          ) : (
+                            "Move To Complete"
+                          )}
+                        </Button>
+                      )}
+                      {order?.serviceCode?.name != "Local Pickup" && (
+                        <button className="btn add-box" onClick={addBox}>
+                          Add Another Box
+                        </button>
+                      )}
                     </div>
-                  )
+
+                    <h5 className="py-3">Add Shipping Information</h5>
+
+                    <Form className="accountform" onSubmit={handleSubmit}>
+                      {shippingInfo?.map((info, index) => (
+                        <div
+                          key={index}
+                          className="shipping-info-section position-relative mb-4"
+                        >
+                          <Row>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Height (in inches)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter height in inches"
+                                  value={info.height}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "height",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`height-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`height-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Weight (in pounds)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter weight in pounds"
+                                  value={info.weight}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "weight",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`weight-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`weight-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Width (in inches)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter width in inches"
+                                  value={info.width}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "width",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`width-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`width-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                            <Col md={6}>
+                              <Form.Group className="mb-3 form-group">
+                                <Form.Label>Length (in inches)</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  placeholder="Enter length in inches"
+                                  value={info.length}
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      index,
+                                      "length",
+                                      e.target.value
+                                    )
+                                  }
+                                  isInvalid={!!errors[`length-${index}`]}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                  {errors[`length-${index}`]}
+                                </Form.Control.Feedback>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+
+                          {/* Remove button */}
+                          {index != 0 && shippingInfo.length > 1 && (
+                            <Button
+                              variant="danger"
+                              className="remove-section-btn position-absolute"
+                              style={{ top: "-17px", right: "10px" }}
+                              onClick={() => handleRemove(index)}
+                            >
+                              - Remove
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+
+                      {/* Add more button */}
+                      <Button
+                        variant="primary"
+                        className="my-2"
+                        onClick={handleAddMore}
+                      >
+                        + Add More Shipping Info
+                      </Button>
+
+                      {/* Submit button */}
+                      <Button
+                        type="submit"
+                        className="my-3 ms-3"
+                        disabled={loadingWeight}
+                      >
+                        {loadingWeight ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : (
+                          "Submit Shipping Information"
+                        )}
+                      </Button>
+                    </Form>
+                  </div>
                 ) : (
+                  // )
                   <div></div>
                 )}
 
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">
                   <div className="d-inline-flex align-items-center gap-2 my-1">
                     <b>In this order:</b>
-                    {order.newUpdatedData.map((wo, index) => (
+                    {order.newUpdatedData?.map((wo, index) => (
                       <span
                         className="badgestatus"
                         style={getMaterialColor(
@@ -1248,6 +1477,37 @@ const OrdersDetail = () => {
 
                         <div className="list-checkboxes  d-inline-flex gap-3">
                           <div className="custom-checkbox-container text-center">
+                            <p>
+                              {" "}
+                              <span
+                                className="custom-label-tag"
+                                style={getMaterialColor(
+                                  wo?.material_name + " " + wo?.material_grade
+                                )}
+                              >
+                                Cutting
+                              </span>
+                              <Form.Check
+                                type="checkbox"
+                                id={`${wo.material_code}${wo._id}`}
+                                checked={wo.isChecked_material == 1}
+                                disabled={
+                                  order?.orderedQuote.status == 3 ? true : false
+                                }
+                                onChange={(event) => {
+                                  // handleCheckboxChangeEvent(
+                                  //   event,
+                                  //   wo._id,
+                                  //   "isChecked_material"
+                                  // )
+                                  setIds(wo._id);
+                                  setsubPostId(0);
+                                  setevent(event);
+                                  setType("isChecked_material");
+                                  setModalShow2(true);
+                                }}
+                              />
+                            </p>
                             <label
                               className="custom-label-tag"
                               htmlFor={`${wo.material_code}${wo._id}`}
@@ -1257,27 +1517,61 @@ const OrdersDetail = () => {
                             >
                               {wo.material_code}
                             </label>
-                            <Form.Check
-                              type="checkbox"
-                              id={`${wo.material_code}${wo._id}`}
-                              checked={wo.isChecked_material == 1}
-                              disabled={
-                                order?.orderedQuote.status == 3 ? true : false
-                              }
-                              onChange={(event) => {
-                                // handleCheckboxChangeEvent(
-                                //   event,
-                                //   wo._id,
-                                //   "isChecked_material"
-                                // )
-                                setIds(wo._id);
-                                setevent(event);
-                                setType("isChecked_material");
-                                setModalShow2(true);
-                              }}
-                            />
                           </div>
-                          {wo.bend_count > 0 && (
+                          <div className="custom-checkbox-container text-center">
+                            <div className="d-flex">
+                              {" "}
+                              <span>POST OPS </span>
+                              <Form.Check
+                                type="checkbox"
+                                checked={wo.isChecked_PO == 1}
+                                disabled={
+                                  order?.orderedQuote.status == 3 ? true : false
+                                }
+                                onChange={(event) => {
+                                  // handleCheckboxChangeEvent(
+                                  //   event,
+                                  //   wo._id,
+                                  //   "isChecked_material"
+                                  // )
+                                  setsubPostId(0);
+                                  setIds(wo._id);
+                                  setevent(event);
+                                  setType("isChecked_PO");
+                                  setModalShow2(true);
+                                }}
+                              />
+                            </div>
+                            {wo.postops?.map((item, index) => (
+                              <>
+                                <div className="d-flex">
+                                  <span> {item.post_ops} </span>
+                                  <Form.Check
+                                    type="checkbox"
+                                    checked={item.is_checked == 1}
+                                    disabled={
+                                      order?.orderedQuote.status == 3
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={(event) => {
+                                      // handleCheckboxChangeEvent(
+                                      //   event,
+                                      //   wo._id,
+                                      //   "isChecked_material"
+                                      // )
+                                      setsubPostId(item._id);
+                                      setIds(wo._id);
+                                      setevent(event);
+                                      setType("isChecked_SubPo");
+                                      setModalShow2(true);
+                                    }}
+                                  />
+                                </div>
+                              </>
+                            ))}
+                          </div>
+                          {/* {wo.bend_count > 0 && (
                             <div className="custom-checkbox-container text-center">
                               <label
                                 className="custom-label-tag"
@@ -1338,8 +1632,8 @@ const OrdersDetail = () => {
                                 setModalShow2(true);
                               }}
                             />
-                          </div>
-                          {wo.finishing_desc && (
+                          </div> */}
+                          {/* {wo.finishing_desc && (
                             <div className="custom-checkbox-container text-center">
                               <label
                                 className="custom-label-tag"
@@ -1370,7 +1664,7 @@ const OrdersDetail = () => {
                                 }}
                               />
                             </div>
-                          )}
+                          )} */}
                         </div>
                         {wo.bend_count > 0 ? (
                           <div>

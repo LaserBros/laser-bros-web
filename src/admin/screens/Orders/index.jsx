@@ -71,8 +71,8 @@ const Orders = () => {
       ]);
     }
   };
-  const handleSortChange = (e) => {
-    const selectedValue = e.target.value;
+  const handleSortChange = (value) => {
+    const selectedValue = value;
     setSortOrder(selectedValue);
     loadOrders(1, name, selectedValue, filter, filter_select);
   };
@@ -228,8 +228,41 @@ const Orders = () => {
                   </div>
                 </Form.Group>
               </Col>
-              <Col lg={2} xxl={2}>
-                <Form.Group className="form-group mb-2">
+              <Col lg={12} xxl={12}>
+                <div>
+                  Sort By :{" "}
+                  <Button onClick={() => handleSortChange("true")}>
+                    New to Old
+                  </Button>
+                  <Button onClick={() => handleSortChange("true")}>
+                    Old to New
+                  </Button>
+                </div>
+                <div>
+                  Phase :{" "}
+                  <Button onClick={() => handleSortChange("true")}>New</Button>
+                  <Button onClick={() => handleSortChange("true")}>
+                    In Progress
+                  </Button>
+                  <Button onClick={() => handleSortChange("true")}>
+                    Ready to SHIP
+                  </Button>
+                </div>
+                <div>
+                  Operation :{" "}
+                  <Button onClick={() => handleSortChange("true")}>
+                    Cutting
+                  </Button>
+                  <Button onClick={() => handleSortChange("true")}>
+                    POST OPS
+                  </Button>
+                </div>
+                <div>
+                  Operation :{" "}
+                  {/* <Button onClick={handleSortChange("false")}>Cutting</Button>
+                  <Button onClick={handleSortChange("true")}>POST OPS</Button> */}
+                </div>
+                {/* <Form.Group className="form-group mb-2">
                   <Form.Select
                     className="rounded-5"
                     value={sortOrder}
@@ -241,7 +274,7 @@ const Orders = () => {
                     <option value="false">Sort Newest to Oldest</option>
                     <option value="true">Sort Oldest to Newest</option>
                   </Form.Select>
-                </Form.Group>
+                </Form.Group> */}
               </Col>
               <Col lg={2} xxl={2}>
                 <Form.Group className="form-group mb-2">

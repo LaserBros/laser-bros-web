@@ -62,6 +62,19 @@ export const updateBendPrice = async (data) => {
   }
 };
 
+export const getEstimatedDimension = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getEstimatedDimension`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const generateOrderPDF = async (data) => {
   try {
     const response = await axiosAdminInstance.get(
@@ -814,6 +827,29 @@ export const getParticularOrderDetails = async (data) => {
 export const startPackaging = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/startPackaging`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getShippingRates = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/getShippingRates`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const fetchShippingBoxDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/fetchShippingBoxDetails`,
+      data
+    );
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
