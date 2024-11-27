@@ -1033,7 +1033,7 @@ const EditRFQS = () => {
                               />
                             </>
                           ) : (
-                            <p>No items selected.</p>
+                            <p></p>
                           )}
 
                           <Button
