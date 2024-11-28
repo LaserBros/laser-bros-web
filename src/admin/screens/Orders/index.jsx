@@ -16,6 +16,7 @@ import {
   getBendingFilter,
   getFinishingFilter,
   getOrdersAdmin,
+  getSpecificFilters,
   moveOrderToQueue,
 } from "../../../api/api";
 import { toast } from "react-toastify";
@@ -34,14 +35,29 @@ const Orders = () => {
   const [filter, setFilter] = useState("");
   const [filter_select, setfilterSelect] = useState("");
   const [filterOptions, setFilterOptions] = useState([]);
-
+  const [operation, setoperation] = useState("");
   const indexOfLastItem = currentPage * itemsPerPage;
-  const handleFilterApply = (e) => {
-    const selectedValue = e.target.value;
-    settotalPage(1);
-    setfilterSelect(selectedValue);
-    setCurrentPage(1);
-    loadOrders(1, name, sortOrder, filter, selectedValue);
+
+  const getMaterialColor = (materials) => {
+    switch (materials) {
+      case "Aluminium 5052":
+        return { backgroundColor: "rgb(79 140 202)", color: "#fff" };
+      case "Steel 1008":
+      case "Steel A36":
+        return { backgroundColor: "rgb(225 31 38)", color: "#fff" };
+      case "Aluminium 6061":
+        return { backgroundColor: "rgb(160 197 233)", color: "#fff" };
+      case "Stainless Steel 304 (2b)":
+      case "Stainless Steel 304 (#4)":
+      case "Stainless Steel 316 (2b)":
+        return { backgroundColor: "rgb(42 92 23)", color: "#fff" };
+      case "Brass 260":
+        return { backgroundColor: "rgb(255 186 22)", color: "#fff" };
+      case "Custom i.e. Titanium, Incolnel, etc.":
+        return { backgroundColor: "rgb(115 103 240)", color: "#fff" };
+      default:
+        return {};
+    }
   };
 
   const handleFilterChange = async (e) => {
@@ -71,27 +87,36 @@ const Orders = () => {
       ]);
     }
   };
-  const handleSortChange = (value) => {
-    const selectedValue = value;
-    setSortOrder(selectedValue);
-    loadOrders(1, name, selectedValue, filter, filter_select);
-  };
+  // const handleSortChange = (value) => {
+  //   const selectedValue = value;
+  //   setSortOrder(selectedValue);
+  //   loadOrders(1, name, selectedValue, filter, filter_select);
+  // };
+  const [tags, setTags] = useState([]);
+  const [selecttag, setSelectTag] = useState("");
+  const [Phase, setPhase] = useState("");
+  const [SortVal, setSort] = useState("");
+  const [loadingTags, setloadingTags] = useState(false);
   const loadOrders = async (
-    page,
-    search = "",
-    sortOrder = "",
+    query = "",
+    page = "",
     type = "",
-    type_filter = ""
+    material_code = "",
+    move_status = "",
+    postOps = "",
+    ascending = ""
   ) => {
     try {
       setLoading(true);
       setOrders([]);
       const response = await getOrdersAdmin(
+        query,
         page,
-        search,
-        sortOrder,
         type,
-        type_filter
+        material_code,
+        move_status,
+        postOps,
+        ascending
       );
       setOrders(response.data.data.updatedQuotes);
       settotalPage(response.data.data.total);
@@ -103,12 +128,73 @@ const Orders = () => {
     }
   };
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
-    setCurrentPage(pageNumber);
-    loadOrders(pageNumber);
+    loadOrders("", pageNumber);
   };
+
+  const handleSortChangeFilter = async (type, data) => {
+    if (type == "sort") {
+      setSort(data);
+    }
+    if (type == "phase") {
+      setPhase(data);
+    }
+    if (type == "tags") {
+      setSelectTag(data);
+    }
+    if (type == "sort" || type == "phase" || type == "tags") {
+      loadOrders(
+        name,
+        currentPage,
+        operation,
+        operation == "cutting" ? selecttag : "",
+        Phase,
+        operation == "post_ops" ? selecttag : "",
+        SortVal
+      );
+    }
+    if (type == "operation") {
+      setoperation(data);
+      setloadingTags(true);
+      const res = await getSpecificFilters(data, 0);
+      setTags(res.data.updatedQuotes);
+      setloadingTags(false);
+    }
+  };
+
+  const FilterClear = async (type, Typedata) => {
+    if (type == "search_name") {
+      searchName("");
+    }
+    if (type == "sort") {
+      setSort(Typedata);
+    }
+    if (type == "phase") {
+      setPhase(Typedata);
+    }
+    if (type == "tags") {
+      setSelectTag(Typedata);
+      setTags("");
+    }
+    if (type == "operation") {
+      setoperation("");
+      setSelectTag("");
+      setTags("");
+    }
+    if (type == "sort" || type == "phase" || type == "tags") {
+      loadOrders(
+        name,
+        currentPage,
+        operation,
+        operation == "cutting" ? selecttag : "",
+        Phase,
+        operation == "post_ops" ? selecttag : "",
+        SortVal
+      );
+    }
+  };
+
   useEffect(() => {
-    loadOrders(currentPage);
+    loadOrders("", currentPage);
   }, []);
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);
@@ -123,49 +209,7 @@ const Orders = () => {
       [id]: !prevState[id],
     }));
   };
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const [loadingQueue, setLoadingQueue] = useState(false);
   const moveQueue = () => {
     const checkedIds = Object.entries(checkedItems)
@@ -188,7 +232,7 @@ const Orders = () => {
       });
       setTimeout(() => {
         setLoadingQueue(false);
-        loadOrders(currentPage);
+        loadOrders("", currentPage);
       }, 4000);
     }
   };
@@ -206,6 +250,7 @@ const Orders = () => {
                   <div className="position-relative">
                     <Icon
                       icon="flowbite:search-solid"
+                      // onClick={() => FilterClear("search_name", "")}
                       className="position-absolute search_icon"
                     />
                     <Form.Control
@@ -216,98 +261,249 @@ const Orders = () => {
                         setCurrentPage(1);
                         searchName(e.target.value);
                         loadOrders(
-                          1,
                           e.target.value,
-                          sortOrder,
-                          filter,
-                          filter_select
+                          1,
+                          operation,
+                          operation == "cutting" ? selecttag : "",
+                          Phase,
+                          operation == "post_ops" ? selecttag : "",
+                          SortVal
                         );
+                        // loadOrders(
+                        //   1,
+                        //   e.target.value,
+                        //   sortOrder,
+                        //   filter,
+                        //   filter_select
+                        // );
                       }}
                       className="rounded-5"
                     />
                   </div>
-                                      
+
                   <div className="sortByFilterBtn">
-                      <Icon icon="fa6-solid:filter" />
-                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
-                    </div>
+                    <Icon icon="fa6-solid:filter" />
+                    {name != "" && (
+                      <Icon
+                        className="sortFilterClose"
+                        onClick={() => FilterClear("search_name", "")}
+                        icon="zondicons:close-solid"
+                      />
+                    )}
+                  </div>
                 </Form.Group>
               </Col>
-            </Row>  
+            </Row>
             <Row className="px-2 gx-3">
               <Col lg={9} xxl={9}>
                 <div className="sortByMain_box">
                   <div className="sortByMain_head">
-                    <span className="sortByHead_box">Sort By :{" "}</span>
+                    <span className="sortByHead_box">Sort By : </span>
                     <div className="sortByFilterBtn">
                       <Icon icon="fa6-solid:filter" />
-                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                      {SortVal !== "" && (
+                        <Icon
+                          className="sortFilterClose"
+                          onClick={() => FilterClear("sort", "")}
+                          icon="zondicons:close-solid"
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="SortFilterBtnBox">
-                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>
+                    <Button
+                      className={`SortFilter_btn ${
+                        SortVal === true ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() => handleSortChangeFilter("sort", true)}
+                    >
                       Old to New
                     </Button>
-                    <Button className="SortFilter_btn active" variant={null} onClick={() => handleSortChange("true")}>
+                    <Button
+                      className={`SortFilter_btn ${
+                        SortVal === false ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() => handleSortChangeFilter("sort", false)}
+                    >
                       New to Old
                     </Button>
                   </div>
                 </div>
                 <div className="sortByMain_box">
                   <div className="sortByMain_head">
-                    <span className="sortByHead_box">Phase :{" "}</span>
+                    <span className="sortByHead_box">Phase : </span>
                     <div className="sortByFilterBtn">
                       <Icon icon="fa6-solid:filter" />
-                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                      {Phase !== "" && (
+                        <Icon
+                          className="sortFilterClose"
+                          onClick={() => FilterClear("phase", "")}
+                          icon="zondicons:close-solid"
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="SortFilterBtnBox">
-                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>New</Button>
-                    <Button className="SortFilter_btn active" variant={null} onClick={() => handleSortChange("true")}>
+                    <Button
+                      className={`SortFilter_btn ${
+                        Phase === 0 ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() => handleSortChangeFilter("phase", 0)}
+                    >
+                      New
+                    </Button>
+                    <Button
+                      className={`SortFilter_btn ${
+                        Phase === 1 ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() => handleSortChangeFilter("phase", 1)}
+                    >
                       In Progress
                     </Button>
-                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>
+                    <Button
+                      className={`SortFilter_btn ${
+                        Phase === 2 ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() => handleSortChangeFilter("phase", 2)}
+                    >
                       Ready to SHIP
                     </Button>
                   </div>
                 </div>
                 <div className="sortByMain_box">
                   <div className="sortByMain_head">
-                    <span className="sortByHead_box">Operation :{" "}</span>
+                    <span className="sortByHead_box">Operation : </span>
                     <div className="sortByFilterBtn">
                       <Icon icon="fa6-solid:filter" />
-                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                      {operation !== "" && (
+                        <Icon
+                          className="sortFilterClose"
+                          onClick={() => FilterClear("operation", "")}
+                          icon="zondicons:close-solid"
+                        />
+                      )}
                     </div>
                   </div>
                   <div className="SortFilterBtnBox">
-                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>
+                    <Button
+                      className={`SortFilter_btn ${
+                        operation == "cutting" ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() =>
+                        handleSortChangeFilter("operation", "cutting")
+                      }
+                    >
                       Cutting
                     </Button>
-                    <Button className="SortFilter_btn active" variant={null} onClick={() => handleSortChange("true")}>
+                    <Button
+                      className={`SortFilter_btn ${
+                        operation == "post_ops" ? "active" : ""
+                      }`}
+                      variant={null}
+                      onClick={() =>
+                        handleSortChangeFilter("operation", "post_ops")
+                      }
+                    >
                       POST OPS
                     </Button>
                   </div>
                 </div>
-                <div className="sortByMain_box">
-                  <div className="sortByMain_head">
-                    <span className="sortByHead_box">Tag :{" "}</span>
-                    <div className="sortByFilterBtn">
-                      <Icon icon="fa6-solid:filter" />
-                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                {loadingTags ? (
+                  <>
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      className="spinner-border spinner-border-sm text-center"
+                      style={{
+                        // margin: "0 auto",
+                        // display: "block",
+                        marginLeft: "30px",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    ></span>
+                  </>
+                ) : (
+                  tags?.length > 0 && (
+                    <div className="sortByMain_box">
+                      <div className="sortByMain_head">
+                        <span className="sortByHead_box">Tag : </span>
+                        <div className="sortByFilterBtn">
+                          <Icon icon="fa6-solid:filter" />
+                          {selecttag !== "" && (
+                            <Icon
+                              className="sortFilterClose"
+                              onClick={() => FilterClear("tags", "")}
+                              icon="zondicons:close-solid"
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className="tagFilterBtnBox">
+                        {operation === "post_ops"
+                          ? tags.map((item, index) => {
+                              return (
+                                <Button
+                                  key={index}
+                                  className={`tagFilter_btn ${
+                                    selecttag == item ? "active" : ""
+                                  } `}
+                                  onClick={() =>
+                                    handleSortChangeFilter("tags", item)
+                                  }
+                                  variant={null}
+                                >
+                                  {item}
+                                </Button>
+                              );
+                            })
+                          : tags.map((item, index) => {
+                              // if (Array.isArray(item)) {
+                              return (
+                                <div key={index}>
+                                  {/* {item.map((subItem, subIndex) => ( */}
+                                  <Button
+                                    key={index}
+                                    style={getMaterialColor(
+                                      `${item?.material_name} ${item?.material_grade}`
+                                    )}
+                                    className={`tagFilter_btn ${
+                                      selecttag == item?.material_code
+                                        ? "active"
+                                        : ""
+                                    } `}
+                                    onClick={() =>
+                                      handleSortChangeFilter(
+                                        "tags",
+                                        item?.material_code
+                                      )
+                                    }
+                                    variant={null}
+                                  >
+                                    {item?.material_code}
+                                  </Button>
+                                  {/* ))} */}
+                                </div>
+                              );
+                              // } else {
+                              //   // Handle unexpected formats in non-"cutting" operations
+                              //   return (
+                              //     <p key={index} style={{ color: "red" }}>
+                              //       Invalid tag formatdddd for this operation
+                              //     </p>
+                              //   );
+                              // }
+                            })}
+                      </div>
                     </div>
-                  </div>
-                  <div className="tagFilterBtnBox">
-                    <Button className="tagFilter_btn" variant={null}>
-                      F1
-                    </Button>
-                    <Button className="tagFilter_btn active" variant={null}>
-                      B2
-                    </Button>
-                    <Button className="tagFilter_btn" variant={null}>
-                      F3
-                    </Button>
-                  </div>
-                </div>
+                  )
+                )}
                 <div>
                   {/* <Button onClick={handleSortChange("false")}>Cutting</Button>
                   <Button onClick={handleSortChange("true")}>POST OPS</Button> */}

@@ -605,39 +605,31 @@ export const updateRequestQuote = async (id, status) => {
   }
 };
 
-export const getOrdersAdmin = async (page, search, sort, type, type_filter) => {
+export const getOrdersAdmin = async (
+  query,
+  page,
+  type,
+  material_code,
+  move_status,
+  postOps,
+  ascending
+) => {
   try {
-    var status = "";
-    var material_code = "";
-    var finish_id = "";
-    if (type == "post_ops") {
-      status = type_filter;
-    } else if (type == "Finishing") {
-      type = "finish";
-      finish_id = type_filter;
-    } else if (type == "Cutting") {
-      type = "cutting";
-      material_code = type_filter;
-    } else if (type == "Bending") {
-      type = "bend";
-      material_code = type_filter;
-    }
-
     const response = await axiosAdminInstance.get(
-      `/getOrdersAdmin?page=` +
+      `/getOrdersAdmin?query=` +
+        query +
+        "&page=" +
         page +
-        "&query=" +
-        search +
-        "&ascending=" +
-        sort +
         "&type=" +
         type +
-        "&status=" +
-        status +
-        "&finish_id=" +
-        finish_id +
         "&material_code=" +
-        material_code
+        material_code +
+        "&move_status=" +
+        move_status +
+        "&postOps=" +
+        postOps +
+        "&ascending=" +
+        ascending
     );
     return response;
   } catch (error) {
@@ -657,6 +649,18 @@ export const fetchOrdersInComplete = async (page, search, sort) => {
         sort
     );
     return response;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getSpecificFilters = async (type, move_status) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/getSpecificFilters?type=` + type + "&move_status=" + move_status
+    );
+    return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;
