@@ -70,6 +70,30 @@ body {
                                 label {
                                     color: rgba($white-color, 0.75);
                                 }
+
+                                &.ShippingMethodCheckbox_div {
+                                    .Edit-price-btn {
+                                        border: 1px solid rgba($white-color, 0.2);
+                                        color: $white-color;
+                                        &:hover {
+                                            background: $white-color;
+                                            border: 1px solid $white-color;
+                                            color: $black-color;
+                                        }
+                                    }
+                                    label { 
+                                        .ShippingMethodCount_div {
+                                            input.addNumber_input {
+                                                border: 1px solid rgba($white-color, .1);
+                                                background-color: transparent;
+                                                color: rgba($white-color, 0.75);
+                                                &::placeholder {
+                                                    color: rgba($white-color, 0.75);
+                                                }
+                                            }   
+                                        }                        
+                                    }
+                                }                                
                             }
                         }
                         .cards_sect {
@@ -85,6 +109,11 @@ body {
                                         }
                                         color: rgba($white-color, 0.75);
                                     }
+                                }
+                            }
+                            .form-check {
+                                label {
+                                    color: rgba($white-color, 0.75);
                                 }
                             }
                         }

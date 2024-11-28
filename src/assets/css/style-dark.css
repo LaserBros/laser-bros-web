@@ -55,6 +55,26 @@ body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .bill
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option label {
   color: rgba(255, 255, 255, 0.75);
 }
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div .Edit-price-btn {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div .Edit-price-btn:hover {
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  color: #000000;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label .ShippingMethodCount_div input.addNumber_input {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label .ShippingMethodCount_div input.addNumber_input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label .ShippingMethodCount_div input.addNumber_input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids {
   background: rgba(255, 255, 255, 0.07);
 }
@@ -65,6 +85,9 @@ body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .card
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids .card-actions .card-info strong {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .form-check label {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price {

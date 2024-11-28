@@ -20,7 +20,7 @@ const ConfirmationModal = ({
         <h2>{title}</h2>
         <p className="mb-4">{desc}</p>
 
-        <Button variant="primary" onClick={onConfirm} disabled={loading}>
+        <Button className="me-2" variant="primary" onClick={onConfirm} disabled={loading}>
           {loading ? (
             <span
               className="spinner-border spinner-border-sm"
@@ -32,7 +32,7 @@ const ConfirmationModal = ({
           )}
         </Button>
 
-        <Button variant="" type="submit" className="btn ssds" onClick={onHide}>
+        <Button variant="outline-primary" type="submit" onClick={onHide}>
           {noBtnText}
         </Button>
       </Modal.Body>

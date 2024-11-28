@@ -198,7 +198,7 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
                       <span className="quotessubtotal">Shipping Methods</span>
                     </div>
                     {shippingMethods.map((method) => (
-                      <div className="rate-option ShippingMethodCheckbox_div" key={method.id}>
+                      <div className="rate-option ShippingMethodCheckbox_div mb-3" key={method.id}>
                         <label>
                           <input
                             type="checkbox"
@@ -247,13 +247,15 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
                         </label>
                         
                         {!method.isEditing && (
-                          <button
+                          <Button 
+                          variant={null}
+                          className="Edit-price-btn ms-2"
                             onClick={() =>
                               handleEditSaveClick(method.id, method.price)
                             }
                           >
-                            Edit Price
-                          </button>
+                            <Icon icon="mynaui:edit" />
+                          </Button>
                         )}
                       </div>
                     ))}
