@@ -4163,51 +4163,84 @@ textarea.form-control {
                             font-size: 14px;
                         }
                         &.ShippingMethodCheckbox_div {
+                            .Edit-price-btn {
+                                width: 32px;
+                                height: 32px;
+                                border: 1px solid $black-color;
+                                border-radius: 6px;
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                background-color: transparent;
+                                color: $black-color;
+                                font-size: 18px;
+                                padding: 0px;
+                                outline: 0px;
+                                box-shadow: none; 
+                                &:hover {
+                                    background: $black-color;
+                                    border: 1px solid $black-color;
+                                    color: $white-color;
+                                }
+                            }
                             label {
                                 display: inline-flex;
                                 align-items: center;  
-                                input.addNumber_input {
-                                    height: 36px;
-                                    border-radius: 5px;
-                                    padding: 4px 10px;
-                                    box-sizing: border-box;
-                                    display: inline-block;
-                                    outline: 0px;
-                                    border: 1px solid rgba(0, 0, 0, 0.1);
-                                    font-size: 14px;
-                                    width: auto;
-                                    max-width: 110px;
-                                }   
-                                .save-price-btn {
-                                    width: 36px;
-                                    height: 36px;
-                                    border: 1px solid rgb(1, 148, 60);
-                                    border-radius: 6px;
+                                .ShippingMethodCount_div {
                                     display: inline-flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    background-color: transparent;
-                                    color: rgb(1, 148, 60);
-                                    font-size: 24px;
-                                    padding: 0px;
-                                    outline: 0px;
-                                    box-shadow: none;                                    
-                                }   
-                                .cancel-price-btn {
-                                    width: 36px;
-                                    height: 36px;
-                                    border: 1px solid rgba(225, 31, 38, 0.6);
-                                    border-radius: 6px;
-                                    display: inline-flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    background-color: transparent;
-                                    color: rgba(225, 31, 38, 0.6);
-                                    font-size: 24px;
-                                    padding: 0px;
-                                    outline: 0px;
-                                    box-shadow: none;                                 
-                                }                           
+                                    align-items: center;  
+                                    gap: 10px;
+                                    input.addNumber_input {
+                                        height: 36px;
+                                        border-radius: 5px;
+                                        padding: 4px 10px;
+                                        box-sizing: border-box;
+                                        display: inline-block;
+                                        outline: 0px;
+                                        border: 1px solid rgba(0, 0, 0, 0.1);
+                                        font-size: 14px;
+                                        width: auto;
+                                        max-width: 110px;
+                                    }   
+                                    .save-price-btn {
+                                        width: 36px;
+                                        height: 36px;
+                                        border: 1px solid rgb(1, 148, 60);
+                                        border-radius: 6px;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        background-color: transparent;
+                                        color: rgb(1, 148, 60);
+                                        font-size: 24px;
+                                        padding: 0px;
+                                        outline: 0px;
+                                        box-shadow: none; 
+                                        &:hover {
+                                            background: rgb(1, 148, 60);
+                                            color: $white-color;
+                                        }                                   
+                                    }   
+                                    .cancel-price-btn {
+                                        width: 36px;
+                                        height: 36px;
+                                        border: 1px solid rgba(225, 31, 38, 0.6);
+                                        border-radius: 6px;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        background-color: transparent;
+                                        color: rgba(225, 31, 38, 0.6);
+                                        font-size: 24px;
+                                        padding: 0px;
+                                        outline: 0px;
+                                        box-shadow: none;  
+                                        &:hover {
+                                            background: rgba(225, 31, 38, 1);
+                                            color: $white-color;
+                                        }                               
+                                    }   
+                                }                        
                             }
                         }
                     }

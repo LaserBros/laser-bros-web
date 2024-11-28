@@ -341,7 +341,7 @@ body {
   line-height: 1.5;
 }
 .reset-success .modal-dialog .modal-content .modal-body .btn {
-  min-width: 177px;
+  min-width: 170px;
 }
 
 /*Auth Css Ends*/
@@ -1025,6 +1025,44 @@ body {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
 }
+.wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .CuttingCheck_div p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .CuttingCheck_div p .custom-label-tag {
+  margin-bottom: 0px;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .postOpsCheckbox_div .postOpsCheckbox_box {
+  gap: 5px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .postOpsCheckbox_div .postOpsCheckbox_box span {
+  background: #ff8cd3;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  line-height: normal;
+  border-radius: 10px;
+  display: inline-block;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .postOpsCheckbox_div .postOpsTagCheckbox_box {
+  gap: 5px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .postOpsCheckbox_div .postOpsTagCheckbox_box span {
+  background: #ff8cd3;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  line-height: normal;
+  border-radius: 10px;
+  display: inline-block;
+}
 .wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .custom-label {
   height: 25px;
   padding: 0px 10px;
@@ -1344,6 +1382,123 @@ body {
 }
 .wrapper .maincontent_div .card .card-body .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell > div {
   white-space: pre-wrap;
+}
+.wrapper .maincontent_div .card .card-body .PackageCompleteOrder_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #a6c3e2;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+}
+.wrapper .maincontent_div .card .card-body .PackageAddAnother_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #00bf63;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .gap_20 {
+  gap: 40px;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .getRate_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #4e8ac8;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .PachageField_label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  line-height: normal;
+  color: #000;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .PackageFieldSubtitle {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 5px;
+  line-height: normal;
+  color: #000;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #000000;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box {
+  position: relative;
+  width: 100%;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box input.PachageField_number {
+  height: 42px;
+  border-radius: 5px;
+  padding: 4px 10px 4px 30px;
+  text-align: right;
+  background: #ffffff;
+  box-sizing: border-box;
+  display: inline-block;
+  outline: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box input.PachageField_number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box .PachageField_Size {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  color: #000000;
+  font-size: 14px;
+  padding: 2px 5px;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageFieldSizeSelect {
+  height: 42px;
+  border-radius: 5px;
+  padding: 4px 10px;
+  text-align: left;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  display: inline-block;
+  outline: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex.max_250 {
+  width: 100%;
+  max-width: 250px;
+  margin: 0px;
 }
 
 .custom-label-tag {

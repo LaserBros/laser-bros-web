@@ -24,7 +24,7 @@ const CommonModal = ({
         <Modal.Body className="px-lg-5 px-4 pb-4">
           <div className="tracking-info">
             <h5 className="text-center">{title}</h5>
-            <Button
+            <Button className="me-2"
               variant="primary"
               onClick={ConfirmBtnEvent}
               disabled={loading}
@@ -41,9 +41,8 @@ const CommonModal = ({
             </Button>
 
             <Button
-              variant=""
+              variant="outline-primary"
               type="submit"
-              className="btn ssds"
               onClick={handleClose}
             >
               {btnRejectTxt}

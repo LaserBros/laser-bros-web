@@ -309,9 +309,9 @@ const OrdersDetail = () => {
     const updatedBoxes = boxes.map((box, i) =>
       i === index
         ? {
-            ...box,
-            shippingMethods: res.data,
-          }
+          ...box,
+          shippingMethods: res.data,
+        }
         : box
     );
     setBoxes(updatedBoxes);
@@ -456,9 +456,9 @@ const OrdersDetail = () => {
     const updatedBoxes = boxes.map((box, i) =>
       i === index
         ? {
-            ...box,
-            downloadLabel: res.data.box_details,
-          }
+          ...box,
+          downloadLabel: res.data.box_details,
+        }
         : box
     );
     setBoxes(updatedBoxes);
@@ -610,10 +610,10 @@ const OrdersDetail = () => {
         type === "isChecked_material"
           ? "isChecked_material"
           : type === "isChecked_SubPo"
-          ? "isChecked_SubPo"
-          : type === "isChecked_PO"
-          ? "isChecked_PO"
-          : checked,
+            ? "isChecked_SubPo"
+            : type === "isChecked_PO"
+              ? "isChecked_PO"
+              : checked,
       checked: checked,
       postOps_id: subPostId,
     };
@@ -653,9 +653,8 @@ const OrdersDetail = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: `1px solid ${
-        theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
-      }`,
+      border: `1px solid ${theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
+        }`,
       background: theme == "dark" ? "#212121" : "#fff",
       boxShadow: "none",
       minHeight: "50px",
@@ -765,7 +764,7 @@ const OrdersDetail = () => {
                       </>
                     )}
                   {order?.orderedQuote.status == 2 &&
-                  order?.orderedQuote.move_status == 2 ? (
+                    order?.orderedQuote.move_status == 2 ? (
                     <Button
                       as={Link}
                       to="/admin/complete-orders"
@@ -828,19 +827,19 @@ const OrdersDetail = () => {
                           {order?.orderedQuote.status == 0
                             ? "New"
                             : order?.orderedQuote.status == 1
-                            ? "Paid"
-                            : order?.orderedQuote.status == 2
-                            ? "Complete"
-                            : order?.orderedQuote.status == 3
-                            ? "Complete"
-                            : ""}
+                              ? "Paid"
+                              : order?.orderedQuote.status == 2
+                                ? "Complete"
+                                : order?.orderedQuote.status == 3
+                                  ? "Complete"
+                                  : ""}
                         </span>
                       </div>
                     </div>
                   </Col>
                   <Col md={6} lg={4} xl={6} className="text-xl-end mb-3">
                     {/* <Image src={barcode} className="img-fluid mb-3" alt="" /> */}
-                    {}
+                    { }
                     <ReactBarcode
                       value={`WO# LB-${getMonthYear(
                         order?.orderedQuote.createdAt
@@ -978,206 +977,249 @@ const OrdersDetail = () => {
                           </div>
                         </div>
                       ))}
-                      {boxes?.map((box, index) => (
-                        <div key={index} className="section dimensions">
-                          <h4>Dimensions</h4>
-                          <div className="dimensions-inputs">
-                            <input
-                              type="number"
-                              placeholder="L"
-                              value={box.length}
-                              onChange={(e) =>
-                                handleInputChangeBox(
-                                  index,
-                                  "length",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <span>X</span>
-                            <input
-                              type="number"
-                              placeholder="W"
-                              value={box.width}
-                              onChange={(e) =>
-                                handleInputChangeBox(
-                                  index,
-                                  "width",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <span>X</span>
-                            <input
-                              type="number"
-                              placeholder="H"
-                              value={box.height}
-                              onChange={(e) =>
-                                handleInputChangeBox(
-                                  index,
-                                  "height",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <select
-                              onChange={(e) =>
-                                handleInputChangeBox(
-                                  index,
-                                  "unit",
-                                  e.target.value
-                                )
-                              }
-                            >
-                              <option value="in">in</option>
-                            </select>
-                          </div>
-                          <p>Enter dimensions of package</p>
-                          <h4>Package Weight</h4>
-                          <div className="weight-inputs">
-                            <input
-                              type="number"
-                              placeholder="Weight"
-                              value={box.weight}
-                              onChange={(e) =>
-                                handleInputChangeBox(
-                                  index,
-                                  "weight",
-                                  e.target.value
-                                )
-                              }
-                            />
-                            <select>
-                              <option value="lb">lb</option>
-                            </select>
-                          </div>
-                          <p>Includes packaging</p>
+                      <div className="section packageDeminsionMain_div">
+                        {boxes?.map((box, index) => (
 
-                          {!box.shippingMethods ? (
-                            <>
-                              <button
-                                className="btn get-rate"
-                                onClick={() => calculateRate(index)}
-                              >
-                                Get Rates
-                              </button>
-                              {order?.serviceCode?.name != "Local Pickup" && (
-                                <button
-                                  className="btn remove-box"
-                                  onClick={() => removeBox(index)}
-                                  disabled={boxes.length === 1} // Disable removing if there's only one box
-                                >
-                                  Remove Box
-                                </button>
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              {order?.serviceCode?.name != "Local Pickup" &&
-                                (!box.downloadLabel ? (
-                                  <button
-                                    className="btn get-rate"
-                                    onClick={() => handleSubmitData(index)}
-                                  >
-                                    Purchase Label
-                                  </button>
-                                ) : (
-                                  <a
-                                    target="_blank"
-                                    class="btn get-rate"
-                                    href={box?.downloadLabel?.label_url}
-                                  >
-                                    Download Label
-                                  </a>
-                                ))}
-                            </>
-                          )}
-                          {box.shippingMethods ? (
-                            <>
-                              <div>
-                                <input
-                                  type="checkbox"
-                                  id="localPickup"
-                                  disabled
-                                  checked={
-                                    order?.serviceCode?.name == "Local Pickup"
-                                      ? true
-                                      : false
-                                  }
-                                />
-                                <label htmlFor="localPickup">
-                                  Local Pickup ($0.00)
-                                </label>
-                              </div>
-
-                              {box.shippingMethods?.map((method) => (
-                                <div key={method.service_code}>
-                                  <input
-                                    type="checkbox"
-                                    id={method.service_code}
-                                    disabled
-                                    checked={
-                                      order?.serviceCode?.name ==
-                                      method.service_type
-                                        ? true
-                                        : false
+                          <Row key={index} className="section DeminsionMain_div">
+                            <Col lg={6}>
+                            <div className="d-flex align-items-center gap_20">
+                              <div className="PachageField_div flex-grow-1">
+                                <div className="mb-4">
+                                <h4 className="PachageField_label">Dimensions</h4>
+                                <div className="DeminsionField_flex">
+                                <div className="PachageField_box">
+                                <span className="PachageField_Size">L</span>
+                                  <input className="PachageField_number"
+                                    type="number"
+                                    placeholder=""
+                                    value={box.length}
+                                    onChange={(e) =>
+                                      handleInputChangeBox(
+                                        index,
+                                        "length",
+                                        e.target.value
+                                      )
                                     }
                                   />
-                                  <label htmlFor={method.service_code}>
-                                    {method.service_type} (
-                                    <Amount amount={method.shipping_amount} />)
-                                  </label>
+                                </div>  
+                                 X
+                                  <div className="PachageField_box">
+                                  <span className="PachageField_Size">L</span>
+                                  <input className="PachageField_number"
+                                    type="number"
+                                    placeholder=""
+                                    value={box.width}
+                                    onChange={(e) =>
+                                      handleInputChangeBox(
+                                        index,
+                                        "width",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>  
+                                  X
+                                  <div className="PachageField_box">
+                                  <span className="PachageField_Size">H</span>
+                                  <input className="PachageField_number"
+                                    type="number"
+                                    placeholder=""
+                                    value={box.height}
+                                    onChange={(e) =>
+                                      handleInputChangeBox(
+                                        index,
+                                        "height",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>  
+                                  <select className="PachageFieldSizeSelect"
+                                    onChange={(e) =>
+                                      handleInputChangeBox(
+                                        index,
+                                        "unit",
+                                        e.target.value
+                                      )
+                                    }
+                                  >
+                                    <option value="in">in</option>
+                                  </select>
                                 </div>
-                              ))}
-                            </>
-                          ) : (
-                            <p></p>
-                          )}
-                        </div>
-                      ))}
-                      {order?.serviceCode?.name == "Local Pickup" && (
-                        <Button
-                          type="submit"
-                          // className="my-3 ms-3"
-                          onClick={handleCompleteShip}
-                          disabled={loadingWeight}
-                        >
-                          {loadingWeight ? (
-                            <span
-                              className="spinner-border spinner-border-sm"
-                              role="status"
-                              aria-hidden="true"
-                            ></span>
-                          ) : (
-                            "Move To Complete"
-                          )}
-                        </Button>
-                      )}
-                      {orderInfo?.length >= 1 && (
-                        <Button
-                          type="submit"
-                          // className="my-3 ms-3"
-                          onClick={handleCompleteShip}
-                          disabled={loadingWeight}
-                        >
-                          {loadingWeight ? (
-                            <span
-                              className="spinner-border spinner-border-sm"
-                              role="status"
-                              aria-hidden="true"
-                            ></span>
-                          ) : (
-                            "Move To Complete"
-                          )}
-                        </Button>
-                      )}
-                      {order?.serviceCode?.name != "Local Pickup" && (
-                        <button className="btn add-box" onClick={addBox}>
-                          Add Another Box
-                        </button>
-                      )}
-                    </div>
+                                <p className="PackageFieldSubtitle">Enter dimensions of package</p>
+                                </div>
+                                <div className="mb-4">
+                                <h4 className="PachageField_label">Package Weight</h4>
+                                <div className="DeminsionField_flex max_250">
+                                <div className="PachageField_box">
+                                  <input className="PachageField_number"
+                                    type="number"
+                                    placeholder=""
+                                    value={box.weight}
+                                    onChange={(e) =>
+                                      handleInputChangeBox(
+                                        index,
+                                        "weight",
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </div>
+                                  <select className="PachageFieldSizeSelect">
+                                    <option value="lb">lb</option>
+                                  </select>
+                                  </div>  
+                                </div>
+                              </div>
+                                <div className="flex-shrink-0">
+                                  {!box.shippingMethods ? (
+                                    <>
+                                      <button
+                                        className="btn getRate_btn"
+                                        onClick={() => calculateRate(index)}
+                                      >
+                                        Get Rates
+                                      </button>
 
+                                    </>
+                                  ) : ""}
+                                </div>
+                                </div>  
+                            </Col>
+                            <Col lg={6}>
+                              <div>
+                                {box.shippingMethods ? (
+                                  <>
+                                    <div>
+                                      <input
+                                        type="checkbox"
+                                        id="localPickup"
+                                        disabled
+                                        checked={
+                                          order?.serviceCode?.name == "Local Pickup"
+                                            ? true
+                                            : false
+                                        }
+                                      />
+                                      <label htmlFor="localPickup">
+                                        Local Pickup ($0.00)
+                                      </label>
+                                    </div>
+
+                                    {box.shippingMethods?.map((method) => (
+                                      <div key={method.service_code}>
+                                        <input
+                                          type="checkbox"
+                                          id={method.service_code}
+                                          disabled
+                                          checked={
+                                            order?.serviceCode?.name ==
+                                              method.service_type
+                                              ? true
+                                              : false
+                                          }
+                                        />
+                                        <label htmlFor={method.service_code}>
+                                          {method.service_type} (
+                                          <Amount amount={method.shipping_amount} />)
+                                        </label>
+                                      </div>
+                                    ))}
+                                  </>
+                                ) : (
+                                  <p></p>
+                                )}
+                              </div>
+                              {!box.shippingMethods ? (
+                                <>
+                                  {order?.serviceCode?.name != "Local Pickup" && (
+                                    <button
+                                      className="btn remove-box"
+                                      onClick={() => removeBox(index)}
+                                      disabled={boxes.length === 1} // Disable removing if there's only one box
+                                    >
+                                      <Icon icon="simple-line-icons:close" />
+                                    </button>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  {order?.serviceCode?.name != "Local Pickup" &&
+                                    (!box.downloadLabel ? (
+                                      <button
+                                        className="btn get-rate"
+                                        onClick={() => handleSubmitData(index)}
+                                      >
+                                        Purchase Label
+                                      </button>
+                                    ) : (
+                                      <a
+                                        target="_blank"
+                                        class="btn get-rate"
+                                        href={box?.downloadLabel?.label_url}
+                                      >
+                                        Download Label
+                                      </a>
+                                    ))}
+                                </>
+                              )}
+
+                            </Col>
+                          </Row>
+                        ))}
+
+                        {order?.serviceCode?.name == "Local Pickup" && (
+                          <Button variant={null} className="PackageCompleteOrder_btn me-2"
+                            type="submit"
+                            // className="my-3 ms-3"
+                            onClick={handleCompleteShip}
+                            disabled={loadingWeight}
+                          >
+                            {loadingWeight ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              "Move To Complete"
+                            )}
+                          </Button>
+                        )}
+                        {/* {order?.serviceCode?.name != "Local Pickup" && (
+                                      <button
+                                        className="btn remove-box"
+                                        onClick={() => removeBox(index)}
+                                        disabled={boxes.length === 1} // Disable removing if there's only one box
+                                      >
+                                        Remove Box
+                                      </button>
+                                    )} */}
+                        {orderInfo?.length >= 1 && (
+                          <Button variant={null} className="PackageCompleteOrder_btn me-2"
+                            type="submit"
+                            // className="my-3 ms-3"
+                            onClick={handleCompleteShip}
+                            disabled={loadingWeight}
+                          >
+                            {loadingWeight ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              "Move To Complete"
+                            )}
+                          </Button>
+                        )}
+                        {order?.serviceCode?.name != "Local Pickup" && (
+                          <button className="btn PackageAddAnother_btn" onClick={addBox}>
+                            Add Another Box
+                          </button>
+                        )}
+                      </div>
+                    </div>
                     <h5 className="py-3">Add Shipping Information</h5>
 
                     <Form className="accountform" onSubmit={handleSubmit}>
@@ -1391,7 +1433,7 @@ const OrdersDetail = () => {
                               dimensions={wo.dimensions}
                               id={wo._id}
                               type={wo.dimension_type}
-                              // isEdit={true}
+                            // isEdit={true}
                             />
                           </div>
 
@@ -1476,7 +1518,7 @@ const OrdersDetail = () => {
                         </div>
 
                         <div className="list-checkboxes  d-inline-flex gap-3">
-                          <div className="custom-checkbox-container text-center">
+                          <div className="CuttingCheck_div custom-checkbox-container text-center">
                             <p>
                               {" "}
                               <span
@@ -1518,8 +1560,8 @@ const OrdersDetail = () => {
                               {wo.material_code}
                             </label>
                           </div>
-                          <div className="custom-checkbox-container text-center">
-                            <div className="d-flex">
+                          <div className="postOpsCheckbox_div custom-checkbox-container text-center">
+                            <div className="d-flex postOpsCheckbox_box">
                               {" "}
                               <span>POST OPS </span>
                               <Form.Check
@@ -1544,7 +1586,7 @@ const OrdersDetail = () => {
                             </div>
                             {wo.postops?.map((item, index) => (
                               <>
-                                <div className="d-flex">
+                                <div className="d-flex postOpsTagCheckbox_box">
                                   <span> {item.post_ops} </span>
                                   <Form.Check
                                     type="checkbox"
