@@ -450,6 +450,67 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:last-child {
   border-color: #4F8CCA;
 }
+body.dark .wrapper .card .card-body .darkThemeWhite_text {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .ShippingPackageOrder_info p {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .ShippingMethodmain_title {
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .dimensionShowCheckbox_div input[type=checkbox] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.07);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .dimensionShowCheckbox_div input[type=checkbox]:disabled {
+  background-color: rgba(255, 255, 255, 0.07); /* Light gray */
+  border-color: rgba(255, 255, 255, 0.2);
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27%3e%3cpath fill=%27none%27 stroke=%27%23fff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%273%27 d=%27m6 10 3 3 6-6%27/%3e%3c/svg%3e");
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .dimensionShowCheckbox_div label {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .PachageField_label {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .PackageFieldSubtitle {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box input.PachageField_number {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box input.PachageField_number::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box input.PachageField_number::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageField_box .PachageField_Size {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageFieldSizeSelect {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .DeminsionMain_div .PachageField_div .DeminsionField_flex .PachageFieldSizeSelect option {
+  color: rgba(0, 0, 0, 0.75);
+}
 body.dark .sortByMain_box .sortByMain_head .sortByFilterBtn {
   color: #ffffff;
 }

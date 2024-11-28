@@ -961,19 +961,17 @@ const OrdersDetail = () => {
                   <div className="orders-shipping">
                     <div className="shipping-container">
                       {orderInfo?.map((Info, index) => (
-                        <div className="order_info d-flex">
-                          <div className="d-flex">
-                            <p>Height : {Info?.dimensions?.height}</p>
-                            <p>Width : {Info?.dimensions?.width}</p>
+                        <div className="ShippingPackageOrder_info d-flex">
+                          <div className="d-flex gap_10">
+                            <p>Height : {Info?.dimensions?.height} In</p>
+                            <p>Width : {Info?.dimensions?.width} In</p>
 
-                            <p>Length : {Info?.dimensions?.length}</p>
-                            <p>Weight : {Info?.weight}</p>
-                          </div>
-                          <div>
-                            <a href={Info?.label_url} target="_blank">
+                            <p>Length : {Info?.dimensions?.length} In</p>
+                            <p>Weight : {Info?.weight} lb</p>
+                            <a href={Info?.label_url} target="_blank" className="downloadLabel_btn">
                               Download Label
                             </a>
-                            <Link to={"/"}>Refund Label</Link>
+                            <Link className="RefundLabel_btn" to={"/"}>Refund Label</Link>
                           </div>
                         </div>
                       ))}
@@ -981,7 +979,7 @@ const OrdersDetail = () => {
                         {boxes?.map((box, index) => (
 
                           <Row key={index} className="section DeminsionMain_div">
-                            <Col lg={6}>
+                            <Col lg={6} className="align-self-center">
                             <div className="d-flex align-items-center gap_20">
                               <div className="PachageField_div flex-grow-1">
                                 <div className="mb-4">
@@ -1086,11 +1084,13 @@ const OrdersDetail = () => {
                                 </div>
                                 </div>  
                             </Col>
-                            <Col lg={6}>
-                              <div>
+                            <Col lg={6} className="align-self-center">
+                            <div className="dimensionShow_div">
+                              <div className="flex-grow-1">
                                 {box.shippingMethods ? (
                                   <>
-                                    <div>
+                            <h4 className="ShippingMethodmain_title">Shipping Method</h4>
+                                    <div className="dimensionShowCheckbox_div">
                                       <input
                                         type="checkbox"
                                         id="localPickup"
@@ -1107,7 +1107,7 @@ const OrdersDetail = () => {
                                     </div>
 
                                     {box.shippingMethods?.map((method) => (
-                                      <div key={method.service_code}>
+                                      <div key={method.service_code} className="dimensionShowCheckbox_div">
                                         <input
                                           type="checkbox"
                                           id={method.service_code}
@@ -1130,11 +1130,12 @@ const OrdersDetail = () => {
                                   <p></p>
                                 )}
                               </div>
+                              <div className="d-inline-flex align-items-center gap-2">
                               {!box.shippingMethods ? (
                                 <>
                                   {order?.serviceCode?.name != "Local Pickup" && (
                                     <button
-                                      className="btn remove-box"
+                                      className="btn PackageRemove_btn" 
                                       onClick={() => removeBox(index)}
                                       disabled={boxes.length === 1} // Disable removing if there's only one box
                                     >
@@ -1147,7 +1148,7 @@ const OrdersDetail = () => {
                                   {order?.serviceCode?.name != "Local Pickup" &&
                                     (!box.downloadLabel ? (
                                       <button
-                                        className="btn get-rate"
+                                        className="btn PackagePurchase_btn"
                                         onClick={() => handleSubmitData(index)}
                                       >
                                         Purchase Label
@@ -1155,7 +1156,7 @@ const OrdersDetail = () => {
                                     ) : (
                                       <a
                                         target="_blank"
-                                        class="btn get-rate"
+                                        class="btn PackagePurchase_btn"
                                         href={box?.downloadLabel?.label_url}
                                       >
                                         Download Label
@@ -1163,7 +1164,8 @@ const OrdersDetail = () => {
                                     ))}
                                 </>
                               )}
-
+                              </div>
+                            </div>
                             </Col>
                           </Row>
                         ))}
@@ -1220,7 +1222,7 @@ const OrdersDetail = () => {
                         )}
                       </div>
                     </div>
-                    <h5 className="py-3">Add Shipping Information</h5>
+                    <h5 className="py-3 darkThemeWhite_text">Add Shipping Information</h5>
 
                     <Form className="accountform" onSubmit={handleSubmit}>
                       {shippingInfo?.map((info, index) => (

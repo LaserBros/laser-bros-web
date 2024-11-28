@@ -1383,6 +1383,64 @@ body {
 .wrapper .maincontent_div .card .card-body .custom-table .rdt_TableBody .rdt_TableRow .rdt_TableCell > div {
   white-space: pre-wrap;
 }
+.wrapper .maincontent_div .card .card-body .ShippingPackageOrder_info {
+  align-items: center;
+  margin-bottom: 10px;
+}
+.wrapper .maincontent_div .card .card-body .ShippingPackageOrder_info .gap_10 {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.wrapper .maincontent_div .card .card-body .ShippingPackageOrder_info p {
+  border-radius: 5px;
+  padding: 10px 20px;
+  background: #ffffff;
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  margin: 0px;
+}
+.wrapper .maincontent_div .card .card-body .ShippingPackageOrder_info .downloadLabel_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #4e8ac8;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+  text-decoration: none;
+}
+.wrapper .maincontent_div .card .card-body .ShippingPackageOrder_info .RefundLabel_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff8282;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+  text-decoration: none;
+}
+.wrapper .maincontent_div .card .card-body .PackagePurchase_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #4e8ac8;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+}
 .wrapper .maincontent_div .card .card-body .PackageCompleteOrder_btn {
   display: inline-flex;
   align-items: center;
@@ -1408,6 +1466,54 @@ body {
   border-radius: 10px;
   outline: 0px;
   box-shadow: none;
+}
+.wrapper .maincontent_div .card .card-body .PackageRemove_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #ca0000;
+  border: 1px solid #ca0000;
+  font-size: 22px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: 0px;
+  box-shadow: none;
+}
+.wrapper .maincontent_div .card .card-body .dimensionShow_div {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div {
+  display: flex;
+  align-items: center;
+  margin: 5px 0px;
+}
+.wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div input[type=checkbox] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  background-color: #fff;
+  border-radius: 4px;
+}
+.wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div input[type=checkbox]:disabled {
+  background-color: rgba(0, 0, 0, 0.6); /* Light gray */
+  border-color: rgba(0, 0, 0, 0.6);
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27%3e%3cpath fill=%27none%27 stroke=%27%23fff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%273%27 d=%27m6 10 3 3 6-6%27/%3e%3c/svg%3e");
+}
+.wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div label {
+  font-size: 16px;
+}
+.wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .ShippingMethodmain_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 10px;
 }
 .wrapper .maincontent_div .card .card-body .packageDeminsionMain_div .gap_20 {
   gap: 40px;
@@ -1476,7 +1582,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #f9f9f9;
+  background: #f0f0f0;
   color: #000000;
   font-size: 14px;
   padding: 2px 5px;
