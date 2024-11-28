@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
+import { Icon } from "@iconify/react";
 import { useDrag, useDrop } from "react-dnd";
 
 // Define the type for the draggable item
@@ -56,7 +57,7 @@ const DragDropList = ({ id, dragoption }) => {
   };
 
   return (
-    <div>
+    <div className="d-flex flex-column align-items-center gap-2 mb-2">
       {items.map((item, index) => (
         <DraggableItem
           key={item.id || index} // Ensure a unique key for each item
@@ -96,28 +97,21 @@ const DraggableItem = ({ index, item, id, moveItem, removeItem }) => {
   drag(drop(ref));
 
   return (
-    <div
+    <div className="DragItemPost_box"
       ref={ref}
       style={{
         opacity: isDragging ? 0.5 : 1,
-        border: "1px solid #ccc",
-        padding: "10px",
-        marginBottom: "5px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
         cursor: "move",
       }}
     >
       <span>{item.name || item}</span>
-      <Button
+      <Button className="DragItemPostClose_btn" variant={null}
         style={{
           cursor: "pointer",
-          color: "#ff0000",
         }}
         onClick={() => removeItem(item, id)}
       >
-        x
+        <Icon icon="zondicons:close-outline" />
       </Button>
     </div>
   );

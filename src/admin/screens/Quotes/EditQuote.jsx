@@ -1024,27 +1024,29 @@ const EditRFQS = () => {
                             placeholder={"Select a Finish"}
                             onOptionSelect={handleOptionSelect}
                           />
-                          <Button>Post Ops</Button>
-                          {quote?.post_ops?.length > 0 ? (
-                            <>
-                              <DraggableItem
-                                id={quote._id}
-                                dragoption={quote.post_ops}
-                              />
-                            </>
-                          ) : (
-                            <p></p>
-                          )}
+                          <div className="DragItemPost_div">
+                            <Button className="DragItemPostOps_btn" variant={null}>Post Ops</Button>
+                            {quote?.post_ops?.length > 0 ? (
+                              <>
+                                <DraggableItem
+                                  id={quote._id}
+                                  dragoption={quote.post_ops}
+                                />
+                              </>
+                            ) : (
+                              <p></p>
+                            )}
 
-                          <Button
-                            variant="primary"
-                            onClick={() =>
-                              handleOpenModal(quote._id, quote.post_ops)
-                            }
-                          >
-                            +
-                          </Button>
-                        </div>
+                            <Button className="DragItemPostPlus_btn"
+                              variant={null}
+                              onClick={() =>
+                                handleOpenModal(quote._id, quote.post_ops)
+                              }
+                            >
+                              <Icon icon="ic:baseline-plus" />
+                            </Button>
+                          </div>
+                        </div>  
                         <div className="quotes-services quote_div_main_sect mt-3">
                           {quote.binding_option == "no" ? (
                             <p></p>

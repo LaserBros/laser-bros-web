@@ -201,12 +201,12 @@ const Orders = () => {
         <CardBody>
           <Form>
             <Row className="px-2 gx-3">
-              <Col lg={2} xxl={2}>
-                <Form.Group className="form-group mb-2 searchfield">
-                  <div className=" position-relative">
+              <Col lg={3} xxl={3} className="mb-3">
+                <Form.Group className="form-group mb-2 SearchFilterfield">
+                  <div className="position-relative">
                     <Icon
                       icon="flowbite:search-solid"
-                      className="position-absolute"
+                      className="position-absolute search_icon"
                     />
                     <Form.Control
                       type="text"
@@ -226,39 +226,89 @@ const Orders = () => {
                       className="rounded-5"
                     />
                   </div>
+                                      
+                  <div className="sortByFilterBtn">
+                      <Icon icon="fa6-solid:filter" />
+                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                    </div>
                 </Form.Group>
               </Col>
-              <Col lg={12} xxl={12}>
-                <div>
-                  Sort By :{" "}
-                  <Button onClick={() => handleSortChange("true")}>
-                    New to Old
-                  </Button>
-                  <Button onClick={() => handleSortChange("true")}>
-                    Old to New
-                  </Button>
+            </Row>  
+            <Row className="px-2 gx-3">
+              <Col lg={9} xxl={9}>
+                <div className="sortByMain_box">
+                  <div className="sortByMain_head">
+                    <span className="sortByHead_box">Sort By :{" "}</span>
+                    <div className="sortByFilterBtn">
+                      <Icon icon="fa6-solid:filter" />
+                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                    </div>
+                  </div>
+                  <div className="SortFilterBtnBox">
+                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>
+                      Old to New
+                    </Button>
+                    <Button className="SortFilter_btn active" variant={null} onClick={() => handleSortChange("true")}>
+                      New to Old
+                    </Button>
+                  </div>
+                </div>
+                <div className="sortByMain_box">
+                  <div className="sortByMain_head">
+                    <span className="sortByHead_box">Phase :{" "}</span>
+                    <div className="sortByFilterBtn">
+                      <Icon icon="fa6-solid:filter" />
+                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                    </div>
+                  </div>
+                  <div className="SortFilterBtnBox">
+                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>New</Button>
+                    <Button className="SortFilter_btn active" variant={null} onClick={() => handleSortChange("true")}>
+                      In Progress
+                    </Button>
+                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>
+                      Ready to SHIP
+                    </Button>
+                  </div>
+                </div>
+                <div className="sortByMain_box">
+                  <div className="sortByMain_head">
+                    <span className="sortByHead_box">Operation :{" "}</span>
+                    <div className="sortByFilterBtn">
+                      <Icon icon="fa6-solid:filter" />
+                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                    </div>
+                  </div>
+                  <div className="SortFilterBtnBox">
+                    <Button className="SortFilter_btn" variant={null} onClick={() => handleSortChange("true")}>
+                      Cutting
+                    </Button>
+                    <Button className="SortFilter_btn active" variant={null} onClick={() => handleSortChange("true")}>
+                      POST OPS
+                    </Button>
+                  </div>
+                </div>
+                <div className="sortByMain_box">
+                  <div className="sortByMain_head">
+                    <span className="sortByHead_box">Tag :{" "}</span>
+                    <div className="sortByFilterBtn">
+                      <Icon icon="fa6-solid:filter" />
+                      <Icon className="sortFilterClose" icon="zondicons:close-solid" />
+                    </div>
+                  </div>
+                  <div className="tagFilterBtnBox">
+                    <Button className="tagFilter_btn" variant={null}>
+                      F1
+                    </Button>
+                    <Button className="tagFilter_btn active" variant={null}>
+                      B2
+                    </Button>
+                    <Button className="tagFilter_btn" variant={null}>
+                      F3
+                    </Button>
+                  </div>
                 </div>
                 <div>
-                  Phase :{" "}
-                  <Button onClick={() => handleSortChange("true")}>New</Button>
-                  <Button onClick={() => handleSortChange("true")}>
-                    In Progress
-                  </Button>
-                  <Button onClick={() => handleSortChange("true")}>
-                    Ready to SHIP
-                  </Button>
-                </div>
-                <div>
-                  Operation :{" "}
-                  <Button onClick={() => handleSortChange("true")}>
-                    Cutting
-                  </Button>
-                  <Button onClick={() => handleSortChange("true")}>
-                    POST OPS
-                  </Button>
-                </div>
-                <div>
-                  Operation :{" "}
                   {/* <Button onClick={handleSortChange("false")}>Cutting</Button>
                   <Button onClick={handleSortChange("true")}>POST OPS</Button> */}
                 </div>
@@ -276,7 +326,7 @@ const Orders = () => {
                   </Form.Select>
                 </Form.Group> */}
               </Col>
-              <Col lg={2} xxl={2}>
+              {/* <Col lg={2} xxl={2}>
                 <Form.Group className="form-group mb-2">
                   <Form.Select
                     className="rounded-5"
@@ -306,8 +356,8 @@ const Orders = () => {
                     ))}
                   </Form.Select>
                 </Form.Group>
-              </Col>
-              <Col lg={2} xxl={2}>
+              </Col> */}
+              {/* <Col lg={3} xxl={2}>
                 <Link
                   to={""}
                   className="btn btn-primary d-inline-flex align-items-center justify-content-center"
@@ -323,8 +373,8 @@ const Orders = () => {
                   {" "}
                   Clear
                 </Link>
-              </Col>
-              <Col lg={2} xxl={2} className="text-lg-end">
+              </Col> */}
+              <Col lg={3} xxl={3} className="text-lg-end align-self-end">
                 <Button
                   variant={null}
                   onClick={moveQueue}

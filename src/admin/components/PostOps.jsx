@@ -35,20 +35,23 @@ const MultiSelectModal = ({
       </Modal.Header>
       <Modal.Body>
         <Form>
+          <div className="ModalPostOPS_check">
           {options.map((option, index) => (
             <Form.Check
               key={index}
               type="checkbox"
               label={option}
+              id={option}
               value={option}
               checked={selectedOptions.includes(option)}
               onChange={() => handleSelect(option)}
             />
           ))}
+          </div>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline-primary" onClick={onClose}>
           Close
         </Button>
         <Button variant="primary" onClick={handleSave}>

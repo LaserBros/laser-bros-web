@@ -6,6 +6,15 @@ body.dark {
 body.dark .quotes-head {
   color: #ffffff;
 }
+body.dark .quote_div_main_sect .main_service_clr {
+  display: flex;
+  align-items: flex-start;
+  background-color: #000000;
+  padding: 8px;
+}
+body.dark .shipping_info b, body.dark .shipping_info i {
+  color: #ffffff;
+}
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .shipping_head {
   color: #ffffff;
 }
@@ -611,6 +620,13 @@ body.dark .list-quotes-main .list-quotes .content-quotes .quotes-dropdown .selec
 }
 body.dark .list-quotes-main .list-quotes .content-quotes .quotes-dropdown .selectdropdown span + div + div:hover {
   color: #ffffff !important;
+}
+body.dark .list-quotes-main .list-quotes .content-quotes .DragItemPost_div .DragItemPostPlus_btn {
+  color: #fff;
+  border: 1px solid #fff;
+}
+body.dark .list-quotes-main .list-quotes .content-quotes .DragItemPost_div .DragItemPost_box button.DragItemPostClose_btn.btn {
+  color: #fff;
 }
 body.dark .totaltable p {
   color: #bfbfbf;

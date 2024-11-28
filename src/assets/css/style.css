@@ -2761,34 +2761,39 @@ textarea.form-control {
   padding-bottom: 20px;
   margin-bottom: 20px;
 }
+.list-quotes-main .quanityCount_btn b {
+  font-size: 14px;
+  align-self: center;
+  margin-top: 0px !important;
+}
 .list-quotes-main .input-group {
-  max-width: 124px;
+  max-width: 110px;
 }
 .list-quotes-main .input-group .form-control {
   border: none;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: bold;
   padding: 0px;
 }
 @media only screen and (max-width: 767.98px) {
   .list-quotes-main .input-group .form-control {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 .list-quotes-main .input-group button {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: 1px solid #000000;
   border-radius: 6px !important;
   padding: 0px !important;
 }
 .list-quotes-main .input-group button svg {
-  font-size: 24px;
+  font-size: 18px;
   color: #000000;
 }
 @media only screen and (max-width: 767.98px) {
   .list-quotes-main .input-group button svg {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 .list-quotes-main .input-group button:hover {
@@ -2873,6 +2878,55 @@ textarea.form-control {
 }
 .list-quotes-main .list-quotes .content-quotes {
   flex-grow: 1;
+}
+.list-quotes-main .list-quotes .content-quotes .DragItemPost_div {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.list-quotes-main .list-quotes .content-quotes .DragItemPost_div .DragItemPostOps_btn {
+  background: #ff8cd3;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 12px;
+  line-height: normal;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.list-quotes-main .list-quotes .content-quotes .DragItemPost_div .DragItemPostPlus_btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  border: 1px solid #000;
+  padding: 0px;
+  font-size: 20px;
+}
+.list-quotes-main .list-quotes .content-quotes .DragItemPost_div .DragItemPost_box {
+  position: relative;
+  background: #ff8cd3;
+  margin-bottom: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 10px;
+}
+.list-quotes-main .list-quotes .content-quotes .DragItemPost_div .DragItemPost_box button.DragItemPostClose_btn.btn {
+  position: absolute;
+  top: -8px;
+  right: -5px;
+  padding: 0px;
+  border: 0px;
+  font-size: 14px;
+  color: #000;
 }
 .list-quotes-main .list-quotes .content-quotes h2 {
   font-size: 20px;
@@ -3507,13 +3561,22 @@ textarea.form-control {
   gap: 5px;
 }
 
+.quote_div_main_sect .main_service_clr {
+  display: flex;
+  align-items: flex-start;
+  background-color: #ffffff;
+  padding: 8px;
+}
+
+.quote_div_main_sect .main_service_clr .form-check {
+  min-height: auto;
+}
+
 .quote_div_main_sect .custom_bend_div {
-  margin-top: 25px;
   margin-right: 10px;
 }
 
 .quote_div_main_sect a.btnicon {
-  margin-top: 15px;
   width: 24px;
   height: 24px;
 }
@@ -3584,6 +3647,52 @@ textarea.form-control {
 }
 .proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option label {
   font-size: 14px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label {
+  display: inline-flex;
+  align-items: center;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label input.addNumber_input {
+  height: 36px;
+  border-radius: 5px;
+  padding: 4px 10px;
+  box-sizing: border-box;
+  display: inline-block;
+  outline: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  width: auto;
+  max-width: 110px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label .save-price-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgb(1, 148, 60);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: rgb(1, 148, 60);
+  font-size: 24px;
+  padding: 0px;
+  outline: 0px;
+  box-shadow: none;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .ship_methods .rate-option.ShippingMethodCheckbox_div label .cancel-price-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(225, 31, 38, 0.6);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: rgba(225, 31, 38, 0.6);
+  font-size: 24px;
+  padding: 0px;
+  outline: 0px;
+  box-shadow: none;
 }
 .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids p.card-no {
   margin: 0px 0px 10px !important;
@@ -3716,4 +3825,61 @@ textarea.form-control {
   font-weight: 500;
   padding: 2px 10px;
   border-radius: 20px;
+}
+.QuoteBillMain_div .QuoteBillInfo_box .QuoteBillDownload_btn {
+  background: #4e8ac8;
+  color: #000;
+  display: inline-flex;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 10px;
+}
+
+.viewCustomerTabs_div {
+  border: 0px !important;
+  margin-top: 10px;
+  gap: 15px;
+  margin-bottom: 15px !important;
+}
+.viewCustomerTabs_div .nav-item .nav-link {
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 20px;
+  outline: 0px;
+  box-shadow: none;
+  border: 0px;
+}
+.viewCustomerTabs_div .nav-item .nav-link.active {
+  background: #4F8CCA;
+  color: #ffffff;
+}
+
+.ModalPostOPS_check {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ModalPostOPS_check .form-check {
+  padding: 0px;
+}
+.ModalPostOPS_check .form-check .form-check-label {
+  background: rgba(255, 140, 211, 0.4);
+  padding: 10px 24px;
+  line-height: normal;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+.ModalPostOPS_check .form-check .form-check-input {
+  display: none;
+}
+.ModalPostOPS_check .form-check .form-check-input:checked ~ .form-check-label {
+  background: #ff8cd3;
 }/*# sourceMappingURL=style.css.map */

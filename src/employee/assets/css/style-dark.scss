@@ -682,6 +682,24 @@ body {
                 }
             }
         }
+        .sortByMain_box {
+            .sortByMain_head {
+                .sortByFilterBtn {
+                    color: $white-color;
+                    .sortFilterClose {
+                        border: 1px solid #000;
+                    }
+                }
+            }
+        }
+        .SearchFilterfield{
+            .sortByFilterBtn {
+                color: $white-color;
+                .sortFilterClose {
+                    border: 1px solid #000;
+                }
+            }
+          }
     }
 }
 .toggle-switch-container {

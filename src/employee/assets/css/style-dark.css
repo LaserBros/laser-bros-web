@@ -450,9 +450,21 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:last-child {
   border-color: #4F8CCA;
 }
+body.dark .sortByMain_box .sortByMain_head .sortByFilterBtn {
+  color: #ffffff;
+}
+body.dark .sortByMain_box .sortByMain_head .sortByFilterBtn .sortFilterClose {
+  border: 1px solid #000;
+}
+body.dark .SearchFilterfield .sortByFilterBtn {
+  color: #ffffff;
+}
+body.dark .SearchFilterfield .sortByFilterBtn .sortFilterClose {
+  border: 1px solid #000;
+}
 
 .toggle-switch-container p {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
   font-weight: 500;
 }
 

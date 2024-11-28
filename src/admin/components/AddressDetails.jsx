@@ -85,7 +85,7 @@ const AddressDetails = ({ addressDetail }) => {
             </p>
           </div>
         </Col>
-        <Col lg={12}>
+        <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0">
             <p>
               <b>Phone Number:</b>
@@ -95,6 +95,12 @@ const AddressDetails = ({ addressDetail }) => {
               <b>Email:</b>
               {addressDetail?.address_details?.email}
             </p>
+          </div>
+        </Col>
+        <Col lg={6}>
+          <div className="QuoteBillInfo_box mb-0 text-end">
+            <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>Download All Files</Button>
+            <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>Download PDF</Button>
           </div>
         </Col>
       </Row>

@@ -198,7 +198,7 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
                       <span className="quotessubtotal">Shipping Methods</span>
                     </div>
                     {shippingMethods.map((method) => (
-                      <div className="rate-option" key={method.id}>
+                      <div className="rate-option ShippingMethodCheckbox_div" key={method.id}>
                         <label>
                           <input
                             type="checkbox"
@@ -208,36 +208,44 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
                           &nbsp;&nbsp;
                           {method.name} (
                           {method.isEditing ? (
+                            <div className="ShippingMethodCount_div">
                             <input
                               type="number"
+                              className="addNumber_input"
                               value={method.price}
                               onChange={(e) =>
                                 handlePriceChange(method.id, e.target.value)
                               }
                             />
+                            {method.isEditing && (
+                          <>
+                            <Button 
+                              variant={null}
+                              className="save-price-btn"
+                              onClick={() =>
+                                handleEditSaveClick(method.id, method.price)
+                              }
+                            >
+                              <Icon icon="lucide:check" />
+                            </Button>
+                            <Button 
+                              variant={null}
+                              className="cancel-price-btn"
+                              onClick={() =>
+                                handleCancelClick(method.id, method.price)
+                              }
+                            >
+                              <Icon icon="majesticons:close" />
+                            </Button>
+                          </>
+                        )}
+                            </div>
                           ) : (
                             `$${method.price.toFixed(2)}`
                           )}
                           )
                         </label>
-                        {method.isEditing && (
-                          <div>
-                            <button
-                              onClick={() =>
-                                handleEditSaveClick(method.id, method.price)
-                              }
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleCancelClick(method.id, method.price)
-                              }
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        )}
+                        
                         {!method.isEditing && (
                           <button
                             onClick={() =>

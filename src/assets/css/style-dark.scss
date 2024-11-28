@@ -917,6 +917,18 @@ body {
                             }
                         }
                     }
+
+                    .DragItemPost_div {
+                        .DragItemPostPlus_btn {
+                            color: #fff;
+                            border: 1px solid #fff;
+                        }
+                        .DragItemPost_box {
+                            button.DragItemPostClose_btn.btn {
+                                color: #fff;
+                            }
+                        }
+                    }                    
                 }
             }
         }

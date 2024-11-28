@@ -436,6 +436,19 @@ body {
   background-color: #4F8CCA;
 }
 
+.badgestatus-more {
+  font-size: 12px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+}
+
 @media only screen and (max-width: 767.98px) {
   .header,
   .maincontent_div {
@@ -1352,4 +1365,121 @@ body {
     margin-left: 0 !important;
   }
 }
-/*After Login Css Ends*//*# sourceMappingURL=style.css.map */
+/*After Login Css Ends*/
+.sortByMain_box {
+  display: flex;
+  gap: 0px 20px;
+  margin-bottom: 10px;
+}
+.sortByMain_box .sortByMain_head {
+  display: inline-flex;
+  align-items: flex-start;
+  min-width: 120px;
+  justify-content: flex-end;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.sortByMain_box .sortByMain_head .sortByHead_box {
+  display: inline-flex;
+  background: #d9d9d9;
+  color: #000000;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+.sortByMain_box .sortByMain_head .sortByFilterBtn {
+  position: relative;
+  font-size: 18px;
+  color: #000000;
+  display: inline-flex;
+}
+.sortByMain_box .sortByMain_head .sortByFilterBtn .sortFilterClose {
+  position: absolute;
+  font-size: 14px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  bottom: 0px;
+  right: -6px;
+}
+.sortByMain_box .SortFilterBtnBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+}
+.sortByMain_box .SortFilterBtnBox .SortFilter_btn {
+  display: inline-flex;
+  background: #d9d9d9;
+  color: #000000;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  text-transform: uppercase;
+  border: 0px;
+  line-height: normal;
+}
+.sortByMain_box .SortFilterBtnBox .SortFilter_btn.active {
+  background: #ff8cd3;
+}
+.sortByMain_box .SortFilterBtnBox .SortFilter_btn:hover {
+  background: #ff8cd3;
+}
+.sortByMain_box .tagFilterBtnBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+}
+.sortByMain_box .tagFilterBtnBox .tagFilter_btn {
+  display: inline-flex;
+  background: rgba(255, 140, 211, 0.4);
+  color: #000000;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  text-transform: uppercase;
+  border: 0px;
+  line-height: normal;
+}
+.sortByMain_box .tagFilterBtnBox .tagFilter_btn.active {
+  background: #ff8cd3;
+}
+.sortByMain_box .tagFilterBtnBox .tagFilter_btn:hover {
+  background: #ff8cd3;
+}
+
+.SearchFilterfield {
+  position: relative;
+}
+.SearchFilterfield .form-control {
+  padding-left: 42px !important;
+}
+.SearchFilterfield .search_icon {
+  font-size: 18px;
+  left: 15px;
+  min-width: 18px;
+  opacity: 0.5;
+  position: absolute;
+  top: 15px;
+}
+.SearchFilterfield .sortByFilterBtn {
+  position: absolute;
+  right: -15px;
+  top: 0px;
+  font-size: 18px;
+  color: #000000;
+  display: inline-flex;
+}
+.SearchFilterfield .sortByFilterBtn .sortFilterClose {
+  position: absolute;
+  font-size: 14px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  bottom: 0px;
+  right: -6px;
+}/*# sourceMappingURL=style.css.map */
