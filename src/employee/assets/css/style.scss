@@ -1591,6 +1591,64 @@ html {
                         }
                     }
                 }
+                .ShippingPackageOrder_info {
+                    align-items: center;
+                    margin-bottom: 10px;
+                    .gap_10 {
+                        gap: 10px;
+                        flex-wrap: wrap;
+                    }
+                    p {
+                        border-radius: 5px;
+                        padding: 10px 20px;
+                        background: $white-color;
+                        display: inline-block;
+                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        font-size: 14px; 
+                        margin: 0px;                         
+                    }
+                    .downloadLabel_btn {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #4e8ac8;
+                        color: #000;
+                        font-size: 14px;
+                        font-weight: 700;
+                        padding: 10px 20px;
+                        border-radius: 10px;
+                        outline: 0px;
+                        box-shadow: none;
+                        text-decoration: none;
+                    }
+                    .RefundLabel_btn {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #ff8282;
+                        color: #000;
+                        font-size: 14px;
+                        font-weight: 700;
+                        padding: 10px 20px;
+                        border-radius: 10px;
+                        outline: 0px;
+                        box-shadow: none;
+                        text-decoration: none;
+                    }
+                }
+                .PackagePurchase_btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #4e8ac8;
+                    color: #000;
+                    font-size: 14px;
+                    font-weight: 700;
+                    padding: 10px 20px;
+                    border-radius: 10px;
+                    outline: 0px;
+                    box-shadow: none;
+                }
                 .PackageCompleteOrder_btn {
                     display: inline-flex;
                     align-items: center;
@@ -1617,7 +1675,55 @@ html {
                     outline: 0px;
                     box-shadow: none;
                 }
+                .PackageRemove_btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #fff;
+                    color: #ca0000;
+                    border: 1px solid #ca0000;
+                    font-size: 22px;
+                    padding: 10px 12px;
+                    border-radius: 10px;
+                    outline: 0px;
+                    box-shadow: none;
+                }
+                .dimensionShow_div {
+                    display: flex;
+                    align-items: center;
+                    gap: 30px;
+                    .dimensionShowCheckbox_div {
+                        display: flex;
+                        align-items: center;
+                        margin: 5px 0px;
+                        input[type="checkbox"] {
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            appearance: none;
+                            margin-right: 5px;
+                            width: 20px;
+                            height: 20px;
+                            border: 1px solid rgba($black-color, .60);
+                            background-color: #fff;
+                            border-radius: 4px;
+                            &:disabled {
+                                background-color: rgba($black-color, .60); /* Light gray */
+                                border-color: rgba($black-color, .60);
+                                background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27%3e%3cpath fill=%27none%27 stroke=%27%23fff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%273%27 d=%27m6 10 3 3 6-6%27/%3e%3c/svg%3e");
+                              }
+                          }
+                        label {
+                            font-size: 16px;
+                        }
+                    }
+                }
                 .packageDeminsionMain_div {
+                    .ShippingMethodmain_title {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: $black-color;
+                        margin-bottom: 10px;
+                    }
                     .gap_20 {
                         gap: 40px;
                     }
@@ -1685,7 +1791,7 @@ html {
                                         display: inline-flex;
                                         align-items: center;
                                         justify-content: center;
-                                        background: #f9f9f9;
+                                        background: #f0f0f0;
                                         color: $black-color;
                                         font-size: 14px;
                                         padding: 2px 5px;

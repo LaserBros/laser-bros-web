@@ -679,6 +679,79 @@ body {
                             }
                         }
                     }
+                    .darkThemeWhite_text {
+                        color: rgba($white-color, 0.75);
+                    }
+                    
+                .ShippingPackageOrder_info {
+                    p {
+                        background: transparent;
+                        color: rgba($white-color, 0.75);
+                        border: 1px solid rgba($white-color, 0.2);                        
+                    }
+                }
+                    .packageDeminsionMain_div {
+                        .ShippingMethodmain_title {
+                            color: $white-color;
+                        }
+                        .dimensionShowCheckbox_div {
+
+                            input[type="checkbox"] {
+                                -webkit-appearance: none;
+                                -moz-appearance: none;
+                                appearance: none;
+                                margin-right: 5px;
+                                width: 20px;
+                                height: 20px;
+                                border: 1px solid rgba($white-color, .2);
+                                background-color: rgba($white-color, .07);
+                                &:disabled {
+                                    background-color: rgba($white-color, .07); /* Light gray */
+                                    border-color: rgba($white-color, .2);
+                                    background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27%3e%3cpath fill=%27none%27 stroke=%27%23fff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%273%27 d=%27m6 10 3 3 6-6%27/%3e%3c/svg%3e");
+                                  }
+                              }                            
+                            label {
+                                color: rgba($white-color, 0.75);
+                            }
+                        }
+                        .DeminsionMain_div {
+                            .PachageField_div {
+                                .PachageField_label {
+                                    color: rgba($white-color, 0.75);
+                                }
+                                .PackageFieldSubtitle {
+                                    color: rgba($white-color, 0.75);
+                                }
+                                .DeminsionField_flex {
+                                    color: rgba($white-color, 0.75);
+                                    .PachageField_box {
+                                        input.PachageField_number {
+                                            background: transparent;
+                                            color: rgba($white-color, 0.75);
+                                            border: 1px solid rgba($white-color, 0.2);
+                                            &::placeholder {
+                                                color:rgba($white-color, 0.75);
+                                            }
+                                        }
+                                        .PachageField_Size {
+                                            background: rgba($white-color, 0.1);
+                                            color: $white-color;  
+                                        }                
+                                    }
+                                    
+                                    .PachageFieldSizeSelect {
+                                        background  : transparent;
+                                        border-color: rgba($white-color, 0.2);
+                                        color       : rgba($white-color, 0.75);
+                                        option {
+                                            color: rgba($black-color, 0.75)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }                    
                 }
             }
         }
