@@ -13,6 +13,8 @@ const MultiSelectModal = ({
   useEffect(() => {
     if (Array.isArray(selectedArea) && selectedArea.length > 0) {
       setSelectedOptions(selectedArea);
+    } else {
+      setSelectedOptions([]);
     }
   }, [show]);
   const handleSelect = (option) => {
@@ -36,17 +38,17 @@ const MultiSelectModal = ({
       <Modal.Body>
         <Form>
           <div className="ModalPostOPS_check">
-          {options.map((option, index) => (
-            <Form.Check
-              key={index}
-              type="checkbox"
-              label={option}
-              id={option}
-              value={option}
-              checked={selectedOptions.includes(option)}
-              onChange={() => handleSelect(option)}
-            />
-          ))}
+            {options.map((option, index) => (
+              <Form.Check
+                key={index}
+                type="checkbox"
+                label={option}
+                id={option}
+                value={option}
+                checked={selectedOptions.includes(option)}
+                onChange={() => handleSelect(option)}
+              />
+            ))}
           </div>
         </Form>
       </Modal.Body>

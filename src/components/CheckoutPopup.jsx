@@ -5,7 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import ShippingRates from "./ShippingRates";
 import Amount from "./Amount";
-import { getEditQuotePay, payment, shippingCost } from "../api/api";
+import {
+  getEditQuotePay,
+  getShippingRatesAll,
+  payment,
+  shippingCost,
+} from "../api/api";
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
@@ -24,12 +29,13 @@ const CheckoutPopup = ({
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
-
+  const [shippingInfoData, setshippingInfo] = useState("");
   useEffect(() => {
     setSelectedAddress(null);
     setShippingSelectedAddress(null);
     setShippingSelectedAddress(null);
     setIsSameAsShipping(false);
+    setshippingInfo(shippingInfo);
   }, [show]);
 
   useEffect(() => {
@@ -91,7 +97,7 @@ const CheckoutPopup = ({
         toast.error("Please select a shipping method.");
         return;
       }
-      if (shippingInfo?.requestQuoteDB?.check_status == 0) {
+      if (shippingInfoData?.requestQuoteDB?.check_status == 0) {
         if (!selectedCard) {
           toast.error("Please select a payment card.");
           return;
@@ -102,6 +108,13 @@ const CheckoutPopup = ({
         : selectedAddress?._id;
 
       const selectedShippingAddressId = selectedShippingAddress._id;
+      // console.log(
+      //   "billingAddressId",
+      //   billingAddressId,
+      //   "selectedShippingAddressId",
+      //   selectedShippingAddressId
+      // );
+      // return;
       const elementId = localStorage.getItem("setItemelementData");
       // let getId = "";
 
@@ -110,7 +123,7 @@ const CheckoutPopup = ({
       // }
       // if (getId && getId._id) {
       const data_id = {
-        id: loadingPayId,
+        id: loadingPayId?._id,
         status: 1,
         billing_id: billingAddressId,
         address_id: selectedShippingAddressId,
@@ -132,7 +145,7 @@ const CheckoutPopup = ({
         }
         if (response_local.data.data.check_status == 0) {
           const data = {
-            id: loadingPayId,
+            id: loadingPayId?._id,
             billing_id: billingAddressId,
             address_id: selectedShippingAddressId,
           };
@@ -164,14 +177,23 @@ const CheckoutPopup = ({
     }
   };
 
-  // Handle selection change
-  const handleShippingAddressChange = (event) => {
+  const [loadingShip, setloadingShip] = useState(false);
+  const handleShippingAddressChange = async (event) => {
     const selectedId = event.target.value;
     const selectedAddr = address.find((addr) => addr._id === selectedId);
     setShippingSelectedAddress(selectedAddr || null);
     if (isSameAsShipping && selectedAddress) {
       setSelectedAddress(selectedAddr || null);
     }
+    // console.log("Dsdsdsdssddsd");
+    setloadingShip(true);
+    const data = {
+      id: loadingPayId?._id,
+      address_id: selectedId,
+    };
+    const res = await getShippingRatesAll(data);
+    setshippingInfo(res.data);
+    setloadingShip(false);
   };
 
   const handleAddressChange = (event) => {
@@ -194,7 +216,7 @@ const CheckoutPopup = ({
   const [rateVal, setrateVal] = useState("");
   const handleRateSelected = async (rate, price) => {
     // console.log("shippingInfo?.requestQuoteDB?.check_status",)
-    if (shippingInfo?.requestQuoteDB?.check_status == 1) {
+    if (shippingInfoData?.requestQuoteDB?.check_status == 1) {
       setrateVal(0);
       return;
     }
@@ -208,7 +230,7 @@ const CheckoutPopup = ({
     // return;
     const data = {
       service_code: rate,
-      id: loadingPayId,
+      id: loadingPayId?._id,
       address_id: selectedShippingAddress?._id,
     };
     try {
@@ -283,13 +305,29 @@ const CheckoutPopup = ({
                 <div className="ship_methods mb-4">
                   <h2 className="shipping_head">Shipping Method</h2>
 
-                  <ShippingRates
-                    shippingRates={shippingInfo.shippingRates}
-                    divideWeight={shippingInfo.divideWeight}
-                    onRateSelected={handleRateSelected}
-                    RequestQuote={shippingInfo?.requestQuoteDB?.check_status}
-                    selectedShippingAddress={selectedShippingAddress}
-                  />
+                  {loadingShip ? (
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      className="spinner-border spinner-border-sm text-center"
+                      style={{
+                        margin: "0 auto",
+                        display: "block",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    ></span>
+                  ) : (
+                    <ShippingRates
+                      shippingRates={shippingInfoData.shippingRates}
+                      divideWeight={shippingInfoData.divideWeight}
+                      onRateSelected={handleRateSelected}
+                      RequestQuote={
+                        shippingInfoData?.requestQuoteDB?.check_status
+                      }
+                      selectedShippingAddress={selectedShippingAddress}
+                    />
+                  )}
                 </div>
               </Col>
               <Col lg={6}>
@@ -356,7 +394,7 @@ const CheckoutPopup = ({
               <Col lg={6}>
                 <div className="cards_sect">
                   <h2 className="shipping_head">Payment Method :</h2>
-                  {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
+                  {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
                     <>
                       <div className="text-center mt-2">
                         <b>
@@ -412,14 +450,16 @@ const CheckoutPopup = ({
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="quotesitem">Laser Cutting</span>
                 <span className="quotesitem quotesright">
-                  <Amount amount={shippingInfo?.requestQuoteDB?.total_amount} />{" "}
+                  <Amount
+                    amount={shippingInfoData?.requestQuoteDB?.total_amount}
+                  />{" "}
                 </span>
               </div>
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="quotesitem">Services</span>
                 <span className="quotesitem quotesright">
                   <Amount
-                    amount={shippingInfo?.requestQuoteDB?.total_bend_price}
+                    amount={shippingInfoData?.requestQuoteDB?.total_bend_price}
                   />{" "}
                 </span>
               </div>
@@ -439,10 +479,10 @@ const CheckoutPopup = ({
                   <Amount
                     amount={
                       parseFloat(
-                        shippingInfo?.requestQuoteDB?.total_amount || 0
+                        shippingInfoData?.requestQuoteDB?.total_amount || 0
                       ) +
                       parseFloat(
-                        shippingInfo?.requestQuoteDB?.total_bend_price || 0
+                        shippingInfoData?.requestQuoteDB?.total_bend_price || 0
                       ) +
                       parseFloat(rateVal == "" ? 0 : rateVal || 0)
                     }
@@ -451,7 +491,7 @@ const CheckoutPopup = ({
               </div>
             </div>
             <div className="footer_btn">
-              {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
+              {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
                 <>
                   <Button
                     className="mt-3"
@@ -489,10 +529,11 @@ const CheckoutPopup = ({
                           <Amount
                             amount={
                               parseFloat(
-                                shippingInfo?.requestQuoteDB?.total_amount || 0
+                                shippingInfoData?.requestQuoteDB
+                                  ?.total_amount || 0
                               ) +
                               parseFloat(
-                                shippingInfo?.requestQuoteDB
+                                shippingInfoData?.requestQuoteDB
                                   ?.total_bend_price || 0
                               ) +
                               parseFloat(rateVal == "" ? 0 : rateVal || 0)

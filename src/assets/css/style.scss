@@ -4255,6 +4255,58 @@ textarea.form-control {
                             margin-bottom: 0px;
                         }
                     }
+                    &.paymentTab_div {
+                        .nav-tabs {
+                            border: 0px;
+                            gap: 10px;
+                            li.nav-item {
+                                .nav-link {
+                                    border: 0px !important;
+                                    background: #e8e8e8;
+                                    border-radius: 10px;
+                                    font-size: 14px;
+                                    color: #444;
+                                    text-transform: capitalize;
+                                    padding: 10px 20px;
+                                    &.active {
+                                        background: $primary-color;
+                                        color: $white-color;
+                                    }
+                                }                           
+                            }
+                        }
+                        .tab-content {
+                            .netTerms_flex {
+                                display: flex;
+                                align-items: center;
+                                
+                                label {
+                                    font-size: 14px;
+                                    flex-shrink: 0;
+                                    margin-right: 10px;
+                                }
+                                input {
+                                    max-width: 170px;
+                                    padding: 10px;
+                                    border: 1px solid rgba($black-color, .1);
+                                    border-radius: 10px;
+                                    font-size: 14px;
+                                    outline: 0px;
+                                    box-shadow: none;
+                                }
+                            }
+                            .POupload_field {
+                                display: flex;
+                                align-items: center;
+                                
+                                label {
+                                    font-size: 14px;
+                                    flex-shrink: 0;
+                                    margin-right: 10px;
+                                }                           
+                            }
+                        }
+                    }
                 }
                 .main_price  {
                     background: rgba($black-color, 0.04);

@@ -7,6 +7,7 @@ import {
   UsergetParticularOrderDetails,
   getOrders,
   getParticularOrderDetails,
+  orderTrackingDetails,
   trackingDetails,
 } from "../../api/api";
 import Amount from "../../components/Amount";
@@ -58,7 +59,16 @@ export default function OrdersDetail() {
     const yearLastTwoDigits = String(dateObj.getFullYear()).slice(-2);
     return `Quote # ${month}-${yearLastTwoDigits}`;
   };
+  const [trackNumber, settrackNumber] = useState([]);
+  const orderTracking = async () => {
+    const data = {
+      id: id,
+    };
+    const res = await orderTrackingDetails(data);
+    settrackNumber(res.data);
+  };
   useEffect(() => {
+    orderTracking();
     fetchOrder();
   }, []);
   return (
@@ -69,7 +79,7 @@ export default function OrdersDetail() {
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap">
               <h5>Orders Detail</h5>{" "}
               <div className="d-flex">
-                {orderDetails.status == 3 && (
+                {orderDetails.status == 3 && trackNumber?.length > 0 && (
                   <select
                     // className="form-select me-2"
                     className="form-select"
@@ -79,13 +89,11 @@ export default function OrdersDetail() {
                     // }
                   >
                     <option value="">Select Tracking Number</option>
-                    {orderDetails?.tracking_number?.map(
-                      (trackingNumber, index) => (
-                        <option value={orderDetails?.label_id[index]}>
-                          Tracking {trackingNumber}
-                        </option>
-                      )
-                    )}
+                    {trackNumber?.map((trackingNumber, index) => (
+                      <option value={trackingNumber?._id}>
+                        Tracking {trackingNumber?.tracking_number}
+                      </option>
+                    ))}
                   </select>
                 )}
                 {/* <Link

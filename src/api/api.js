@@ -446,6 +446,42 @@ export const getEditQuotePay = async (data) => {
   }
 };
 
+export const getEditQuotePayment = async (data) => {
+  try {
+    const response = await axiosInstance.post(`/users/getEditQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getShippingRatesAll = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/getShippingRatesAll`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const orderTrackingDetails = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/orderTrackingDetails`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getThicknessMaterialFinish = async (data, type, params) => {
   try {
     var response_api = await axiosInstance.post(
@@ -486,9 +522,7 @@ export const copySubQuote = async (data) => {
 
 export const trackingDetails = async (id) => {
   try {
-    const response = await axiosInstance.get(
-      `users/trackingDetails?label_id=` + id
-    );
+    const response = await axiosInstance.get(`users/trackingDetails?id=` + id);
     console.log("responseeee----", response.data);
     return response.data;
   } catch (error) {
@@ -959,6 +993,20 @@ export const updateWorkStatus = async (data) => {
 export const AdmingetEditQuote = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/getEditQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateShippingCost = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateShippingCost
+    `,
+      data
+    );
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

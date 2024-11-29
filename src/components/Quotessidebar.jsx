@@ -13,6 +13,7 @@ import {
   fetchAddress,
   getCard,
   getEditQuotePay,
+  getEditQuotePayment,
   payment,
   shippingCost,
 } from "../api/api";
@@ -163,7 +164,7 @@ const QuotesSidebar = ({
       // return;
       try {
         setPayLoad(true);
-        const response = await getEditQuotePay(data);
+        const response = await getEditQuotePayment(data);
         setshippingInfo(response.data);
         setLoadingPayID(getId);
         setModalShowPay(true);
@@ -248,14 +249,13 @@ const QuotesSidebar = ({
               "setItempartsDBdataPay",
               JSON.stringify(response.data.partsDBdata)
             );
-            console.log(
-              "response.data.shippingRates",
-              response.data.shippingRates
-            );
-            localStorage.setItem(
-              "ShippingDBdataPay",
-              JSON.stringify(response.data.shippingRates)
-            );
+
+            if (response?.data?.shippingRates) {
+              localStorage.setItem(
+                "ShippingDBdataPay",
+                JSON.stringify(response.data.shippingRates)
+              );
+            }
             localStorage.setItem(
               "divideWeight",
               JSON.stringify(response.data.divideWeight)

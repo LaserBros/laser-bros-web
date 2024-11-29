@@ -5,7 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import ShippingRates from "../../components/ShippingRates";
 import Amount from "../../components/Amount";
-import { getEditQuotePay, payment, shippingCost } from "../../api/api";
+import {
+  getEditQuotePay,
+  payment,
+  shippingCost,
+  updateShippingCost,
+} from "../../api/api";
 import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
@@ -15,6 +20,7 @@ const CheckoutPopup = ({
   handleClose,
   UserData,
   divideWeight,
+  onSave,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
@@ -146,8 +152,36 @@ const CheckoutPopup = ({
       })
     );
   };
-  const handleCheckout = () => {
-    console.log("Dffdfdfdfdf=df-d=f-df");
+  const handleCheckout = async () => {
+    const custom_rates = shippingMethods.find(
+      (method) => method.id === "custom_rates"
+    );
+    const custom_ratesPrice = custom_rates ? custom_rates.price : 0;
+
+    const ups_ground = shippingMethods.find(
+      (method) => method.id === "ups_ground"
+    );
+    const ups_groundPrice = ups_ground ? ups_ground.price : 0;
+
+    const ups_next_day_air = shippingMethods.find(
+      (method) => method.id === "ups_next_day_air"
+    );
+    const ups_next_day_airPrice = ups_next_day_air ? ups_next_day_air.price : 0;
+
+    const isNetTermSelected = selectedOptions.includes("NET Term");
+
+    try {
+      const data = {
+        id: addressDetail?._id,
+        pay_type: isNetTermSelected ? 1 : 0,
+        shipping_upsair_price: ups_next_day_airPrice,
+        shipping_upsground_price: ups_groundPrice,
+        custom_rates: custom_ratesPrice,
+      };
+
+      const res = await updateShippingCost(data);
+      onSave(res.data);
+    } catch (error) {}
   };
 
   // Function to handle edit/save button click

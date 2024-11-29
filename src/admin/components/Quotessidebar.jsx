@@ -26,8 +26,10 @@ const QuotesSidebar = ({
     setquoteData(quoteData);
   }, [quoteData]);
   // const handleShow = () => setModalShow(true);
+  const OnSave = (data) => {
+    setcheckOutmodal(false);
+  };
   const updateQuote = async () => {
-    console.log("sdsdsdd =-=-=-=-=-=-=-");
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
 
@@ -363,6 +365,7 @@ const QuotesSidebar = ({
         addressDetail={quoteData}
         UserData={UserData}
         divideWeight={divideWeight}
+        onSave={OnSave}
       />
     </>
   );

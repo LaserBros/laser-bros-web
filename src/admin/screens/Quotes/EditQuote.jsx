@@ -83,6 +83,7 @@ const EditRFQS = () => {
   const [quotePost, setquotePost] = useState("");
   const handleOpenModal = (id, post_ops) => {
     setidSelect(id);
+    setquotePost("");
     setquotePost(post_ops);
     setShowModal(true);
   };
@@ -932,7 +933,11 @@ const EditRFQS = () => {
               </Link> */}
             </div>
           </div>
-          <AddressDetails addressDetail={quoteList} />
+          <AddressDetails
+            shipAddress={quoteList?.address_details}
+            billAdress={quoteList?.billing_details}
+            addressDetail={quoteList}
+          />
           <Row>
             <Col lg={8} xl={9}>
               <FileUpload
@@ -1049,7 +1054,7 @@ const EditRFQS = () => {
                               className="DragItemPostPlus_btn"
                               variant={null}
                               onClick={() =>
-                                handleOpenModal(quote._id, quote.post_ops)
+                                handleOpenModal(quote._id, quote?.post_ops)
                               }
                             >
                               <Icon icon="ic:baseline-plus" />
@@ -1263,6 +1268,7 @@ const EditRFQS = () => {
                   quoteData={quoteList}
                   UserData={UserData}
                   divideWeight={divideWeight}
+                  // OnSave={OnSave}
                 />
               </Col>
             )}

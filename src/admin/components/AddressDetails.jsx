@@ -4,7 +4,13 @@ import DateFormat from "./DateFormat";
 import OrderStatus from "./OrderStatus";
 import Amount from "../../components/Amount";
 
-const AddressDetails = ({ addressDetail }) => {
+const AddressDetails = ({
+  shipAddress,
+  billAdress,
+  addressDetail,
+  po_number,
+  po_upload,
+}) => {
   const formatString = (input) => {
     if (!input) return "";
     return input
@@ -19,18 +25,17 @@ const AddressDetails = ({ addressDetail }) => {
           <div className="QuoteBill_box">
             <h4>Bill To:</h4>
             <p>
-              {addressDetail?.address_details?.full_name} <br />
-              {/* {addressDetail?.address_details?.full_name} <br /> */}
-              {addressDetail?.address_details?.address_line_1} <br />
-              {addressDetail?.address_details?.address_line_2 != null ? (
+              {shipAddress?.full_name} <br />
+              {/* {shipAddress?.full_name} <br /> */}
+              {shipAddress?.address_line_1} <br />
+              {shipAddress?.address_line_2 != null ? (
                 <>
-                  {addressDetail.address_details.address_line_2}
+                  {shipAddress?.address_line_2}
                   <br />
                 </>
               ) : null}
-              {addressDetail?.address_details?.city},{" "}
-              {addressDetail?.address_details?.state_code}{" "}
-              {addressDetail?.address_details?.pincode}
+              {shipAddress?.city}, {shipAddress?.state_code}{" "}
+              {shipAddress?.pincode}
             </p>
           </div>
         </Col>
@@ -38,18 +43,16 @@ const AddressDetails = ({ addressDetail }) => {
           <div className="QuoteBill_box">
             <h4>Ship To:</h4>
             <p>
-              {addressDetail?.billing_details?.full_name} <br />
+              {billAdress?.full_name} <br />
               {/* {addressDetail?.address_details?.full_name} <br /> */}
-              {addressDetail?.billing_details?.address_line_1} 0909 <br />
-              {addressDetail?.billing_details?.address_line_2 != null ? (
+              {billAdress?.address_line_1} 0909 <br />
+              {billAdress?.address_line_2 != null ? (
                 <>
-                  {addressDetail.billing_details.address_line_2}
+                  {billAdress.address_line_2}
                   <br />
                 </>
               ) : null}
-              {addressDetail?.billing_details?.city},{" "}
-              {addressDetail?.billing_details?.state_code}{" "}
-              {addressDetail?.billing_details?.pincode}
+              {billAdress?.city}, {billAdress?.state_code} {billAdress?.pincode}
             </p>
           </div>
         </Col>
@@ -60,9 +63,20 @@ const AddressDetails = ({ addressDetail }) => {
               <DateFormat dateString={addressDetail?.createdAt} />
             </p>
             <p>
-              <b className="minWidth_110">Shipping Type:</b>
+              <b className="minWidth_110">Shipping Type:</b>{" "}
               {formatString(addressDetail?.service_code)}
             </p>
+            {po_number && (
+              <p>
+                <b className="minWidth_110">Purchase Number : </b> {po_number}
+              </p>
+            )}
+            {po_upload && (
+              <p>
+                <b className="minWidth_110">Purchase Upload:</b>{" "}
+                <a href={po_upload}>File</a>
+              </p>
+            )}
             {/* <p>
               <b className="minWidth_110">PO Number:</b>123987
             </p> */}
@@ -87,20 +101,28 @@ const AddressDetails = ({ addressDetail }) => {
         </Col>
         <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0">
-            <p>
-              <b>Phone Number:</b>
-              {addressDetail?.address_details?.phone_number}
-            </p>
-            <p className="mb-0">
-              <b>Email:</b>
-              {addressDetail?.address_details?.email}
-            </p>
+            {addressDetail?.address_details?.phone_number && (
+              <p>
+                <b>Phone Number:</b>
+                {addressDetail?.address_details?.phone_number}
+              </p>
+            )}
+            {addressDetail?.address_details?.email && (
+              <p className="mb-0">
+                <b>Email:</b>
+                {addressDetail?.address_details?.email}
+              </p>
+            )}
           </div>
         </Col>
         <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0 text-end">
-            <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>Download All Files</Button>
-            <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>Download PDF</Button>
+            {/* <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>
+              Download All Files
+            </Button>
+            <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>
+              Download PDF
+            </Button> */}
           </div>
         </Col>
       </Row>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Tab, Tabs } from "react-bootstrap";
 import paymentdone from "../assets/img/paymentdone.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -24,12 +24,16 @@ const CheckOutPay = ({
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedRate, setSelectedRate] = useState("");
 
   useEffect(() => {
     setSelectedAddress(null);
     setShippingSelectedAddress(null);
     setShippingSelectedAddress(null);
     setIsSameAsShipping(false);
+    setActiveTab("card");
+    setpoNumber("");
+    setfileUpload("");
   }, [show]);
 
   useEffect(() => {
@@ -39,6 +43,12 @@ const CheckOutPay = ({
     }
   }, [cardsData]);
   const [modalShow, setModalShow] = useState(false);
+  const [activeTab, setActiveTab] = useState("card"); // Set default active tab key
+
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+  };
+
   useEffect(() => {
     if (handleCloseTrigger) {
       const timer = setTimeout(() => {
@@ -47,9 +57,33 @@ const CheckOutPay = ({
       return () => clearTimeout(timer);
     }
   }, [handleCloseTrigger]);
+
+  const [poNumberText, setpoNumber] = useState("");
+  const [fileUpload, setfileUpload] = useState("");
+  const handlePONumberChange = (e) => {
+    const poNumber = e.target.value;
+    console.log("PO Number:", poNumber);
+    setpoNumber(poNumber);
+    // Perform any necessary state updates or validation here
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // console.log("Uploaded file:", file);
+      if (file.type !== "application/pdf") {
+        alert("Please upload a valid PDF file.");
+        return;
+      }
+      setfileUpload(file);
+      // Handle file upload logic here, e.g., send to an API
+    }
+  };
+
   const PaymentSubmit = async () => {
     let isValid = true;
-
+    var po_number_type = "";
+    var po_upload_type = "";
     if (isValid) {
       // console.log(
       //   "dassdasdsadadssadsadsds",
@@ -57,42 +91,56 @@ const CheckOutPay = ({
       //   selectedShippingAddress
       // );
       // return;
-      if (!selectedShippingAddress) {
-        toast.error("Please select a shipping address.");
-        return;
-      }
-      if (!isSameAsShipping && !selectedAddress) {
-        toast.error("Please select a billing address.");
-        return;
-      }
+      // if (!selectedShippingAddress) {
+      //   toast.error("Please select a shipping address.");
+      //   return;
+      // }
+      // if (!isSameAsShipping && !selectedAddress) {
+      //   toast.error("Please select a billing address.");
+      //   return;
+      // }
 
       if (rateVal === "") {
         toast.error("Please select a shipping method.");
         return;
       }
-      if (shippingInfo?.requestQuoteDB?.check_status == 0) {
-        if (!selectedCard) {
-          toast.error("Please select a payment card.");
+      if (activeTab == "card") {
+        if (shippingInfo?.requestQuoteDB?.check_status == 0) {
+          if (!selectedCard) {
+            toast.error("Please select a payment card.");
+            return;
+          }
+        }
+      }
+      if (activeTab == "net_terms") {
+        if (poNumberText == "" && poNumberText.length < 1) {
+          toast.error("Please add PO Number");
+          return;
+        }
+        if (!fileUpload) {
+          toast.error("Please upload a valid PDF file.");
           return;
         }
       }
-      const billingAddressId = isSameAsShipping
-        ? selectedShippingAddress._id
-        : selectedAddress?._id;
+      // const billingAddressId = isSameAsShipping
+      //   ? selectedShippingAddress._id
+      //   : selectedAddress?._id;
 
-      const selectedShippingAddressId = selectedShippingAddress._id;
-
+      // const selectedShippingAddressId = selectedShippingAddress._id;
+      // console.log("activeTab", fileUpload);
+      // return;
       const data_id = {
         id: loadingPayId,
         status: 1,
-        billing_id: billingAddressId,
-        address_id: selectedShippingAddressId,
+
+        // billing_id: billingAddressId,
+        // address_id: selectedShippingAddressId,
       };
 
       try {
         setLoading(true);
         const response_local = await axiosInstance.post(
-          "/users/updateRequestQuote",
+          "/users/updateRequestQuoteRFQ",
           data_id
         );
 
@@ -104,12 +152,12 @@ const CheckOutPay = ({
           navigate("/rfqs");
         }
         if (response_local.data.data.check_status == 0) {
-          const data = {
-            id: loadingPayId,
-            billing_id: billingAddressId,
-            address_id: selectedShippingAddressId,
-          };
-          const res = await payment(data);
+          var formData = new FormData();
+          formData.append("id", loadingPayId);
+          formData.append("po_number", poNumberText);
+          formData.append("po_upload", fileUpload);
+          formData.append("type", activeTab);
+          const res = await payment(formData);
 
           try {
             if (res.status == "success") {
@@ -163,8 +211,10 @@ const CheckOutPay = ({
       setSelectedAddress(null);
     }
   };
+
   const [rateVal, setrateVal] = useState("");
   const handleRateSelected = async (rate, price) => {
+    setSelectedRate(rate);
     // console.log("shippingInfo?.requestQuoteDB?.check_status",)
     if (shippingInfo?.requestQuoteDB?.check_status == 1) {
       setrateVal(0);
@@ -198,65 +248,152 @@ const CheckOutPay = ({
                 {/* Shipping Address */}
                 <div className="shipping_addr_name bill_addr_name">
                   <h2 className="shipping_head">Shipping Address</h2>
-                  <Form.Select
-                    aria-label="Select Address"
-                    onChange={handleShippingAddressChange}
-                    className="mb-3"
-                  >
-                    <option value="">Select Address</option>
-                    {address.map((addr) => (
-                      <option key={addr._id} value={addr._id}>
-                        {addr.full_name} - {addr.address_line_1}, {addr.city}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  {selectedShippingAddress ? (
-                    <Col xl={12} lg={12} md={12} className="mb-4">
-                      <div className="addresses-grid">
-                        <div className="d-flex align-items-center justify-content-between mb-3">
-                          <h2 className="mb-0">
-                            {selectedShippingAddress.full_name}
-                          </h2>
-                        </div>
-                        <p className="mb-2">
-                          {selectedShippingAddress.phone_number}
-                        </p>
-                        <p className="mb-3">
-                          {selectedShippingAddress.address_line_1},{" "}
-                          {selectedShippingAddress.city},{" "}
-                          {selectedShippingAddress.pincode},{" "}
-                          {selectedShippingAddress.country}
-                        </p>
-                        <div className="btn-bottom">
-                          <Link
-                            className="btn-address"
-                            to={`/my-address/edit-address/${selectedShippingAddress._id}`}
-                          >
-                            <Icon icon="mynaui:edit" />
-                          </Link>
-                        </div>
+
+                  {/* {selectedShippingAddress ? ( */}
+                  <Col xl={12} lg={12} md={12} className="mb-4">
+                    <div className="addresses-grid">
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <h2 className="mb-0">
+                          {
+                            shippingInfo?.requestQuoteDB?.address_details
+                              .full_name
+                          }
+                        </h2>
                       </div>
-                    </Col>
-                  ) : (
+                      <p className="mb-2">
+                        {
+                          shippingInfo?.requestQuoteDB?.address_details
+                            .phone_number
+                        }
+                      </p>
+                      <p className="mb-3">
+                        {
+                          shippingInfo?.requestQuoteDB?.address_details
+                            .address_line_1
+                        }
+                        , {shippingInfo?.requestQuoteDB?.address_details.city},{" "}
+                        {shippingInfo?.requestQuoteDB?.address_details.pincode},{" "}
+                        {shippingInfo?.requestQuoteDB?.address_details.country}
+                      </p>
+                      {/* <div className="btn-bottom">
+                          
+                        </div> */}
+                    </div>
+                  </Col>
+                  {/* ) : (
                     !isSameAsShipping && (
                       <Col>
                         <p>No address selected</p>
                       </Col>
                     )
-                  )}
+                  )} */}
                 </div>
               </Col>
               <Col lg={6}>
                 <div className="ship_methods mb-4">
                   <h2 className="shipping_head">Shipping Method</h2>
-
-                  <ShippingRates
-                    shippingRates={shippingInfo.shippingRates}
-                    divideWeight={shippingInfo.divideWeight}
-                    onRateSelected={handleRateSelected}
-                    RequestQuote={shippingInfo?.requestQuoteDB?.check_status}
-                    selectedShippingAddress={selectedShippingAddress}
-                  />
+                  {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
+                    <>
+                      <div className="rate-option">
+                        <label>
+                          <input
+                            type="checkbox"
+                            value="local_pickup"
+                            checked={selectedRate === "local_pickup"}
+                            // checked={selectedRate === "local_pickup"}
+                            onChange={() =>
+                              handleRateSelected("local_pickup", 0.0)
+                            }
+                          />
+                          &nbsp;&nbsp;Local Pickup
+                        </label>
+                      </div>
+                      <div className="rate-option">
+                        <label>
+                          <input
+                            type="checkbox"
+                            value="ups_next_day_air"
+                            checked={selectedRate === "ups_next_day_air"}
+                            // checked={selectedRate === "local_pickup"}
+                            onChange={() =>
+                              handleRateSelected(
+                                "ups_next_day_air",
+                                shippingInfo?.requestQuoteDB
+                                  ?.shipping_upsair_price
+                              )
+                            }
+                          />
+                          &nbsp;&nbsp;UPS Next Day Air® (
+                          <Amount
+                            amount={
+                              shippingInfo?.requestQuoteDB
+                                ?.shipping_upsair_price
+                            }
+                          />
+                          )
+                        </label>
+                      </div>
+                      <div className="rate-option">
+                        <label>
+                          <input
+                            type="checkbox"
+                            value="ups_ground"
+                            // checked={selectedRate === "local_pickup"}
+                            checked={selectedRate === "ups_ground"}
+                            onChange={() =>
+                              handleRateSelected(
+                                "ups_ground",
+                                shippingInfo?.requestQuoteDB
+                                  ?.shipping_upsground_price
+                              )
+                            }
+                          />
+                          &nbsp;&nbsp;UPS® Ground (
+                          <Amount
+                            amount={
+                              shippingInfo?.requestQuoteDB
+                                ?.shipping_upsground_price
+                            }
+                          />
+                          )
+                        </label>
+                      </div>
+                      {shippingInfo?.requestQuoteDB?.custom_rates != 0 && (
+                        <div className="rate-option">
+                          <label>
+                            <input
+                              type="checkbox"
+                              value="custom_rates"
+                              // checked={selectedRate === "local_pickup"}
+                              checked={selectedRate === "custom_rates"}
+                              onChange={() =>
+                                handleRateSelected(
+                                  "custom_rates",
+                                  shippingInfo?.requestQuoteDB?.custom_rates
+                                )
+                              }
+                            />
+                            &nbsp;&nbsp;Custom Rates (
+                            <Amount
+                              amount={
+                                shippingInfo?.requestQuoteDB
+                                  ?.shipping_upsground_price
+                              }
+                            />
+                            )
+                          </label>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <ShippingRates
+                      shippingRates={shippingInfo.shippingRates}
+                      divideWeight={shippingInfo.divideWeight}
+                      onRateSelected={handleRateSelected}
+                      RequestQuote={shippingInfo?.requestQuoteDB?.check_status}
+                      selectedShippingAddress={111}
+                    />
+                  )}
                 </div>
               </Col>
               <Col lg={6}>
@@ -265,7 +402,7 @@ const CheckOutPay = ({
                   <h2 className="shipping_head">Billing Address</h2>
 
                   {/* Checkbox for "Same as Shipping Address" */}
-                  {selectedShippingAddress && (
+                  {/* {selectedShippingAddress && (
                     <Form.Check
                       type="checkbox"
                       label="Same as Shipping Address"
@@ -288,90 +425,144 @@ const CheckOutPay = ({
                         </option>
                       ))}
                     </Form.Select>
-                  )}
-                  {selectedAddress ? (
-                    <Col xl={12} lg={12} md={12} className="mb-4">
-                      <div className="addresses-grid">
-                        <div className="d-flex align-items-center justify-content-between mb-3">
-                          <h2 className="mb-0">{selectedAddress.full_name}</h2>
-                        </div>
-                        <p className="mb-2">{selectedAddress.phone_number}</p>
-                        <p className="mb-3">
-                          {selectedAddress.address_line_1},{" "}
-                          {selectedAddress.city}, {selectedAddress.pincode},{" "}
-                          {selectedAddress.country}
-                        </p>
-                        <div className="btn-bottom">
-                          <Link
-                            className="btn-address"
-                            to={`/my-address/edit-address/${selectedAddress._id}`}
-                          >
-                            <Icon icon="mynaui:edit" />
-                          </Link>
-                        </div>
+                  )} */}
+                  {/* {selectedAddress ? ( */}
+                  <Col xl={12} lg={12} md={12} className="mb-4">
+                    <div className="addresses-grid">
+                      <div className="d-flex align-items-center justify-content-between mb-3">
+                        <h2 className="mb-0">
+                          {
+                            shippingInfo?.requestQuoteDB?.billing_details
+                              .full_name
+                          }
+                        </h2>
                       </div>
-                    </Col>
-                  ) : (
+                      <p className="mb-2">
+                        {
+                          shippingInfo?.requestQuoteDB?.billing_details
+                            .phone_number
+                        }
+                      </p>
+                      <p className="mb-3">
+                        {
+                          shippingInfo?.requestQuoteDB?.billing_details
+                            .address_line_1
+                        }
+                        , {shippingInfo?.requestQuoteDB?.billing_details.city},{" "}
+                        {shippingInfo?.requestQuoteDB?.billing_details.pincode},{" "}
+                        {shippingInfo?.requestQuoteDB?.billing_details.country}
+                      </p>
+                    </div>
+                  </Col>
+                  {/* ) : (
                     !isSameAsShipping && (
                       <Col>
                         <p>No address selected</p>
                       </Col>
                     )
-                  )}
+                  )} */}
                 </div>
               </Col>
               <Col lg={6}>
-                <div className="cards_sect">
+                <div className="cards_sect paymentTab_div">
                   <h2 className="shipping_head">Payment Method :</h2>
-                  {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
-                    <>
-                      <div className="text-center mt-2">
-                        <b>
-                          Once your RFQ has been approved you can proceed with
-                          your payment.
-                        </b>
-                      </div>
-                    </>
-                  ) : cardsData.length === 0 ? (
-                    <Col>
-                      <p>No cards found</p>
-                    </Col>
-                  ) : (
-                    cardsData.map(
-                      (card) =>
-                        card.is_default === 1 && (
-                          <Col
-                            xl={12}
-                            lg={12}
-                            md={12}
-                            className="mb-4"
-                            key={card.id}
-                          >
-                            <div className="addresses-grids payment-grids">
-                              {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
-                              {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                              {/* </div> */}
-                              <p
-                                className="mb-2 card-no"
-                                style={{ fontSize: "13px" }}
+                  {/* {shippingInfo?.requestQuoteDB?.} */}
+                  <Tabs
+                    defaultActiveKey="card"
+                    id="uncontrolled-tab-example"
+                    activeKey={activeTab}
+                    onSelect={(key) => handleTabChange(key)}
+                    className="mb-3"
+                  >
+                    <Tab eventKey="card" title="Card">
+                      {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
+                        <>
+                          <div className="text-center mt-2">
+                            <b>
+                              Once your RFQ has been approved you can proceed
+                              with your payment.
+                            </b>
+                          </div>
+                        </>
+                      ) : cardsData.length === 0 ? (
+                        <Col>
+                          <p>No cards found</p>
+                        </Col>
+                      ) : (
+                        cardsData.map(
+                          (card) =>
+                            card.is_default === 1 && (
+                              <Col
+                                xl={12}
+                                lg={12}
+                                md={12}
+                                className="mb-4"
+                                key={card.id}
                               >
-                                **** **** **** {card.last4}
-                              </p>
-                              <div className="card-actions">
-                                <div className="card-info">
-                                  <strong>Expiry Date</strong> {card.exp_month}/
-                                  {card.exp_year}
+                                <div className="addresses-grids payment-grids">
+                                  {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
+                                  {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
+                                  {/* </div> */}
+                                  <p
+                                    className="mb-2 card-no"
+                                    style={{ fontSize: "13px" }}
+                                  >
+                                    **** **** **** {card.last4}
+                                  </p>
+                                  <div className="card-actions">
+                                    <div className="card-info">
+                                      <strong>Expiry Date</strong>{" "}
+                                      {card.exp_month}/{card.exp_year}
+                                    </div>
+                                    <div className="card-info">
+                                      <strong>Name</strong>{" "}
+                                      {card.full_name.toUpperCase()}
+                                    </div>
+                                  </div>
                                 </div>
-                                <div className="card-info">
-                                  <strong>Name</strong>{" "}
-                                  {card.full_name.toUpperCase()}
-                                </div>
-                              </div>
-                            </div>
-                          </Col>
+                              </Col>
+                            )
                         )
-                    )
-                  )}
+                      )}
+                    </Tab>
+                    {shippingInfo?.requestQuoteDB?.pay_type == "1" && (
+                      <Tab eventKey="net_terms" title="NET TERMS">
+                        <div className="netTerms_flex">
+                          <label htmlFor="poNumber">PO:</label>
+                          <input
+                            type="number"
+                            id="poNumber"
+                            name="poNumber"
+                            min="1"
+                            placeholder="Enter PO Number"
+                            onChange={(e) => handlePONumberChange(e)}
+                            style={{
+                              margin: "10px 0",
+                              width: "100%",
+                            }}
+                          />
+                        </div>
+
+                        <div className="POupload_field">
+                          <label htmlFor="poUpload">
+                            PO Upload (PDF only):
+                          </label>
+                          <input
+                            type="file"
+                            id="poUpload"
+                            name="poUpload"
+                            accept="application/pdf"
+                            onChange={(e) => handleFileUpload(e)}
+                            style={{
+                              margin: "10px 0",
+                              padding: "5px",
+                              width: "100%",
+                            }}
+                          />
+                        </div>
+                      </Tab>
+                    )}
+                  </Tabs>
                 </div>
               </Col>
             </Row>
@@ -451,21 +642,28 @@ const CheckOutPay = ({
                       ></span>
                     ) : (
                       <>
-                        Proceed To Pay&nbsp;
-                        <b>
-                          <Amount
-                            amount={
-                              parseFloat(
-                                shippingInfo?.requestQuoteDB?.total_amount || 0
-                              ) +
-                              parseFloat(
-                                shippingInfo?.requestQuoteDB
-                                  ?.total_bend_price || 0
-                              ) +
-                              parseFloat(rateVal == "" ? 0 : rateVal || 0)
-                            }
-                          />
-                        </b>
+                        {activeTab == "card" ? (
+                          <>
+                            Proceed To Pay&nbsp;
+                            <b>
+                              <Amount
+                                amount={
+                                  parseFloat(
+                                    shippingInfo?.requestQuoteDB
+                                      ?.total_amount || 0
+                                  ) +
+                                  parseFloat(
+                                    shippingInfo?.requestQuoteDB
+                                      ?.total_bend_price || 0
+                                  ) +
+                                  parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                                }
+                              />
+                            </b>
+                          </>
+                        ) : (
+                          "Pay With Net Terms"
+                        )}
                       </>
                     )}
                     {/* </> */}

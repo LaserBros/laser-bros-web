@@ -130,7 +130,17 @@ const Orders = () => {
   const onPageChange = (pageNumber) => {
     loadOrders("", pageNumber);
   };
-
+  useEffect(() => {
+    loadOrders(
+      name,
+      currentPage,
+      operation,
+      operation === "cutting" ? selecttag : "",
+      Phase,
+      operation === "post_ops" ? selecttag : "",
+      SortVal
+    );
+  }, [SortVal, Phase, selecttag, operation, currentPage, name]);
   const handleSortChangeFilter = async (type, data) => {
     if (type == "sort") {
       setSort(data);
@@ -141,17 +151,17 @@ const Orders = () => {
     if (type == "tags") {
       setSelectTag(data);
     }
-    if (type == "sort" || type == "phase" || type == "tags") {
-      loadOrders(
-        name,
-        currentPage,
-        operation,
-        operation == "cutting" ? selecttag : "",
-        Phase,
-        operation == "post_ops" ? selecttag : "",
-        SortVal
-      );
-    }
+    // if (type == "sort" || type == "phase" || type == "tags") {
+    //   loadOrders(
+    //     name,
+    //     currentPage,
+    //     operation,
+    //     operation == "cutting" ? selecttag : "",
+    //     Phase,
+    //     operation == "post_ops" ? selecttag : "",
+    //     SortVal
+    //   );
+    // }
     if (type == "operation") {
       setoperation(data);
       setloadingTags(true);
