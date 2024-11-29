@@ -1161,6 +1161,19 @@ export const deleteEmployeeDetails = async (id) => {
   }
 };
 
+export const getParticularEditQuoteAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularEditQuote`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getDashboardDetails = async (fromDate, toDate) => {
   try {
     const response = await axiosAdminInstance.get(

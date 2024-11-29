@@ -12,7 +12,13 @@ import axiosAdminInstance from "../axios/axiosadminInstanse";
 import { toast } from "react-toastify";
 import Amount from "../../components/Amount";
 import CheckoutPopup from "./checkoutPopup";
-const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
+const QuotesSidebar = ({
+  amount,
+  showDiv,
+  quoteData,
+  UserData,
+  divideWeight,
+}) => {
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
   const [checkOutmodal, setcheckOutmodal] = useState(false);
@@ -355,6 +361,8 @@ const QuotesSidebar = ({ amount, showDiv, quoteData }) => {
         show={checkOutmodal}
         handleClose={handleClosePop}
         addressDetail={quoteData}
+        UserData={UserData}
+        divideWeight={divideWeight}
       />
     </>
   );

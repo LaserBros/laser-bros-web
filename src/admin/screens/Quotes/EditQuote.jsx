@@ -568,17 +568,20 @@ const EditRFQS = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
+  const [divideWeight, setdivideWeight] = useState("");
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
-    const userDataVal = JSON.parse(localStorage.getItem("UserDataAdmin"));
+    const userDataVal = JSON.parse(localStorage.getItem("shippingRates"));
+
+    const divideWeight = JSON.parse(localStorage.getItem("divideWeight"));
 
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
       setQuoteList(quote_list_val);
+      setdivideWeight(divideWeight);
       setUserData(userDataVal);
       setQuoteData(parsedData);
     }
@@ -1025,7 +1028,12 @@ const EditRFQS = () => {
                             onOptionSelect={handleOptionSelect}
                           />
                           <div className="DragItemPost_div">
-                            <Button className="DragItemPostOps_btn" variant={null}>Post Ops</Button>
+                            <Button
+                              className="DragItemPostOps_btn"
+                              variant={null}
+                            >
+                              Post Ops
+                            </Button>
                             {quote?.post_ops?.length > 0 ? (
                               <>
                                 <DraggableItem
@@ -1037,7 +1045,8 @@ const EditRFQS = () => {
                               <p></p>
                             )}
 
-                            <Button className="DragItemPostPlus_btn"
+                            <Button
+                              className="DragItemPostPlus_btn"
                               variant={null}
                               onClick={() =>
                                 handleOpenModal(quote._id, quote.post_ops)
@@ -1046,7 +1055,7 @@ const EditRFQS = () => {
                               <Icon icon="ic:baseline-plus" />
                             </Button>
                           </div>
-                        </div>  
+                        </div>
                         <div className="quotes-services quote_div_main_sect mt-3">
                           {quote.binding_option == "no" ? (
                             <p></p>
@@ -1252,6 +1261,8 @@ const EditRFQS = () => {
                 <QuotesSidebar
                   amount={getTotalAmount().toFixed(2)}
                   quoteData={quoteList}
+                  UserData={UserData}
+                  divideWeight={divideWeight}
                 />
               </Col>
             )}

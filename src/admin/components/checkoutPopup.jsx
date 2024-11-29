@@ -9,7 +9,13 @@ import { getEditQuotePay, payment, shippingCost } from "../../api/api";
 import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
-const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
+const CheckoutPopup = ({
+  show,
+  addressDetail,
+  handleClose,
+  UserData,
+  divideWeight,
+}) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
   const [selectedShippingAddress, setShippingSelectedAddress] = useState(null);
@@ -17,7 +23,9 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
-  const [shippingMethods, setShippingMethods] = useState([
+  const [shippingMethods, setShippingMethods] = useState([]);
+
+  const existingShippingMethods = [
     {
       id: "local_pickup",
       name: "Local Pickup",
@@ -26,27 +34,76 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
       isEditing: false,
     },
     {
-      id: "ups_ground",
-      name: "UPS - UPS® Ground",
-      price: 59.64,
-      isChecked: false,
-      isEditing: false,
-    },
-    {
-      id: "ups_next_day_air",
-      name: "UPS - UPS Next Day Air®",
-      price: 297.51,
-      isChecked: false,
-      isEditing: false,
-    },
-    {
       id: "custom_rates",
       name: "Custom Rates",
-      price: 17.51,
+      price: 0.0,
       isChecked: false,
       isEditing: false,
     },
-  ]);
+  ];
+
+  useEffect(() => {
+    const transformedMethods = UserData.map((rate) => ({
+      id: rate.service_code,
+      name: rate.service_type,
+      price: divideWeight * rate.shipping_amount.amount,
+      isChecked: false,
+      isEditing: false,
+    }));
+
+    // Combine the transformed methods with existing ones
+    const mergedMethods = [...existingShippingMethods];
+
+    // Update existingShippingMethods if IDs match or add new entries
+    transformedMethods.forEach((newMethod) => {
+      const existingMethodIndex = mergedMethods.findIndex(
+        (method) => method.id === newMethod.id
+      );
+
+      if (existingMethodIndex !== -1) {
+        // Update price for matching IDs
+        mergedMethods[existingMethodIndex] = {
+          ...mergedMethods[existingMethodIndex],
+          price: newMethod.price,
+        };
+      } else {
+        // Add new shipping methods
+        mergedMethods.push(newMethod);
+      }
+    });
+
+    setShippingMethods(mergedMethods);
+  }, [show]);
+  // const [shippingMethods, setShippingMethods] = useState([
+  //   {
+  //     id: "local_pickup",
+  //     name: "Local Pickup",
+  //     price: 0.0,
+  //     isChecked: false,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: "ups_ground",
+  //     name: "UPS - UPS® Ground",
+  //     price: 59.64,
+  //     isChecked: false,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: "ups_next_day_air",
+  //     name: "UPS - UPS Next Day Air®",
+  //     price: 297.51,
+  //     isChecked: false,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: "custom_rates",
+  //     name: "Custom Rates",
+  //     price: 17.51,
+  //     isChecked: false,
+  //     isEditing: false,
+  //   },
+  // ]);
   const [selectedOptions, setSelectedOptions] = useState([]); // State to hold selected options
   const [oldPrice, setOldPrice] = useState("");
   // Handle checkbox change
@@ -88,6 +145,9 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
         };
       })
     );
+  };
+  const handleCheckout = () => {
+    console.log("Dffdfdfdfdf=df-d=f-df");
   };
 
   // Function to handle edit/save button click
@@ -197,59 +257,68 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
                     <div className="head-quotes d-flex align-items-center justify-content-between">
                       <span className="quotessubtotal">Shipping Methods</span>
                     </div>
-                    {shippingMethods.map((method) => (
-                      <div className="rate-option ShippingMethodCheckbox_div mb-3" key={method.id}>
+                    {shippingMethods?.map((method) => (
+                      <div
+                        className="rate-option ShippingMethodCheckbox_div mb-3"
+                        key={method.id}
+                      >
                         <label>
                           <input
                             type="checkbox"
-                            checked={method.isChecked}
+                            checked={
+                              addressDetail?.service_code === method.id ||
+                              method.isChecked
+                            }
                             onChange={() => handleCheckboxChange(method.id)}
                           />
                           &nbsp;&nbsp;
                           {method.name} (
                           {method.isEditing ? (
                             <div className="ShippingMethodCount_div">
-                            <input
-                              type="number"
-                              className="addNumber_input"
-                              value={method.price}
-                              onChange={(e) =>
-                                handlePriceChange(method.id, e.target.value)
-                              }
-                            />
-                            {method.isEditing && (
-                          <>
-                            <Button 
-                              variant={null}
-                              className="save-price-btn"
-                              onClick={() =>
-                                handleEditSaveClick(method.id, method.price)
-                              }
-                            >
-                              <Icon icon="lucide:check" />
-                            </Button>
-                            <Button 
-                              variant={null}
-                              className="cancel-price-btn"
-                              onClick={() =>
-                                handleCancelClick(method.id, method.price)
-                              }
-                            >
-                              <Icon icon="majesticons:close" />
-                            </Button>
-                          </>
-                        )}
+                              <input
+                                type="number"
+                                className="addNumber_input"
+                                value={method.price}
+                                onChange={(e) =>
+                                  handlePriceChange(method.id, e.target.value)
+                                }
+                              />
+                              {method.isEditing && (
+                                <>
+                                  <Button
+                                    variant={null}
+                                    className="save-price-btn"
+                                    onClick={() =>
+                                      handleEditSaveClick(
+                                        method.id,
+                                        method.price
+                                      )
+                                    }
+                                  >
+                                    <Icon icon="lucide:check" />
+                                  </Button>
+                                  <Button
+                                    variant={null}
+                                    className="cancel-price-btn"
+                                    onClick={() =>
+                                      handleCancelClick(method.id, method.price)
+                                    }
+                                  >
+                                    <Icon icon="majesticons:close" />
+                                  </Button>
+                                </>
+                              )}
                             </div>
                           ) : (
                             `$${method.price.toFixed(2)}`
                           )}
                           )
                         </label>
-                        
+
                         {!method.isEditing && (
-                          <Button 
-                          variant={null}
-                          className="Edit-price-btn ms-2"
+                          <Button
+                            variant={null}
+                            className="Edit-price-btn ms-2"
                             onClick={() =>
                               handleEditSaveClick(method.id, method.price)
                             }
@@ -298,8 +367,10 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
                   <Form.Check
                     type="checkbox"
                     id="payWithCard"
+                    checked={true}
+                    disabled={true}
                     label="Pay with Card"
-                    checked={selectedOptions.includes("Pay with Card")}
+                    // checked={selectedOptions.includes("Pay with Card")}
                     onChange={() => handleOptionChange("Pay with Card")}
                   />
                   <Form.Check
@@ -349,6 +420,10 @@ const CheckoutPopup = ({ show, addressDetail, handleClose }) => {
               </div>
             </div>
             <div className="footer_btn">
+              <Button className="mt-3" onClick={handleCheckout}>
+                {" "}
+                Update Checkout
+              </Button>
               <Button
                 className="mt-3"
                 variant="lt-primary ms-2"

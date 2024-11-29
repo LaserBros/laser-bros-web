@@ -15,6 +15,7 @@ import {
   AdminfetchRFQ,
   AdmingetEditQuote,
   fetchRFQ,
+  getParticularEditQuoteAdmin,
   updateQuoteState,
 } from "../../../api/api";
 import Pagination from "../../components/Pagination";
@@ -89,7 +90,7 @@ const RFQS = () => {
     const data = {
       id: id,
     };
-    const res = await AdmingetEditQuote(data);
+    const res = await getParticularEditQuoteAdmin(data);
     console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
@@ -99,7 +100,12 @@ const RFQS = () => {
       "setItemelementDataAdmin",
       JSON.stringify(res.data.requestQuoteDB)
     );
-    localStorage.setItem("UserDataAdmin", JSON.stringify(res.data.userDBdata));
+    // localStorage.setItem("UserDataAdmin", JSON.stringify(res.data.userDBdata));
+    localStorage.setItem(
+      "shippingRates",
+      JSON.stringify(res.data.shippingRates)
+    );
+    localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
     navigate("/admin/rfqs/edit-quote");
   };
 
