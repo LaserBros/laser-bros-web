@@ -177,7 +177,7 @@ const ViewRFQS = () => {
   // ];
 
   const handleShow3 = (quote, notes_admin, id) => {
-    console.log("Sdsd notes");
+    // console.log("Sdsd notes");
     setSelectedNote(quote);
     setSelectedAdminNote(notes_admin);
     setSelectedPartId(id);
@@ -317,17 +317,18 @@ const ViewRFQS = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
+  const [UserDataAdmin, setUserDataAdmin] = useState("");
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
+    const userData = localStorage.getItem("UserDataAdmin");
 
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
       setQuoteList(quote_list_val);
-
+      setUserDataAdmin(JSON.parse(userData));
       setQuoteData(parsedData);
     }
   }, []);
@@ -660,6 +661,30 @@ const ViewRFQS = () => {
             </div>
           </div>
           <Row>
+            <div className="QuoteBillMain_div">
+              <Row>
+                <Col lg={3} md={6}>
+                  <div className="QuoteBill_box">
+                    <p>
+                      <b>Customer Name:</b>
+                      &nbsp;&nbsp;&nbsp;{UserDataAdmin?.full_name}
+                    </p>
+                    {UserDataAdmin?.email && (
+                      <p>
+                        <b>Email:</b>
+                        &nbsp;&nbsp;&nbsp;{UserDataAdmin?.email}
+                      </p>
+                    )}
+                    {UserDataAdmin?.phone_number && (
+                      <p>
+                        <b>Phone Number:</b>
+                        &nbsp;&nbsp;&nbsp;{UserDataAdmin?.phone_number}
+                      </p>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </div>
             <Col lg={12} xl={12}>
               {quoteData &&
                 quoteData.length > 0 &&

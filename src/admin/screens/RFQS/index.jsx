@@ -86,10 +86,12 @@ const RFQS = () => {
     setCurrentPage(pageNumber);
     loadData(pageNumber);
   };
+  const [loadingId, setLoadingId] = useState("");
   const EditQuote = async (id) => {
     const data = {
       id: id,
     };
+    setLoadingId(id);
     const res = await getParticularEditQuoteAdmin(data);
     console.log(res);
     localStorage.setItem(
@@ -106,6 +108,7 @@ const RFQS = () => {
       JSON.stringify(res.data.shippingRates)
     );
     localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
+    setLoadingId("");
     navigate("/admin/rfqs/edit-quote");
   };
 
@@ -337,8 +340,22 @@ const RFQS = () => {
                                 className="btnaccept"
                                 onClick={() => EditQuote(row._id)}
                               >
-                                <Icon icon="tabler:edit" />
-                                Edit Quote
+                                {loadingId == row._id ? (
+                                  <>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span
+                                      className="spinner-border spinner-border-sm"
+                                      role="status"
+                                      aria-hidden="true"
+                                    ></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </>
+                                ) : (
+                                  <>
+                                    <Icon icon="tabler:edit" />
+                                    Edit Quote
+                                  </>
+                                )}
                               </Link>
                             )}
                           </td>

@@ -62,10 +62,12 @@ const AddressDetails = ({
               <b className="minWidth_110">Order date:</b>{" "}
               <DateFormat dateString={addressDetail?.createdAt} />
             </p>
-            <p>
-              <b className="minWidth_110">Shipping Type:</b>{" "}
-              {formatString(addressDetail?.service_code)}
-            </p>
+            {addressDetail?.service_code && (
+              <p>
+                <b className="minWidth_110">Shipping Type:</b>{" "}
+                {formatString(addressDetail?.service_code)}
+              </p>
+            )}
             {po_number && (
               <p>
                 <b className="minWidth_110">Purchase Number : </b> {po_number}
