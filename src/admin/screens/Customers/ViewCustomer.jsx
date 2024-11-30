@@ -158,7 +158,7 @@ const ViewCustomer = () => {
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
-        {loadingData ? (
+        {loading ? (
           <>
             <span
               role="status"
