@@ -15,6 +15,7 @@ import Quotes from "./Quotes";
 import { toast } from "react-toastify";
 import CheckoutPopup from "../../components/CheckoutPopup";
 import CheckOutPay from "../../components/checkOutPay";
+import MaterialBadge from "../../admin/components/MaterialBadge";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState(null);
@@ -26,7 +27,7 @@ export default function RFQS() {
   const [loadingResend, setLoadingResend] = useState(false);
   const [loadingPay, setLoadingPay] = useState();
   const [loadingPayId, setLoadingPayID] = useState();
-  const fetchData = async (page) => {
+  const fetchData = async (page = 1) => {
     try {
       const data = {
         page: page,
@@ -133,20 +134,16 @@ export default function RFQS() {
     },
     {
       name: "Materials",
+      minWidth: "240px",
       selector: (row) => (
-        <div className="badgematerials">
-          <span
-            style={getMaterialsColor(
-              row.material_name1 + " " + row.material_grade1
-            )}
-          ></span>
-          {row.material_name1 + " " + row.material_grade1}
+        <div className="badgematerials custom_badgess">
+          <MaterialBadge materialDetails={row.material_details} />
         </div>
       ),
       sortable: false,
     },
     {
-      name: "Quantity",
+      name: "Parts Quantity",
       selector: (row) => row.total_quantity,
       sortable: false,
     },

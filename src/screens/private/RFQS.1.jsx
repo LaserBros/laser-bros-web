@@ -66,6 +66,7 @@ export default function RFQS() {
     },
     {
       name: "Materials",
+      minWidth: "240px",
       selector: (row) => (
         <div className="badgematerials">
           <span

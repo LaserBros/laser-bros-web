@@ -433,6 +433,19 @@ export const getEditQuote = async (data) => {
   }
 };
 
+export const deleteRequestQuote = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/deleteRequestQuote`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getEditQuotePay = async (data) => {
   try {
     const response = await axiosInstance.post(

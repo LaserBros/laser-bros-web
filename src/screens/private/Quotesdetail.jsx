@@ -489,7 +489,7 @@ export default function QuotesDetail() {
   };
   const handleQuantityChangeAPI = async (Id, qty) => {
     let formData = "";
-    console.log(qty);
+
     formData = {
       id: Id,
       quantity: qty,
@@ -499,7 +499,7 @@ export default function QuotesDetail() {
     const response = await uploadQuote(formData);
     if (response && response.data) {
       const discount = response.data.updateQuantity.discount;
-      const price = response.data.updatedPrice.total_amount;
+      const price = response.data.updateQuantity.amount;
       //   console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = quoteData.map((quote) =>
@@ -553,10 +553,11 @@ export default function QuotesDetail() {
     );
 
     const response = await uploadQuote(formData);
-    console.log(response, "Sdsdsdsdds= response,", formData);
+
     if (response && response.data) {
+      console.log(response, "Sdsdsdsdds= response,", response.data);
       const discount = response.data.updateQuantity.discount;
-      const price = response.data.updatedPrice.total_amount;
+      const price = response.data.updateQuantity.amount;
       //   console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = updatedQuoteData.map((quote) =>

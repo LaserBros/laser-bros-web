@@ -44,14 +44,8 @@ export default function OrdersDetail() {
   const [ordersTrack, setordersTrack] = useState([]);
   const handleShow = async (value) => {
     setLoadingOrder(true);
-    try {
-      const res = await trackingDetails(value);
-      setordersTrack(res.data);
-      setModalShow(true);
-    } catch (error) {
-    } finally {
-      setLoadingOrder(false);
-    }
+    setModalShow(true);
+    setLoadingOrder(false);
   };
   const formatDate = (dateCreate) => {
     const dateObj = new Date(dateCreate);
@@ -65,7 +59,9 @@ export default function OrdersDetail() {
       id: id,
     };
     const res = await orderTrackingDetails(data);
-    settrackNumber(res.data);
+    setordersTrack(res.data);
+    console.log(res.data, "DSsdsd");
+    // settrackNumber(res.data);
   };
   useEffect(() => {
     orderTracking();
@@ -79,7 +75,7 @@ export default function OrdersDetail() {
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap">
               <h5>Orders Detail</h5>{" "}
               <div className="d-flex">
-                {orderDetails.status == 3 && trackNumber?.length > 0 && (
+                {/* {orderDetails.status == 3 && trackNumber?.length > 0 && (
                   <select
                     // className="form-select me-2"
                     className="form-select"
@@ -95,30 +91,32 @@ export default function OrdersDetail() {
                       </option>
                     ))}
                   </select>
+                )} */}
+                {orderDetails.status == 3 && ordersTrack?.length > 0 && (
+                  <Link
+                    to=""
+                    onClick={handleShow}
+                    className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
+                    style={{ marginRight: "4px" }}
+                    disabled={loadingOrder}
+                  >
+                    {loadingOrder ? (
+                      <span
+                        role="status"
+                        aria-hidden="true"
+                        className="spinner-border spinner-border-sm text-center"
+                        style={{
+                          margin: "0 auto",
+                          display: "block",
+                          marginTop: "20px",
+                          marginBottom: "20px",
+                        }}
+                      ></span>
+                    ) : (
+                      "Track your order"
+                    )}
+                  </Link>
                 )}
-                {/* <Link
-                  to=""
-                  onClick={handleShow}
-                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
-                  style={{ marginRight: "4px" }}
-                  disabled={loadingOrder}
-                >
-                  {loadingOrder ? (
-                    <span
-                      role="status"
-                      aria-hidden="true"
-                      className="spinner-border spinner-border-sm text-center"
-                      style={{
-                        margin: "0 auto",
-                        display: "block",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                      }}
-                    ></span>
-                  ) : (
-                    "Track your order"
-                  )}
-                </Link> */}
                 <Link
                   to="/orders"
                   className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
@@ -303,7 +301,7 @@ export default function OrdersDetail() {
       <ShippingStatus
         show={modalShow}
         handleClose={handleClose}
-        data={ordersTrack}
+        ordersTrack={ordersTrack}
       />
     </React.Fragment>
   );

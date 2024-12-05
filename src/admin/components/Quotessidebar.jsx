@@ -359,6 +359,7 @@ const QuotesSidebar = ({
         </>
       )}
       {/* <PaymentDone show={modalShow} handleClose={handleClose} /> */}
+
       <CheckoutPopup
         show={checkOutmodal}
         handleClose={handleClosePop}

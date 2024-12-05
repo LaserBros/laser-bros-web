@@ -8,6 +8,7 @@ import { getOrders, reOrder } from "../../api/api";
 import { toast } from "react-toastify";
 import Pagination from "../../admin/components/Pagination";
 import OrderStatus from "../../admin/components/OrderStatus";
+import MaterialBadge from "../../admin/components/MaterialBadge";
 export default function Orders() {
   // const navigate = useNavigation();
   const navigate = useNavigate();
@@ -25,11 +26,21 @@ export default function Orders() {
     setLoadingResend(true);
     try {
       const res = await reOrder(data);
-      toast.success(
-        "Order resend successfully. Please wait for admin approval"
-      );
+      // toast.success(
+      //   "Order resend successfully. Please wait for admin approval"
+      // );
       setLoadingResend(false);
-      navigate("/rfqs");
+      localStorage.setItem(
+        "setItemelementData",
+        JSON.stringify(res.data.mainQuoteCreate)
+      );
+
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(res.data.createSubQuote)
+      );
+      navigate("/quotes/quotes-detail");
+      // navigate("/rfqs");
     } catch (error) {
       setLoadingResend(false);
       toast.error("Something wents wrong..");
@@ -45,20 +56,16 @@ export default function Orders() {
     },
     {
       name: "Materials",
+      minWidth: "240px",
       selector: (row) => (
-        <div className="badgematerials">
-          <span
-            style={getMaterialsColor(
-              row.material_name1 + " " + row.material_grade1
-            )}
-          ></span>
-          {row.material_name1 + " " + row.material_grade1}
+        <div className="badgematerials custom_badgess">
+          <MaterialBadge materialDetails={row.material_details} />
         </div>
       ),
       sortable: false,
     },
     {
-      name: "Quantity",
+      name: "Parts Quantity",
       selector: (row) => row.total_quantity,
       sortable: false,
     },
@@ -88,13 +95,14 @@ export default function Orders() {
       name: "Actions",
       cell: (row) => (
         <div>
-          <Link className="btnview" to={`/orders/orders-detail/${row._id}`}>
-            <Icon icon="hugeicons:view"></Icon>
+          <Link className="btnpay" to={`/orders/orders-detail/${row._id}`}>
+            View
           </Link>
           <Link
-            className="btnreorder"
+            className="btnpay"
             to=""
             disabled={loadingRowId === row._id ? true : false}
+            style={{ width: "70px" }}
             onClick={() => {
               OrderDetailClick(row._id);
             }}
@@ -102,7 +110,7 @@ export default function Orders() {
             {loadingRowId === row._id ? (
               <Icon icon="eos-icons:loading" spin={true}></Icon>
             ) : (
-              <Icon icon="solar:reorder-line-duotone"></Icon>
+              "Reorder"
             )}
           </Link>
         </div>
@@ -278,14 +286,6 @@ export default function Orders() {
                     className="custom-table custom-table2"
                     labelRowsPerPage=""
                   />
-                  {!loading && totalPage > 10 && (
-                    <Pagination
-                      totalItems={totalPage}
-                      itemsPerPage={itemsPerPage}
-                      currentPage={currentPage}
-                      onPageChange={onPageChange}
-                    />
-                  )}
                 </>
               )}
             </Card.Body>

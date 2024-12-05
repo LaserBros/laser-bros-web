@@ -570,6 +570,7 @@ const OrdersDetail = () => {
     const data = {
       id: id,
       move_status: 2,
+      status: 2,
     };
     try {
       const res = await AdminmoveOrderStatus(data);

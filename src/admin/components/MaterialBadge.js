@@ -30,10 +30,19 @@ const MaterialBadge = ({ materialDetails }) => {
   const handleCloseModal = () => setShowModal(false);
 
   const MAX_VISIBLE_ITEMS = 2;
-  const details = Array.isArray(materialDetails) ? materialDetails : []; // Fallback to empty array
-  const isMoreThanTwo = details.length > MAX_VISIBLE_ITEMS;
-  const visibleItems = details.slice(0, MAX_VISIBLE_ITEMS);
-  const remainingItemsCount = details.length - MAX_VISIBLE_ITEMS;
+
+  // Remove duplicates by material_code
+  const uniqueDetails = Array.isArray(materialDetails)
+    ? materialDetails.filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex((t) => t?.material_code === item?.material_code)
+      )
+    : [];
+
+  const isMoreThanTwo = uniqueDetails.length > MAX_VISIBLE_ITEMS;
+  const visibleItems = uniqueDetails.slice(0, MAX_VISIBLE_ITEMS);
+  const remainingItemsCount = uniqueDetails.length - MAX_VISIBLE_ITEMS;
 
   return (
     <>
@@ -68,7 +77,7 @@ const MaterialBadge = ({ materialDetails }) => {
           <Modal.Title>All Material Tags</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {details.map((item, index) => (
+          {uniqueDetails.map((item, index) => (
             <span
               key={`modal-${index}`} // Add unique key
               className="badgestatus-more mt-1 me-2"

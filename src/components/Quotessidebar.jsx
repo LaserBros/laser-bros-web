@@ -21,6 +21,7 @@ import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
 import Amount from "./Amount";
 import ShippingRates from "./ShippingRates";
+import CheckOutPay from "./checkOutPay";
 const QuotesSidebar = ({
   amount,
   showDiv,
@@ -28,6 +29,8 @@ const QuotesSidebar = ({
   divideWeight,
   ShippingDBdataPay,
   quoteData,
+  isPayble,
+  loadId,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
@@ -35,6 +38,7 @@ const QuotesSidebar = ({
   const [loadingPayId, setLoadingPayID] = useState();
   useEffect(() => {
     setquoteData(quoteData);
+    console.log("quoteData", quoteData);
   }, [quoteData]);
   const handleRateSelected = async (rate) => {
     setrateVal(rate);
@@ -120,6 +124,25 @@ const QuotesSidebar = ({
   const [modalShowPay, setModalShowPay] = useState(false);
   const [PayLoad, setPayLoad] = useState(false);
   const [shippingInfo, setshippingInfo] = useState(false);
+  const RequestQuote = async (id) => {
+    const data = {
+      id: id,
+    };
+    setLoadingPay(id);
+    setLoadingPayID(id);
+    setPayLoad(true);
+    try {
+      const response = await getEditQuotePay(data);
+      setshippingInfo(response.data);
+      setLoadingPay(false);
+      setModalShowPay(true);
+      setPayLoad(false);
+    } catch (error) {
+      setPayLoad(false);
+      setLoadingPay(false);
+      toast.error("Something wents wrong.");
+    }
+  };
   const handleUpdateQuoteChange = async () => {
     const elementId = localStorage.getItem("setItemelementData");
     const updatedQuoteData = JSON.parse(
@@ -385,15 +408,22 @@ const QuotesSidebar = ({
                     />
                   </span>
                 </div>
-
                 <div className="text-color-shipping">
                   {buttonText == 1 ? (
                     <>
                       <hr />
-                      <p>
-                        An item in your quote requires approval. Please submit
-                        your RFQ and we’ll get back to you ASAP!
-                      </p>
+                      {isPayble ? (
+                        buttonText == 1 ? (
+                          <p>Waiting for admin approval.</p>
+                        ) : (
+                          <p>
+                            An item in your quote requires approval. Please
+                            submit your RFQ and we’ll get back to you ASAP!
+                          </p>
+                        )
+                      ) : (
+                        ""
+                      )}
                     </>
                   ) : (
                     <>
@@ -403,23 +433,49 @@ const QuotesSidebar = ({
                     </>
                   )}
                 </div>
-                <Button
-                  className="w-100 mt-3"
-                  onClick={() => handleUpdateQuoteChange()}
-                  disabled={PayLoad}
-                >
-                  {PayLoad ? (
-                    <span
-                      className="spinner-border spinner-border-sm"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                  ) : buttonText == 1 ? (
-                    "Request a Quote"
-                  ) : (
-                    "Proceed to checkout"
-                  )}
-                </Button>
+                {isPayble ? (
+                  <>
+                    {buttonText == 1 ? (
+                      <></>
+                    ) : (
+                      <Button
+                        className="w-100 mt-3"
+                        onClick={() => RequestQuote(loadId)}
+                        disabled={PayLoad}
+                      >
+                        {PayLoad ? (
+                          <span
+                            className="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        ) : buttonText == 1 ? (
+                          "Request a Quote"
+                        ) : (
+                          "Proceed to checkout"
+                        )}
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <Button
+                    className="w-100 mt-3"
+                    onClick={() => handleUpdateQuoteChange()}
+                    disabled={PayLoad}
+                  >
+                    {PayLoad ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                    ) : buttonText == 1 ? (
+                      "Request a Quote"
+                    ) : (
+                      "Proceed to checkout"
+                    )}
+                  </Button>
+                )}
               </>
             ) : (
               <>
@@ -736,14 +792,25 @@ const QuotesSidebar = ({
         </>
       )}
       <PaymentDone show={modalShow} handleClose={handleClose} />
-      <CheckoutPopup
-        loadingPayId={loadingPayId}
-        show={modalShowPay}
-        handleClose={handleClosePay}
-        address={address}
-        shippingInfo={shippingInfo}
-        cardsData={cardsData}
-      />
+      {isPayble ? (
+        <CheckOutPay
+          show={modalShowPay}
+          loadingPayId={loadingPayId}
+          handleClose={handleClosePay}
+          address={address}
+          shippingInfo={shippingInfo}
+          cardsData={cardsData}
+        />
+      ) : (
+        <CheckoutPopup
+          loadingPayId={loadingPayId}
+          show={modalShowPay}
+          handleClose={handleClosePay}
+          address={address}
+          shippingInfo={shippingInfo}
+          cardsData={cardsData}
+        />
+      )}
     </>
   );
 };

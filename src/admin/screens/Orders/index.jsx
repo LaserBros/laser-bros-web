@@ -128,7 +128,16 @@ const Orders = () => {
     }
   };
   const onPageChange = (pageNumber) => {
-    loadOrders("", pageNumber);
+    setCurrentPage(pageNumber);
+    loadOrders(
+      name,
+      pageNumber,
+      operation,
+      operation == "cutting" ? selecttag : "",
+      Phase,
+      operation == "post_ops" ? selecttag : "",
+      SortVal
+    );
   };
   useEffect(() => {
     loadOrders(

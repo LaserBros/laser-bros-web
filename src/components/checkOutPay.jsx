@@ -530,7 +530,7 @@ const CheckOutPay = ({
                         <div className="netTerms_flex">
                           <label htmlFor="poNumber">PO:</label>
                           <input
-                            type="number"
+                            type="text"
                             id="poNumber"
                             name="poNumber"
                             min="1"
