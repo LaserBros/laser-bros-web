@@ -247,6 +247,7 @@ const Quotes = () => {
           <Link
             className="btnpay"
             to=""
+            style={{ width: "70px" }}
             onClick={() => {
               deleteModal(row._id);
             }}
