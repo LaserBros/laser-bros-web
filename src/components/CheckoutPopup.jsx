@@ -393,7 +393,7 @@ const CheckoutPopup = ({
               </Col>
               <Col lg={6}>
                 <div className="cards_sect">
-                  <h2 className="shipping_head">Payment Method :</h2>
+                  <h2 className="shipping_head">Payment Method </h2>
                   {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
                     <>
                       <div className="text-center mt-2">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Container, Image, Form } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link, json } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import file1 from "../../assets/img/file1.jpg";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -27,6 +27,7 @@ import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
 export default function QuotesDetail() {
   const currentDate = new Date();
+  const navigate = useNavigate();
   const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
   const currentDay = String(currentDate.getDate()).padStart(2, "0");
   const yearLastTwoDigits = String(currentDate.getFullYear()).slice(-2);
@@ -763,7 +764,13 @@ export default function QuotesDetail() {
       // Handle the error case as necessary
     }
   };
+  const BackQuote = () => {
+    localStorage.removeItem("setItemelementData");
 
+    localStorage.removeItem("setItempartsDBdata");
+    console.log("SDdsd");
+    navigate("/quotes");
+  };
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -781,8 +788,10 @@ export default function QuotesDetail() {
               </>
             )}
             <div className="d-inline-flex gap-2">
-              {/* <Link className="btnshare">Share Quote</Link>
-              <Link className="btnsavelater">Save For Later</Link> */}
+              {/* <Link className="btnshare">Share Quote</Link> */}
+              <Link className="btnsavelater" onClick={BackQuote} to={"/quotes"}>
+                Back To Quotes
+              </Link>
               {/* <Link className="btnicon">
                 <Icon icon="bytesize:upload" />
               </Link> */}

@@ -27,12 +27,18 @@ export default function RFQS() {
   const [loadingResend, setLoadingResend] = useState(false);
   const [loadingPay, setLoadingPay] = useState();
   const [loadingPayId, setLoadingPayID] = useState();
+  const [PerPage, setPerPage] = useState(10);
+  const handleRowsPerPageChange = (newRowsPerPage, page) => {
+    setPerPage(newRowsPerPage);
+    fetchData(currentPage, perPage);
+  };
   const fetchData = async (page = 1) => {
     try {
       const data = {
         page: page,
+        PerPage: PerPage,
       };
-      const res = await fetchRFQ(page);
+      const res = await fetchRFQ(page, PerPage);
       console.log("SDsdsdsdsddssds =-=-=-=-=-=-=-", res.data);
       setQuotes(res.data.updatedQuotes);
       setTotalRows(res.data.total);
@@ -369,8 +375,9 @@ export default function RFQS() {
                   paginationTotalRows={totalRows}
                   onChangePage={handlePageChange}
                   paginationPerPage={perPage}
+                  onChangeRowsPerPage={handleRowsPerPageChange}
                   responsive
-                  paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                  // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
                   className="custom-table custom-table2"
                   labelRowsPerPage=""
                 />

@@ -18,9 +18,46 @@ const AddressDetails = ({
       .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first character
   };
 
+  const formatPhoneNumber = (number) => {
+    // Convert the input to a string
+    const numberStr = String(number);
+
+    // Remove non-numeric characters
+    const cleaned = numberStr.replace(/\D/g, "");
+
+    // Format based on length
+    if (cleaned.length === 10) {
+      // Format for a standard 10-digit phone number
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+    } else if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      // Format for US-style 11-digit numbers with country code "1"
+      return cleaned.replace(/(\d)(\d{3})(\d{3})(\d{4})/, "$1-$2-$3-$4");
+    } else {
+      // Generic fallback for other formats
+      return cleaned;
+    }
+  };
+
   return (
     <div className="QuoteBillMain_div">
       <Row>
+        <Col lg={3} md={6}>
+          <div className="QuoteBill_box">
+            <h4>Ship To:</h4>
+            <p>
+              {billAdress?.full_name} <br />
+              {/* {addressDetail?.address_details?.full_name} <br /> */}
+              {billAdress?.address_line_1} 0909 <br />
+              {billAdress?.address_line_2 != null ? (
+                <>
+                  {billAdress.address_line_2}
+                  <br />
+                </>
+              ) : null}
+              {billAdress?.city}, {billAdress?.state_code} {billAdress?.pincode}
+            </p>
+          </div>
+        </Col>
         <Col lg={3} md={6}>
           <div className="QuoteBill_box">
             <h4>Bill To:</h4>
@@ -39,23 +76,7 @@ const AddressDetails = ({
             </p>
           </div>
         </Col>
-        <Col lg={3} md={6}>
-          <div className="QuoteBill_box">
-            <h4>Ship To:</h4>
-            <p>
-              {billAdress?.full_name} <br />
-              {/* {addressDetail?.address_details?.full_name} <br /> */}
-              {billAdress?.address_line_1} 0909 <br />
-              {billAdress?.address_line_2 != null ? (
-                <>
-                  {billAdress.address_line_2}
-                  <br />
-                </>
-              ) : null}
-              {billAdress?.city}, {billAdress?.state_code} {billAdress?.pincode}
-            </p>
-          </div>
-        </Col>
+
         <Col lg={4} md={8}>
           <div className="QuoteBillInfo_box">
             <p>
@@ -103,16 +124,22 @@ const AddressDetails = ({
         </Col>
         <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0">
-            {addressDetail?.address_details?.phone_number && (
+            {(addressDetail?.address_details?.phone_number ||
+              addressDetail?.phone_number) && (
               <p>
-                <b>Phone Number:</b>
-                {addressDetail?.address_details?.phone_number}
+                <b>Phone Number:</b>{" "}
+                {formatPhoneNumber(
+                  addressDetail?.address_details?.phone_number ||
+                    addressDetail?.phone_number
+                )}
               </p>
             )}
-            {addressDetail?.address_details?.email && (
+
+            {(addressDetail?.address_details?.email ||
+              addressDetail?.email) && (
               <p className="mb-0">
-                <b>Email:</b>
-                {addressDetail?.address_details?.email}
+                <b>Email: </b>
+                {addressDetail?.address_details?.email || addressDetail?.email}
               </p>
             )}
           </div>

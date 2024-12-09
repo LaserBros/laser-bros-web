@@ -18,6 +18,12 @@ export default function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, settotalPage] = useState(1);
   const [perPage] = useState(10);
+  const [PerPage, setPerPage] = useState(10);
+  const handleRowsPerPageChange = (newRowsPerPage, page) => {
+    setPerPage(newRowsPerPage);
+    loadOrders(currentPage, newRowsPerPage);
+  };
+
   const OrderDetailClick = async (id) => {
     setLoadingRowId(id);
     const data = {
@@ -119,10 +125,10 @@ export default function Orders() {
   ];
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loadOrders = async (page) => {
+  const loadOrders = async (page, perPage) => {
     try {
       // setLoading(true);
-      const response = await getOrders(page);
+      const response = await getOrders(page, perPage);
       setOrders(response.data.updatedQuotes);
       setTotalRows(response.data.total);
     } catch (error) {
@@ -282,7 +288,8 @@ export default function Orders() {
                     onChangePage={handlePageChange}
                     paginationPerPage={perPage}
                     // responsive
-                    paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                    // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                    onChangeRowsPerPage={handleRowsPerPageChange}
                     className="custom-table custom-table2"
                     labelRowsPerPage=""
                   />

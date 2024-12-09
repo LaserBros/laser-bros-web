@@ -110,20 +110,16 @@ const OrdersDetail = () => {
     const url = `${process.env.REACT_APP_API_URL}/admin/generateOrderPDF`;
 
     try {
-      // const response = await fetch(url, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json", // Set as JSON
-      //     // "Authorization": `Bearer ${}`
-      //   },
-      //   body: JSON.stringify({
-      //     orderId: order?.orderedQuote._id, // Convert to JSON string
-      //   }),
-      // });
-      const data = {
-        orderId: order?.orderedQuote._id,
-      };
-      const response = await axiosAdminInstance.post(`/generateOrderPDF`, data);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Set as JSON
+          // "Authorization": `Bearer ${}`
+        },
+        body: JSON.stringify({
+          orderId: order?.orderedQuote._id, // Convert to JSON string
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to download PDF");
@@ -635,7 +631,7 @@ const OrdersDetail = () => {
     //   return `${truncatedMaterialCode}-${truncatedQuoteName}`;
     // }
 
-    return `${materialCode}-${quoteName}`;
+    return `${quoteName}`;
   };
 
   const getMonthYear = (dateStr) => {
@@ -766,11 +762,21 @@ const OrdersDetail = () => {
                         </div>
                       </>
                     )}
-                  {order?.orderedQuote.status == 2 &&
-                  order?.orderedQuote.move_status == 2 ? (
+
+                  {order?.orderedQuote.status == 3 &&
+                  order?.orderedQuote.move_status == 3 ? (
                     <Button
                       as={Link}
                       to="/admin/complete-orders"
+                      className="d-inline-flex align-items-center justify-content-center ms-2"
+                    >
+                      Back
+                    </Button>
+                  ) : order?.orderedQuote.status == 2 &&
+                    order?.orderedQuote.move_status == 2 ? (
+                    <Button
+                      as={Link}
+                      to="/admin/shipping-orders"
                       className="d-inline-flex align-items-center justify-content-center ms-2"
                     >
                       Back
@@ -1426,8 +1432,16 @@ const OrdersDetail = () => {
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">
                   <div className="d-inline-flex align-items-center gap-2 my-1">
                     <b>In this order:</b>
-                    {order.newUpdatedData?.map((wo, index) => (
+                    {[
+                      ...new Map(
+                        order.newUpdatedData?.map((wo) => [
+                          wo.material_code,
+                          wo,
+                        ])
+                      ).values(),
+                    ]?.map((wo, index) => (
                       <span
+                        key={index}
                         className="badgestatus"
                         style={getMaterialColor(
                           wo?.material_name + " " + wo?.material_grade
@@ -1505,10 +1519,7 @@ const OrdersDetail = () => {
                               <Icon
                                 icon="material-symbols-light:download-sharp"
                                 onClick={() =>
-                                  handleDownload(
-                                    wo?.dxf_url,
-                                    wo?.material_code + "-" + wo.quote_name
-                                  )
+                                  handleDownload(wo?.dxf_url, wo.quote_name)
                                 }
                               />
                             </h2>
@@ -1518,15 +1529,14 @@ const OrdersDetail = () => {
                             >
                               {wo?.subquote_number}
                             </span>
-                            {wo.pierce_count && (
+                            {wo.pierce_count != 0 && (
                               <>
-                                <br></br>
+                                <br />
                                 <span
                                   className="num-dim mb-2"
                                   style={{ fontSize: "12px" }}
                                 >
-                                  Pierce Count : {wo.pierce_count}
-                                  {/* </span> */}
+                                  Pierce Count: {wo.pierce_count}
                                 </span>
                               </>
                             )}

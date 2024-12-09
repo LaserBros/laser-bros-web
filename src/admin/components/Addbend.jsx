@@ -214,7 +214,12 @@ const AddBend = ({
                   <small>
                     Price per bend & total are estimated. Once your RFQ has been
                     submitted we will adjust the pricing accordingly.{" "}
-                    <a href="">Learn More</a>
+                    <a
+                      href={`${window.location.origin}/laser-bros/resources/bending`}
+                      target="_blank"
+                    >
+                      Learn More
+                    </a>
                   </small>
                 </div>
 

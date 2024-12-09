@@ -109,6 +109,7 @@ const Orders = () => {
     try {
       setLoading(true);
       setOrders([]);
+      settotalPage(1);
       const response = await getOrdersAdmin(
         query,
         page,
@@ -120,11 +121,12 @@ const Orders = () => {
       );
       setOrders(response.data.data.updatedQuotes);
       settotalPage(response.data.data.total);
+      setLoading(false);
     } catch (error) {
       setOrders([]);
       console.error("Error fetching cards:", error);
-    } finally {
       setLoading(false);
+    } finally {
     }
   };
   const onPageChange = (pageNumber) => {
@@ -142,14 +144,14 @@ const Orders = () => {
   useEffect(() => {
     loadOrders(
       name,
-      currentPage,
+      1,
       operation,
       operation === "cutting" ? selecttag : "",
       Phase,
       operation === "post_ops" ? selecttag : "",
       SortVal
     );
-  }, [SortVal, Phase, selecttag, operation, currentPage, name]);
+  }, [SortVal, Phase, selecttag, name]);
   const handleSortChangeFilter = async (type, data) => {
     if (type == "sort") {
       setSort(data);
@@ -653,7 +655,7 @@ const Orders = () => {
                             </td>
                             <td className="text-nowrap">
                               <span className="statusnew">
-                                <OrderStatus status={row.status} />
+                                <OrderStatus status={row.move_status} />
                               </span>
                             </td>
                             <td className="text-nowrap">

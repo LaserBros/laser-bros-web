@@ -113,9 +113,11 @@ export const getParticularRFQDetails = async (data) => {
   }
 };
 
-export const getOrders = async (data) => {
+export const getOrders = async (data, perPage = 10) => {
   try {
-    const response = await axiosInstance.get(`/users/getOrders?page=` + data);
+    const response = await axiosInstance.get(
+      `/users/getOrders?page=` + data + "&perPage=" + perPage
+    );
     return response.data;
   } catch (error) {
     console.error("Error setting address as default:", error);
@@ -399,10 +401,10 @@ export const getFinish = async (data) => {
   }
 };
 
-export const getAllLoggedInRequestedQuote = async (page) => {
+export const getAllLoggedInRequestedQuote = async (page, perPage = 10) => {
   try {
     const response = await axiosInstance.get(
-      `/users/getAllUnRequestQuotes?page=` + page
+      `/users/getAllUnRequestQuotes?page=` + page + "&perPage=" + perPage
     );
     console.log("responseeee", response.data);
     return response.data;
@@ -412,9 +414,11 @@ export const getAllLoggedInRequestedQuote = async (page) => {
   }
 };
 
-export const fetchRFQ = async (data) => {
+export const fetchRFQ = async (data, PerPage) => {
   try {
-    const response = await axiosInstance.get(`/users/fetchRFQ?page=` + data);
+    const response = await axiosInstance.get(
+      `/users/fetchRFQ?page=` + data + "&PerPage=" + PerPage
+    );
     console.log("responseeee", response.data);
     return response.data;
   } catch (error) {

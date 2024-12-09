@@ -34,6 +34,19 @@ const CheckOutPay = ({
     setActiveTab("card");
     setpoNumber("");
     setfileUpload("");
+    setSelectedRate(shippingInfo?.requestQuoteDB?.service_code);
+    if (shippingInfo?.requestQuoteDB?.service_code != null) {
+      handleRateSelected(
+        shippingInfo?.requestQuoteDB?.service_code,
+        shippingInfo?.requestQuoteDB?.service_code == "ups_next_day_air"
+          ? shippingInfo?.requestQuoteDB?.shipping_upsair_price
+          : shippingInfo?.requestQuoteDB?.service_code == "ups_ground"
+          ? shippingInfo?.requestQuoteDB?.shipping_upsground_price
+          : shippingInfo?.requestQuoteDB?.service_code == "custom_rates"
+          ? shippingInfo?.requestQuoteDB?.custom_rates
+          : "0.00"
+      );
+    }
   }, [show]);
 
   useEffect(() => {
@@ -256,24 +269,25 @@ const CheckOutPay = ({
                         <h2 className="mb-0">
                           {
                             shippingInfo?.requestQuoteDB?.address_details
-                              .full_name
+                              ?.full_name
                           }
                         </h2>
                       </div>
                       <p className="mb-2">
                         {
                           shippingInfo?.requestQuoteDB?.address_details
-                            .phone_number
+                            ?.phone_number
                         }
                       </p>
                       <p className="mb-3">
                         {
                           shippingInfo?.requestQuoteDB?.address_details
-                            .address_line_1
+                            ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.address_details.city},{" "}
-                        {shippingInfo?.requestQuoteDB?.address_details.pincode},{" "}
-                        {shippingInfo?.requestQuoteDB?.address_details.country}
+                        , {shippingInfo?.requestQuoteDB?.address_details?.city},{" "}
+                        {shippingInfo?.requestQuoteDB?.address_details?.pincode}
+                        ,{" "}
+                        {shippingInfo?.requestQuoteDB?.address_details?.country}
                       </p>
                       {/* <div className="btn-bottom">
                           
@@ -294,86 +308,63 @@ const CheckOutPay = ({
                   <h2 className="shipping_head">Shipping Method</h2>
                   {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
                     <>
-                      <div className="rate-option">
-                        <label>
-                          <input
-                            type="checkbox"
-                            value="local_pickup"
-                            checked={selectedRate === "local_pickup"}
-                            // checked={selectedRate === "local_pickup"}
-                            onChange={() =>
-                              handleRateSelected("local_pickup", 0.0)
-                            }
-                          />
-                          &nbsp;&nbsp;Local Pickup
-                        </label>
-                      </div>
-                      <div className="rate-option">
-                        <label>
-                          <input
-                            type="checkbox"
-                            value="ups_next_day_air"
-                            checked={selectedRate === "ups_next_day_air"}
-                            // checked={selectedRate === "local_pickup"}
-                            onChange={() =>
-                              handleRateSelected(
-                                "ups_next_day_air",
-                                shippingInfo?.requestQuoteDB
-                                  ?.shipping_upsair_price
-                              )
-                            }
-                          />
-                          &nbsp;&nbsp;UPS Next Day Air® (
-                          <Amount
-                            amount={
-                              shippingInfo?.requestQuoteDB
-                                ?.shipping_upsair_price
-                            }
-                          />
-                          )
-                        </label>
-                      </div>
-                      <div className="rate-option">
-                        <label>
-                          <input
-                            type="checkbox"
-                            value="ups_ground"
-                            // checked={selectedRate === "local_pickup"}
-                            checked={selectedRate === "ups_ground"}
-                            onChange={() =>
-                              handleRateSelected(
-                                "ups_ground",
-                                shippingInfo?.requestQuoteDB
-                                  ?.shipping_upsground_price
-                              )
-                            }
-                          />
-                          &nbsp;&nbsp;UPS® Ground (
-                          <Amount
-                            amount={
-                              shippingInfo?.requestQuoteDB
-                                ?.shipping_upsground_price
-                            }
-                          />
-                          )
-                        </label>
-                      </div>
-                      {shippingInfo?.requestQuoteDB?.custom_rates != 0 && (
+                      {selectedRate === "local_pickup" && (
                         <div className="rate-option">
                           <label>
                             <input
                               type="checkbox"
-                              value="custom_rates"
-                              // checked={selectedRate === "local_pickup"}
-                              checked={selectedRate === "custom_rates"}
+                              value="local_pickup"
+                              checked={selectedRate === "local_pickup"}
+                              onChange={() =>
+                                handleRateSelected("local_pickup", 0.0)
+                              }
+                            />
+                            &nbsp;&nbsp;Local Pickup
+                          </label>
+                        </div>
+                      )}
+                      {selectedRate === "ups_next_day_air" && (
+                        <div className="rate-option">
+                          <label>
+                            <input
+                              type="checkbox"
+                              value="ups_next_day_air"
+                              checked={selectedRate === "ups_next_day_air"}
                               onChange={() =>
                                 handleRateSelected(
-                                  "custom_rates",
-                                  shippingInfo?.requestQuoteDB?.custom_rates
+                                  "ups_next_day_air",
+                                  shippingInfo?.requestQuoteDB
+                                    ?.shipping_upsair_price
                                 )
                               }
                             />
-                            &nbsp;&nbsp;Custom Rates (
+                            &nbsp;&nbsp;UPS Next Day Air® (
+                            <Amount
+                              amount={
+                                shippingInfo?.requestQuoteDB
+                                  ?.shipping_upsair_price
+                              }
+                            />
+                            )
+                          </label>
+                        </div>
+                      )}
+                      {selectedRate === "ups_ground" && (
+                        <div className="rate-option">
+                          <label>
+                            <input
+                              type="checkbox"
+                              value="ups_ground"
+                              checked={selectedRate === "ups_ground"}
+                              onChange={() =>
+                                handleRateSelected(
+                                  "ups_ground",
+                                  shippingInfo?.requestQuoteDB
+                                    ?.shipping_upsground_price
+                                )
+                              }
+                            />
+                            &nbsp;&nbsp;UPS® Ground (
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
@@ -384,6 +375,31 @@ const CheckOutPay = ({
                           </label>
                         </div>
                       )}
+                      {selectedRate === "custom_rates" &&
+                        shippingInfo?.requestQuoteDB?.custom_rates !== 0 && (
+                          <div className="rate-option">
+                            <label>
+                              <input
+                                type="checkbox"
+                                value="custom_rates"
+                                checked={selectedRate === "custom_rates"}
+                                onChange={() =>
+                                  handleRateSelected(
+                                    "custom_rates",
+                                    shippingInfo?.requestQuoteDB?.custom_rates
+                                  )
+                                }
+                              />
+                              &nbsp;&nbsp;Custom Rates (
+                              <Amount
+                                amount={
+                                  shippingInfo?.requestQuoteDB?.custom_rates
+                                }
+                              />
+                              )
+                            </label>
+                          </div>
+                        )}
                     </>
                   ) : (
                     <ShippingRates
@@ -392,6 +408,7 @@ const CheckOutPay = ({
                       onRateSelected={handleRateSelected}
                       RequestQuote={shippingInfo?.requestQuoteDB?.check_status}
                       selectedShippingAddress={111}
+                      requestDb={shippingInfo?.requestQuoteDB}
                     />
                   )}
                 </div>
@@ -433,24 +450,25 @@ const CheckOutPay = ({
                         <h2 className="mb-0">
                           {
                             shippingInfo?.requestQuoteDB?.billing_details
-                              .full_name
+                              ?.full_name
                           }
                         </h2>
                       </div>
                       <p className="mb-2">
                         {
                           shippingInfo?.requestQuoteDB?.billing_details
-                            .phone_number
+                            ?.phone_number
                         }
                       </p>
                       <p className="mb-3">
                         {
                           shippingInfo?.requestQuoteDB?.billing_details
-                            .address_line_1
+                            ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.billing_details.city},{" "}
-                        {shippingInfo?.requestQuoteDB?.billing_details.pincode},{" "}
-                        {shippingInfo?.requestQuoteDB?.billing_details.country}
+                        , {shippingInfo?.requestQuoteDB?.billing_details?.city},{" "}
+                        {shippingInfo?.requestQuoteDB?.billing_details?.pincode}
+                        ,{" "}
+                        {shippingInfo?.requestQuoteDB?.billing_details?.country}
                       </p>
                     </div>
                   </Col>
@@ -465,7 +483,7 @@ const CheckOutPay = ({
               </Col>
               <Col lg={6}>
                 <div className="cards_sect paymentTab_div">
-                  <h2 className="shipping_head">Payment Method :</h2>
+                  <h2 className="shipping_head">Payment Method </h2>
                   {/* {shippingInfo?.requestQuoteDB?.} */}
                   <Tabs
                     defaultActiveKey="card"

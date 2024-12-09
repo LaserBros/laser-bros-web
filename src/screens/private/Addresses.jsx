@@ -70,6 +70,25 @@ export default function Addresses() {
     }
   };
 
+  const formatPhoneNumber = (number) => {
+    // Convert the input to a string
+    const numberStr = String(number);
+
+    // Remove non-numeric characters
+    const cleaned = numberStr.replace(/\D/g, "");
+
+    // Format based on length
+    if (cleaned.length === 10) {
+      // Format for a standard 10-digit phone number
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+    } else if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      // Format for US-style 11-digit numbers with country code "1"
+      return cleaned.replace(/(\d)(\d{3})(\d{3})(\d{4})/, "$1-$2-$3-$4");
+    } else {
+      // Generic fallback for other formats
+      return cleaned;
+    }
+  };
   useEffect(() => {
     loadData();
   }, []);
@@ -99,18 +118,21 @@ export default function Addresses() {
                   </Col>
                 ) : (
                   address.map((addr) => (
-                    <Col xl={4} lg={4} md={6} className="mb-4">
+                    <Col xl={4} lg={4} md={6} className="mb-2">
                       <div className="addresses-grid">
-                        <div className="d-flex align-items-center justify-content-between mb-3">
+                        <div className="d-flex align-items-center justify-content-between mb-1">
                           <h2 className="mb-0">{addr.full_name}</h2>
                           {addr.is_default === 1 && (
                             <span className="statusdefault">Default</span>
                           )}
                         </div>
-                        <p className="mb-2">{addr.phone_number}</p>
+                        <p className="mb-2">{addr.nickname}</p>
+                        <p className="mb-2">
+                          {formatPhoneNumber(addr.phone_number)}
+                        </p>
                         <p className="mb-3">
-                          {addr.address_line_1}, {addr.city}, {addr.pincode},{" "}
-                          {addr.country}
+                          {addr.address_line_1}, {addr.city} {addr.state_code},{" "}
+                          {addr.pincode}, {addr.country}
                         </p>
                         <div className="btn-bottom">
                           <Link

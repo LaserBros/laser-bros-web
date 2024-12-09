@@ -23,13 +23,14 @@ const Quotes = () => {
   const [totalPage, settotalPage] = useState(10);
   const [loadingRowId, setLoadingRowId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [PerPage, setPerPage] = useState(10);
   const [itemsPerPage] = useState(10);
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         setQuotes([]);
-        const res = await getAllLoggedInRequestedQuote(currentPage);
+        const res = await getAllLoggedInRequestedQuote(currentPage, PerPage);
         setQuotes(res.data.data);
         settotalPage(res.data.total);
         setLoading(false);
@@ -40,7 +41,7 @@ const Quotes = () => {
     };
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, PerPage]);
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     // console.log(pageNumber, currentPage);
@@ -258,6 +259,12 @@ const Quotes = () => {
       ),
     },
   ];
+
+  const handleRowsPerPageChange = (newRowsPerPage, page) => {
+    console.log(" setPerPage", newRowsPerPage);
+    setPerPage(newRowsPerPage);
+  };
+
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -300,9 +307,10 @@ const Quotes = () => {
                     paginationTotalRows={totalPage}
                     paginationDefaultPage={currentPage}
                     onChangePage={handlePageChange}
-                    paginationPerPage={itemsPerPage}
+                    paginationPerPage={PerPage}
                     // responsive
-                    paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                    // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                    onChangeRowsPerPage={handleRowsPerPageChange}
                     className="custom-table custom-table2"
                     labelRowsPerPage=""
                   />

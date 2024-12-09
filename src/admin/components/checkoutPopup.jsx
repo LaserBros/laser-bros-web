@@ -139,6 +139,7 @@ const CheckoutPopup = ({
   };
   // Function to handle checkbox selection (only one at a time)
   const handleCheckboxChange = (id) => {
+    setSelectedServiceCode(id);
     setShippingMethods((prev) =>
       prev.map((method) => {
         const isSelected = method.id === id;
@@ -152,6 +153,9 @@ const CheckoutPopup = ({
       })
     );
   };
+  const [selectedServiceCode, setSelectedServiceCode] = useState(
+    addressDetail?.service_code || null
+  );
   const handleCheckout = async () => {
     const custom_rates = shippingMethods.find(
       (method) => method.id === "custom_rates"
@@ -169,7 +173,10 @@ const CheckoutPopup = ({
     const ups_next_day_airPrice = ups_next_day_air ? ups_next_day_air.price : 0;
 
     const isNetTermSelected = selectedOptions.includes("NET Term");
-
+    const selectedMethod =
+      shippingMethods.find((method) => method.isChecked)?.id || null;
+    // console.log("shippingMethods", selectedServiceCode);
+    // return;
     try {
       const data = {
         id: addressDetail?._id,
@@ -177,6 +184,7 @@ const CheckoutPopup = ({
         shipping_upsair_price: ups_next_day_airPrice,
         shipping_upsground_price: ups_groundPrice,
         custom_rates: custom_ratesPrice,
+        service_code: selectedServiceCode,
       };
 
       const res = await updateShippingCost(data);
@@ -300,7 +308,7 @@ const CheckoutPopup = ({
                           <input
                             type="checkbox"
                             checked={
-                              addressDetail?.service_code === method.id ||
+                              selectedServiceCode === method.id ||
                               method.isChecked
                             }
                             onChange={() => handleCheckboxChange(method.id)}
@@ -397,7 +405,7 @@ const CheckoutPopup = ({
               </Col>
               <Col lg={6}>
                 <div className="cards_sect">
-                  <h2 className="shipping_head">Payment Method :</h2>
+                  <h2 className="shipping_head">Payment Method </h2>
                   <Form.Check
                     type="checkbox"
                     id="payWithCard"
@@ -456,7 +464,7 @@ const CheckoutPopup = ({
             <div className="footer_btn">
               <Button className="mt-3" onClick={handleCheckout}>
                 {" "}
-                Update Checkout
+                Save & Close
               </Button>
               <Button
                 className="mt-3"
