@@ -41,8 +41,10 @@ const Queue = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`,
-      background:theme =='dark' ? '#212121':'#fff',
+      border: `1px solid ${
+        theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
+      }`,
+      background: theme == "dark" ? "#212121" : "#fff",
       boxShadow: "none",
       minHeight: "50px",
       borderRadius: "40px",
@@ -50,7 +52,7 @@ const Queue = () => {
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: theme =='dark' ? '#bfbfbf':'#6C6A72', // Text color change
+      color: theme == "dark" ? "#bfbfbf" : "#6C6A72", // Text color change
     }),
     multiValue: (provided, state) => ({
       ...provided,
@@ -160,7 +162,7 @@ const Queue = () => {
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
 
-    return `${day}/${month}/${year} `;
+    return `${month}/${day}/${year} `;
   };
 
   const handleDownloadAll = async (data, id) => {

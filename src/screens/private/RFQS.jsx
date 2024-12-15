@@ -18,7 +18,7 @@ import CheckOutPay from "../../components/checkOutPay";
 import MaterialBadge from "../../admin/components/MaterialBadge";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
-  const [quoteData, setQuotes] = useState(null);
+  const [quoteData, setQuotes] = useState([]);
   const navigate = useNavigate();
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -143,7 +143,7 @@ export default function RFQS() {
       minWidth: "240px",
       selector: (row) => (
         <div className="badgematerials custom_badgess">
-          <MaterialBadge materialDetails={row.material_details} />
+          <MaterialBadge materialDetails={row?.material_details} />
         </div>
       ),
       sortable: false,
@@ -219,106 +219,7 @@ export default function RFQS() {
       ),
     },
   ];
-  const data = [
-    {
-      id: 1,
-      orderno: "ORD12343",
-      materials: "Aluminum",
-      quantity: "54",
-      totalprice: "$1,500.00",
-      status: "Approved!",
-    },
-    {
-      id: 2,
-      orderno: "ORD12343",
-      materials: "Steel",
-      quantity: "65",
-      totalprice: "$1,630.00",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      orderno: "ORD12343",
-      materials: "Stainless Steel",
-      quantity: "25",
-      totalprice: "$1,210.00",
-      status: "Approved!",
-    },
-    {
-      id: 4,
-      orderno: "ORD12343",
-      materials: "Steel",
-      quantity: "45",
-      totalprice: "$1,300.00",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      orderno: "ORD12343",
-      materials: "Aluminum",
-      quantity: "45",
-      totalprice: "$2,201.00",
-      status: "Approved!",
-    },
-    {
-      id: 6,
-      orderno: "ORD12343",
-      materials: "Stainless Steel",
-      quantity: "45",
-      totalprice: "$1,235.00",
-      status: "Pending",
-    },
-    {
-      id: 7,
-      orderno: "ORD12343",
-      materials: "Steel",
-      quantity: "45",
-      totalprice: "$1,699.00",
-      status: "Approved!",
-    },
-  ];
-  const getMaterialsColor = (materials) => {
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(164 194 244)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(224 102 103)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(224 102 103)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(148 196 125)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(148 196 125)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(148 196 125)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 217 102)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(213 166 189)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved!":
@@ -365,27 +266,29 @@ export default function RFQS() {
                     marginBottom: "20px",
                   }}
                 ></span>
-              ) : quoteData && quoteData.length > 0 ? (
-                <DataTable
-                  columns={columns}
-                  data={quoteData}
-                  progressPending={loading}
-                  pagination
-                  paginationServer
-                  paginationTotalRows={totalRows}
-                  onChangePage={handlePageChange}
-                  paginationPerPage={perPage}
-                  onChangeRowsPerPage={handleRowsPerPageChange}
-                  responsive
-                  // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
-                  className="custom-table custom-table2"
-                  labelRowsPerPage=""
-                />
               ) : (
-                <div className="text-center mt-4">
-                  {" "}
-                  <i className="noQuotesFound_text">No quotes found.</i>
-                </div>
+                <>
+                  <DataTable
+                    columns={columns}
+                    data={quoteData}
+                    progressPending={loading}
+                    pagination
+                    paginationServer
+                    paginationTotalRows={totalRows}
+                    onChangePage={handlePageChange}
+                    paginationPerPage={perPage}
+                    noDataComponent={
+                      <div style={{ textAlign: "center", padding: "24px" }}>
+                        <span>No RFQ’s to Display</span>
+                      </div>
+                    }
+                    onChangeRowsPerPage={handleRowsPerPageChange}
+                    responsive
+                    // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                    className="custom-table custom-table2"
+                    labelRowsPerPage=""
+                  />
+                </>
               )}
             </Card.Body>
           </Card>

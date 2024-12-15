@@ -268,11 +268,14 @@ const CheckoutPopup = ({
                   {selectedShippingAddress ? (
                     <Col xl={12} lg={12} md={12} className="mb-4">
                       <div className="addresses-grid">
-                        <div className="d-flex align-items-center justify-content-between mb-3">
+                        <div className="d-flex align-items-center justify-content-between mb-1">
                           <h2 className="mb-0">
                             {selectedShippingAddress.full_name}
                           </h2>
                         </div>
+                        <p className="mb-2">
+                          {selectedShippingAddress.nickname}
+                        </p>
                         <p className="mb-2">
                           {selectedShippingAddress.phone_number}
                         </p>
@@ -363,9 +366,10 @@ const CheckoutPopup = ({
                   {selectedAddress ? (
                     <Col xl={12} lg={12} md={12} className="mb-4">
                       <div className="addresses-grid">
-                        <div className="d-flex align-items-center justify-content-between mb-3">
+                        <div className="d-flex align-items-center justify-content-between mb-1">
                           <h2 className="mb-0">{selectedAddress.full_name}</h2>
                         </div>
+                        <p className="mb-2">{selectedAddress.nickname}</p>
                         <p className="mb-2">{selectedAddress.phone_number}</p>
                         <p className="mb-3">
                           {selectedAddress.address_line_1},{" "}

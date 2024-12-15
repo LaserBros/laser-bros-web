@@ -265,7 +265,7 @@ const CheckOutPay = ({
                   {/* {selectedShippingAddress ? ( */}
                   <Col xl={12} lg={12} md={12} className="mb-4">
                     <div className="addresses-grid">
-                      <div className="d-flex align-items-center justify-content-between mb-3">
+                      <div className="d-flex align-items-center justify-content-between mb-1">
                         <h2 className="mb-0">
                           {
                             shippingInfo?.requestQuoteDB?.address_details
@@ -273,6 +273,12 @@ const CheckOutPay = ({
                           }
                         </h2>
                       </div>
+                      <p className="mb-2">
+                        {
+                          shippingInfo?.requestQuoteDB?.address_details
+                            ?.nickname
+                        }
+                      </p>
                       <p className="mb-2">
                         {
                           shippingInfo?.requestQuoteDB?.address_details
@@ -446,7 +452,7 @@ const CheckOutPay = ({
                   {/* {selectedAddress ? ( */}
                   <Col xl={12} lg={12} md={12} className="mb-4">
                     <div className="addresses-grid">
-                      <div className="d-flex align-items-center justify-content-between mb-3">
+                      <div className="d-flex align-items-center justify-content-between mb-1">
                         <h2 className="mb-0">
                           {
                             shippingInfo?.requestQuoteDB?.billing_details
@@ -454,6 +460,12 @@ const CheckOutPay = ({
                           }
                         </h2>
                       </div>
+                      <p className="mb-2">
+                        {
+                          shippingInfo?.requestQuoteDB?.billing_details
+                            ?.nickname
+                        }
+                      </p>
                       <p className="mb-2">
                         {
                           shippingInfo?.requestQuoteDB?.billing_details

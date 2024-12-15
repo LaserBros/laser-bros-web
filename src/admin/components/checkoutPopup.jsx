@@ -265,11 +265,14 @@ const CheckoutPopup = ({
                   <h2 className="shipping_head">Shipping Address</h2>
                   <Col xl={12} lg={12} md={12} className="mb-4">
                     <div className="addresses-grid">
-                      <div className="d-flex align-items-center justify-content-between mb-3">
+                      <div className="d-flex align-items-center justify-content-between mb-1">
                         <h2 className="mb-0">
                           {addressDetail?.address_details?.full_name}
                         </h2>
                       </div>
+                      <p className="mb-2">
+                        {addressDetail?.address_details?.nickname}
+                      </p>
                       <p className="mb-2">
                         {addressDetail?.address_details?.phone_number}
                       </p>
@@ -378,11 +381,14 @@ const CheckoutPopup = ({
                 <div className="bill_addr_name">
                   <h2 className="shipping_head">Billing Address</h2>
                   <div className="addresses-grid">
-                    <div className="d-flex align-items-center justify-content-between mb-3">
+                    <div className="d-flex align-items-center justify-content-between mb-1">
                       <h2 className="mb-0">
                         {addressDetail?.billing_details?.full_name}
                       </h2>
                     </div>
+                    <p className="mb-2">
+                      {addressDetail?.billing_details?.nickname}
+                    </p>
                     <p className="mb-2">
                       {addressDetail?.billing_details?.phone_number}
                     </p>

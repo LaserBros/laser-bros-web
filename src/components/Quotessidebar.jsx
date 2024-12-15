@@ -428,7 +428,7 @@ const QuotesSidebar = ({
                   ) : (
                     <>
                       <hr />
-                      <span>Price is for cutting only.</span>
+                      {!isPayble && <span>Price is for cutting only.</span>}
                       <p>Shipping & Taxes will be calculated at checkout</p>
                     </>
                   )}

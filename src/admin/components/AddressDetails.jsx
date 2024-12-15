@@ -10,7 +10,34 @@ const AddressDetails = ({
   addressDetail,
   po_number,
   po_upload,
+  isPassShipping,
+  quote_number,
 }) => {
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Approved!":
+        return {
+          backgroundColor: "rgba(1,148,60,0.10)",
+          color: "#01943C",
+          padding: "0px 6px",
+        };
+      case "Rejected":
+        return {
+          backgroundColor: "rgb(225, 31, 38)",
+          color: "#fff",
+          padding: "0px 6px",
+        };
+
+      case "Pending":
+        return {
+          backgroundColor: "rgba(255,186,22,0.10)",
+          color: "#FFBA16",
+          padding: "0px 6px",
+        };
+      default:
+        return {};
+    }
+  };
   const formatString = (input) => {
     if (!input) return "";
     return input
@@ -39,7 +66,7 @@ const AddressDetails = ({
   };
 
   return (
-    <div className="QuoteBillMain_div">
+    <div className={`QuoteBillMain_div ${quote_number ? "border-0" : ""}`}>
       <Row>
         <Col lg={3} md={6}>
           <div className="QuoteBill_box">
@@ -83,10 +110,12 @@ const AddressDetails = ({
               <b className="minWidth_110">Order date:</b>{" "}
               <DateFormat dateString={addressDetail?.createdAt} />
             </p>
-            {addressDetail?.service_code && (
+            {(addressDetail?.service_code || addressDetail?.shipping) && (
               <p>
                 <b className="minWidth_110">Shipping Type:</b>{" "}
-                {formatString(addressDetail?.service_code)}
+                {formatString(
+                  addressDetail?.service_code || addressDetail?.shipping
+                )}
               </p>
             )}
             {po_number && (
@@ -103,13 +132,26 @@ const AddressDetails = ({
             {/* <p>
               <b className="minWidth_110">PO Number:</b>123987
             </p> */}
-            <p>
-              <b className="minWidth_110">Status:</b>{" "}
-              <span className="badge_success">
-                {" "}
-                <OrderStatus status={addressDetail?.status} />
-              </span>
-            </p>
+
+            {isPassShipping ? (
+              <p>
+                <b className="minWidth_110">Status:</b>{" "}
+                <span
+                  className="badge_success"
+                  style={getStatusColor(isPassShipping)}
+                >
+                  {isPassShipping}
+                </span>
+              </p>
+            ) : (
+              <p>
+                <b className="minWidth_110">Status:</b>{" "}
+                <span className="badge_success">
+                  {" "}
+                  <OrderStatus status={addressDetail?.status} />
+                </span>
+              </p>
+            )}
             <p className="mb-0">
               <b className="minWidth_110">Order Amount:</b>
 
@@ -124,6 +166,11 @@ const AddressDetails = ({
         </Col>
         <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0">
+            {quote_number && (
+              <p>
+                <b>Quote Number:</b> #{quote_number}
+              </p>
+            )}
             {(addressDetail?.address_details?.phone_number ||
               addressDetail?.phone_number) && (
               <p>

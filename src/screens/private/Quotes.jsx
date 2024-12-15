@@ -24,6 +24,7 @@ const Quotes = () => {
   const [loadingRowId, setLoadingRowId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [PerPage, setPerPage] = useState(10);
+  const [loadData, setloadData] = useState(false);
   const [itemsPerPage] = useState(10);
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +42,7 @@ const Quotes = () => {
     };
 
     fetchData();
-  }, [currentPage, PerPage]);
+  }, [currentPage, PerPage, loadData]);
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     // console.log(pageNumber, currentPage);
@@ -70,6 +71,8 @@ const Quotes = () => {
       setDeleteLoading(true);
       const res = await deleteRequestQuote(data);
       setDeleteLoading(false);
+      setDeleteModalShow(false);
+      setloadData(true);
     } catch (error) {
       setDeleteLoading(false);
     }
@@ -307,6 +310,11 @@ const Quotes = () => {
                     paginationTotalRows={totalPage}
                     paginationDefaultPage={currentPage}
                     onChangePage={handlePageChange}
+                    noDataComponent={
+                      <div style={{ textAlign: "center", padding: "24px" }}>
+                        <span>No Quotes to Display </span>
+                      </div>
+                    }
                     paginationPerPage={PerPage}
                     // responsive
                     // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown

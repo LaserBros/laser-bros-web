@@ -61,6 +61,7 @@ const OrdersDetail = () => {
   const [typeId, setType] = useState("");
   const [subPostId, setsubPostId] = useState("");
   const [eventId, setevent] = useState({});
+  const [loadingInfo, setloadingInfo] = useState(false);
   const validateFields = () => {
     const newErrors = {};
 
@@ -110,11 +111,12 @@ const OrdersDetail = () => {
     const url = `${process.env.REACT_APP_API_URL}/admin/generateOrderPDF`;
 
     try {
+      const token = localStorage.getItem("adminToken");
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Set as JSON
-          // "Authorization": `Bearer ${}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           orderId: order?.orderedQuote._id, // Convert to JSON string
@@ -302,7 +304,9 @@ const OrdersDetail = () => {
       weight: box.weight,
       id: id,
     };
+    setloadingInfo(true);
     const res = await getShippingRates(data);
+    setloadingInfo(false);
     const updatedBoxes = boxes.map((box, i) =>
       i === index
         ? {
@@ -440,25 +444,33 @@ const OrdersDetail = () => {
       parseFloat(box.width) +
       parseFloat(box.height) +
       parseFloat(box.weight);
+    // console.log(":Fdfdfdf=-==-=", orderInfo.length + parseInt(index) + 1);
+    // return;
     const data = {
       length: box.length,
       width: box.width,
       height: box.height,
       weight: box.weight,
-      box_id: "box_" + id + "_" + (parseInt(orderInfo) + parseInt(index) + 1),
+      box_id: "box_" + id + "_" + orderInfo.length + parseInt(index) + 1,
       id: id,
     };
-    const res = await startPackaging(data);
-    await fetchOrder();
-    const updatedBoxes = boxes.map((box, i) =>
-      i === index
-        ? {
-            ...box,
-            downloadLabel: res.data.box_details,
-          }
-        : box
-    );
-    setBoxes(updatedBoxes);
+    try {
+      setloadingInfo(true);
+      const res = await startPackaging(data);
+      setloadingInfo(false);
+      await fetchOrder();
+      const updatedBoxes = boxes.map((box, i) =>
+        i === index
+          ? {
+              ...box,
+              downloadLabel: res.data.box_details,
+            }
+          : box
+      );
+      setBoxes(updatedBoxes);
+    } catch (error) {
+      toast.error(error.response.data.error[0].message);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -646,7 +658,7 @@ const OrdersDetail = () => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const year = date.getFullYear();
-    return `${day}-${month}-${year}`; // Customize as needed (MM/DD/YYYY)
+    return `${month}/${day}/${year}`; // Customize as needed (MM/DD/YYYY)
   };
   const customStyles = {
     control: (provided, state) => ({
@@ -673,6 +685,9 @@ const OrdersDetail = () => {
       ...provided,
       color: "#fff",
     }),
+  };
+  const handleBack = () => {
+    navigate(-1); // Redirects to the previous page
   };
   // <p>{formatDate(order.createdAt)}</p>;
   const [selectedEmp, setSelectedEmp] = useState("");
@@ -763,33 +778,12 @@ const OrdersDetail = () => {
                       </>
                     )}
 
-                  {order?.orderedQuote.status == 3 &&
-                  order?.orderedQuote.move_status == 3 ? (
-                    <Button
-                      as={Link}
-                      to="/admin/complete-orders"
-                      className="d-inline-flex align-items-center justify-content-center ms-2"
-                    >
-                      Back
-                    </Button>
-                  ) : order?.orderedQuote.status == 2 &&
-                    order?.orderedQuote.move_status == 2 ? (
-                    <Button
-                      as={Link}
-                      to="/admin/shipping-orders"
-                      className="d-inline-flex align-items-center justify-content-center ms-2"
-                    >
-                      Back
-                    </Button>
-                  ) : (
-                    <Button
-                      as={Link}
-                      to="/admin/orders"
-                      className="d-inline-flex align-items-center justify-content-center"
-                    >
-                      Back To Orders
-                    </Button>
-                  )}
+                  <Button
+                    onClick={handleBack}
+                    className="d-inline-flex align-items-center justify-content-center"
+                  >
+                    Back
+                  </Button>
                 </div>
               </CardHeader>
               <CardBody>
@@ -910,8 +904,8 @@ const OrdersDetail = () => {
                     </div>
                   )}
                 <AddressDetails
-                  shipAddress={order?.orderedQuote}
-                  billAdress={order?.orderedQuote?.billing_address}
+                  shipAddress={order?.orderedQuote?.billing_address}
+                  billAdress={order?.orderedQuote}
                   addressDetail={order?.orderedQuote}
                   po_number={order?.orderedQuote?.po_number}
                   po_upload={order?.orderedQuote?.po_upload}
@@ -1034,7 +1028,7 @@ const OrdersDetail = () => {
                                       X
                                       <div className="PachageField_box">
                                         <span className="PachageField_Size">
-                                          L
+                                          W
                                         </span>
                                         <input
                                           className="PachageField_number"
@@ -1119,7 +1113,15 @@ const OrdersDetail = () => {
                                         className="btn getRate_btn"
                                         onClick={() => calculateRate(index)}
                                       >
-                                        Get Rates
+                                        {loadingInfo ? (
+                                          <span
+                                            className="spinner-border spinner-border-sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                          ></span>
+                                        ) : (
+                                          "Get Rates"
+                                        )}
                                       </button>
                                     </>
                                   ) : (
@@ -1163,8 +1165,9 @@ const OrdersDetail = () => {
                                             id={method.service_code}
                                             disabled
                                             checked={
-                                              order?.serviceCode?.name ==
-                                              method.service_type
+                                              order?.orderedQuote
+                                                ?.service_code ==
+                                              method.service_code
                                                 ? true
                                                 : false
                                             }
@@ -1208,12 +1211,20 @@ const OrdersDetail = () => {
                                               handleSubmitData(index)
                                             }
                                           >
-                                            Purchase Label
+                                            {loadingInfo ? (
+                                              <span
+                                                className="spinner-border spinner-border-sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                              ></span>
+                                            ) : (
+                                              "Purchase Label"
+                                            )}
                                           </button>
                                         ) : (
                                           <a
                                             target="_blank"
-                                            class="btn PackagePurchase_btn"
+                                            className="btn PackagePurchase_btn"
                                             href={box?.downloadLabel?.label_url}
                                           >
                                             Download Label

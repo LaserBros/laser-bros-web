@@ -93,9 +93,21 @@ export default function PaymentCards() {
             </Card.Header>
             <Card.Body>
               <Row>
-                {cards.length === 0 ? (
+                {loading ? (
+                  <Col className="text-center mt-5 mb-5">
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </Col>
+                ) : cards.length === 0 ? (
                   <Col>
-                    <p>No cards found</p>
+                    <div className="sc-gLXSEc gpwTNyClass">
+                      <div style={{ textAlign: "center", padding: "24px" }}>
+                        <span>No Cards to Display</span>
+                      </div>
+                    </div>
                   </Col>
                 ) : (
                   cards.map((card) => (

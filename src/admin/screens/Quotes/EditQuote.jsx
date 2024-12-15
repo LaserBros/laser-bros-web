@@ -934,8 +934,8 @@ const EditRFQS = () => {
             </div>
           </div>
           <AddressDetails
-            shipAddress={quoteList?.address_details}
-            billAdress={quoteList?.billing_details}
+            shipAddress={quoteList?.billing_details}
+            billAdress={quoteList?.address_details}
             addressDetail={quoteList}
           />
           <Row>

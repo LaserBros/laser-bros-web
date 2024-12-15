@@ -126,12 +126,15 @@ export default function AddAddress() {
       formErrors.zipCode = "Zip Code must be a 5-digit number.";
       valid = false;
     }
-
     if (!formData.phone_number) {
-      formErrors.phoneNo = "Phone Number is required.";
+      formErrors.phoneNo = "Phone Number is required";
       valid = false;
-    } else if (!/^\d+$/.test(formData.phone_number)) {
-      formErrors.phoneNo = "Phone Number is invalid.";
+    } else if (/[ -]/.test(formData.phone_number)) {
+      formErrors.phoneNo =
+        "Please enter your phone number without spaces or dashes";
+      valid = false;
+    } else if (!/^\d{6,15}$/.test(formData.phone_number)) {
+      formErrors.phoneNo = "Phone Number must be exactly 10 digits";
       valid = false;
     }
 

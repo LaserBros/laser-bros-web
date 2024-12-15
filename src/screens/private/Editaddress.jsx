@@ -101,6 +101,7 @@ export default function AddAddress() {
 
   const validateForm = () => {
     const newErrors = {};
+    console.log("SDdsdd");
     if (!formValues.full_name) newErrors.name = "Full Name is required";
     if (!formValues.nickname)
       newErrors.nickname = "Address Nickname is required";
@@ -111,6 +112,14 @@ export default function AddAddress() {
     if (!formValues.pincode) newErrors.zipcode = "Zip Code is required";
     if (!formValues.phone_number)
       newErrors.phoneno = "Phone Number is required";
+    else if (/[ -]/.test(formValues.phone_number))
+      newErrors.phoneno =
+        "Please enter your phone number without spaces or dashes";
+    else if (!/^\d{6,15}$/.test(formValues.phone_number)) {
+      newErrors.phone = "Phone No must be between 6 and 15 digits";
+    }
+    // else if (!/^\d{10}$/.test(formValues.phone_number))
+    //   newErrors.phoneno = "Phone Number must be exactly 10 digits";
     // Add more validations as needed
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -126,7 +135,7 @@ export default function AddAddress() {
         setLoading(false);
       } else {
         setLoading(false);
-        toast.error("Something wents wrong. ");
+        // toast.error("Something wents wrong. ");
       }
     } catch (error) {
       setLoading(false);

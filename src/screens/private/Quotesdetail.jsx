@@ -789,7 +789,11 @@ export default function QuotesDetail() {
             )}
             <div className="d-inline-flex gap-2">
               {/* <Link className="btnshare">Share Quote</Link> */}
-              <Link className="btnsavelater" onClick={BackQuote} to={"/quotes"}>
+              <Link
+                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-250"
+                onClick={BackQuote}
+                to={"/quotes"}
+              >
                 Back To Quotes
               </Link>
               {/* <Link className="btnicon">

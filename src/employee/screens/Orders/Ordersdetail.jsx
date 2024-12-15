@@ -310,7 +310,7 @@ const OrdersDetail = () => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const year = date.getFullYear();
-    return `${day}-${month}-${year}`; // Customize as needed (MM/DD/YYYY)
+    return `${month}/${day}/${year}`; // Customize as needed (MM/DD/YYYY)
   };
 
   // <p>{formatDate(order.createdAt)}</p>;

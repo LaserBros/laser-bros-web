@@ -110,12 +110,18 @@ export default function Addresses() {
               <Row>
                 {loading ? (
                   <Col className="text-center mt-5 mb-5">
-                    <p>No Addresses Found.</p>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                   </Col>
                 ) : address.length === 0 ? (
-                  <Col className="text-center">
-                    <p>No addresses found</p>
-                  </Col>
+                  <div className="sc-gLXSEc gpwTNyClass">
+                    <div style={{ textAlign: "center", padding: "24px" }}>
+                      <span>No Addresses to Display </span>
+                    </div>
+                  </div>
                 ) : (
                   address.map((addr) => (
                     <Col xl={4} lg={4} md={6} className="mb-2">

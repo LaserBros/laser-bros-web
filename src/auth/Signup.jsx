@@ -63,7 +63,14 @@ export default function SignUp() {
     if (!formData.email) newErrors.email = "Email Address is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email Address is invalid";
-    if (!formData.phone_number) newErrors.phone = "Phone No is required";
+
+    // if (!formData.phone_number) newErrors.phone = "Phone No is required";
+    if (!formData.phone_number) newErrors.phoneno = "Phone Number is required";
+    else if (/[ -]/.test(formData.phone_number))
+      newErrors.phone =
+        "Please enter your phone number without spaces or dashes";
+    // else if (!/^\d{10}$/.test(formValues.phone_number))
+    //   newErrors.phone = "Phone Number must be exactly 10 digits";
     else if (!/^\d{6,15}$/.test(formData.phone_number)) {
       newErrors.phone = "Phone No must be between 6 and 15 digits";
     }

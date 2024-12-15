@@ -6,9 +6,10 @@ const DateFormat = ({ dateString }) => {
   const date = new Date(dateString);
 
   // Format the date as MM/DD/YYYY
-  const formattedDate = `${String(date.getDate()).padStart(2, "0")}/${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}/${date.getFullYear()}`;
+  const formattedDate = `${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}/${String(date.getDate()).padStart(2, "0")}/${date.getFullYear()}`;
 
   return <span>{formattedDate}</span>;
 };

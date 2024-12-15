@@ -276,19 +276,16 @@ export default function Orders() {
                     columns={columns}
                     data={orders}
                     responsive
-                    // pagination
-                    // paginationTotalRows={totalRows}
-                    // onChangePage={handlePageChange}
-                    // // onChangeRowsPerPage={handlePageChange}
-                    // paginationPerPage={perPage}
-                    // className="custom-table custom-table2"
                     pagination
                     paginationServer
                     paginationTotalRows={totalRows}
                     onChangePage={handlePageChange}
                     paginationPerPage={perPage}
-                    // responsive
-                    // paginationRowsPerPageOptions={[]} // Hide rows per page dropdown
+                    noDataComponent={
+                      <div style={{ textAlign: "center", padding: "24px" }}>
+                        <span>No Orders to Display </span>
+                      </div>
+                    }
                     onChangeRowsPerPage={handleRowsPerPageChange}
                     className="custom-table custom-table2"
                     labelRowsPerPage=""
