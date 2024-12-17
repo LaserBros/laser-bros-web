@@ -12,6 +12,9 @@ const AddressDetails = ({
   po_upload,
   isPassShipping,
   quote_number,
+  isShowDownload,
+  onClickDownloadWO,
+  onClickDownloadAllFile,
 }) => {
   const getStatusColor = (status) => {
     switch (status) {
@@ -193,12 +196,24 @@ const AddressDetails = ({
         </Col>
         <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0 text-end">
-            {/* <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>
-              Download All Files
-            </Button>
-            <Button className="QuoteBillDownload_btn ms-2 mt-2" variant={null}>
-              Download PDF
-            </Button> */}
+            {isShowDownload && (
+              <>
+                <Button
+                  className="QuoteBillDownload_btn ms-2 mt-2"
+                  variant={null}
+                  onClick={onClickDownloadAllFile}
+                >
+                  Download All Files
+                </Button>
+                <Button
+                  className="QuoteBillDownload_btn ms-2 mt-2"
+                  variant={null}
+                  onClick={onClickDownloadWO}
+                >
+                  Download WO
+                </Button>
+              </>
+            )}
           </div>
         </Col>
       </Row>

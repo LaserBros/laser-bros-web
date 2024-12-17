@@ -244,6 +244,7 @@ const OrdersDetail = () => {
       id: id,
     };
     const res = await getParticularOrderDetails(data);
+
     setOrders(res.data);
     setLoading(false);
   };
@@ -271,7 +272,7 @@ const OrdersDetail = () => {
       const filePromises = urls.map(async (url, index) => {
         const response = await fetch(url.dxf_url);
         const blob = await response.blob();
-        const fileName = url?.material_code + "-" + url.quote_name;
+        const fileName = url.quote_name;
         zip.file(fileName, blob);
       });
 
@@ -451,14 +452,15 @@ const OrdersDetail = () => {
       width: box.width,
       height: box.height,
       weight: box.weight,
-      box_id: "box_" + id + "_" + orderInfo.length + parseInt(index) + 1,
+      box_id: "box_" + id + "_" + orderInfo?.length + parseInt(index) + 1,
       id: id,
     };
     try {
       setloadingInfo(true);
       const res = await startPackaging(data);
       setloadingInfo(false);
-      await fetchOrder();
+      shipping();
+      loadEmp();
       const updatedBoxes = boxes.map((box, i) =>
         i === index
           ? {
@@ -788,7 +790,7 @@ const OrdersDetail = () => {
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col md={6} lg={4} xl={3} className="mb-3">
+                  {/* <Col md={6} lg={4} xl={3} className="mb-3">
                     <div className="orders-card ">
                       <h4>{order.addressDetails?.full_name}</h4>
                       <p>{order.addressDetails?.address_line_1}</p>
@@ -799,16 +801,14 @@ const OrdersDetail = () => {
                         {order.addressDetails?.pincode}
                       </p>
                     </div>
-                  </Col>
-                  <Col md={6} lg={4} xl={3} className="mb-3">
+                  </Col> */}
+                  {/* <Col md={6} lg={4} xl={3} className="mb-3">
                     <div className="orders-card">
                       <div className="d-flex align-items-center mb-3">
                         <label>Order Date: </label>{" "}
                         <span>{formatDate(order?.orderedQuote.createdAt)}</span>
                       </div>
-                      {/* <div className="d-flex align-items-center mb-3">
-                      <label>Due Date: </label> <span>6-14-24</span>
-                    </div> */}
+                     
                       <div className="d-flex align-items-center mb-3">
                         <label>Order Amount: </label>{" "}
                         <span>
@@ -839,10 +839,9 @@ const OrdersDetail = () => {
                         </span>
                       </div>
                     </div>
-                  </Col>
-                  <Col md={6} lg={4} xl={6} className="text-xl-end mb-3">
-                    {/* <Image src={barcode} className="img-fluid mb-3" alt="" /> */}
-                    {}
+                  </Col> */}
+                  {/* <Col md={6} lg={4} xl={6} className="text-xl-end mb-3">
+                   
                     <ReactBarcode
                       value={`WO# LB-${getMonthYear(
                         order?.orderedQuote.createdAt
@@ -852,7 +851,7 @@ const OrdersDetail = () => {
                         width: 0.6,
                         textAlign: "right",
                         text: " ",
-                        // format: "CODE39",
+                      
                       }}
                     />
 
@@ -875,7 +874,7 @@ const OrdersDetail = () => {
                         <p className="mb-0">Download All Files</p>
                       </div>
                     </div>
-                  </Col>
+                  </Col> */}
                 </Row>
                 {order?.serviceCode?.name != "Local Pickup" &&
                   order?.orderedQuote.status == 3 &&
@@ -909,6 +908,11 @@ const OrdersDetail = () => {
                   addressDetail={order?.orderedQuote}
                   po_number={order?.orderedQuote?.po_number}
                   po_upload={order?.orderedQuote?.po_upload}
+                  isShowDownload={true}
+                  onClickDownloadWO={downloadPDF}
+                  onClickDownloadAllFile={() =>
+                    handleDownloadAll(order.newUpdatedData)
+                  }
                 />
 
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
@@ -1189,16 +1193,17 @@ const OrdersDetail = () => {
                                 <div className="d-inline-flex align-items-center gap-2">
                                   {!box.shippingMethods ? (
                                     <>
-                                      {order?.serviceCode?.name !=
-                                        "Local Pickup" && (
-                                        <button
-                                          className="btn PackageRemove_btn"
-                                          onClick={() => removeBox(index)}
-                                          disabled={boxes.length === 1} // Disable removing if there's only one box
-                                        >
-                                          <Icon icon="simple-line-icons:close" />
-                                        </button>
-                                      )}
+                                      {index != 0 &&
+                                        order?.serviceCode?.name !=
+                                          "Local Pickup" && (
+                                          <button
+                                            className="btn PackageRemove_btn"
+                                            onClick={() => removeBox(index)}
+                                            disabled={boxes.length === 1} // Disable removing if there's only one box
+                                          >
+                                            <Icon icon="simple-line-icons:close" />
+                                          </button>
+                                        )}
                                     </>
                                   ) : (
                                     <>

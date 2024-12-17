@@ -130,8 +130,8 @@ const ViewCustomer = () => {
       // setCustomer([]);
       const response = await getParticularUserQuotes(data);
 
-      settotalPage(response.data.total);
-      setQuotes(response.data.updatedQuotes);
+      settotalPage(response.data?.total);
+      setQuotes(response.data?.updatedQuotes || []);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {
@@ -141,7 +141,7 @@ const ViewCustomer = () => {
 
   const handleTabSelect = (tabKey) => {
     settotalPage(1);
-    console.log("sdsdsdds", tabKey);
+    setCurrentPage(1);
     setCurrentTab(tabKey);
     getParticularUser(1, tabKey);
   };
@@ -225,8 +225,8 @@ const ViewCustomer = () => {
                               </>
                             ) : Quotes && Quotes.length === 0 ? (
                               <Col>
-                                <p className="text-center">
-                                  <i>No quote found.</i>
+                                <p className="text-center gpwTNyClass">
+                                  <i>No Quote's to Display</i>
                                 </p>
                               </Col>
                             ) : (
@@ -277,8 +277,8 @@ const ViewCustomer = () => {
                                 </Col>
                               ) : Quotes.length === 0 ? (
                                 <Col>
-                                  <p className="text-center">
-                                    <i>No request quote found.</i>
+                                  <p className="text-center gpwTNyClass">
+                                    <i>No request quote to display.</i>
                                   </p>
                                 </Col>
                               ) : (
@@ -521,8 +521,11 @@ const ViewCustomer = () => {
                                       );
                                     })
                                   ) : (
-                                    <p className="text-center mt-2">
-                                      <i> No orders available </i>
+                                    <p className="text-center mt-2 gpwTNyClass">
+                                      <i className="gpwTNyClass">
+                                        {" "}
+                                        No Orders to Display{" "}
+                                      </i>
                                     </p>
                                   )}
                                 </>
