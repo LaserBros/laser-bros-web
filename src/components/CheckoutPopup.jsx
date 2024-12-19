@@ -214,6 +214,8 @@ const CheckoutPopup = ({
     }
   };
   const [rateVal, setrateVal] = useState("");
+  const [taxPercentage, setaxPercentage] = useState(0);
+  const [taxAmount, setaxAmount] = useState(0);
   const handleRateSelected = async (rate, price) => {
     // console.log("shippingInfo?.requestQuoteDB?.check_status",)
     if (shippingInfoData?.requestQuoteDB?.check_status == 1) {
@@ -234,8 +236,19 @@ const CheckoutPopup = ({
       address_id: selectedShippingAddress?._id,
     };
     try {
-      const res = shippingCost(data);
-    } catch (error) {}
+      const res = await shippingCost(data);
+      console.log(
+        "shippingInfo?.userDBdata?.tax_exempt",
+        shippingInfo?.userDBdata?.tax_exempt
+      );
+      if (shippingInfo?.userDBdata?.tax_exempt == 0) {
+        setaxAmount(res.data.tax_amount);
+        setaxPercentage(res.data.tax_percentage);
+      }
+    } catch (error) {
+      setaxAmount(0);
+      setaxPercentage(0);
+    }
   };
   return (
     <React.Fragment>
@@ -477,6 +490,23 @@ const CheckoutPopup = ({
               ) : (
                 ""
               )}
+
+              {taxAmount != "" ? (
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">
+                    Tax
+                    <b>
+                      {" "}
+                      <small>({taxPercentage}%)</small>
+                    </b>
+                  </span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={taxAmount || 0} />{" "}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
               <div className="d-flex align-items-center justify-content-between">
                 <span className="quotessubtotal">Subtotal</span>
                 <span className="quotesprice">
@@ -488,7 +518,8 @@ const CheckoutPopup = ({
                       parseFloat(
                         shippingInfoData?.requestQuoteDB?.total_bend_price || 0
                       ) +
-                      parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0) +
+                      parseFloat(taxAmount || 0)
                     }
                   />
                 </span>

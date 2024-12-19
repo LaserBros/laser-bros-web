@@ -155,13 +155,24 @@ const AddressDetails = ({
                 </span>
               </p>
             )}
+            {addressDetail?.tax_amount != 0 && (
+              <p className="mb-0">
+                <b className="minWidth_110">
+                  Tax <b>({addressDetail?.tax_percentage}%)</b>:
+                </b>
+
+                <Amount amount={parseFloat(addressDetail?.tax_amount || 0)} />
+              </p>
+            )}
+
             <p className="mb-0">
               <b className="minWidth_110">Order Amount:</b>
 
               <Amount
                 amount={
                   parseFloat(addressDetail?.total_amount || 0) +
-                  parseFloat(addressDetail?.total_bend_price || 0)
+                  parseFloat(addressDetail?.total_bend_price || 0) +
+                  parseFloat(addressDetail?.tax_amount || 0)
                 }
               />
             </p>
@@ -188,7 +199,7 @@ const AddressDetails = ({
             {(addressDetail?.address_details?.email ||
               addressDetail?.email) && (
               <p className="mb-0">
-                <b>Email: </b>
+                <b>Email: </b>{" "}
                 {addressDetail?.address_details?.email || addressDetail?.email}
               </p>
             )}

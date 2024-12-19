@@ -129,7 +129,10 @@ html {
         max-width: 1220px !important;
     }
 }
-
+.account_show_tax .form-check-input[type=checkbox] {
+           
+    border: 2px solid #ccc;
+}
 /*Header Css Start*/
 .header {
     z-index: 1030!important; 

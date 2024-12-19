@@ -294,11 +294,32 @@ export default function OrdersDetail() {
                           />
                         </span>
                       </p>
+                      {orderDetails.tax_amount != 0 && (
+                        <p>
+                          <span>
+                            Tax{" "}
+                            <small>
+                              <b>({orderDetails.tax_percentage}%)</b>
+                            </small>
+                          </span>
+                          <span>
+                            {" "}
+                            <Amount
+                              amount={parseFloat(orderDetails.tax_amount || 0)}
+                            />
+                          </span>
+                        </p>
+                      )}
                       <p className="grandtotal">
                         Total{" "}
                         <span>
                           {" "}
-                          <Amount amount={orderDetails.total_amount} />
+                          <Amount
+                            amount={
+                              parseFloat(orderDetails.total_amount) +
+                              parseFloat(orderDetails.tax_amount || 0)
+                            }
+                          />
                         </span>
                       </p>
                     </Col>

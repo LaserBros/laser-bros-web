@@ -30,15 +30,16 @@ export default function RFQS() {
   const [PerPage, setPerPage] = useState(10);
   const handleRowsPerPageChange = (newRowsPerPage, page) => {
     setPerPage(newRowsPerPage);
-    fetchData(currentPage, perPage);
+    console.log("DSsdsdssssdssd", newRowsPerPage);
+    fetchData(currentPage, newRowsPerPage);
   };
-  const fetchData = async (page = 1) => {
+  const fetchData = async (page = 1, perPageData) => {
     try {
       const data = {
         page: page,
-        PerPage: PerPage,
+        PerPage: perPageData,
       };
-      const res = await fetchRFQ(page, PerPage);
+      const res = await fetchRFQ(page, perPageData);
       console.log("SDsdsdsdsddssds =-=-=-=-=-=-=-", res.data);
       setQuotes(res.data.updatedQuotes);
       setTotalRows(res.data.total);
@@ -88,7 +89,7 @@ export default function RFQS() {
   const handlePageChange = (page) => {
     console.log("SDsdsdsdddsdsds", page);
     setCurrentPage(page);
-    fetchData(page);
+    fetchData(page, PerPage);
   };
   const RequestQuote = async (id) => {
     const data = {

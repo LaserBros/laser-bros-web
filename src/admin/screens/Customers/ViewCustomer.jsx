@@ -17,6 +17,7 @@ import {
   getAllCustomers,
   getParticularProfile,
   getParticularUserQuotes,
+  updateCustomerTaxExempt,
   updateQuoteState,
 } from "../../../api/api";
 import ConfirmationModal from "../../../components/ConfirmationModal";
@@ -30,12 +31,7 @@ import { toast } from "react-toastify";
 const ViewCustomer = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
-  const handleCheckboxChange = (id) => {
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
-  };
+
   const { id } = useParams();
   const [customer, setCustomer] = useState([]);
   const [Quotes, setQuotes] = useState([]);
@@ -69,6 +65,21 @@ const ViewCustomer = () => {
     localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
     navigate("/admin/quotes/view-quote");
   };
+  const [isTaxExempt, setIsTaxExempt] = useState("");
+  const handleCheckboxChange = async (value) => {
+    try {
+      const data = {
+        id: id,
+        tax_exempt: value,
+      };
+      const res = await updateCustomerTaxExempt(data);
+      setIsTaxExempt(value);
+      toast.success("Customer tax settings updated");
+    } catch (error) {
+      toast.success("Something wents wrong. Please try again later");
+    }
+  };
+
   const loadCustomer = async (page) => {
     try {
       const data = {
@@ -78,6 +89,7 @@ const ViewCustomer = () => {
       setCustomer([]);
       const response = await getParticularProfile(data);
       setCustomer(response.data);
+      setIsTaxExempt(response.data?.tax_exempt);
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching cards:", error);
@@ -176,7 +188,7 @@ const ViewCustomer = () => {
           <Container>
             <div className="QuoteBillMain_div">
               <Row>
-                <Col lg={3} md={6}>
+                <Col lg={6} md={6}>
                   <div className="QuoteBill_box">
                     <h4>Customer Details:</h4>
                     <p>
@@ -193,6 +205,27 @@ const ViewCustomer = () => {
                     </p>
                   </div>
                 </Col>
+                <Col lg={6} md={6}>
+                  <div className="QuoteBill_box account_show_tax">
+                    <h4>Tax Exempt?</h4>
+                    <Form>
+                      <Form.Check
+                        type="checkbox"
+                        id="taxExempt"
+                        label="Yes"
+                        checked={isTaxExempt == 1 ? true : false}
+                        onChange={() => handleCheckboxChange(1)}
+                      />
+                      <Form.Check
+                        type="checkbox"
+                        id="notTaxExempt"
+                        label="No"
+                        checked={isTaxExempt == 0 ? true : false}
+                        onChange={() => handleCheckboxChange(0)}
+                      />
+                    </Form>
+                  </div>
+                </Col>
               </Row>
             </div>
             <Tabs
@@ -205,7 +238,7 @@ const ViewCustomer = () => {
               <Tab eventKey="quotes" title="Quotes">
                 <div className="wrapper">
                   <div className="maincontent_diva">
-                    <div className="card pb-4">
+                    <div className="card ">
                       <div className="card-body">
                         <table className="tablecustom table">
                           <tbody>
@@ -431,7 +464,7 @@ const ViewCustomer = () => {
               <Tab eventKey="orders" title="Orders">
                 <div className="wrapper">
                   <div className="maincontent_diva">
-                    <div className="card pb-4">
+                    <div className="card">
                       <div className="card-body">
                         <div className="table-responsive">
                           <Table className="tablecustom pt-0">

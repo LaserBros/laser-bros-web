@@ -417,7 +417,7 @@ export const getAllLoggedInRequestedQuote = async (page, perPage = 10) => {
 export const fetchRFQ = async (data, PerPage) => {
   try {
     const response = await axiosInstance.get(
-      `/users/fetchRFQ?page=` + data + "&PerPage=" + PerPage
+      `/users/fetchRFQ?page=` + data + "&perPage=" + PerPage
     );
     console.log("responseeee", response.data);
     return response.data;
@@ -1495,6 +1495,22 @@ export const EmpgetDashboardDetails = async (fromDate, toDate) => {
     throw error;
   }
 };
+export const updateCustomerTaxExempt = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/updateCustomerTaxExempt`,
+      formData
+    );
+    // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
+    console.log("responseeee ------", response.data);
+    // return;
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const uploadQuoteAdmin = async (formData) => {
   try {
     const response = await axiosAdminInstance.post(`/uploaddxfFiles`, formData);

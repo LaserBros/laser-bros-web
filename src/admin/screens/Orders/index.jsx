@@ -24,6 +24,7 @@ import Pagination from "../../components/Pagination";
 import OrderStatus from "../../components/OrderStatus";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
+import Amount from "../../../components/Amount";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -660,12 +661,12 @@ const Orders = () => {
                             </td>
                             <td className="text-nowrap">
                               {" "}
-                              {new Intl.NumberFormat("en-US", {
-                                style: "currency",
-                                currency: "USD", // Change to your desired currency
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }).format(row.total_amount)}
+                              <Amount
+                                amount={
+                                  parseFloat(row.total_amount) +
+                                  parseFloat(row.tax_amount)
+                                }
+                              />
                             </td>
                             {/* <td className="text-nowrap">
                           <b>Due:</b>

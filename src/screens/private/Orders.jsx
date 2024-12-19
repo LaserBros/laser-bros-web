@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import Pagination from "../../admin/components/Pagination";
 import OrderStatus from "../../admin/components/OrderStatus";
 import MaterialBadge from "../../admin/components/MaterialBadge";
+import Amount from "../../components/Amount";
 export default function Orders() {
   // const navigate = useNavigation();
   const navigate = useNavigate();
@@ -77,16 +78,13 @@ export default function Orders() {
     },
     {
       name: "Total Price",
-      selector: (row) => {
-        const formattedAmount = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }).format(row.total_amount);
-
-        return formattedAmount;
-      },
+      selector: (row) => (
+        <Amount
+          amount={
+            parseFloat(row.total_amount) + parseFloat(row?.tax_amount || 0)
+          }
+        />
+      ),
     },
     {
       name: "Status",
@@ -159,7 +157,7 @@ export default function Orders() {
   const handlePageChange = (page) => {
     console.log("handlePageChange , handlePageChange", page);
     setCurrentPage(page);
-    loadOrders(page);
+    loadOrders(page, PerPage);
   };
   const getMaterialsColor = (materials) => {
     // console.log("materials", materials);

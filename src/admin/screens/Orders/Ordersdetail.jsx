@@ -61,7 +61,7 @@ const OrdersDetail = () => {
   const [typeId, setType] = useState("");
   const [subPostId, setsubPostId] = useState("");
   const [eventId, setevent] = useState({});
-  const [loadingInfo, setloadingInfo] = useState(false);
+  const [loadingInfo, setloadingInfo] = useState("");
   const validateFields = () => {
     const newErrors = {};
 
@@ -285,6 +285,23 @@ const OrdersDetail = () => {
     }
   };
 
+  const calculateRefresh = (index) => {
+    const box = boxes[index];
+    const updatedBoxesVal = boxes.map((box, i) =>
+      i === index
+        ? {
+            ...box,
+            length: "",
+            width: "",
+            height: "",
+            weight: "",
+            downloadLabel: "",
+            shippingMethods: "",
+          }
+        : box
+    );
+    setBoxes(updatedBoxesVal);
+  };
   const calculateRate = async (index) => {
     const box = boxes[index];
     if (!box.length || !box.width || !box.height || !box.weight) {
@@ -305,9 +322,9 @@ const OrdersDetail = () => {
       weight: box.weight,
       id: id,
     };
-    setloadingInfo(true);
+    setloadingInfo(index);
     const res = await getShippingRates(data);
-    setloadingInfo(false);
+    setloadingInfo("");
     const updatedBoxes = boxes.map((box, i) =>
       i === index
         ? {
@@ -456,9 +473,9 @@ const OrdersDetail = () => {
       id: id,
     };
     try {
-      setloadingInfo(true);
+      setloadingInfo(index);
       const res = await startPackaging(data);
-      setloadingInfo(false);
+      setloadingInfo("");
       shipping();
       loadEmp();
       const updatedBoxes = boxes.map((box, i) =>
@@ -470,6 +487,20 @@ const OrdersDetail = () => {
           : box
       );
       setBoxes(updatedBoxes);
+      const updatedBoxesVal = boxes.map((box, i) =>
+        i === index
+          ? {
+              ...box,
+              length: "",
+              width: "",
+              height: "",
+              weight: "",
+              downloadLabel: "",
+              shippingMethods: "",
+            }
+          : box
+      );
+      setBoxes(updatedBoxesVal);
     } catch (error) {
       toast.error(error.response.data.error[0].message);
     }
@@ -1088,26 +1119,43 @@ const OrdersDetail = () => {
                                     <h4 className="PachageField_label">
                                       Package Weight
                                     </h4>
-                                    <div className="DeminsionField_flex max_250">
-                                      <div className="PachageField_box">
-                                        <input
-                                          className="PachageField_number"
-                                          type="number"
-                                          placeholder=""
-                                          value={box.weight}
-                                          onChange={(e) =>
-                                            handleInputChangeBox(
-                                              index,
-                                              "weight",
-                                              e.target.value
-                                            )
-                                          }
-                                        />
+                                    <div className="d-flex justify-content-between">
+                                      <div className="DeminsionField_flex max_250">
+                                        <div className="PachageField_box">
+                                          <input
+                                            className="PachageField_number"
+                                            type="number"
+                                            placeholder=""
+                                            value={box.weight}
+                                            onChange={(e) =>
+                                              handleInputChangeBox(
+                                                index,
+                                                "weight",
+                                                e.target.value
+                                              )
+                                            }
+                                          />
+                                        </div>
+                                        <select className="PachageFieldSizeSelect">
+                                          <option value="lb">lb</option>
+                                        </select>
                                       </div>
-                                      <select className="PachageFieldSizeSelect">
-                                        <option value="lb">lb</option>
-                                      </select>
+                                      {box.shippingMethods && (
+                                        <div className="refresh_btn mt-1">
+                                          <button
+                                            className="btn PackageAddAnother_btn"
+                                            onClick={() =>
+                                              calculateRefresh(index)
+                                            }
+                                          >
+                                            Refresh
+                                          </button>
+                                        </div>
+                                      )}
                                     </div>
+                                    {/* {box.shippingMethods && ( */}
+
+                                    {/* )} */}
                                   </div>
                                 </div>
                                 <div className="flex-shrink-0">
@@ -1117,7 +1165,7 @@ const OrdersDetail = () => {
                                         className="btn getRate_btn"
                                         onClick={() => calculateRate(index)}
                                       >
-                                        {loadingInfo ? (
+                                        {loadingInfo === index ? (
                                           <span
                                             className="spinner-border spinner-border-sm"
                                             role="status"
@@ -1216,7 +1264,7 @@ const OrdersDetail = () => {
                                               handleSubmitData(index)
                                             }
                                           >
-                                            {loadingInfo ? (
+                                            {loadingInfo === index ? (
                                               <span
                                                 className="spinner-border spinner-border-sm"
                                                 role="status"
@@ -1302,150 +1350,13 @@ const OrdersDetail = () => {
                         )}
                       </div>
                     </div>
-                    <h5 className="py-3 darkThemeWhite_text">
-                      Add Shipping Information
-                    </h5>
-
-                    <Form className="accountform" onSubmit={handleSubmit}>
-                      {shippingInfo?.map((info, index) => (
-                        <div
-                          key={index}
-                          className="shipping-info-section position-relative mb-4"
-                        >
-                          <Row>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Height (in inches)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter height in inches"
-                                  value={info.height}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "height",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`height-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`height-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Weight (in pounds)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter weight in pounds"
-                                  value={info.weight}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "weight",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`weight-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`weight-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Width (in inches)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter width in inches"
-                                  value={info.width}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "width",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`width-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`width-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                              <Form.Group className="mb-3 form-group">
-                                <Form.Label>Length (in inches)</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  placeholder="Enter length in inches"
-                                  value={info.length}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      index,
-                                      "length",
-                                      e.target.value
-                                    )
-                                  }
-                                  isInvalid={!!errors[`length-${index}`]}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                  {errors[`length-${index}`]}
-                                </Form.Control.Feedback>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-
-                          {/* Remove button */}
-                          {index != 0 && shippingInfo.length > 1 && (
-                            <Button
-                              variant="danger"
-                              className="remove-section-btn position-absolute"
-                              style={{ top: "-17px", right: "10px" }}
-                              onClick={() => handleRemove(index)}
-                            >
-                              - Remove
-                            </Button>
-                          )}
-                        </div>
-                      ))}
-
-                      {/* Add more button */}
-                      <Button
-                        variant="primary"
-                        className="my-2"
-                        onClick={handleAddMore}
-                      >
-                        + Add More Shipping Info
-                      </Button>
-
-                      {/* Submit button */}
-                      <Button
-                        type="submit"
-                        className="my-3 ms-3"
-                        disabled={loadingWeight}
-                      >
-                        {loadingWeight ? (
-                          <span
-                            className="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true"
-                          ></span>
-                        ) : (
-                          "Submit Shipping Information"
-                        )}
-                      </Button>
-                    </Form>
                   </div>
                 ) : (
                   // )
                   <div></div>
                 )}
 
-                <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap">
+                <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap mt-3">
                   <div className="d-inline-flex align-items-center gap-2 my-1">
                     <b>In this order:</b>
                     {[
