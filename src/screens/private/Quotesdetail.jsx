@@ -63,7 +63,7 @@ export default function QuotesDetail() {
   const handleUpload = async (file, id, quantities, pdf_url) => {
     console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
     if (file.length == 0) {
-      alert("Please upload a PDF file before saving.");
+      alert("Please upload a STEP or PDF file before saving.");
       return;
     }
 

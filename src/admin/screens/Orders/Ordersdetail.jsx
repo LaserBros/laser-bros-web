@@ -133,7 +133,8 @@ const OrdersDetail = () => {
       // Create a link element to trigger the download
       const link = document.createElement("a");
       link.href = blobUrl;
-      link.download = "Order.pdf"; // Set the desired file name
+      link.download =
+        "WO# LB-" + order?.newUpdatedData[0]?.search_quote + ".pdf"; // Set the desired file name
       document.body.appendChild(link);
       link.click();
 
@@ -279,7 +280,10 @@ const OrdersDetail = () => {
       await Promise.all(filePromises);
 
       const content = await zip.generateAsync({ type: "blob" });
-      saveAs(content, "files.zip");
+      saveAs(
+        content,
+        "WO# LB-" + order?.newUpdatedData[0]?.search_quote + ".zip"
+      );
     } catch (error) {
       console.error("Error downloading or zipping files:", error);
     }
@@ -946,9 +950,9 @@ const OrdersDetail = () => {
                   }
                 />
 
-                <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
-                  {order?.orderedQuote.status == 0 ? (
-                    <>
+                {order?.orderedQuote.status == 0 ? (
+                  <>
+                    <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
                       <div>
                         <span
                           className=" d-inline-flex align-items-center justify-content-center"
@@ -987,22 +991,24 @@ const OrdersDetail = () => {
                           )}
                         </Link>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      {order?.orderedQuote.employee_name ? (
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {order?.orderedQuote.employee_name ? (
+                      <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
                         <span>
                           <b>
                             Order assigned : {order?.orderedQuote.employee_name}
                           </b>
                         </span>
-                      ) : (
-                        <span></span>
-                        // <span>No Employee Selected</span>
-                      )}
-                    </>
-                  )}
-                </div>
+                      </div>
+                    ) : (
+                      <span></span>
+                      // <span>No Employee Selected</span>
+                    )}
+                  </>
+                )}
                 {/* {order?.serviceCode?.name != "Local Pickup" ? ( */}
                 {order?.orderedQuote.move_status === 2 ? (
                   <div className="orders-shipping">

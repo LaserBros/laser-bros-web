@@ -261,7 +261,7 @@ const AddBend = ({
               )}
             </Button>
             <button className="btn-outline-primary ms-3" onClick={handleClose2}>
-              Close
+              Cancel
             </button>
           </div>
         </Modal.Body>

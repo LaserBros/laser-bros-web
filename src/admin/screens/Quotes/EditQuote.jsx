@@ -163,7 +163,7 @@ const EditRFQS = () => {
   const [addLoading, setaddLoading] = useState(false);
   const handleUpload = async (file, id, quantities, pdf_url, new_price) => {
     if (file.length == 0) {
-      alert("Please upload a PDF file before saving.");
+      alert("Please upload a STEP or PDF file before saving.");
       return;
     }
     try {
