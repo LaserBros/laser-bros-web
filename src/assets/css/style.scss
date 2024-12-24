@@ -133,6 +133,22 @@ html {
            
     border: 2px solid #ccc;
 }
+.custom_expansion {
+    position: relative;
+}
+.expansion_tag {
+    width: 20px;
+    height: 20px;
+    background: #f31e3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    position: absolute;
+    right: -7px;
+    top: -7px;
+}
 /*Header Css Start*/
 .header {
     z-index: 1030!important; 

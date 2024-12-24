@@ -15,6 +15,8 @@ const AddressDetails = ({
   isShowDownload,
   onClickDownloadWO,
   onClickDownloadAllFile,
+  isShowTrack,
+  onClickTrack,
 }) => {
   const getStatusColor = (status) => {
     switch (status) {
@@ -207,6 +209,15 @@ const AddressDetails = ({
         </Col>
         <Col lg={6}>
           <div className="QuoteBillInfo_box mb-0 text-end">
+            {addressDetail?.status == 3 && isShowTrack && (
+              <Button
+                className="QuoteBillDownload_btn ms-2 mt-2"
+                variant={null}
+                onClick={onClickTrack}
+              >
+                Track Order
+              </Button>
+            )}
             {isShowDownload && (
               <>
                 <Button

@@ -32,6 +32,7 @@ import {
   updateWorkStatus,
   getShippingRates,
   fetchShippingBoxDetails,
+  orderAdminTrackingDetails,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -45,6 +46,7 @@ import ConfirmationModal2 from "../../../components/ConfirmationModal";
 import html2pdf from "html2pdf.js";
 import axiosAdminInstance from "../../axios/axiosadminInstanse";
 import AddressDetails from "../../components/AddressDetails";
+import ShippingStatus from "../../../components/ShippingStatus";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -62,6 +64,14 @@ const OrdersDetail = () => {
   const [subPostId, setsubPostId] = useState("");
   const [eventId, setevent] = useState({});
   const [loadingInfo, setloadingInfo] = useState("");
+  const [loadingOrder, setLoadingOrder] = useState(false);
+  const [ordersTrack, setordersTrack] = useState([]);
+  const [modalShowTrack, setModalShowTrack] = useState(false);
+  const handleShowTrack = async (value) => {
+    setLoadingOrder(true);
+    setModalShowTrack(true);
+    setLoadingOrder(false);
+  };
   const validateFields = () => {
     const newErrors = {};
 
@@ -234,6 +244,7 @@ const OrdersDetail = () => {
       toast.error(error.response.data.message);
     }
   };
+  const handleCloseTrack = () => setModalShowTrack(false);
   const handleClose = () => setModalShow(false);
   const handleClose2 = () => setModalShow2(false);
   const handleClose3 = () => setModalShow3(false);
@@ -260,20 +271,36 @@ const OrdersDetail = () => {
     shipping();
     fetchOrder();
     loadEmp();
+    TrackOrder();
   }, []);
   const handleDownloadAll = async (data) => {
-    console.log("Sddssdds");
     const urls = data;
     const zip = new JSZip();
-    const param = {
-      id: id,
-    };
+    const fileNameCount = {}; // Object to track file name occurrences
 
     try {
-      const filePromises = urls.map(async (url, index) => {
+      const filePromises = urls.map(async (url) => {
         const response = await fetch(url.dxf_url);
         const blob = await response.blob();
-        const fileName = url.quote_name;
+        let fileName = url.quote_name;
+
+        // Check if the fileName already exists in fileNameCount
+        if (fileNameCount[fileName]) {
+          fileNameCount[fileName] += 1;
+          const extensionIndex = fileName.lastIndexOf(".");
+          if (extensionIndex !== -1) {
+            // Append numeric suffix before file extension
+            const baseName = fileName.slice(0, extensionIndex);
+            const extension = fileName.slice(extensionIndex);
+            fileName = `${baseName}(${fileNameCount[fileName]})${extension}`;
+          } else {
+            // Append numeric suffix if no extension
+            fileName = `${fileName}(${fileNameCount[fileName]})`;
+          }
+        } else {
+          fileNameCount[fileName] = 1;
+        }
+
         zip.file(fileName, blob);
       });
 
@@ -625,6 +652,14 @@ const OrdersDetail = () => {
       toast.error("Something wents wrong.");
     }
   };
+  const TrackOrder = async () => {
+    const data = {
+      id: id,
+    };
+    const res = await orderAdminTrackingDetails(data);
+    setordersTrack(res.data);
+    // settrackNumber(res.data);
+  };
   const handleCheckboxChangeEvent = async () => {
     const event = eventId;
     const id = Ids;
@@ -948,6 +983,8 @@ const OrdersDetail = () => {
                   onClickDownloadAllFile={() =>
                     handleDownloadAll(order.newUpdatedData)
                   }
+                  isShowTrack={true}
+                  onClickTrack={handleShowTrack}
                 />
 
                 {order?.orderedQuote.status == 0 ? (
@@ -1487,12 +1524,18 @@ const OrdersDetail = () => {
                               </span>
                             </div>
                             <Link
-                              className="btnnote"
+                              className="btnnote custom_expansion"
                               onClick={() => {
                                 handleShow(wo.notes_text, wo.notes_admin);
                               }}
                             >
                               View Notes
+                              {((wo.notes_text &&
+                                wo.notes_text.trim() !== "") || // checks if notes_text is not an empty string
+                                (Array.isArray(wo.notes_admin) &&
+                                  wo.notes_admin.length > 0)) && (
+                                <span className="expansion_tag">!</span>
+                              )}
                             </Link>
                             {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
                               <Link
@@ -1523,7 +1566,7 @@ const OrdersDetail = () => {
                         </div>
 
                         <div className="list-checkboxes  d-inline-flex gap-3">
-                          <div className="CuttingCheck_div custom-checkbox-container text-center">
+                          <div className="CuttingCheck_div custom-checkbox-container ">
                             <p>
                               {" "}
                               <span
@@ -1591,7 +1634,7 @@ const OrdersDetail = () => {
                             </div>
                             {wo.postops?.map((item, index) => (
                               <>
-                                <div className="d-flex postOpsTagCheckbox_box">
+                                <div className="d-flex postOpsTagCheckbox_box justify-content-center">
                                   <span> {item.post_ops} </span>
                                   <Form.Check
                                     type="checkbox"
@@ -1782,6 +1825,11 @@ const OrdersDetail = () => {
           noBtnText={"No"}
           onConfirm={handleComplete}
           loading={loadingBtn}
+        />
+        <ShippingStatus
+          show={modalShowTrack}
+          handleClose={handleCloseTrack}
+          ordersTrack={ordersTrack}
         />
       </React.Fragment>
     </div>

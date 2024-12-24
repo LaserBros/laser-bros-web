@@ -984,6 +984,19 @@ export const downloadAllFiles = async (data) => {
   }
 };
 
+export const orderAdminTrackingDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/orderTrackingDetails`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const downloadParticularFile = async (data) => {
   try {
     const response = await axiosAdminInstance.post(

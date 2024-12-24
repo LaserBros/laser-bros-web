@@ -13,7 +13,7 @@ const ShippingStatus = ({ show, handleClose, ordersTrack }) => {
         <Modal.Header closeButton className="border-0 text-center pt-4">
           <Modal.Title className="mx-auto">Track Order</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="px-lg-5 px-4 pb-4">
+        <Modal.Body className="px-lg-5 px-4 pb-4 add_custom_color_track">
           {ordersTrack.map((data) => (
             <>
               <div className="tracking-info">
