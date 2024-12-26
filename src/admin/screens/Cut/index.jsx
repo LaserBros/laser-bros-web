@@ -29,8 +29,10 @@ const Cut = () => {
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)'}`,
-      background:theme =='dark' ? '#212121':'#fff',
+      border: `1px solid ${
+        theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
+      }`,
+      background: theme == "dark" ? "#212121" : "#fff",
       boxShadow: "none",
       minHeight: "50px",
       borderRadius: "40px",
@@ -38,7 +40,7 @@ const Cut = () => {
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: theme =='dark' ? '#bfbfbf':'#6C6A72', // Text color change
+      color: theme == "dark" ? "#bfbfbf" : "#6C6A72", // Text color change
     }),
     multiValue: (provided, state) => ({
       ...provided,
@@ -191,7 +193,11 @@ const Cut = () => {
           <h5>Archive</h5>
         </CardHeader>
         <CardBody>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Row className="px-2 gx-3">
               <Col lg={6} xxl={7}>
                 <div className="d-flex align-items-center gap-2">

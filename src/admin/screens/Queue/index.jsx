@@ -223,7 +223,11 @@ const Queue = () => {
           <h5>Queue</h5>
         </CardHeader>
         <CardBody>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Row className="px-2 gx-3">
               <Col lg={6} xxl={7}>
                 <div className="d-flex align-items-center gap-2">

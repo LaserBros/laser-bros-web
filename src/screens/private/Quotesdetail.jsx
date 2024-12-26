@@ -364,7 +364,7 @@ export default function QuotesDetail() {
           }
 
           const quoteList = localStorage.getItem("setItemelementData");
-
+          console.log("quoteList ---==--=", quoteList);
           if (quoteList) {
             // Parse the stored JSON data
             const parsedQuoteList = JSON.parse(quoteList);
@@ -374,6 +374,7 @@ export default function QuotesDetail() {
             if (total == 0) {
               parsedQuoteList.check_status = 0;
             }
+            console.log("quoteList ---==--=", parsedQuoteList, "0-0-0-0");
             localStorage.setItem(
               "setItemelementData",
               JSON.stringify(parsedQuoteList)
@@ -609,7 +610,6 @@ export default function QuotesDetail() {
         const quoteDataVal = JSON.parse(
           localStorage.getItem("setItempartsDBdata")
         );
-        console.log("quoteDataVal =-=-=- quoteList -=-", quoteDataVal);
         let total = 0;
         for (const quote of quoteDataVal) {
           total += quote.bend_count;
@@ -1048,10 +1048,12 @@ export default function QuotesDetail() {
 
             {quoteData && quoteData.length > 0 && (
               <Col lg={4} xl={3}>
+                {/* --{orderDe} */}
                 <QuotesSidebar
                   amount={getTotalAmount().toFixed(2)}
                   buttonText={btnText}
                   quoteData={quoteList}
+                  // loadId={}
                 />
               </Col>
             )}

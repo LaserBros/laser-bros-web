@@ -143,8 +143,7 @@ const OrdersDetail = () => {
       // Create a link element to trigger the download
       const link = document.createElement("a");
       link.href = blobUrl;
-      link.download =
-        "WO# LB-" + order?.newUpdatedData[0]?.search_quote + ".pdf"; // Set the desired file name
+      link.download = "WO#" + order?.newUpdatedData[0]?.search_quote + ".pdf"; // Set the desired file name
       document.body.appendChild(link);
       link.click();
 
@@ -307,10 +306,7 @@ const OrdersDetail = () => {
       await Promise.all(filePromises);
 
       const content = await zip.generateAsync({ type: "blob" });
-      saveAs(
-        content,
-        "WO# LB-" + order?.newUpdatedData[0]?.search_quote + ".zip"
-      );
+      saveAs(content, "WO#" + order?.newUpdatedData[0]?.search_quote + ".zip");
     } catch (error) {
       console.error("Error downloading or zipping files:", error);
     }
@@ -822,7 +818,7 @@ const OrdersDetail = () => {
             <Card>
               <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
                 <h5>
-                  WO# LB-
+                  WO#
                   {order?.newUpdatedData[0]?.search_quote}
                 </h5>
                 <div className="d-flex">

@@ -323,7 +323,7 @@ const OrdersDetail = () => {
             <Card>
               <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
                 <h5>
-                  WO# LB-
+                  WO#
                   {order?.newUpdatedData[0]?.search_quote}
                 </h5>
                 {order?.orderedQuote.status == 2 &&
@@ -399,9 +399,7 @@ const OrdersDetail = () => {
                     {/* <Image src={barcode} className="img-fluid mb-3" alt="" /> */}
                     {}
                     <ReactBarcode
-                      value={`WO# LB-${getMonthYear(
-                        order?.orderedQuote.createdAt
-                      )}-
+                      value={`WO#${getMonthYear(order?.orderedQuote.createdAt)}-
                 ${order?.orderedQuote.quote_number}`}
                       options={{
                         width: 0.6,

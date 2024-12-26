@@ -10,7 +10,7 @@ const QuoteRow = ({ row, EditQuote }) => {
       <td className="text-nowrap">
         <Link to="" onClick={() => EditQuote(row._id)} className="workorders">
           <b>
-            WO# LB-
+            WO#
             {row.search_quote}
           </b>
         </Link>

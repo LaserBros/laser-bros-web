@@ -149,7 +149,11 @@ const RFQS = () => {
           <h5>RFQ's</h5>
         </CardHeader>
         <CardBody>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Row className="px-2 gx-3">
               <Col lg={3} xxl={3}>
                 <Form.Group className="form-group mb-2 searchfield">

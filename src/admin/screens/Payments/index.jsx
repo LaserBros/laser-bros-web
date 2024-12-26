@@ -88,56 +88,7 @@ const PaymentHistory = () => {
       ),
     },
   ];
-  const data = [
-    {
-      id: 1,
-      transactionid: "TXN123456",
-      workorder: "WO# LB-6-24-0001",
-      paymentmode: "Stripe",
-      amount: "$100.00",
-      date: "May 10, 2024",
-    },
-    {
-      id: 2,
-      transactionid: "TXN234664",
-      workorder: "WO# LB-6-24-0002",
-      paymentmode: "Stripe",
-      amount: "$100.00",
-      date: "May 12, 2024",
-    },
-    {
-      id: 3,
-      transactionid: "TXN873456",
-      workorder: "WO# LB-6-24-0003",
-      paymentmode: "Stripe",
-      amount: "$100.00",
-      date: "May 16, 2024",
-    },
-    {
-      id: 4,
-      transactionid: "TXN324664",
-      workorder: "WO# LB-6-24-0004",
-      paymentmode: "Stripe",
-      amount: "$100.00",
-      date: "May 18, 2024",
-    },
-    {
-      id: 5,
-      transactionid: "TXN234623",
-      workorder: "WO# LB-6-24-0005",
-      paymentmode: "Stripe",
-      amount: "$100.00",
-      date: "May 20, 2024",
-    },
-    {
-      id: 6,
-      transactionid: "TXN324645",
-      workorder: "WO# LB-6-24-0006",
-      paymentmode: "Stripe",
-      amount: "$100.00",
-      date: "May 21, 2024",
-    },
-  ];
+
   return (
     <React.Fragment>
       <Card>

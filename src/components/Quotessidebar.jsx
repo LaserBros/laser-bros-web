@@ -150,7 +150,7 @@ const QuotesSidebar = ({
     );
 
     let isValid = true; // Assume everything is valid initially
-
+    console.log("loading od");
     // Use a for...of loop to allow breaking out of the loop
     for (const quote of updatedQuoteData) {
       if (!quote.material_id) {
@@ -181,7 +181,7 @@ const QuotesSidebar = ({
         var id = getId._id;
       }
       const data = {
-        id: id,
+        id: loadId,
       };
       console.log("wswdwdwdwdwdwdwdwd", getId, elementId);
       // return;

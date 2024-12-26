@@ -117,7 +117,7 @@ const ViewPayment = () => {
                       <div className="d-flex align-items-center mb-3">
                         <label>Work Order </label>{" "}
                         <span>
-                          WO# LB-
+                          WO#
                           {transaction?.search_quote}
                         </span>
                       </div>
