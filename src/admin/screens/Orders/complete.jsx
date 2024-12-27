@@ -233,12 +233,7 @@ const CompleteOrders = () => {
                             </td>
                             <td className="text-nowrap">
                               {" "}
-                              <Amount
-                                amount={
-                                  parseFloat(row.total_amount) +
-                                  parseFloat(row.tax_amount)
-                                }
-                              />
+                              <Amount amount={parseFloat(row.total_amount)} />
                             </td>
                             {/* <td className="text-nowrap">
                           <b>Due:</b>

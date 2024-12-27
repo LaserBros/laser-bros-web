@@ -78,13 +78,7 @@ export default function Orders() {
     },
     {
       name: "Total Price",
-      selector: (row) => (
-        <Amount
-          amount={
-            parseFloat(row.total_amount) + parseFloat(row?.tax_amount || 0)
-          }
-        />
-      ),
+      selector: (row) => <Amount amount={parseFloat(row.total_amount)} />,
     },
     {
       name: "Status",

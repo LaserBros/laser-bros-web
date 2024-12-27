@@ -315,10 +315,7 @@ export default function OrdersDetail() {
                         <span>
                           {" "}
                           <Amount
-                            amount={
-                              parseFloat(orderDetails.total_amount) +
-                              parseFloat(orderDetails.tax_amount || 0)
-                            }
+                            amount={parseFloat(orderDetails.total_amount)}
                           />
                         </span>
                       </p>
