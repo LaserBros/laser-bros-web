@@ -181,7 +181,7 @@ const QuotesSidebar = ({
         var id = getId._id;
       }
       const data = {
-        id: loadId,
+        id: id,
       };
       console.log("wswdwdwdwdwdwdwdwd", getId, elementId);
       // return;

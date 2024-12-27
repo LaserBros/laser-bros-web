@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import { Link, useLocation, useNavigate, useHistory } from "react-router-dom";
 import logo from "../assets/img/logo.svg";
 import bg from "../assets/img/bg.jpg";
 import { toast } from "react-toastify";
 import axiosInstance from "../axios/axiosInstance";
+import { UserContext } from "../localstorage/UserProfileContext";
 var token_val = "";
 const OTPForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState("");
-
+  const { nameLocal, updateName } = useContext(UserContext);
+  const { image, updateImage } = useContext(UserContext);
   const [formData, setFormData] = useState("");
   const [btndisable, setFbtndisable] = useState(false);
   useEffect(() => {
@@ -115,6 +117,8 @@ const OTPForm = () => {
           try {
             const response = await axiosInstance.post("/signup", formData);
             toast.success("OTP Verified.");
+            console.log("SDsdsdsdsdsd", response.data);
+
             setOtp("");
             // Reset form data
             setFormData({
@@ -125,7 +129,23 @@ const OTPForm = () => {
               password: "",
               confirmPassword: "",
             });
-            navigate("/Login");
+            localStorage.setItem("authToken", response.data.data.token);
+            localStorage.setItem(
+              "refreshToken",
+              response.data.data.refreshToken
+            );
+            localStorage.setItem("full_name", response.data.data.full_name);
+            localStorage.setItem("email", response.data.data.email);
+            updateName(response.data.data.full_name);
+
+            updateImage(
+              response.data.data.profile_image != null
+                ? process.env.REACT_APP_BUCKET +
+                    "/" +
+                    response.data.data.profile_image
+                : "https://s3.us-east-1.amazonaws.com/laserbros-image-upload/1724131072668-default.png"
+            );
+            navigate("/quotes");
             setLoading(false);
           } catch (error) {
             setLoading(false);
