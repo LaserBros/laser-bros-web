@@ -374,7 +374,7 @@ export default function QuotesDetail() {
             if (total == 0) {
               parsedQuoteList.check_status = 0;
             }
-            console.log("quoteList ---==--=", parsedQuoteList, "0-0-0-0");
+            console.log("quoteList ---==--=", parsedQuoteList[0], "0-0-0-0");
             localStorage.setItem(
               "setItemelementData",
               JSON.stringify(parsedQuoteList)

@@ -124,6 +124,28 @@ body {
     max-width: 1220px !important;
   }
 }
+.account_show_tax .form-check-input[type=checkbox] {
+  border: 2px solid #ccc;
+}
+
+.custom_expansion {
+  position: relative;
+}
+
+.expansion_tag {
+  width: 20px;
+  height: 20px;
+  background: #f31e3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  position: absolute;
+  right: -7px;
+  top: -7px;
+}
+
 /*Header Css Start*/
 .header {
   z-index: 1030 !important;
@@ -2105,6 +2127,18 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   border-radius: 4px;
   text-align: center;
 }
+.custom-table.custom-table2 .rdt_TableBody .rdt_TableRow .rdt_TableCell div .custom_badgess .badgestatus {
+  font-size: 10px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+}
 .custom-table.custom-table2 .rdt_TableBody .rdt_TableRow .rdt_TableCell:last-child div {
   display: inline-flex;
   align-items: center;
@@ -3733,6 +3767,50 @@ textarea.form-control {
 }
 .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .payment-grids .card-actions {
   margin-bottom: 0px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs {
+  border: 0px;
+  gap: 10px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs li.nav-item .nav-link {
+  border: 0px !important;
+  background: #e8e8e8;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #444;
+  text-transform: capitalize;
+  padding: 10px 20px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs li.nav-item .nav-link.active {
+  background: #4F8CCA;
+  color: #ffffff;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex {
+  display: flex;
+  align-items: center;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex label {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex input {
+  max-width: 170px;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: 0px;
+  box-shadow: none;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .POupload_field {
+  display: flex;
+  align-items: center;
+}
+.proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .POupload_field label {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-right: 10px;
 }
 .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price {
   background: rgba(0, 0, 0, 0.04);

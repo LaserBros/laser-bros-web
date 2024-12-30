@@ -48,6 +48,22 @@ const ViewCustomer = () => {
   const [totalPage, settotalPage] = useState(10);
   const [itemsPerPage] = useState(10);
 
+  function formatPhoneNumber(input) {
+    const cleanInput = input.replace(/\D/g, "");
+
+    // Dynamically add "-" based on input length
+    if (cleanInput.length <= 3) {
+      return cleanInput; // No formatting for 1-3 digits
+    } else if (cleanInput.length <= 6) {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(3)}`; // Format as XXX-XXX
+    } else {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(
+        3,
+        6
+      )}-${cleanInput.slice(6)}`; // Format as XXX-XXX-XXXX
+    }
+  }
+
   const EditQuote = async (id) => {
     const data = {
       id: id,
@@ -198,7 +214,8 @@ const ViewCustomer = () => {
                       <b>Email :</b> {customer.email}
                     </p>
                     <p>
-                      <b>Phone Number :</b> {customer.phone_number}
+                      <b>Phone Numbersss :</b>{" "}
+                      {formatPhoneNumber(customer.phone_number)}
                     </p>
                     <p>
                       <b>Company Name :</b> {customer.company_name || "N/A"}
@@ -311,7 +328,7 @@ const ViewCustomer = () => {
                               ) : Quotes.length === 0 ? (
                                 <Col>
                                   <p className="text-center gpwTNyClass">
-                                    <i>No request quote to display.</i>
+                                    <i>No RFQ’s to Display</i>
                                   </p>
                                 </Col>
                               ) : (

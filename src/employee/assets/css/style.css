@@ -244,6 +244,19 @@ body {
   opacity: 0.5;
 }
 
+.modal-custom.datamodal .modal-content .modal-header .modal-title {
+  font-size: 22px !important;
+  font-weight: 400 !important;
+}
+.modal-custom.datamodal .modal-content .modal-header .modal-title b {
+  font-weight: 600;
+}
+.modal-custom.datamodal .modal-content .modal-body h6 {
+  font-weight: 600;
+}
+.modal-custom.datamodal .modal-content .modal-body p {
+  margin-bottom: 2px;
+}
 .modal-custom .modal-dialog .modal-content .modal-header .modal-title {
   font-size: 24px;
   color: #000000;
@@ -1036,7 +1049,6 @@ body {
 .wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .postOpsCheckbox_div .postOpsCheckbox_box {
   gap: 5px;
   margin-bottom: 10px;
-  align-items: center;
 }
 .wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .postOpsCheckbox_div .postOpsCheckbox_box span {
   background: #ff8cd3;
@@ -1107,8 +1119,8 @@ body {
   box-shadow: none;
 }
 .wrapper .maincontent_div .card .card-body .table.tablecustom tbody tr .form-check-input:checked {
-  background-color: #000000;
-  border-color: #000000;
+  background-color: #4F8CCA;
+  border-color: #4F8CCA;
 }
 .wrapper .maincontent_div .card .card-body .table.tablecustom tbody tr td {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -1493,7 +1505,6 @@ body {
 .wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div input[type=checkbox] {
   -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
   margin-right: 5px;
   width: 20px;
   height: 20px;
@@ -1501,7 +1512,7 @@ body {
   background-color: #fff;
   border-radius: 4px;
 }
-.wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div input[type=checkbox]:disabled {
+.wrapper .maincontent_div .card .card-body .dimensionShow_div .dimensionShowCheckbox_div input[type=checkbox]:checked {
   background-color: rgba(0, 0, 0, 0.6); /* Light gray */
   border-color: rgba(0, 0, 0, 0.6);
   background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27%3e%3cpath fill=%27none%27 stroke=%27%23fff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%273%27 d=%27m6 10 3 3 6-6%27/%3e%3c/svg%3e");
@@ -1708,7 +1719,7 @@ body {
   line-height: normal;
 }
 .sortByMain_box .tagFilterBtnBox .tagFilter_btn.active {
-  background: #ff8cd3;
+  background: #ff8cd3 !important;
 }
 .sortByMain_box .tagFilterBtnBox .tagFilter_btn:hover {
   background: #ff8cd3;
@@ -1743,4 +1754,29 @@ body {
   border-radius: 50%;
   bottom: 0px;
   right: -6px;
+}
+
+.datamain .btndata {
+  background: #d0e7ff;
+  color: #5b92cd;
+  font-size: 12px;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.datamain .btndata:hover {
+  opacity: 0.75;
+}
+
+.postion_take {
+  font-size: 18px;
+  right: 8px;
+  min-width: 18px;
+  opacity: 0.5;
+  position: absolute;
+  top: 10px;
 }/*# sourceMappingURL=style.css.map */

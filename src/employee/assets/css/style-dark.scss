@@ -7,6 +7,18 @@ body {
         min-height      : 100vh;
 
         .modal {
+            &.datamodal{
+                .modal-content{
+                  .modal-body{
+                    h6{
+                    color:$white-color;
+                    }
+                    p{
+                        color:$white-color;
+                    }
+                  }
+                }
+            }
             .modal-dialog {
                 .modal-content {
                     background: $dark-color;
@@ -425,7 +437,11 @@ body {
                             &:not(:last-child) {
                                 border-color: rgba($white-color, 0.1) !important
                             }
-
+                              .toggle-switch-container{
+                              p{
+                                color:$white-color;
+                              }
+                              }
                             .list-left {
                                 .list-img-outer {
                                     .list-img {

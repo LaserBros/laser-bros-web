@@ -23,19 +23,33 @@ const Customers = () => {
   const [itemsPerPage] = useState(10);
   const [name, searchName] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  function formatPhoneNumber(input) {
+    const cleanInput = input.replace(/\D/g, "");
 
+    // Dynamically add "-" based on input length
+    if (cleanInput.length <= 3) {
+      return cleanInput; // No formatting for 1-3 digits
+    } else if (cleanInput.length <= 6) {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(3)}`; // Format as XXX-XXX
+    } else {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(
+        3,
+        6
+      )}-${cleanInput.slice(6)}`; // Format as XXX-XXX-XXXX
+    }
+  }
   const indexOfLastItem = currentPage * itemsPerPage;
   const onPageChange = (pageNumber) => {
     console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
-    loadCustomer(pageNumber);
+    loadCustomer(pageNumber, name);
   };
-  const loadCustomer = async (page) => {
+  const loadCustomer = async (page, search_name) => {
     try {
       setLoading(true);
       setCustomer([]);
       settotalPage(1);
-      const response = await getAllCustomers(page);
+      const response = await getAllCustomers(page, search_name);
       //   console.log("sdsddsdds", response.data.employees);
       setCustomer(response.data.customers);
       settotalPage(response.data.total);
@@ -54,7 +68,34 @@ const Customers = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="py-4">
-          <h5>Customers</h5>
+          <div className="d-flex align-items-center gap-3">
+            <h5>Customers</h5>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <Form.Group className="form-group mb-0 searchfield">
+                <div className=" position-relative">
+                  <Icon
+                    icon="flowbite:search-solid"
+                    className="position-absolute postion_take"
+                  />
+                  <Form.Control
+                    type="text"
+                    placeholder="Search WO"
+                    value={name}
+                    className="rounded-5"
+                    onChange={(e) => {
+                      setCurrentPage(1);
+                      searchName(e.target.value);
+                      loadCustomer(1, e.target.value);
+                    }}
+                  />
+                </div>
+              </Form.Group>
+            </Form>
+          </div>
         </CardHeader>
         <CardBody>
           <Form>
@@ -110,7 +151,9 @@ const Customers = () => {
                           <tr>
                             <td className="text-nowrap">{row.full_name}</td>
                             <td className="text-nowrap">{row.email}</td>
-                            <td className="text-nowrap">{row.phone_number}</td>
+                            <td className="text-nowrap">
+                              {formatPhoneNumber(row.phone_number)}
+                            </td>
                             <td className="text-nowrap">{row?.company_name}</td>
                             <td className="text-nowrap">
                               <Link

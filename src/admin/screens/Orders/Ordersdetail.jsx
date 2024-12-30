@@ -8,6 +8,7 @@ import {
   Col,
   Image,
   Form,
+  Modal,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import JSZip from "jszip";
@@ -33,6 +34,7 @@ import {
   getShippingRates,
   fetchShippingBoxDetails,
   orderAdminTrackingDetails,
+  getSubQuote,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -47,6 +49,7 @@ import html2pdf from "html2pdf.js";
 import axiosAdminInstance from "../../axios/axiosadminInstanse";
 import AddressDetails from "../../components/AddressDetails";
 import ShippingStatus from "../../../components/ShippingStatus";
+import ModalOrderData from "../../components/OrderData";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -215,6 +218,7 @@ const OrdersDetail = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
+  const [modalShow4, setModalShow4] = useState(false);
   const [customer_note, setcustomer_note] = useState(false);
   const [admin_note, setadmin_note] = useState(false);
   const navigate = useNavigate();
@@ -247,6 +251,20 @@ const OrdersDetail = () => {
   const handleClose = () => setModalShow(false);
   const handleClose2 = () => setModalShow2(false);
   const handleClose3 = () => setModalShow3(false);
+  const [subquote_number, setsubquote_number] = useState("");
+  const [loadingOrderQuote, setLoadingOrderQuote] = useState(false);
+  const handleShow4 = async (id) => {
+    try {
+      setLoadingOrderQuote(id);
+      const res = await getSubQuote(id);
+      setsubquote_number(res.data);
+      setLoadingOrderQuote("");
+      setModalShow4(true);
+    } catch (error) {
+      setLoadingOrderQuote("");
+    }
+  };
+  const handleClose4 = () => setModalShow4(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [orderInfo, setOrderInfo] = useState("");
@@ -1495,7 +1513,7 @@ const OrdersDetail = () => {
                             >
                               {wo?.subquote_number}
                             </span>
-                            {wo.pierce_count != 0 && (
+                            {/* {wo.pierce_count != 0 && (
                               <>
                                 <br />
                                 <span
@@ -1505,7 +1523,26 @@ const OrdersDetail = () => {
                                   Pierce Count: {wo.pierce_count}
                                 </span>
                               </>
-                            )}
+                            )} */}
+                            <div className="datamain">
+                              <Link
+                                className="btndata"
+                                onClick={() => {
+                                  handleShow4(wo._id);
+                                }}
+                                style={{ minWidth: 42 }}
+                              >
+                                {loadingOrderQuote == wo._id ? (
+                                  <span
+                                    className="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  ></span>
+                                ) : (
+                                  "Data"
+                                )}
+                              </Link>
+                            </div>
                             <div className="list-qty d-flex align-items-center gap-3 mb-3 pt-3">
                               <span className="qty">
                                 <strong>QTY:</strong> {wo.quantity}
@@ -1826,6 +1863,12 @@ const OrdersDetail = () => {
           show={modalShowTrack}
           handleClose={handleCloseTrack}
           ordersTrack={ordersTrack}
+        />
+
+        <ModalOrderData
+          QuoteData={subquote_number}
+          modalShow4={modalShow4}
+          handleClose4={handleClose4}
         />
       </React.Fragment>
     </div>

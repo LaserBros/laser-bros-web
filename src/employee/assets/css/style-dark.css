@@ -3,6 +3,12 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .modal.datamodal .modal-content .modal-body h6 {
+  color: #ffffff;
+}
+body.dark .modal.datamodal .modal-content .modal-body p {
+  color: #ffffff;
+}
 body.dark .modal .modal-dialog .modal-content {
   background: #212121;
 }
@@ -286,6 +292,9 @@ body.dark .wrapper .card .card-body .orders-detail {
 body.dark .wrapper .card .card-body .orders-detail .list-main:not(:last-child) {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
+body.dark .wrapper .card .card-body .orders-detail .list-main .toggle-switch-container p {
+  color: #ffffff;
+}
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-left .list-img-outer .list-img {
   background: #ffffff !important;
 }
@@ -413,7 +422,7 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .btn-link svg
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .form-check-input {
-  background: transparent;
+  background-color: transparent;
   border-color: rgba(255, 255, 255, 0.2);
 }
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr td:first-child {
@@ -464,14 +473,13 @@ body.dark .wrapper .card .card-body .packageDeminsionMain_div .ShippingMethodmai
 body.dark .wrapper .card .card-body .packageDeminsionMain_div .dimensionShowCheckbox_div input[type=checkbox] {
   -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;
   margin-right: 5px;
   width: 20px;
   height: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: rgba(255, 255, 255, 0.07);
 }
-body.dark .wrapper .card .card-body .packageDeminsionMain_div .dimensionShowCheckbox_div input[type=checkbox]:disabled {
+body.dark .wrapper .card .card-body .packageDeminsionMain_div .dimensionShowCheckbox_div input[type=checkbox]:checked {
   background-color: rgba(255, 255, 255, 0.07); /* Light gray */
   border-color: rgba(255, 255, 255, 0.2);
   background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 20 20%27%3e%3cpath fill=%27none%27 stroke=%27%23fff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%273%27 d=%27m6 10 3 3 6-6%27/%3e%3c/svg%3e");

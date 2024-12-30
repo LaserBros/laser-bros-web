@@ -752,10 +752,10 @@ export const getAllEmployees = async (page, search, sort) => {
   }
 };
 
-export const getAllCustomers = async (page, search, sort) => {
+export const getAllCustomers = async (page, search = "", sort) => {
   try {
     const response = await axiosAdminInstance.get(
-      `/getCustomerDetails?page=` + page
+      `/getCustomerDetails?page=` + page + "&query=" + search
     );
     return response.data;
   } catch (error) {
@@ -892,6 +892,16 @@ export const startPackaging = async (data) => {
 export const getShippingRates = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/getShippingRates`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getSubQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(`/getSubQuote/` + data);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

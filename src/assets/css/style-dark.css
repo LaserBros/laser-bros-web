@@ -3,6 +3,19 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .account_show_tax label {
+  color: #ffffff;
+}
+body.dark .add_custom_color_track {
+  color: #fff;
+}
+body.dark .account_show_tax .form-check-input[type=checkbox] {
+  border: 2px solid #ccc;
+}
+body.dark .gpwTNy {
+  background-color: #000000;
+  color: #ffffff;
+}
 body.dark .quotes-head {
   color: #ffffff;
 }
@@ -14,6 +27,16 @@ body.dark .quote_div_main_sect .main_service_clr {
 }
 body.dark .shipping_info b, body.dark .shipping_info i {
   color: #ffffff;
+}
+body.dark .gpwTNyClass {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background-color: #000000;
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .shipping_head {
   color: #ffffff;
@@ -88,6 +111,51 @@ body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .card
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect .form-check label {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs {
+  border: 0px;
+  gap: 10px;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs li.nav-item .nav-link {
+  border: 0px !important;
+  background: #e8e8e8;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #444;
+  text-transform: capitalize;
+  padding: 10px 20px;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs li.nav-item .nav-link.active {
+  background: #4F8CCA;
+  color: #ffffff;
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex label {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex input {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .POupload_field label {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .POupload_field input {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .POupload_field input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .POupload_field input::placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price {
