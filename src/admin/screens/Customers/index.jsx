@@ -83,7 +83,7 @@ const Customers = () => {
                   />
                   <Form.Control
                     type="text"
-                    placeholder="Search WO"
+                    placeholder="Search"
                     value={name}
                     className="rounded-5"
                     onChange={(e) => {
