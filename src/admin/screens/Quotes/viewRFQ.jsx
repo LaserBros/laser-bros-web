@@ -23,6 +23,7 @@ import {
   AdmingetThicknessMaterialFinish,
   AdminupdateQuantity,
   AdminupdateSubQuoteDetails,
+  getSubQuote,
 } from "../../../api/api";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -33,6 +34,7 @@ import AdminAddNote from "../../components/AddNote";
 import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
 import DimensionsToggle from "../../../components/DimensionsToggle";
+import ModalOrderData from "../../components/OrderData";
 const ViewRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -353,6 +355,25 @@ const ViewRFQS = () => {
       }
     }, 1000);
   }, [quoteData]);
+
+  const [modalShow4, setModalShow4] = useState(false);
+  const [subquote_number, setsubquote_number] = useState("");
+  const [loadingOrderQuote, setLoadingOrderQuote] = useState(false);
+  const [subquote_piece, setsubquote_piece] = useState("");
+  const handleShow4 = async (id, number) => {
+    try {
+      setsubquote_piece(number);
+      setLoadingOrderQuote(id);
+      const res = await getSubQuote(id);
+      setsubquote_number(res.data);
+      setLoadingOrderQuote("");
+      setModalShow4(true);
+    } catch (error) {
+      setLoadingOrderQuote("");
+    }
+  };
+  const handleClose4 = () => setModalShow4(false);
+
   const uploadQuote = async (formData) => {
     try {
       await AdminupdateQuantity(formData);
@@ -715,7 +736,34 @@ const ViewRFQS = () => {
                             {String(index + 1).padStart(3, "0")}
                           </span>
                         </p>
-
+                        {quote.material_id && quote.thickness_id && (
+                          <div className="datamain mb-2">
+                            <Link
+                              className="btndata"
+                              onClick={() => {
+                                handleShow4(
+                                  quote._id,
+                                  quote.type_option[0]?.material_code +
+                                    "-" +
+                                    quoteList.search_quote +
+                                    "-" +
+                                    String(index + 1).padStart(3, "0")
+                                );
+                              }}
+                              style={{ minWidth: 42 }}
+                            >
+                              {loadingOrderQuote == quote._id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                ></span>
+                              ) : (
+                                "Data"
+                              )}
+                            </Link>
+                          </div>
+                        )}
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
                             options={materials}
@@ -943,6 +991,12 @@ const ViewRFQS = () => {
         id={selectedPartId}
         handleClose={handleClose3}
         title="Notes"
+      />
+      <ModalOrderData
+        QuoteNumber={subquote_piece}
+        QuoteData={subquote_number}
+        modalShow4={modalShow4}
+        handleClose4={handleClose4}
       />
     </React.Fragment>
   );

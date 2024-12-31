@@ -25,6 +25,7 @@ import {
   AdminupdateQuantity,
   AdminupdateSubQuoteDetails,
   updateBendPrice,
+  getSubQuote,
 } from "../../../api/api";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -48,6 +49,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import MultiSelectModal from "../../components/PostOps";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import ModalOrderData from "../../components/OrderData";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -520,6 +522,21 @@ const EditRFQS = () => {
     item3: 1,
     item4: 1,
   });
+  const [modalShow4, setModalShow4] = useState(false);
+  const [subquote_number, setsubquote_number] = useState("");
+  const [loadingOrderQuote, setLoadingOrderQuote] = useState(false);
+  const handleShow4 = async (id) => {
+    try {
+      setLoadingOrderQuote(id);
+      const res = await getSubQuote(id);
+      setsubquote_number(res.data);
+      setLoadingOrderQuote("");
+      setModalShow4(true);
+    } catch (error) {
+      setLoadingOrderQuote("");
+    }
+  };
+  const handleClose4 = () => setModalShow4(false);
   const onDeleteAction = (id) => {
     const storedData =
       JSON.parse(localStorage.getItem("setItempartsDBdataAdmin")) || [];
@@ -994,7 +1011,7 @@ const EditRFQS = () => {
                                   String(index + 1).padStart(3, "0")
                               : ""}
                           </span>
-                          {quote.pierce_count && (
+                          {/* {quote.pierce_count && (
                             <>
                               <br></br>
                               <span
@@ -1002,11 +1019,30 @@ const EditRFQS = () => {
                                 style={{ fontSize: "12px" }}
                               >
                                 Pierce Count : {quote.pierce_count}
-                                {/* </span> */}
+                                
                               </span>
                             </>
-                          )}
+                          )} */}
                         </p>
+                        <div className="datamain mb-2">
+                          <Link
+                            className="btndata"
+                            onClick={() => {
+                              handleShow4(quote._id);
+                            }}
+                            style={{ minWidth: 42 }}
+                          >
+                            {loadingOrderQuote == quote._id ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              "Data"
+                            )}
+                          </Link>
+                        </div>
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
                             options={materials}
@@ -1343,6 +1379,11 @@ const EditRFQS = () => {
         onClose={handleCloseModal}
         options={options}
         onSave={handleSaveSelection}
+      />
+      <ModalOrderData
+        QuoteData={subquote_number}
+        modalShow4={modalShow4}
+        handleClose4={handleClose4}
       />
     </React.Fragment>
   );

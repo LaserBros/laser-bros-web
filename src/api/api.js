@@ -1148,6 +1148,16 @@ export const getFinishingFilter = async () => {
   }
 };
 
+export const getFinishAdmin = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/getFinish`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const AdmingetThicknessMaterialFinish = async (data, type, params) => {
   try {
     var response_api = await axiosAdminInstance.post(

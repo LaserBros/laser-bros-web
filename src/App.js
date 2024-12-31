@@ -107,6 +107,8 @@ import AddEmp from "./admin/screens/Employe/AddEmp";
 import ShippingAddress from "./admin/screens/Orders/Shipping";
 import Customers from "./admin/screens/Customers";
 import ViewCustomer from "./admin/screens/Customers/ViewCustomer";
+import DataBase from "./admin/screens/Database";
+import EditFinishing from "./admin/screens/Database/EditFinishing";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -367,6 +369,32 @@ function App() {
                         element={
                           <AdminLayout title={"RFQ's Detail"}>
                             <AdminRfqsDetail />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+
+                  <Route
+                    path="/admin/database"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Database"}>
+                            <DataBase />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+
+                  <Route
+                    path="/admin/database/edit-finish/:id"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Edit Finishing"}>
+                            <EditFinishing />
                           </AdminLayout>
                         }
                       />

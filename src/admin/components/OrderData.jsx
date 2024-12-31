@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Modal, Button, Row, Col } from "react-bootstrap";
 
-const ModalOrderData = ({ modalShow4, handleClose4, QuoteData }) => {
+const ModalOrderData = ({
+  QuoteNumber,
+  modalShow4,
+  handleClose4,
+  QuoteData,
+}) => {
   const formatToTwoDecimals = (value) => {
     const number = parseFloat(value); // Convert the input to a number
     if (isNaN(number)) {
@@ -19,7 +24,7 @@ const ModalOrderData = ({ modalShow4, handleClose4, QuoteData }) => {
       >
         <Modal.Header closeButton className="border-0 text-center pt-4">
           <Modal.Title className="mx-auto">
-            <b>Data For:</b> {QuoteData?.subquote_number}
+            <b>Data For:</b> {QuoteData?.subquote_number || QuoteNumber}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -38,9 +43,10 @@ const ModalOrderData = ({ modalShow4, handleClose4, QuoteData }) => {
               <h6>Part Data</h6>
               <p>Thickness: {formatToTwoDecimals(QuoteData?.thickness)}</p>
               <p>
-                Cutting Time: {formatToTwoDecimals(QuoteData?.cutting_time)}
+                Cutting Time:{" "}
+                {formatToTwoDecimals(QuoteData?.cutting_time * 60)} secs
               </p>
-              <p>Weight: {formatToTwoDecimals(QuoteData?.weight)}</p>
+              <p>Weight: {formatToTwoDecimals(QuoteData?.weight)} pound</p>
             </Col>
           </Row>
         </Modal.Body>
