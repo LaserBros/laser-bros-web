@@ -992,7 +992,11 @@ export default function QuotesDetail() {
                             ? "Typical Lead Time " +
                               quote.estimated_lead_time +
                               " days"
-                            : "Typical Lead Time 2-3 days"}
+                            : "Typical Lead Time " +
+                                quote?.type_option?.length >
+                              0
+                            ? quote.type_option[0]?.estimated_lead_time ?? "2-4"
+                            : "Typical Lead Time 2-4" + " days"}
                         </p>
                       </div>
                     </div>
