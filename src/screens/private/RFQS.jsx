@@ -30,16 +30,12 @@ export default function RFQS() {
   const [PerPage, setPerPage] = useState(10);
   const handleRowsPerPageChange = (newRowsPerPage, page) => {
     setPerPage(newRowsPerPage);
-    console.log("DSsdsdssssdssd", newRowsPerPage);
-    fetchData(currentPage, newRowsPerPage);
   };
+  useEffect(() => {
   const fetchData = async (page = 1, perPageData) => {
     try {
-      const data = {
-        page: page,
-        PerPage: perPageData,
-      };
-      const res = await fetchRFQ(page, perPageData);
+      setLoading(true);
+      const res = await fetchRFQ(currentPage, PerPage);
       console.log("SDsdsdsdsddssds =-=-=-=-=-=-=-", res.data);
       setQuotes(res.data.updatedQuotes);
       setTotalRows(res.data.total);
@@ -49,9 +45,8 @@ export default function RFQS() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  fetchData();
+}, [currentPage, PerPage]);
   const handleClosePay = () => setModalShowPay(false);
   const [modalShowPay, setModalShowPay] = useState(false);
   const [shippingInfo, setshippingInfo] = useState(false);
@@ -89,7 +84,6 @@ export default function RFQS() {
   const handlePageChange = (page) => {
     console.log("SDsdsdsdddsdsds", page);
     setCurrentPage(page);
-    fetchData(page, PerPage);
   };
   const RequestQuote = async (id) => {
     const data = {
@@ -276,8 +270,10 @@ export default function RFQS() {
                     pagination
                     paginationServer
                     paginationTotalRows={totalRows}
+                    paginationDefaultPage={currentPage}
                     onChangePage={handlePageChange}
-                    paginationPerPage={perPage}
+                    paginationPerPage={PerPage}
+                    paginationRowsPerPageOptions={[10, 25, 50,100]} 
                     noDataComponent={
                       <div style={{ textAlign: "center", padding: "24px" }}>
                         <span>No RFQ’s to Display</span>

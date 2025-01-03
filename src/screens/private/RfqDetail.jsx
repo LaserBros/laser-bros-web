@@ -119,11 +119,14 @@ export default function RfqDetail() {
                       {orders
                         .slice()
                         .reverse()
-                        .map((row) => {
+                        .map((row, index) => {
                           return (
                             <div className="list-quotes-main">
                               <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                                <div className="img-quote mx-auto mx-md-0">
+                                <div className="img-quote mx-auto mx-md-0 position-relative">
+                                  <span className="bublenumber">
+                                    {String(index + 1).padStart(3, "0")}
+                                  </span>
                                   <Image
                                     src={row.image_url}
                                     className="img-fluid"
@@ -207,9 +210,12 @@ export default function RfqDetail() {
                                   <span className="quote-off">
                                     {row.discount}% Saved
                                   </span>
-                                  <p className="mb-0 text-md-end">
-                                    Typical Lead Time 2-3 days
-                                  </p>
+                                  {row.estimated_lead_time && (
+                                    <p className="mb-0 text-md-end">
+                                      Typical Lead Time{" "}
+                                      {row.estimated_lead_time} days
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                               <span className="num-dim">

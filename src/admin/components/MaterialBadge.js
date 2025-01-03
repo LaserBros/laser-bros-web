@@ -46,17 +46,20 @@ const MaterialBadge = ({ materialDetails }) => {
 
   return (
     <>
-      {visibleItems.map((item, index) => (
-        <span
-          key={`visible-${index}`} // Add unique key
-          className="badgestatus me-2"
-          style={getMaterialColor(
-            `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
-          )}
-        >
-          {item?.material_code ?? ""}
-        </span>
-      ))}
+      {visibleItems.map(
+        (item, index) =>
+          item?.material_code && (
+            <span
+              key={`visible-${index}`} // Add unique key
+              className="badgestatus me-2"
+              style={getMaterialColor(
+                `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
+              )}
+            >
+              {item?.material_code ?? ""}
+            </span>
+          )
+      )}
 
       {isMoreThanTwo && (
         <span
@@ -77,17 +80,20 @@ const MaterialBadge = ({ materialDetails }) => {
           <Modal.Title>All Material Tags</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {uniqueDetails.map((item, index) => (
-            <span
-              key={`modal-${index}`} // Add unique key
-              className="badgestatus-more mt-1 me-2"
-              style={getMaterialColor(
-                `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
-              )}
-            >
-              {item?.material_code ?? ""}
-            </span>
-          ))}
+          {uniqueDetails.map(
+            (item, index) =>
+              item?.material_code && (
+                <span
+                  key={`modal-${index}`} // Add unique key
+                  className="badgestatus-more mt-1 me-2"
+                  style={getMaterialColor(
+                    `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
+                  )}
+                >
+                  {item?.material_code ?? ""}
+                </span>
+              )
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>

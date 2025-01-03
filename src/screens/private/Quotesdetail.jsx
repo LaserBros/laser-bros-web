@@ -702,6 +702,7 @@ export default function QuotesDetail() {
             ...quote,
             ...updatedFields,
             discount: response.data.data.data.discount,
+            estimated_lead_time: response.data.data.estimated_lead_time,
             amount: newPrice,
           };
         }
@@ -956,7 +957,7 @@ export default function QuotesDetail() {
                           </strong>
                           /each
                         </p>
-                        <div className="d-flex align-item-center gap-2">
+                        <div className="d-flex align-item-center justify-content-end gap-2">
                           <div className="quanityCount_btn">
                             {quote.thickness_id ? (
                               <>
@@ -987,7 +988,11 @@ export default function QuotesDetail() {
                           </span>
                         </div>
                         <p className="mb-0 text-md-end">
-                          Typical Lead Time 2-3 days
+                          {quote.estimated_lead_time
+                            ? "Typical Lead Time " +
+                              quote.estimated_lead_time +
+                              " days"
+                            : "Typical Lead Time 2-3 days"}
                         </p>
                       </div>
                     </div>

@@ -109,6 +109,8 @@ import Customers from "./admin/screens/Customers";
 import ViewCustomer from "./admin/screens/Customers/ViewCustomer";
 import DataBase from "./admin/screens/Database";
 import EditFinishing from "./admin/screens/Database/EditFinishing";
+import EditQty from "./admin/screens/Database/EditQty";
+import EditMaterial from "./admin/screens/Database/EditMaterial";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -395,6 +397,30 @@ function App() {
                         element={
                           <AdminLayout title={"Edit Finishing"}>
                             <EditFinishing />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/database/edit-material/:id"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Edit Material"}>
+                            <EditMaterial />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/admin/database/edit-quantity/:id"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Edit Quantity"}>
+                            <EditQty />
                           </AdminLayout>
                         }
                       />

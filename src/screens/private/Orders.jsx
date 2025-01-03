@@ -18,11 +18,10 @@ export default function Orders() {
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, settotalPage] = useState(1);
-  const [perPage] = useState(10);
   const [PerPage, setPerPage] = useState(10);
   const handleRowsPerPageChange = (newRowsPerPage, page) => {
     setPerPage(newRowsPerPage);
-    loadOrders(currentPage, newRowsPerPage);
+    // loadOrders(currentPage, newRowsPerPage);
   };
 
   const OrderDetailClick = async (id) => {
@@ -58,7 +57,7 @@ export default function Orders() {
   const columns = [
     {
       name: "Order Number",
-      selector: (row) => "Quote #" + row.search_quote,
+      selector: (row,index) => "Quote #" + row.search_quote,
       sortable: false,
     },
     {
@@ -117,10 +116,12 @@ export default function Orders() {
   ];
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const loadOrders = async (page, perPage) => {
+  useEffect(() => {
+  const loadOrders = async () => {
     try {
-      // setLoading(true);
-      const response = await getOrders(page, perPage);
+      
+      setLoading(true);
+      const response = await getOrders(currentPage, PerPage);
       setOrders(response.data.updatedQuotes);
       setTotalRows(response.data.total);
     } catch (error) {
@@ -129,29 +130,25 @@ export default function Orders() {
       setLoading(false);
     }
   };
+  loadOrders();
+}, [currentPage, PerPage]);
   const formatDate = (dateCreate) => {
     const dateObj = new Date(dateCreate);
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const yearLastTwoDigits = String(dateObj.getFullYear()).slice(-2);
     return `Quote # ${month}-${yearLastTwoDigits}`;
   };
-  useEffect(() => {
-    loadOrders(currentPage);
-  }, []);
+
   const [itemsPerPage] = useState(10);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const onPageChange = (pageNumber) => {
-    console.log("Dssdsdssdsdsd");
-    setCurrentPage(pageNumber);
-    loadOrders(pageNumber);
-  };
+
 
   const handlePageChange = (page) => {
     console.log("handlePageChange , handlePageChange", page);
     setCurrentPage(page);
-    loadOrders(page, PerPage);
+    // loadOrders(page, PerPage);
   };
   const getMaterialsColor = (materials) => {
     // console.log("materials", materials);
@@ -271,8 +268,10 @@ export default function Orders() {
                     pagination
                     paginationServer
                     paginationTotalRows={totalRows}
-                    onChangePage={handlePageChange}
-                    paginationPerPage={perPage}
+                    onChangePage={handlePageChange} 
+                    paginationDefaultPage={currentPage}
+                    paginationPerPage={PerPage}
+                    paginationRowsPerPageOptions={[10, 25, 50,100]} 
                     noDataComponent={
                       <div style={{ textAlign: "center", padding: "24px" }}>
                         <span>No Orders to Display </span>

@@ -84,6 +84,22 @@ const ViewRFQS = () => {
     // fetchOptions();
   }, []);
 
+  function formatPhoneNumber(input) {
+    const cleanInput = input.replace(/\D/g, "");
+
+    // Dynamically add "-" based on input length
+    if (cleanInput.length <= 3) {
+      return cleanInput; // No formatting for 1-3 digits
+    } else if (cleanInput.length <= 6) {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(3)}`; // Format as XXX-XXX
+    } else {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(
+        3,
+        6
+      )}-${cleanInput.slice(6)}`; // Format as XXX-XXX-XXXX
+    }
+  }
+
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
@@ -699,7 +715,8 @@ const ViewRFQS = () => {
                     {UserDataAdmin?.phone_number && (
                       <p>
                         <b>Phone Number:</b>
-                        &nbsp;&nbsp;&nbsp;{UserDataAdmin?.phone_number}
+                        &nbsp;&nbsp;&nbsp;
+                        {formatPhoneNumber(UserDataAdmin?.phone_number)}
                       </p>
                     )}
                   </div>
@@ -871,9 +888,12 @@ const ViewRFQS = () => {
                         <span className="quote-off">
                           {quote.discount}% Saved
                         </span>
-                        <p className="mb-0 text-md-end">
-                          Typical Lead Time 2-3 days
-                        </p>
+                        {quote?.type_option[0]?.estimated_lead_time && (
+                          <p className="mb-0 text-md-end">
+                            Typical Lead Time{" "}
+                            {quote?.type_option[0]?.estimated_lead_time} days
+                          </p>
+                        )}
                       </div>
                     </div>
                     <span className="num-dim">

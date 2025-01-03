@@ -5,7 +5,32 @@ body {
     &.dark {
         background-color: $black-color !important;
         min-height      : 100vh;
-
+        .editmaterialtable{
+            --bs-table-bg:$dark-color;
+            --bs-table-border-color:rgba(255,255,255,0.20);
+            >:not(caption)>*>*{
+                color: #ffffff;
+            }
+            .form-control{
+                background-color: transparent;
+                border:1px solid rgba(255,255,255,0.20);
+                color:$white-color
+            }
+        }
+        .spinner-border{
+            border-color: $white-color!important;
+            border-right-color: transparent!important;
+        }
+        .accordionmaterial
+        {
+            .accordion-item{
+                border: none;
+                .accordion-body{
+                    background-color: $dark-color;
+                }
+            }
+           
+        }
         .modal {
             &.datamodal{
                 .modal-content{

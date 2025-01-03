@@ -847,10 +847,10 @@ const EditRFQS = () => {
             let total_parts = parts.join("-");
             updatedFields.subquote_number = total_parts;
           }
-
           return {
             ...quote,
             ...updatedFields,
+            estimated_lead_time: response.data.data.estimated_lead_time,
             amount: newPrice,
           };
         }
@@ -1241,8 +1241,15 @@ const EditRFQS = () => {
                           </span>
                         </div>
                         <p className="mb-0 text-md-end">
-                          Typical Lead Time 2-3 days
+                          {quote.estimated_lead_time
+                            ? "Typical Lead Time " +
+                              quote.estimated_lead_time +
+                              " days"
+                            : "Typical Lead Time " +
+                              quote?.type_option[0]?.estimated_lead_time +
+                              " days"}
                         </p>
+
                         <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
                           <Link
                             className="btnshare"

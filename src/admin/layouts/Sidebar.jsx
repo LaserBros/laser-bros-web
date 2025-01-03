@@ -128,12 +128,12 @@ const Sidebar = () => {
       link: "/admin/payment-history",
       icon: "material-symbols:attach-money-rounded",
     },
-    // {
-    //   id: "database",
-    //   title: "Database",
-    //   link: "/admin/database",
-    //   icon: "material-symbols:database",
-    // },
+    {
+      id: "database",
+      title: "Database",
+      link: "/admin/database",
+      icon: "material-symbols:database",
+    },
     {
       id: "edit-profile",
       title: "Profile Settings",

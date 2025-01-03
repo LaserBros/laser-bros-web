@@ -1115,6 +1115,20 @@ export const AdmingetThickness = async (data) => {
   }
 };
 
+export const updateThicknessDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateThicknessDetails`,
+      data
+    );
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getAllMaterialCodes = async () => {
   try {
     const response = await axiosAdminInstance.get(`/getAllMaterialCodes`);
@@ -1151,6 +1165,85 @@ export const getFinishingFilter = async () => {
 export const getFinishAdmin = async () => {
   try {
     const response = await axiosAdminInstance.get(`/getFinish`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getParticularThickness = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularThickness`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const discount = async () => {
+  try {
+    const response = await axiosAdminInstance.get(`/discount`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getParticularDiscount = async (id) => {
+  try {
+    const response = await axiosAdminInstance.get(`/discount/` + id);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const getMaterialsAndThickness = async (id) => {
+  try {
+    const response = await axiosAdminInstance.get(`/getMaterialsAndThickness`);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const PutDiscount = async (data) => {
+  try {
+    const response = await axiosAdminInstance.put(`/discount/`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const fetchSelectedFinishesAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getParticularFinish`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateFinishDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateFinishDetails`,
+      data
+    );
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
