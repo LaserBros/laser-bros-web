@@ -74,7 +74,7 @@ const RFQS = () => {
       }));
       setLoadingBtn(false);
       setModalShow(false);
-      loadData();
+      // loadData();
     }
   };
 
@@ -84,7 +84,7 @@ const RFQS = () => {
   const onPageChange = (pageNumber) => {
     console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
-    loadData(pageNumber);
+    // loadData(pageNumber);
   };
   const [loadingId, setLoadingId] = useState("");
   const EditQuote = async (id) => {
@@ -119,7 +119,7 @@ const RFQS = () => {
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
     setSortOrder(selectedValue);
-    loadData(1, name, selectedValue);
+    // loadData(1, name, selectedValue);
   };
 
   const loadData = async (page, search = "", sortOrder = "") => {
@@ -169,7 +169,7 @@ const RFQS = () => {
                       onChange={(e) => {
                         setCurrentPage(1);
                         searchName(e.target.value);
-                        loadData(1, e.target.value, sortOrder);
+                        // loadData(1, e.target.value, sortOrder);
                       }}
                       className="rounded-5"
                     />
@@ -200,7 +200,7 @@ const RFQS = () => {
                     setCurrentPage(1);
                     setSortOrder("value1");
                     searchName("");
-                    loadData(1);
+                    // loadData(1);
                   }}
                 >
                   {" "}

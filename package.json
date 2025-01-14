@@ -65,6 +65,12 @@
     ]
   },
   "devDependencies": {
-    "@iconify/react": "^5.0.1"
+    "@iconify/react": "^5.0.1",
+    "identity-obj-proxy": "^3.0.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }

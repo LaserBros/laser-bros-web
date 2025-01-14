@@ -1215,6 +1215,28 @@ export const getMaterialsAndThickness = async (id) => {
   }
 };
 
+export const AddDiscount = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/discount/`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const addFinish = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/addFinish/`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+
 export const PutDiscount = async (data) => {
   try {
     const response = await axiosAdminInstance.put(`/discount/`, data);

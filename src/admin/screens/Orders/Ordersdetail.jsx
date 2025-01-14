@@ -1003,7 +1003,7 @@ const OrdersDetail = () => {
 
                 {order?.orderedQuote.status == 0 ? (
                   <>
-                    <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
+                    {/* <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap my-2">
                       <div>
                         <span
                           className=" d-inline-flex align-items-center justify-content-center"
@@ -1012,7 +1012,6 @@ const OrdersDetail = () => {
                           Select Employee
                         </span>
                       </div>
-                      {/* {selectedEmp} -== */}
                       <Select
                         className="rounded-5 flex-grow-1 mr-2"
                         styles={customStyles}
@@ -1042,7 +1041,7 @@ const OrdersDetail = () => {
                           )}
                         </Link>
                       </div>
-                    </div>
+                    </div> */}
                   </>
                 ) : (
                   <>

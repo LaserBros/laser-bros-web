@@ -23,6 +23,10 @@ const EditFinishing = () => {
     finishing_desc: "",
     minimum_size: "",
     maximum_size: "",
+    minimum_size_length : "",
+    maximum_size_length : "",
+    maximum_size_width:"",
+    minimum_size_width : "",
     notes_text: "",
     price: "",
   });
@@ -56,6 +60,24 @@ const EditFinishing = () => {
   const [errors, setErrors] = useState({});
   const [showAlert, setShowAlert] = useState(false);
 
+  const handleChangeDropDown = (e) => {
+    const { name, value } = e.target;
+  
+    // Convert to an integer if the name matches specific fields
+    const parsedValue =
+      name === "minimum_size_length" ? parseInt(value, 10) : value;
+  
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: parsedValue,
+    }));
+  
+    // Clear field-specific error on change
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -170,34 +192,100 @@ const EditFinishing = () => {
               {errors.finishing_desc}
             </Form.Control.Feedback>
           </Form.Group>
-
+          <div className="d-flex ">
           <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
             <Form.Label>Minimum Size</Form.Label>
-            <Form.Control
-              type="text"
-              name="minimum_size"
-              value={formData.minimum_size}
-              onChange={handleChange}
+            <Form.Select
+              name="minimum_size_length"
+              value={formData.minimum_size_length}
+              onChange={handleChangeDropDown}
               isInvalid={!!errors.minimum_size}
-            />
+            >
+              <option value="" disabled>
+                Select a size
+              </option>
+              {Array.from({ length: 251 }, (_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.minimum_size}
             </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="mb-3 form-group" controlId="formMaximumSize">
+          <div className="my-2">
+            <span>X</span>
+          </div>
+          <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
+            <Form.Select
+              name="minimum_size_width"
+              value={formData.minimum_size_width}
+              onChange={handleChangeDropDown}
+              isInvalid={!!errors.minimum_size_width}
+            >
+              <option value="" disabled>
+                Select a size
+              </option>
+              {Array.from({ length: 251 }, (_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors.minimum_size}
+            </Form.Control.Feedback>
+          </Form.Group>
+          </div>
+          <div className="d-flex ">
+          <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
             <Form.Label>Maximum Size</Form.Label>
-            <Form.Control
-              type="text"
-              name="maximum_size"
-              value={formData.maximum_size}
-              onChange={handleChange}
-              isInvalid={!!errors.maximum_size}
-            />
+            <Form.Select
+              name="maximum_size_length"
+              value={formData.maximum_size_length}
+              onChange={handleChangeDropDown}
+              isInvalid={!!errors.maximum_size_length}
+            >
+              <option value="" disabled>
+                Select a size
+              </option>
+              {Array.from({ length: 251 }, (_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors.maximum_size}
             </Form.Control.Feedback>
           </Form.Group>
+          <div className="my-2">
+            <span>X</span>
+          </div>
+          <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
+            <Form.Label></Form.Label>
+            <Form.Select
+              name="maximum_size_width"
+              value={formData.maximum_size_width}
+              onChange={handleChangeDropDown}
+              isInvalid={!!errors.maximum_size_width}
+            >
+              <option value="" disabled>
+                Select a size
+              </option>
+              {Array.from({ length: 251 }, (_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors.maximum_size}
+            </Form.Control.Feedback>
+          </Form.Group>
+          </div>
+          
 
           <Form.Group className="mb-3 form-group" controlId="formNotes">
             <Form.Label>Notes</Form.Label>

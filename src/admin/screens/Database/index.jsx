@@ -92,6 +92,7 @@ const DataBase = () => {
                         <Table className="tablecustom" responsive>
                           <thead>
                             <tr>
+                            <th>Edit</th>
                               <th style={{ minWidth: 150 }}>Grade</th>
                               <th>Thickness</th>
                               <th>Stocked?</th>
@@ -127,12 +128,20 @@ const DataBase = () => {
                               <th style={{ minWidth: 150 }}>
                                 RFQ Weight Shift
                               </th>
-                              <th>Edit</th>
+                              
                             </tr>
                           </thead>
                           <tbody>
                             {data.thickness.map((item, increment) => (
                               <tr>
+                                <td>
+                                  <Link
+                                    className="btnedit"
+                                    to={`/admin/database/edit-material/${item._id}`}
+                                  >
+                                    <Icon icon="tabler:edit" />
+                                  </Link>
+                                </td>
                                 <td>
                                   {data.material_name} {data.material_grade}
                                 </td>
@@ -154,14 +163,7 @@ const DataBase = () => {
                                 <td>{item.estimated_lead_time}</td>
                                 <td>{item.rfq_dimension_shift}</td>
                                 <td>{item.rfq_weight_shift}</td>
-                                <td>
-                                  <Link
-                                    className="btnedit"
-                                    to={`/admin/database/edit-material/${item._id}`}
-                                  >
-                                    <Icon icon="tabler:edit" />
-                                  </Link>
-                                </td>
+                                
                               </tr>
                             ))}
                           </tbody>
@@ -180,13 +182,14 @@ const DataBase = () => {
               <Table className="tablecustom" responsive>
                 <thead>
                   <tr>
+                  <th>Action</th>
                     <th>Finishing Code</th>
                     <th>Finishing Description</th>
                     <th>Minimum Size</th>
                     <th>Maximum Size</th>
                     <th>Notes</th>
                     <th>Price Per Part</th>
-                    <th>Action</th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -205,14 +208,6 @@ const DataBase = () => {
                   ) : (
                     Finishes.map((item, index) => (
                       <tr>
-                        <td>F{item?.finishing_code}</td>
-                        <td>{item.finishing_desc}</td>
-                        <td>{item.minimum_size}</td>
-                        <td>{item.maximum_size}</td>
-                        <td>{item.notes_text}</td>
-                        <td>
-                          <Amount amount={item.price} />
-                        </td>
                         <td>
                           <div className="d-inline-flex align-items-center gap-1">
                             <Link
@@ -226,11 +221,22 @@ const DataBase = () => {
                               </Link> */}
                           </div>
                         </td>
+                        <td>
+                          <Amount amount={item.price} />
+                        </td>
+                        
+                        <td>F{item?.finishing_code}</td>
+                        <td>{item.finishing_desc}</td>
+                        <td>{item.minimum_size}</td>
+                        <td>{item.maximum_size}</td>
+                        <td>{item.notes_text}</td>
+                        
                       </tr>
                     ))
                   )}
                 </tbody>
               </Table>
+              <Link to={'/admin/database/add-finish'}>Add Finish</Link>
             </Card.Body>
           </Card>
         </Tab>
@@ -240,9 +246,10 @@ const DataBase = () => {
               <Table className="tablecustom" responsive>
                 <thead>
                   <tr>
+                  <th>Action</th>
                     <th>Part Quantity</th>
                     <th>% discount Applied</th>
-                    <th>Action</th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -261,10 +268,7 @@ const DataBase = () => {
                   ) : (
                     Quantities.map((item, index) => (
                       <tr>
-                        <td>{item?.quantity}</td>
-                        <td>{item.discount}%</td>
-
-                        <td>
+                         <td>
                           <div className="d-inline-flex align-items-center gap-1">
                             <Link
                               className="btnedit"
@@ -277,12 +281,18 @@ const DataBase = () => {
                               </Link> */}
                           </div>
                         </td>
+                        <td>{item?.quantity}</td>
+                        <td>{item.discount}%</td>
+
+                       
                       </tr>
                     ))
                   )}
                 </tbody>
               </Table>
+              <Link to={'/admin/database/add-quantity'}>Add Quantity</Link>
             </Card.Body>
+           
           </Card>
         </Tab>
       </Tabs>

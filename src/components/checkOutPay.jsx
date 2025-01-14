@@ -290,7 +290,7 @@ const CheckOutPay = ({
                           shippingInfo?.requestQuoteDB?.address_details
                             ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.address_details?.city},{" "}
+                        , {shippingInfo?.requestQuoteDB?.address_details?.city} {shippingInfo?.requestQuoteDB?.address_details?.state_code},{" "}
                         {shippingInfo?.requestQuoteDB?.address_details?.pincode}
                         ,{" "}
                         {shippingInfo?.requestQuoteDB?.address_details?.country}

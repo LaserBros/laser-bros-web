@@ -111,6 +111,9 @@ import DataBase from "./admin/screens/Database";
 import EditFinishing from "./admin/screens/Database/EditFinishing";
 import EditQty from "./admin/screens/Database/EditQty";
 import EditMaterial from "./admin/screens/Database/EditMaterial";
+import AddQty from "./admin/components/AddQty";
+import AddQtyDatabase from "./admin/screens/Database/AddQty";
+import AddFinish from "./admin/screens/Database/AddFinish";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -403,6 +406,18 @@ function App() {
                     }
                   ></Route>
                   <Route
+                    path="/admin/database/add-finish"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Add Finishing"}>
+                            <AddFinish />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
                     path="/admin/database/edit-material/:id"
                     element={
                       <AdminRoute
@@ -421,6 +436,18 @@ function App() {
                         element={
                           <AdminLayout title={"Edit Quantity"}>
                             <EditQty />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                     <Route
+                    path="/admin/database/add-quantity"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Add Quantity"}>
+                            <AddQtyDatabase />
                           </AdminLayout>
                         }
                       />

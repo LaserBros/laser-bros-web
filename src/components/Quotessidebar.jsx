@@ -148,7 +148,7 @@ const QuotesSidebar = ({
     const updatedQuoteData = JSON.parse(
       localStorage.getItem("setItempartsDBdata")
     );
-
+    console.log("updatedQuoteData",updatedQuoteData)
     let isValid = true; // Assume everything is valid initially
     console.log("loading od");
     // Use a for...of loop to allow breaking out of the loop
@@ -470,7 +470,7 @@ const QuotesSidebar = ({
                         aria-hidden="true"
                       ></span>
                     ) : buttonText == 1 ? (
-                      "Request a Quote"
+                      "Request a Quote" 
                     ) : (
                       "Proceed to checkout"
                     )}

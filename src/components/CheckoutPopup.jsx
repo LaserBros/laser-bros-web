@@ -45,6 +45,25 @@ const CheckoutPopup = ({
     }
   }, [cardsData]);
   const [modalShow, setModalShow] = useState(false);
+  const formatPhoneNumber = (number) => {
+    // Convert the input to a string
+    const numberStr = String(number);
+
+    // Remove non-numeric characters
+    const cleaned = numberStr.replace(/\D/g, "");
+
+    // Format based on length
+    if (cleaned.length === 10) {
+      // Format for a standard 10-digit phone number
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+    } else if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      // Format for US-style 11-digit numbers with country code "1"
+      return cleaned.replace(/(\d)(\d{3})(\d{3})(\d{4})/, "$1-$2-$3-$4");
+    } else {
+      // Generic fallback for other formats
+      return cleaned;
+    }
+  };
   useEffect(() => {
     if (handleCloseTrigger) {
       const timer = setTimeout(() => {
@@ -180,10 +199,11 @@ const CheckoutPopup = ({
   const [loadingShip, setloadingShip] = useState(false);
   const handleShippingAddressChange = async (event) => {
     const selectedId = event.target.value;
+    
     const selectedAddr = address.find((addr) => addr._id === selectedId);
     setShippingSelectedAddress(selectedAddr || null);
     if (isSameAsShipping && selectedAddress) {
-      setSelectedAddress(selectedAddr || null);
+      setSelectedAddress(selectedAddress || null);
     }
     // console.log("Dsdsdsdssddsd");
     setloadingShip(true);
@@ -290,11 +310,11 @@ const CheckoutPopup = ({
                           {selectedShippingAddress.nickname}
                         </p>
                         <p className="mb-2">
-                          {selectedShippingAddress.phone_number}
+                          {formatPhoneNumber(selectedShippingAddress.phone_number)} 
                         </p>
                         <p className="mb-3">
                           {selectedShippingAddress.address_line_1},{" "}
-                          {selectedShippingAddress.city},{" "}
+                          {selectedShippingAddress.city}  {selectedShippingAddress?.state_code},{" "}
                           {selectedShippingAddress.pincode},{" "}
                           {selectedShippingAddress.country}
                         </p>
@@ -383,10 +403,10 @@ const CheckoutPopup = ({
                           <h2 className="mb-0">{selectedAddress.full_name}</h2>
                         </div>
                         <p className="mb-2">{selectedAddress.nickname}</p>
-                        <p className="mb-2">{selectedAddress.phone_number}</p>
+                        <p className="mb-2">{formatPhoneNumber(selectedAddress.phone_number)}</p>
                         <p className="mb-3">
                           {selectedAddress.address_line_1},{" "}
-                          {selectedAddress.city}, {selectedAddress.pincode},{" "}
+                          {selectedAddress.city} {selectedAddress?.state_code}, {selectedAddress.pincode},{" "}
                           {selectedAddress.country}
                         </p>
                         <div className="btn-bottom">

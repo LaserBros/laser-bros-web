@@ -175,6 +175,7 @@ export default function QuotesDetail() {
         id: quoteId,
       };
       const response = await fetchSelectedFinishes(data);
+      console.log("fetchSelectedFinishes",response.data)
       const res_status = response.data;
       setbtnText(response.check_status);
       const fetchedOptions = res_status.map((item) => ({
@@ -328,7 +329,7 @@ export default function QuotesDetail() {
       const isConfirmed = window.confirm(
         "Are you sure you want to remove bending?"
       );
-
+      console.log(isConfirmed,"isConfirmed")
       if (isConfirmed) {
         const formData = new FormData();
         formData.append("id", id);
@@ -337,44 +338,43 @@ export default function QuotesDetail() {
         try {
           const response = bendQuotes(formData);
 
-          const updatedQuoteData = quoteData.map((quote) => {
-            if (quote._id === id) {
-              const bend_count = 0;
-              const bendupload_url = "";
+          const setItemelementData = quoteList;
+          const parsedQuoteList = quoteData;
+          console.log("matchingQuote -- setItemelementData",setItemelementData,"  == parsedQuoteList",parsedQuoteList);
+            const updatedSetItemElementData = parsedQuoteList.map((item) => {
+              if (item && item._id === id) {
+                console.log("Dsdssdsdssdsdsdsdsdsddssdsd")
+                return {
+                  ...item,
+                  bend_count: 0,
+                  bendupload_url: "",
+                };
+              }
+              return item;
+            });
 
-              return {
-                ...quote,
-                bend_count: bend_count,
-                bendupload_url: bendupload_url,
-              };
-            }
-            return quote;
-          });
-          localStorage.setItem(
-            "setItemelementData",
-            JSON.stringify(updatedQuoteData)
-          );
+            // Save the updated data back to localStorage
+            localStorage.setItem("parsedQuoteList", JSON.stringify(updatedSetItemElementData));
           const quoteDataVal = JSON.parse(
-            localStorage.getItem("setItemelementData")
+            localStorage.getItem("parsedQuoteList")
           );
 
           let total = 0;
           for (const quote of quoteDataVal) {
-            total += quote.bend_count; // Accumulate bend_count values
+            total += quote.bend_count; 
           }
-
-          const quoteList = localStorage.getItem("setItemelementData");
-          console.log("quoteList ---==--=", quoteList);
-          if (quoteList) {
+          const quoteListValues = localStorage.getItem("setItemelementData");
+          console.log("quoteList ---==--=", quoteListValues);
+          if (quoteListValues) {
             // Parse the stored JSON data
-            const parsedQuoteList = JSON.parse(quoteList);
+            const parsedQuoteList = JSON.parse(quoteListValues);
 
             console.log("parsedQuoteList", parsedQuoteList);
             parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
             if (total == 0) {
               parsedQuoteList.check_status = 0;
             }
-            console.log("quoteList ---==--=", parsedQuoteList[0], "0-0-0-0");
+            console.log("quoteList ---==--=",  JSON.stringify(parsedQuoteList), "0-0-0-0");
             localStorage.setItem(
               "setItemelementData",
               JSON.stringify(parsedQuoteList)
@@ -383,8 +383,10 @@ export default function QuotesDetail() {
           }
 
           setquoteDataCon(true);
-          setQuoteData(updatedQuoteData);
-        } catch {}
+          setQuoteData(updatedSetItemElementData);
+        } catch (err) {
+          console.log("eroroorororor",err)
+        }
       }
     }
   };
@@ -626,10 +628,7 @@ export default function QuotesDetail() {
             parsedQuoteList.check_status = 0;
           }
           console.log("parsedQuoteList", parsedQuoteList);
-          localStorage.setItem(
-            "setItempartsDBdata",
-            JSON.stringify(parsedQuoteList)
-          );
+     
           setQuoteList(parsedQuoteList);
           return updatedQuoteData;
         }
@@ -684,6 +683,7 @@ export default function QuotesDetail() {
           let updatedFields = {};
           const currentAmount = parseFloat(quote.amount) || 0;
           const newPrice = parseFloat(response.data.data.data.amount) || 0;
+          console.log(response.data.data.updated_data.check_status,"data.updated_data.check_status");
 
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
@@ -709,21 +709,33 @@ export default function QuotesDetail() {
         return quote;
       });
 
-      // Sum the total amount of all quotes
-      const totalAmount = updatedQuoteData.reduce(
-        (sum, quote) => sum + quote.amount,
-        0
-      );
-
-      // Update localStorage with the new quoteData
-      localStorage.setItem(
-        "setItempartsDBdata",
-        JSON.stringify(updatedQuoteData)
-      );
-
-      // Update state with the new quoteData
-      setQuoteData(updatedQuoteData);
-      console.log("Total sum of prices:", totalAmount);
+      
+      const setItempartsDBdata =
+      JSON.parse(localStorage.getItem("setItempartsDBdata")) || [];
+  
+    setbtnText(response.data.data.updated_data.check_status);
+    const updatedQuoteDataVal = updatedQuoteData.map((quote) =>
+      quote._id === id
+        ? {
+            ...quote,
+            check_status: response.data.data.updated_data.check_status, 
+          }
+        : quote
+    );
+  
+    // Recalculate totalAmount
+    const totalAmount = updatedQuoteDataVal.reduce(
+      (sum, quote) => sum + (quote.amount || 0),
+      0
+    );
+  
+    // Save the updated array back to localStorage
+    localStorage.setItem("setItempartsDBdata", JSON.stringify(updatedQuoteDataVal));
+  
+    // Update state with the new quoteData
+    setQuoteData(updatedQuoteDataVal);
+  
+    console.log("Updated totalAmount:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
     }
@@ -775,6 +787,7 @@ export default function QuotesDetail() {
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
+        
         <Container>
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
             {quoteData && quoteData.length > 0 ? (
