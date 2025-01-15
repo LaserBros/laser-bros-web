@@ -587,11 +587,12 @@ const EditRFQS = () => {
     };
   }, []);
   const [divideWeight, setdivideWeight] = useState("");
+  const [TaxRatesVal, setTaxRates] = useState("");
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
-    const userDataVal = JSON.parse(localStorage.getItem("shippingRates"));
-
+    const userDataVal = JSON.parse(localStorage.getItem("shippingRates")); 
+    const TaxRates = JSON.parse(localStorage.getItem("taxRates")); 
     const divideWeight = JSON.parse(localStorage.getItem("divideWeight"));
 
     if (storedData) {
@@ -600,6 +601,7 @@ const EditRFQS = () => {
       const quote_list_val = JSON.parse(quote_list);
       setQuoteList(quote_list_val);
       setdivideWeight(divideWeight);
+      setTaxRates(TaxRates);
       setUserData(userDataVal);
       setQuoteData(parsedData);
     }
@@ -954,6 +956,7 @@ const EditRFQS = () => {
             shipAddress={quoteList?.billing_details}
             billAdress={quoteList?.address_details}
             addressDetail={quoteList}
+            TaxRatesVal = {TaxRatesVal}
           />
           <Row>
             <Col lg={8} xl={9}>
@@ -1311,6 +1314,7 @@ const EditRFQS = () => {
                   quoteData={quoteList}
                   UserData={UserData}
                   divideWeight={divideWeight}
+                  TaxRatesVal={TaxRatesVal}
                   // OnSave={OnSave}
                 />
               </Col>

@@ -18,6 +18,7 @@ const QuotesSidebar = ({
   quoteData,
   UserData,
   divideWeight,
+  TaxRatesVal
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
@@ -367,6 +368,7 @@ const QuotesSidebar = ({
         UserData={UserData}
         divideWeight={divideWeight}
         onSave={OnSave}
+        TaxRatesVal={TaxRatesVal}
       />
     </>
   );

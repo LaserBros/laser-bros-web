@@ -107,6 +107,10 @@ const RFQS = () => {
       "shippingRates",
       JSON.stringify(res.data.shippingRates)
     );
+    localStorage.setItem(
+      "taxRates",
+      JSON.stringify(res.data.tax)
+    );
     localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
     setLoadingId("");
     navigate("/admin/rfqs/edit-quote");

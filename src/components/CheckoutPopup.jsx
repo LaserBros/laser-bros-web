@@ -354,6 +354,7 @@ const CheckoutPopup = ({
                       }}
                     ></span>
                   ) : (
+                    <>
                     <ShippingRates
                       shippingRates={shippingInfoData.shippingRates}
                       divideWeight={shippingInfoData.divideWeight}
@@ -363,6 +364,7 @@ const CheckoutPopup = ({
                       }
                       selectedShippingAddress={selectedShippingAddress}
                     />
+                    </>
                   )}
                 </div>
               </Col>

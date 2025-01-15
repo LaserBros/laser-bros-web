@@ -17,6 +17,7 @@ const AddressDetails = ({
   onClickDownloadAllFile,
   isShowTrack,
   onClickTrack,
+  TaxRatesVal
 }) => {
   const getStatusColor = (status) => {
     switch (status) {
@@ -157,23 +158,25 @@ const AddressDetails = ({
                 </span>
               </p>
             )}
-            {addressDetail?.tax_amount != 0 && (
+            {TaxRatesVal &&
+            addressDetail?.tax_amount != 0 && (
               <p className="mb-0">
                 <b className="minWidth_110">
-                  Tax <b>({addressDetail?.tax_percentage}%)</b>:
+                  Tax <b>({TaxRatesVal?.tax_percentage}%)</b>:
                 </b>
 
-                <Amount amount={parseFloat(addressDetail?.tax_amount || 0)} />
+                <Amount amount={parseFloat(TaxRatesVal?.tax_amount || 0)} />
               </p>
             )}
-
+          
             <p className="mb-0">
               <b className="minWidth_110">Order Amount:</b>
 
               <Amount
                 amount={
                   parseFloat(addressDetail?.total_amount || 0) +
-                  parseFloat(addressDetail?.total_bend_price || 0)
+                  parseFloat(addressDetail?.total_bend_price || 0) +
+                  parseFloat(TaxRatesVal?.tax_amount || 0)
                 }
               />
             </p>

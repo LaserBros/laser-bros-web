@@ -192,14 +192,18 @@ const EditFinishing = () => {
               {errors.finishing_desc}
             </Form.Control.Feedback>
           </Form.Group>
-          <div className="d-flex ">
+          
           <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
             <Form.Label>Minimum Size</Form.Label>
+        
+          <div className="d-flex align-items-center gap-2">
+          <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
             <Form.Select
               name="minimum_size_length"
               value={formData.minimum_size_length}
               onChange={handleChangeDropDown}
               isInvalid={!!errors.minimum_size}
+              style={{minWidth:150}}
             >
               <option value="" disabled>
                 Select a size
@@ -214,7 +218,7 @@ const EditFinishing = () => {
               {errors.minimum_size}
             </Form.Control.Feedback>
           </Form.Group>
-          <div className="my-2">
+          <div className="mb-3">
             <span>X</span>
           </div>
           <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
@@ -223,6 +227,7 @@ const EditFinishing = () => {
               value={formData.minimum_size_width}
               onChange={handleChangeDropDown}
               isInvalid={!!errors.minimum_size_width}
+              style={{minWidth:150}}
             >
               <option value="" disabled>
                 Select a size
@@ -238,14 +243,18 @@ const EditFinishing = () => {
             </Form.Control.Feedback>
           </Form.Group>
           </div>
-          <div className="d-flex ">
+          </Form.Group>
           <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
             <Form.Label>Maximum Size</Form.Label>
+         
+          <div className="d-flex align-items-center gap-2">
+          <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
             <Form.Select
               name="maximum_size_length"
               value={formData.maximum_size_length}
               onChange={handleChangeDropDown}
               isInvalid={!!errors.maximum_size_length}
+              style={{minWidth:150}}
             >
               <option value="" disabled>
                 Select a size
@@ -260,16 +269,16 @@ const EditFinishing = () => {
               {errors.maximum_size}
             </Form.Control.Feedback>
           </Form.Group>
-          <div className="my-2">
+          <div className="mb-3">
             <span>X</span>
           </div>
           <Form.Group className="mb-3 form-group" controlId="formMinimumSize">
-            <Form.Label></Form.Label>
             <Form.Select
               name="maximum_size_width"
               value={formData.maximum_size_width}
-              onChange={handleChangeDropDown}
+              onChange={handleChange}
               isInvalid={!!errors.maximum_size_width}
+              style={{minWidth:150}}
             >
               <option value="" disabled>
                 Select a size
@@ -285,8 +294,7 @@ const EditFinishing = () => {
             </Form.Control.Feedback>
           </Form.Group>
           </div>
-          
-
+          </Form.Group>
           <Form.Group className="mb-3 form-group" controlId="formNotes">
             <Form.Label>Notes</Form.Label>
             <Form.Control

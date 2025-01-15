@@ -22,6 +22,8 @@ import {
   getThicknessMaterialFinish,
   updateQuantity,
   updateSubQuoteDetails,
+  updateDimensionType,
+  updateDimensionStatus,
 } from "../../api/api";
 import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
@@ -47,7 +49,10 @@ export default function QuotesDetail() {
     setSelectedPartId(id);
     setModalShow(true);
   };
-
+  const getDimension = [
+    { value: 0, label: "Millimeters" },
+    { value: 1, label: "Inches" },
+  ];
   // const colors = [
   //   { label: "Gloss Red P.C.", value: "#E11F26" },
   //   { label: "Gloss Yellow P.C.", value: "#facc15" },
@@ -175,7 +180,7 @@ export default function QuotesDetail() {
         id: quoteId,
       };
       const response = await fetchSelectedFinishes(data);
-      console.log("fetchSelectedFinishes",response.data)
+      console.log("fetchSelectedFinishes", response.data);
       const res_status = response.data;
       setbtnText(response.check_status);
       const fetchedOptions = res_status.map((item) => ({
@@ -268,10 +273,7 @@ export default function QuotesDetail() {
             parsedQuoteList.check_status = 0;
           }
           console.log("parsedQuoteList", parsedQuoteList);
-          localStorage.setItem(
-            "setItempartsDBdata",
-            JSON.stringify(parsedQuoteList)
-          );
+
           setQuoteList(parsedQuoteList);
         }
 
@@ -329,7 +331,7 @@ export default function QuotesDetail() {
       const isConfirmed = window.confirm(
         "Are you sure you want to remove bending?"
       );
-      console.log(isConfirmed,"isConfirmed")
+      console.log(isConfirmed, "isConfirmed");
       if (isConfirmed) {
         const formData = new FormData();
         formData.append("id", id);
@@ -340,28 +342,36 @@ export default function QuotesDetail() {
 
           const setItemelementData = quoteList;
           const parsedQuoteList = quoteData;
-          console.log("matchingQuote -- setItemelementData",setItemelementData,"  == parsedQuoteList",parsedQuoteList);
-            const updatedSetItemElementData = parsedQuoteList.map((item) => {
-              if (item && item._id === id) {
-                console.log("Dsdssdsdssdsdsdsdsdsddssdsd")
-                return {
-                  ...item,
-                  bend_count: 0,
-                  bendupload_url: "",
-                };
-              }
-              return item;
-            });
+          console.log(
+            "matchingQuote -- setItemelementData",
+            setItemelementData,
+            "  == parsedQuoteList",
+            parsedQuoteList
+          );
+          const updatedSetItemElementData = parsedQuoteList.map((item) => {
+            if (item && item._id === id) {
+              console.log("Dsdssdsdssdsdsdsdsdsddssdsd");
+              return {
+                ...item,
+                bend_count: 0,
+                bendupload_url: "",
+              };
+            }
+            return item;
+          });
 
-            // Save the updated data back to localStorage
-            localStorage.setItem("parsedQuoteList", JSON.stringify(updatedSetItemElementData));
+          // Save the updated data back to localStorage
+          localStorage.setItem(
+            "parsedQuoteList",
+            JSON.stringify(updatedSetItemElementData)
+          );
           const quoteDataVal = JSON.parse(
             localStorage.getItem("parsedQuoteList")
           );
 
           let total = 0;
           for (const quote of quoteDataVal) {
-            total += quote.bend_count; 
+            total += quote.bend_count;
           }
           const quoteListValues = localStorage.getItem("setItemelementData");
           console.log("quoteList ---==--=", quoteListValues);
@@ -374,7 +384,11 @@ export default function QuotesDetail() {
             if (total == 0) {
               parsedQuoteList.check_status = 0;
             }
-            console.log("quoteList ---==--=",  JSON.stringify(parsedQuoteList), "0-0-0-0");
+            console.log(
+              "quoteList ---==--=",
+              JSON.stringify(parsedQuoteList),
+              "0-0-0-0"
+            );
             localStorage.setItem(
               "setItemelementData",
               JSON.stringify(parsedQuoteList)
@@ -385,7 +399,7 @@ export default function QuotesDetail() {
           setquoteDataCon(true);
           setQuoteData(updatedSetItemElementData);
         } catch (err) {
-          console.log("eroroorororor",err)
+          console.log("eroroorororor", err);
         }
       }
     }
@@ -429,25 +443,35 @@ export default function QuotesDetail() {
   }, []);
 
   const [apiResponse, setApiResponse] = useState(null);
-  const handleApiResponse = (response) => {
-    console.log("Received response in ParentComponent:", response);
-    setApiResponse(response);
-    localStorage.setItem(
-      "setItemelementData",
-      JSON.stringify(response.updated_data)
+  const handleApiResponse = async (selectedOption, type, id) => {
+    console.log(selectedOption, type, id);
+    const data = {
+      id: id,
+      dimension_type: selectedOption.value,
+    };
+    let quoteData = JSON.parse(localStorage.getItem("setItempartsDBdata"));
+    const updatedQuoteData = quoteData.map((quote) =>
+      quote._id === id
+        ? { ...quote, dimension_type: selectedOption.value, material_id : "",thickness_id:"",finishing_id:'',thicknessOptions:[],finishOptions:[],amount:0}
+        : quote
     );
-    setQuoteList(response.updated_data);
+    localStorage.setItem(
+      "setItempartsDBdata",
+      JSON.stringify(updatedQuoteData)
+    );
+    const res = await updateDimensionStatus(data);
+    const response = res.data;
     const storedData = localStorage.getItem("setItempartsDBdata");
     const parsedData = storedData ? JSON.parse(storedData) : [];
 
     // Check if data exists and update based on _id match
     const updatedLocalStorageData = parsedData.map((quote) => {
-      if (quote._id === response.updateSubQuote._id) {
-        console.log(
-          "response.updateSubQuote.amount",
-          response.updateSubQuote.amount
-        );
-        const update_amount = response.updateSubQuote.amount;
+      if (quote._id === response._id) {
+        // console.log(
+        //   "response.updateSubQuote.amount",
+        //   response.updateSubQuote.amount
+        // );
+        const update_amount = 0;
         return {
           ...quote,
           amount: update_amount,
@@ -628,7 +652,7 @@ export default function QuotesDetail() {
             parsedQuoteList.check_status = 0;
           }
           console.log("parsedQuoteList", parsedQuoteList);
-     
+
           setQuoteList(parsedQuoteList);
           return updatedQuoteData;
         }
@@ -683,7 +707,10 @@ export default function QuotesDetail() {
           let updatedFields = {};
           const currentAmount = parseFloat(quote.amount) || 0;
           const newPrice = parseFloat(response.data.data.data.amount) || 0;
-          console.log(response.data.data.updated_data.check_status,"data.updated_data.check_status");
+          console.log(
+            response.data.data.updated_data.check_status,
+            "data.updated_data.check_status"
+          );
 
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
@@ -709,33 +736,35 @@ export default function QuotesDetail() {
         return quote;
       });
 
-      
       const setItempartsDBdata =
-      JSON.parse(localStorage.getItem("setItempartsDBdata")) || [];
-  
-    setbtnText(response.data.data.updated_data.check_status);
-    const updatedQuoteDataVal = updatedQuoteData.map((quote) =>
-      quote._id === id
-        ? {
-            ...quote,
-            check_status: response.data.data.updated_data.check_status, 
-          }
-        : quote
-    );
-  
-    // Recalculate totalAmount
-    const totalAmount = updatedQuoteDataVal.reduce(
-      (sum, quote) => sum + (quote.amount || 0),
-      0
-    );
-  
-    // Save the updated array back to localStorage
-    localStorage.setItem("setItempartsDBdata", JSON.stringify(updatedQuoteDataVal));
-  
-    // Update state with the new quoteData
-    setQuoteData(updatedQuoteDataVal);
-  
-    console.log("Updated totalAmount:", totalAmount);
+        JSON.parse(localStorage.getItem("setItempartsDBdata")) || [];
+
+      setbtnText(response.data.data.updated_data.check_status);
+      const updatedQuoteDataVal = updatedQuoteData.map((quote) =>
+        quote._id === id
+          ? {
+              ...quote,
+              check_status: response.data.data.updated_data.check_status,
+            }
+          : quote
+      );
+
+      // Recalculate totalAmount
+      const totalAmount = updatedQuoteDataVal.reduce(
+        (sum, quote) => sum + (quote.amount || 0),
+        0
+      );
+
+      // Save the updated array back to localStorage
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(updatedQuoteDataVal)
+      );
+
+      // Update state with the new quoteData
+      setQuoteData(updatedQuoteDataVal);
+
+      console.log("Updated totalAmount:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
     }
@@ -787,7 +816,6 @@ export default function QuotesDetail() {
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
-        
         <Container>
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
             {quoteData && quoteData.length > 0 ? (
@@ -865,6 +893,15 @@ export default function QuotesDetail() {
                           )
                         )}
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
+                        
+                          <SelectDropdowns
+                            options={getDimension}
+                            value={quote.dimension_type}
+                            placeholder={"Select Units"}
+                            type="dimensions"
+                            id={quote._id}
+                            onOptionSelect={handleApiResponse}
+                          />
                           <SelectDropdowns
                             options={materials}
                             value={quote.material_id}
@@ -1016,11 +1053,12 @@ export default function QuotesDetail() {
                     <Row>
                       <Col md={6}>
                         <span className="num-dim">
+                        
                           <DimensionsToggle
                             dimensions={quote.dimensions}
                             id={quote._id}
                             type={quote.dimension_type}
-                            isEdit={true}
+                            // isEdit={true}
                             onApiResponse={handleApiResponse}
                           />
                         </span>

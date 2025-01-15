@@ -42,6 +42,19 @@ export const updateDimensionType = async (data) => {
   }
 };
 
+export const updateDimensionStatus = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/updateDimensionStatus`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const shippingCost = async (data) => {
   try {
     const response = await axiosInstance.post(`/users/shippingCost`, data);
@@ -1128,6 +1141,36 @@ export const updateThicknessDetails = async (data) => {
     throw error;
   }
 };
+
+
+export const addThickness = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/addThickness`,
+      data
+    );
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AddMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/addMaterials`,
+      data
+    );
+    console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 
 export const getAllMaterialCodes = async () => {
   try {

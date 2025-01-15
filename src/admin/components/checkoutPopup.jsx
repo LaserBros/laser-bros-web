@@ -21,6 +21,7 @@ const CheckoutPopup = ({
   UserData,
   divideWeight,
   onSave,
+  TaxRatesVal
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
@@ -30,7 +31,9 @@ const CheckoutPopup = ({
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [shippingMethods, setShippingMethods] = useState([]);
-
+  const [custom_rates , setCustomRates] = useState(0);
+  const [UpsRates , setUpsRates] = useState(0);
+  const [UpsGround , setUpsGround] = useState(0);
   const existingShippingMethods = [
     {
       id: "local_pickup",
@@ -42,7 +45,7 @@ const CheckoutPopup = ({
     {
       id: "custom_rates",
       name: "Custom Rates",
-      price: 0.0,
+      price: custom_rates,
       isChecked: false,
       isEditing: false,
     },
@@ -156,6 +159,7 @@ const CheckoutPopup = ({
   const [selectedServiceCode, setSelectedServiceCode] = useState(
     addressDetail?.service_code || null
   );
+
   const handleCheckout = async () => {
     const custom_rates = shippingMethods.find(
       (method) => method.id === "custom_rates"
@@ -188,6 +192,9 @@ const CheckoutPopup = ({
       };
 
       const res = await updateShippingCost(data);
+      setCustomRates(res.data.updateShippingCosts.shipping_price || 0);
+      setUpsGround(res.data.updateShippingCosts.shipping_upsair_price || 0)
+      setUpsRates(res.data.updateShippingCosts.shipping_upsground_price || 0)
       onSave(res.data);
     } catch (error) {}
   };
@@ -317,13 +324,15 @@ const CheckoutPopup = ({
                             onChange={() => handleCheckboxChange(method.id)}
                           />
                           &nbsp;&nbsp;
-                          {method.name} (
+                          {method.name}
+                          
+                           (
                           {method.isEditing ? (
                             <div className="ShippingMethodCount_div">
                               <input
                                 type="number"
                                 className="addNumber_input"
-                                value={method.price}
+                                value={method.id == 'ups_ground' ? UpsRates != 0 ? UpsRates : method.price : method.id == 'ups_next_day_air'  ? UpsGround != 0 ? UpsGround : method.price : method.price }
                                 onChange={(e) =>
                                   handlePriceChange(method.id, e.target.value)
                                 }
@@ -355,7 +364,7 @@ const CheckoutPopup = ({
                               )}
                             </div>
                           ) : (
-                            `$${method.price.toFixed(2)}`
+                            `$`+method.id == 'ups_ground' ? UpsRates != 0 ? UpsRates : method.price : method.id == 'ups_next_day_air'  ? UpsGround != 0 ? UpsGround : method.price : method.price
                           )}
                           )
                         </label>
@@ -444,11 +453,22 @@ const CheckoutPopup = ({
                   <Amount amount={addressDetail?.total_bend_price} />{" "}
                 </span>
               </div>
+              
               {rateVal != "" ? (
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Shipping</span>
                   <span className="quotesitem quotesright">
                     <Amount amount={rateVal || 0} />{" "}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+               {TaxRatesVal != "" ? (
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">Tax ({TaxRatesVal?.tax_percentage}%)</span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={parseFloat(TaxRatesVal?.tax_amount || 0)} />{" "}
                   </span>
                 </div>
               ) : (
@@ -461,7 +481,8 @@ const CheckoutPopup = ({
                     amount={
                       parseFloat(addressDetail?.total_amount || 0) +
                       parseFloat(addressDetail?.total_bend_price || 0) +
-                      parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0) + 
+                      parseFloat(TaxRatesVal?.tax_amount || 0)
                     }
                   />
                 </span>

@@ -103,6 +103,7 @@ const SelectDropdowns = ({
     };
 
     return (
+      <>
       <Select
         options={options}
         value={options.find((option) => option.value === value)}
@@ -114,6 +115,7 @@ const SelectDropdowns = ({
         styles={customStyles}
         isSearchable={false}
       />
+      </>
     );
   };
   return (

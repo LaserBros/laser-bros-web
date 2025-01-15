@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Switch from "react-switch";
-import { updateDimensionType } from "../api/api";
+import { updateDimensionStatus, updateDimensionType } from "../api/api";
 
 const DimensionsToggle = ({ dimensions, id, type, isEdit, onApiResponse }) => {
   const [isInches, setIsInches] = useState(true);
@@ -34,7 +34,7 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit, onApiResponse }) => {
         "setItempartsDBdata",
         JSON.stringify(updatedQuoteData)
       );
-      const res = await updateDimensionType(data);
+      const res = await updateDimensionStatus(data);
       onApiResponse(res.data);
       console.log("updateDimensionType", res.data, updatedQuoteData);
     } catch (error) {

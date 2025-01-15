@@ -114,6 +114,8 @@ import EditMaterial from "./admin/screens/Database/EditMaterial";
 import AddQty from "./admin/components/AddQty";
 import AddQtyDatabase from "./admin/screens/Database/AddQty";
 import AddFinish from "./admin/screens/Database/AddFinish";
+import AddMaterial from "./admin/screens/Database/AddMaterial";
+import AddThickness from "./admin/screens/Database/AddThickness";
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -424,6 +426,30 @@ function App() {
                         element={
                           <AdminLayout title={"Edit Material"}>
                             <EditMaterial />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                    <Route
+                    path="/admin/database/add-material"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Add Material"}>
+                            <AddMaterial />
+                          </AdminLayout>
+                        }
+                      />
+                    }
+                  ></Route>
+                   <Route
+                    path="/admin/database/add-thickness"
+                    element={
+                      <AdminRoute
+                        element={
+                          <AdminLayout title={"Add Thickness"}>
+                            <AddThickness />
                           </AdminLayout>
                         }
                       />

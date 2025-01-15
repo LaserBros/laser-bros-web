@@ -22,6 +22,8 @@ import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
 import MultiSelect from "react-select";
 import {
+    addThickness,
+  AdmingetMaterials,
   AdmingetThickness,
   discount,
   getFinishAdmin,
@@ -53,7 +55,7 @@ const options = [
   { value: "angular", label: "Angular" },
   { value: "svelte", label: "Svelte" },
 ];
-const EditMaterial = () => {
+const AddThickness = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleChange2 = (selected) => {
@@ -61,8 +63,8 @@ const EditMaterial = () => {
   };
   const { id } = useParams();
   const [material, setMaterial] = useState({
-    material_name: "",
-    material_grade: "",
+    material_id: "",
+    material_thickness: "",
     material_code: "",
     material_density: "",
     price: "",
@@ -79,6 +81,8 @@ const EditMaterial = () => {
   });
 
   const [errors, setErrors] = useState({
+    material_id: "",
+    material_thickness: "",
     material_code: "",
     material_density: "",
     price: "",
@@ -86,13 +90,23 @@ const EditMaterial = () => {
     cutting_cost: "",
     material_markup: "",
     pierce_price: "",
+    finishing_options:"",
   });
 
   const validate = () => {
     let valid = true;
     let errors = {};
 
-    // Check if fields are filled correctly
+    console.log(material, "Ssdsdsdsdsd");
+    if (!material.material_id) {
+      console.log("Dsdsdssd");
+      errors.material_id = "Please select material";
+      valid = false;
+    }
+    if (!material.material_thickness) {
+      errors.material_thickness = "Material thickness is required";
+      valid = false;
+    }
     if (!material.material_code) {
       errors.material_code = "Material code is required";
       valid = false;
@@ -121,36 +135,23 @@ const EditMaterial = () => {
       errors.pierce_price = "Pierce price must be greater than 0";
       valid = false;
     }
+    if(material.finishing_options.length == 0) {
+        errors.finishing_options = "Please select finish";
+      valid = false;
+    }
 
     setErrors(errors);
     return valid;
   };
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const fetchThickness = async () => {
-    const data = {
-      id: id,
-    };
-    const res = await getParticularThickness(data);
-    console.log("fddfdfdf", res.data);
-    setMaterial((prevMaterial) => ({
-      ...res.data,
-      id: res.data._id,
-    }));
 
-    setSelectedOption(res.data.material_thickness);
-    getThickness(res.data.material_id);
-    setLoading(false);
-  };
   const [dropdownOptions, setDropdownOptions] = useState([]);
 
-  const getThickness = async (id) => {
-    const data = {
-      id: id,
-    };
-    const getThickness = await AdmingetThickness(data);
-    setDropdownOptions(getThickness.data);
+  const getMaterial = async (id) => {
+    const getMaterial = await AdmingetMaterials();
+    setDropdownOptions(getMaterial.data);
   };
 
   const handleChangeFinish = (selectedOptions, field) => {
@@ -194,8 +195,8 @@ const EditMaterial = () => {
     if (validate()) {
       try {
         setLoadingBtn(true);
-        const res = await updateThicknessDetails(material);
-        toast.success("Material updated successfully!");
+        const res = await addThickness(material);
+        toast.success("Material added successfully!");
         setLoadingBtn(false);
       } catch (error) {
         toast.error("Something wents wrong!");
@@ -205,25 +206,6 @@ const EditMaterial = () => {
     }
   };
 
-  const handleDropdownChange = (e) => {
-    const selectedValue = e.target.value;
-    console.log(selectedValue, "sdsdsdsdsd-0--0");
-    setSelectedOption(selectedValue);
-    const selectedMaterial = dropdownOptions.find(
-      (material) => material.material_thickness === selectedValue
-    );
-    console.log(
-      "selectedMaterial =-=-=- selectedMaterial",
-      selectedMaterial?.material_code
-    );
-    setMaterial((prevMaterial) => ({
-      ...prevMaterial,
-      material_id: selectedMaterial.material_id,
-      material_thickness: selectedMaterial.material_thickness,
-      material_code: selectedMaterial.material_code,
-      finishing_options: selectedMaterial.finishing_options,
-    }));
-  };
   const [getFinishes, setgetFinishes] = useState([]);
   const getFinish = async () => {
     const res = await getFinishAdmin();
@@ -231,17 +213,18 @@ const EditMaterial = () => {
       value: finish.finishing_code,
       label: "F" + finish.finishing_code,
     }));
-    console.log("transformedOptions",transformedOptions,"res.data",res.data)
+    console.log("transformedOptions", transformedOptions, "res.data", res.data);
     setgetFinishes(transformedOptions);
   };
   useEffect(() => {
     const initialize = async () => {
-      await fetchThickness();
+      //   await fetchThickness();
       //   setTimeout(() => {
       //     // if (material?.material?._id) {
 
       //     // }
       //   }, 5000);
+      getMaterial();
       getFinish();
     };
     initialize();
@@ -264,39 +247,42 @@ const EditMaterial = () => {
         <Table bordered responsive className="editmaterialtable">
           <tbody>
             <tr>
-              <td>Grade</td>
+              <td>Gradesss</td>
               <td>
-                <input
-                  type="text"
-                  value={
-                    material?.material.material_name +
-                    " " +
-                    material?.material.material_grade
-                  }
-                  readOnly
-                  className="form-control"
-                />
+                <select
+                  onChange={(e) => handleChange(e, "material_id")}
+                  className={`form-control ${
+                    errors.material_id ? "is-invalid" : ""
+                  }`}
+                >
+                  <option value="">Select Option</option>
+                  {dropdownOptions.map((option) => (
+                    <option key={option._id} value={option._id}>
+                      {option.material_name} {option.material_grade}
+                    </option>
+                  ))}
+                </select>
+                {errors.material_id && (
+                  <div className="invalid-feedback">{errors.material_id}</div>
+                )}
               </td>
             </tr>
             <tr>
               <td>Thickness</td>
               <td>
-                <select
-                  id="materialDropdown"
-                  value={selectedOption}
-                  onChange={handleDropdownChange}
-                  className="form-control"
-                >
-                  <option value="">Select an Option</option>
-                  {dropdownOptions.map((option) => (
-                    <option
-                      key={option.material_thickness}
-                      value={option.material_thickness}
-                    >
-                      {option.material_thickness}
-                    </option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  value={material.material_thickness}
+                  onChange={(e) => handleChange(e, "material_thickness")}
+                  className={`form-control ${
+                    errors.material_thickness ? "is-invalid" : ""
+                  }`}
+                />
+                {errors.material_thickness && (
+                  <div className="invalid-feedback">
+                    {errors.material_thickness}
+                  </div>
+                )}
               </td>
             </tr>
             <tr>
@@ -442,20 +428,23 @@ const EditMaterial = () => {
             <tr>
               <td>Finishing Options</td>
               <td>
-                
                 <MultiSelect
-  isMulti
-  name="frameworks"
-  options={getFinishes} // Ensure this contains the { value: 55, label: "F55" }
-  value={getFinishes.filter((option) =>
-    material.finishing_options.includes(option.value)
-  )} // Filters selected options based on finishing_options
-  onChange={(selectedOptions) =>
-    handleChangeFinish(selectedOptions, "finishing_options")
-  }
-  styles={customStyles} // Apply any custom styling you have defined
-  placeholder="Select"
-/>
+                  isMulti
+                  name="finishing_options"
+                  className={`form-control ${errors.finishing_options ? "is-invalid" : ""}`}
+                  options={getFinishes} // Ensure this contains the { value: 55, label: "F55" }
+                  value={getFinishes.filter((option) =>
+                    material.finishing_options.includes(option.value)
+                  )} // Filters selected options based on finishing_options
+                  onChange={(selectedOptions) =>
+                    handleChangeFinish(selectedOptions, "finishing_options")
+                  }
+                  styles={customStyles} // Apply any custom styling you have defined
+                  placeholder="Select"
+                />
+                {errors.finishing_options && (
+                  <div className="invalid-feedback">{errors.finishing_options}</div>
+                )}
                 {/* <select
                   className="form-control selectpicker"
                   multiple
@@ -524,4 +513,4 @@ const EditMaterial = () => {
   );
 };
 
-export default EditMaterial;
+export default AddThickness;

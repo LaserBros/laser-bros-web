@@ -86,7 +86,11 @@ export default function QuotesDetailPay() {
     }, 0);
   };
   const [materials, setmaterials] = useState([]);
-
+  const getDimension = [
+    { value: "0", label: "Millimeters (mm)" },
+    { value: "1", label: "Inches" },
+  ];
+  
   useEffect(() => {
     // Fetch options from the API when the parent component mounts
     const fetchOptions = async () => {
@@ -323,6 +327,16 @@ export default function QuotesDetailPay() {
                           </span> */}
                         </p>
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
+                        <SelectDropdowns
+                            options={getDimension}
+                            value={quote.dimensions}
+                            placeholder={"Select Units"}
+                            type="dimensions" 
+                            disabled={true}
+                            id={quote._id}
+                            // onOptionSelect={handleOptionSelect}
+                          />
+                          
                           <SelectDropdowns
                             options={materials}
                             value={quote.material_id}

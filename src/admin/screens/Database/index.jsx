@@ -173,6 +173,8 @@ const DataBase = () => {
                   </Accordion.Body>
                 </Accordion.Item>
               ))}
+              <Link to={'/admin/database/add-material'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Material</Link>
+              <Link to={'/admin/database/add-thickness'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Thickness</Link>
             </Accordion>
           )}
         </Tab>
@@ -236,7 +238,7 @@ const DataBase = () => {
                   )}
                 </tbody>
               </Table>
-              <Link to={'/admin/database/add-finish'}>Add Finish</Link>
+              <Link to={'/admin/database/add-finish'}  className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Finish</Link>
             </Card.Body>
           </Card>
         </Tab>
@@ -290,7 +292,7 @@ const DataBase = () => {
                   )}
                 </tbody>
               </Table>
-              <Link to={'/admin/database/add-quantity'}>Add Quantity</Link>
+              <Link to={'/admin/database/add-quantity'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Quantity</Link>
             </Card.Body>
            
           </Card>
