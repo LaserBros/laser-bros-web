@@ -156,7 +156,7 @@ export default function RFQS() {
           currency: "USD",
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
-        }).format(row.total_amount + row.total_bend_price);
+        }).format(row.total_amount + row.total_bend_price + row.shipping_price);
 
         return formattedAmount;
       },
