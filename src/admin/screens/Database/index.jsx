@@ -173,8 +173,10 @@ const DataBase = () => {
                   </Accordion.Body>
                 </Accordion.Item>
               ))}
-              <Link to={'/admin/database/add-material'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Material</Link>
-              <Link to={'/admin/database/add-thickness'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Thickness</Link>
+              <div>
+              <Link to={'/admin/database/add-material'} className=" gap-2 btn btn-primary d-inline-flex align-items-center justify-content-center">Add Material</Link>
+              <Link style={{marginLeft:'15px'}} to={'/admin/database/add-thickness'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Thickness</Link>
+              </div>
             </Accordion>
           )}
         </Tab>

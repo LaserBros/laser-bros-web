@@ -396,7 +396,7 @@ export const fetchSelectedFinishes = async (data) => {
       `/users/fetchFinishesAndCheck`,
       data
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;

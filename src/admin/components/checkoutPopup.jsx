@@ -45,43 +45,63 @@ const CheckoutPopup = ({
     {
       id: "custom_rates",
       name: "Custom Rates",
-      price: custom_rates,
+      price:  custom_rates != 0 ? custom_rates : addressDetail.shipping_price_update == 1 ? addressDetail.custom_rates : custom_rates,
+      isChecked: false,
+      isEditing: false,
+    }, 
+    {
+      id: "ups_ground",
+      name: "UPS® Ground",
+      price:  UpsGround != 0 ? UpsGround : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsground_price : UserData[0]?.service_code == 'ups_ground' ? UserData[0]?.shipping_amount?.amount : UpsGround,
+      isChecked: false,
+      isEditing: false,
+    },
+    {
+      id: "ups_next_day_air",
+      name: "UPS Next Day Air®",
+      price:  UpsRates != 0 ? UpsRates : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsair_price : UserData[1]?.service_code == 'ups_next_day_air' ? UserData[1]?.shipping_amount?.amount : UpsRates,
       isChecked: false,
       isEditing: false,
     },
   ];
 
   useEffect(() => {
-    const transformedMethods = UserData.map((rate) => ({
-      id: rate.service_code,
-      name: rate.service_type,
-      price: divideWeight * rate.shipping_amount.amount,
-      isChecked: false,
-      isEditing: false,
-    }));
+    console.log("addressDetail ---=-=-=-",addressDetail.custom_rates)
+    // const transformedMethods = UserData.map((rate) => ({
+    //   id: rate.service_code,
+    //   name: rate.service_type,
+    //   price: divideWeight * rate.shipping_amount.amount,
+    //   isChecked: false,
+    //   isEditing: false,
+    // }));
 
     // Combine the transformed methods with existing ones
     const mergedMethods = [...existingShippingMethods];
 
     // Update existingShippingMethods if IDs match or add new entries
-    transformedMethods.forEach((newMethod) => {
-      const existingMethodIndex = mergedMethods.findIndex(
-        (method) => method.id === newMethod.id
-      );
+    // transformedMethods.forEach((newMethod) => {
+    //   const existingMethodIndex = mergedMethods.findIndex(
+    //     (method) => method.id === newMethod.id
+    //   );
 
-      if (existingMethodIndex !== -1) {
-        // Update price for matching IDs
-        mergedMethods[existingMethodIndex] = {
-          ...mergedMethods[existingMethodIndex],
-          price: newMethod.price,
-        };
-      } else {
-        // Add new shipping methods
-        mergedMethods.push(newMethod);
-      }
-    });
+    //   if (existingMethodIndex !== -1) {
+    //     // Update price for matching IDs
+    //     mergedMethods[existingMethodIndex] = {
+    //       ...mergedMethods[existingMethodIndex],
+    //       price: newMethod.price,
+    //     };
+    //   } else {
+    //     // Add new shipping methods
+    //     mergedMethods.push(newMethod);
+    //   }
+    // });
 
     setShippingMethods(mergedMethods);
+    const selectedService = existingShippingMethods.find((method) => method.id === selectedServiceCode);
+    // console.log("selectedService",selectedService);
+    setrateVal(selectedService?.price || 0);
+
+
   }, [show]);
   // const [shippingMethods, setShippingMethods] = useState([
   //   {
@@ -192,9 +212,9 @@ const CheckoutPopup = ({
       };
 
       const res = await updateShippingCost(data);
-      setCustomRates(res.data.updateShippingCosts.shipping_price || 0);
-      setUpsGround(res.data.updateShippingCosts.shipping_upsair_price || 0)
-      setUpsRates(res.data.updateShippingCosts.shipping_upsground_price || 0)
+      setCustomRates(res.data.updateShippingCosts.custom_rates || 0);
+      setUpsGround(res.data.updateShippingCosts.shipping_upsground_price || 0)
+      setUpsRates(res.data.updateShippingCosts.shipping_upsair_price || 0)
       onSave(res.data);
     } catch (error) {}
   };
@@ -332,7 +352,7 @@ const CheckoutPopup = ({
                               <input
                                 type="number"
                                 className="addNumber_input"
-                                value={method.id == 'ups_ground' ? UpsRates != 0 ? UpsRates : method.price : method.id == 'ups_next_day_air'  ? UpsGround != 0 ? UpsGround : method.price : method.price }
+                                value={method.price}
                                 onChange={(e) =>
                                   handlePriceChange(method.id, e.target.value)
                                 }
@@ -364,7 +384,7 @@ const CheckoutPopup = ({
                               )}
                             </div>
                           ) : (
-                            `$`+method.id == 'ups_ground' ? UpsRates != 0 ? UpsRates : method.price : method.id == 'ups_next_day_air'  ? UpsGround != 0 ? UpsGround : method.price : method.price
+                             <Amount amount={method.price} />
                           )}
                           )
                         </label>

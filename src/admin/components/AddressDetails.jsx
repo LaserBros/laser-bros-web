@@ -176,7 +176,8 @@ const AddressDetails = ({
                 amount={
                   parseFloat(addressDetail?.total_amount || 0) +
                   parseFloat(addressDetail?.total_bend_price || 0) +
-                  parseFloat(TaxRatesVal?.tax_amount || 0)
+                  parseFloat(TaxRatesVal?.tax_amount || 0) + 
+                  parseFloat(addressDetail?.shipping_price || 0)
                 }
               />
             </p>

@@ -154,7 +154,7 @@ export default function QuotesDetailPay() {
       };
       const response = await fetchSelectedFinishes(data); // Your API call function
 
-      const fetchedOptions = response.data.map((item) => ({
+      const fetchedOptions = response.data.data.map((item) => ({
         value: item._id,
         label: item.finishing_desc,
       }));

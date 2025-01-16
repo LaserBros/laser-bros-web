@@ -123,7 +123,9 @@ const QuotesSidebar = ({
                 <Amount
                   amount={
                     parseFloat(amount || 0) +
-                    parseFloat(quoteDataVal.total_bend_price || 0)
+                    parseFloat(quoteDataVal.total_bend_price || 0) +
+                    parseFloat(TaxRatesVal.tax_amount || 0) +
+                    parseFloat(quoteDataVal.shipping_price || 0) 
                   }
                 />
               </span>

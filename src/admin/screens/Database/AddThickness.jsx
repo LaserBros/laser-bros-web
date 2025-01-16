@@ -22,7 +22,7 @@ import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
 import MultiSelect from "react-select";
 import {
-    addThickness,
+  addThickness,
   AdmingetMaterials,
   AdmingetThickness,
   discount,
@@ -57,7 +57,7 @@ const options = [
 ];
 const AddThickness = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
-
+const navigate = useNavigate();
   const handleChange2 = (selected) => {
     setSelectedOptions(selected);
   };
@@ -78,8 +78,16 @@ const AddThickness = () => {
     rfq_weight_shift: "",
     stocked: "yes",
     bending: "yes",
+    color_code: "#ff0000",
+    min_part_size: "",
+    max_part_size: "",
   });
-
+  const handleColorChange = (e) => {
+    setMaterial((prevState) => ({
+      ...prevState,
+      color_code: e.target.value,
+    }));
+  };
   const [errors, setErrors] = useState({
     material_id: "",
     material_thickness: "",
@@ -90,7 +98,9 @@ const AddThickness = () => {
     cutting_cost: "",
     material_markup: "",
     pierce_price: "",
-    finishing_options:"",
+    finishing_options: "",
+    min_part_size: "",
+    max_part_size: "",
   });
 
   const validate = () => {
@@ -99,7 +109,6 @@ const AddThickness = () => {
 
     console.log(material, "Ssdsdsdsdsd");
     if (!material.material_id) {
-      console.log("Dsdsdssd");
       errors.material_id = "Please select material";
       valid = false;
     }
@@ -135,11 +144,19 @@ const AddThickness = () => {
       errors.pierce_price = "Pierce price must be greater than 0";
       valid = false;
     }
-    if(material.finishing_options.length == 0) {
-        errors.finishing_options = "Please select finish";
+    if (material.finishing_options.length == 0) {
+      errors.finishing_options = "Please select finish";
       valid = false;
     }
 
+    if (!material.min_part_size || material.min_part_size <= 0) {
+      errors.min_part_size = "Min part size must be greater than 0";
+      valid = false;
+    }
+    if (!material.max_part_size || material.max_part_size <= 0) {
+      errors.max_part_size = "Max part size must be greater than 0";
+      valid = false;
+    }
     setErrors(errors);
     return valid;
   };
@@ -198,7 +215,9 @@ const AddThickness = () => {
         const res = await addThickness(material);
         toast.success("Material added successfully!");
         setLoadingBtn(false);
+        navigate('/admin/database');
       } catch (error) {
+        setLoadingBtn(false);
         toast.error("Something wents wrong!");
       }
 
@@ -332,6 +351,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.material_density}
                   onChange={(e) => handleChange(e, "material_density")}
                   className={`form-control ${
@@ -350,6 +370,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.price}
                   onChange={(e) => handleChange(e, "price")}
                   className={`form-control ${errors.price ? "is-invalid" : ""}`}
@@ -364,6 +385,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.cutting_speed}
                   onChange={(e) => handleChange(e, "cutting_speed")}
                   className={`form-control ${
@@ -380,6 +402,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.cutting_cost}
                   onChange={(e) => handleChange(e, "cutting_cost")}
                   className={`form-control ${
@@ -396,6 +419,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.material_markup}
                   onChange={(e) => handleChange(e, "material_markup")}
                   className={`form-control ${
@@ -414,6 +438,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.pierce_price}
                   onChange={(e) => handleChange(e, "pierce_price")}
                   className={`form-control ${
@@ -431,7 +456,9 @@ const AddThickness = () => {
                 <MultiSelect
                   isMulti
                   name="finishing_options"
-                  className={`form-control ${errors.finishing_options ? "is-invalid" : ""}`}
+                  className={`form-control ${
+                    errors.finishing_options ? "is-invalid" : ""
+                  }`}
                   options={getFinishes} // Ensure this contains the { value: 55, label: "F55" }
                   value={getFinishes.filter((option) =>
                     material.finishing_options.includes(option.value)
@@ -443,7 +470,9 @@ const AddThickness = () => {
                   placeholder="Select"
                 />
                 {errors.finishing_options && (
-                  <div className="invalid-feedback">{errors.finishing_options}</div>
+                  <div className="invalid-feedback">
+                    {errors.finishing_options}
+                  </div>
                 )}
                 {/* <select
                   className="form-control selectpicker"
@@ -478,6 +507,7 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.rfq_dimension_shift}
                   onChange={(e) => handleChange(e, "rfq_dimension_shift")}
                   className="form-control"
@@ -489,10 +519,57 @@ const AddThickness = () => {
               <td>
                 <input
                   type="number"
+                  min={1}
                   value={material.rfq_weight_shift}
                   onChange={(e) => handleChange(e, "rfq_weight_shift")}
                   className="form-control"
                 />
+              </td>
+            </tr>
+            <tr>
+              <td>Color Code</td>
+              <td>
+                <input
+                  type="color"
+                  value={material.color_code}
+                  onChange={handleColorChange}
+                  
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Min Part Size</td>
+              <td>
+              <input
+                  type="number"
+                  min={1}
+                  value={material.min_part_size}
+                  onChange={(e) => handleChange(e, "min_part_size")}
+                  className={`form-control ${
+                    errors.min_part_size ? "is-invalid" : ""
+                  }`}
+                />
+                 {errors.min_part_size && (
+                  <div className="invalid-feedback">{errors.min_part_size}</div>
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td>Max Part Size</td>
+              <td>
+              <input
+                  type="number"
+                  min={1}
+                  value={material.max_part_size}
+                  onChange={(e) => handleChange(e, "max_part_size")}
+                  
+                  className={`form-control ${
+                    errors.max_part_size ? "is-invalid" : ""
+                  }`}
+                />
+                 {errors.max_part_size && (
+                  <div className="invalid-feedback">{errors.max_part_size}</div>
+                )}
               </td>
             </tr>
           </tbody>

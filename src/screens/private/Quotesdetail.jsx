@@ -38,6 +38,8 @@ export default function QuotesDetail() {
   const [selectedNote, setSelectedNote] = useState(null);
   const [addLoading, setaddLoading] = useState(false);
   const [btnText, setbtnText] = useState(0);
+  const [btnTextChange, setbtnTextChange] = useState(false);
+  const [btnTextVal, setbtnTextVal] = useState(false);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
   const [indexPart, setindexPart] = useState();
@@ -53,6 +55,10 @@ export default function QuotesDetail() {
     { value: 0, label: "Millimeters" },
     { value: 1, label: "Inches" },
   ];
+  useEffect(() => {
+    // fetchOptions();
+  }, []);
+
   // const colors = [
   //   { label: "Gloss Red P.C.", value: "#E11F26" },
   //   { label: "Gloss Yellow P.C.", value: "#facc15" },
@@ -61,9 +67,6 @@ export default function QuotesDetail() {
   //   { label: "Gloss Orange P.C.", value: "#f37520" },
   // ];
   const [colors, setcolors] = useState([]);
-  useEffect(() => {
-    // fetchOptions();
-  }, []);
 
   const handleUpload = async (file, id, quantities, pdf_url) => {
     console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
@@ -101,7 +104,6 @@ export default function QuotesDetail() {
 
         // Update the total_bend_price in the object
         parsedQuoteList.total_bend_price = total * 5;
-        console.log("total * 15", total * 5, parsedQuoteList);
         localStorage.setItem(
           "setItemelementData",
           JSON.stringify(parsedQuoteList)
@@ -181,8 +183,7 @@ export default function QuotesDetail() {
       };
       const response = await fetchSelectedFinishes(data);
       console.log("fetchSelectedFinishes", response.data);
-      const res_status = response.data;
-      setbtnText(response.check_status);
+      const res_status = response.data.data;
       const fetchedOptions = res_status.map((item) => ({
         value: item._id,
         label: item.finishing_desc,
@@ -194,7 +195,8 @@ export default function QuotesDetail() {
             ? {
                 ...quote,
                 finishOptions: fetchedOptions,
-                binding_option: response.bending,
+                binding_option: response.data.bending,
+                finish_check_status: res_status.check_status,
               }
             : quote
         )
@@ -342,12 +344,7 @@ export default function QuotesDetail() {
 
           const setItemelementData = quoteList;
           const parsedQuoteList = quoteData;
-          console.log(
-            "matchingQuote -- setItemelementData",
-            setItemelementData,
-            "  == parsedQuoteList",
-            parsedQuoteList
-          );
+
           const updatedSetItemElementData = parsedQuoteList.map((item) => {
             if (item && item._id === id) {
               console.log("Dsdssdsdssdsdsdsdsdsddssdsd");
@@ -355,6 +352,7 @@ export default function QuotesDetail() {
                 ...item,
                 bend_count: 0,
                 bendupload_url: "",
+                check_status: 0,
               };
             }
             return item;
@@ -415,7 +413,43 @@ export default function QuotesDetail() {
   });
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
+  useEffect(() => {
+    if (Array.isArray(quoteData) && quoteData.length > 0) {
+      const fetchAllThicknessOptionsData = async () => {
+        setbtnText(0);
+        for (const quote of quoteData) {
+          if (quote._id) {
+            console.log(
+              "calling function here -0-0-0-",
+              quote.price_check_status
+            );
+            setbtnText(quote.check_status);
+            if (quote.bend_count >= 1) {
+              console.log("bend_count", quote.bend_count);
+              setbtnText(1);
+              return; // Exit the entire function
+            }
+            if (quote.price_check_status == 1) {
+              console.log("price_check_status", quote.price_check_status);
+              setbtnText(1);
+              return; // Exit the entire function
+            }
+            if (quote.finish_check_status) {
+              console.log("finish_check_status", quote.finish_check_status);
+              setbtnText(1);
+              return; // Exit the entire function
+            }
+            if (quote.check_status === 1) {
+              console.log("check_status is 1, exiting function.");
+              return; // Exit the entire function
+            }
+          }
+        }
+      };
 
+      fetchAllThicknessOptionsData();
+    }
+  }, [quoteData]);
   useEffect(() => {
     const handleStorageChange = () => {
       setQuoteData(localStorage.getItem("setItempartsDBdata"));
@@ -452,9 +486,21 @@ export default function QuotesDetail() {
     let quoteData = JSON.parse(localStorage.getItem("setItempartsDBdata"));
     const updatedQuoteData = quoteData.map((quote) =>
       quote._id === id
-        ? { ...quote, dimension_type: selectedOption.value, material_id : "",thickness_id:"",finishing_id:'',thicknessOptions:[],finishOptions:[],amount:0}
+        ? {
+            ...quote,
+            dimension_type: selectedOption.value,
+            material_id: "",
+            thickness_id: "",
+            finishing_id: "",
+            thicknessOptions: [],
+            finishOptions: [],
+            amount: 0,
+            quantity: 1,
+            discount:0
+          }
         : quote
     );
+    
     localStorage.setItem(
       "setItempartsDBdata",
       JSON.stringify(updatedQuoteData)
@@ -485,6 +531,14 @@ export default function QuotesDetail() {
       JSON.stringify(updatedLocalStorageData)
     );
     setquoteDataCon(true);
+    let formData = "";
+
+    formData = {
+      id: id,
+      quantity: 1,
+    };
+
+    await uploadQuote(formData);
   };
 
   const [quoteDataCon, setquoteDataCon] = useState(true);
@@ -525,11 +579,12 @@ export default function QuotesDetail() {
     };
 
     const response = await uploadQuote(formData);
+
     if (response && response.data) {
       const discount = response.data.updateQuantity.discount;
       const price = response.data.updateQuantity.amount;
-      //   console.log("response.data.discount;", response.data.data.updateData.discount);
-
+      const price_status = response.data.updatedPrice.check_status;
+      console.log("price_status updates", price_status);
       const finalQuoteData = quoteData.map((quote) =>
         quote._id === Id
           ? {
@@ -537,6 +592,7 @@ export default function QuotesDetail() {
               quantity: qty,
               discount: discount,
               amount: price,
+              price_check_status: price_status,
             }
           : quote
       );
@@ -586,6 +642,8 @@ export default function QuotesDetail() {
       console.log(response, "Sdsdsdsdds= response,", response.data);
       const discount = response.data.updateQuantity.discount;
       const price = response.data.updateQuantity.amount;
+      const price_status = response.data.updatedPrice.check_status;
+      console.log("price_status updates", price_status);
       //   console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = updatedQuoteData.map((quote) =>
@@ -593,7 +651,7 @@ export default function QuotesDetail() {
           ? {
               ...quote,
               discount: discount,
-
+              price_check_status: price_status,
               amount: price,
             }
           : quote
@@ -707,10 +765,6 @@ export default function QuotesDetail() {
           let updatedFields = {};
           const currentAmount = parseFloat(quote.amount) || 0;
           const newPrice = parseFloat(response.data.data.data.amount) || 0;
-          console.log(
-            response.data.data.updated_data.check_status,
-            "data.updated_data.check_status"
-          );
 
           if (type === "material") {
             updatedFields.material_id = selectedOption.value;
@@ -738,8 +792,10 @@ export default function QuotesDetail() {
 
       const setItempartsDBdata =
         JSON.parse(localStorage.getItem("setItempartsDBdata")) || [];
-
-      setbtnText(response.data.data.updated_data.check_status);
+      console.log(
+        "select drop down check status",
+        response.data.data.updated_data.check_status
+      );
       const updatedQuoteDataVal = updatedQuoteData.map((quote) =>
         quote._id === id
           ? {
@@ -893,7 +949,6 @@ export default function QuotesDetail() {
                           )
                         )}
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
-                        
                           <SelectDropdowns
                             options={getDimension}
                             value={quote.dimension_type}
@@ -1053,7 +1108,6 @@ export default function QuotesDetail() {
                     <Row>
                       <Col md={6}>
                         <span className="num-dim">
-                        
                           <DimensionsToggle
                             dimensions={quote.dimensions}
                             id={quote._id}
