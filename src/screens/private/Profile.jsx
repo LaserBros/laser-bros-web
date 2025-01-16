@@ -32,7 +32,33 @@ export default function MyProfile() {
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const formatPhoneNumber = (value) => {
+    // Remove all non-numeric characters
+    const numbers = value.replace(/\D/g, "");
 
+    // Format the phone number as xxx-xxx-xxxx
+    if (numbers.length <= 3) {
+      return numbers;
+    } else if (numbers.length <= 6) {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    } else {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+    }
+  };
+
+  const handleChange = (e) => {
+    const inputValue = e.target.value;
+    const formattedValue = formatPhoneNumber(inputValue);
+
+    setPhoneNo(formattedValue);
+
+    // Validate the phone number (optional)
+    if (formattedValue.length < 12) {
+      setErrors((prev) => ({ ...prev, phoneNo: "Phone number must be valid." }));
+    } else {
+      setErrors((prev) => ({ ...prev, phoneNo: null }));
+    }
+  };
   // Fetch user info when component mounts
   useEffect(() => {
     // Simulate an API call to fetch user info
@@ -72,8 +98,10 @@ export default function MyProfile() {
     if (!phoneNo) {
       newErrors.phoneNo = "Phone number is required.";
       valid = false;
-    } else if (!/^\d{6,15}$/.test(phoneNo)) {
-      newErrors.phoneNo = "Phone number must be 10 digits.";
+    } 
+    // Check if the phone number matches the pattern ###-###-####
+    else if (!/^\d{3}-\d{3}-\d{4}$/.test(phoneNo)) {
+      newErrors.phoneNo = "Phone number must be in the format 123-456-7890.";
       valid = false;
     }
 
@@ -236,12 +264,12 @@ export default function MyProfile() {
                         <Form.Group className="mb-3 form-group">
                           <Form.Label>Phone No</Form.Label>
                           <Form.Control
-                            type="tel"
-                            placeholder="Enter phone number"
-                            value={phoneNo}
-                            onChange={(e) => setPhoneNo(e.target.value)}
-                            isInvalid={!!errors.phoneNo}
-                          />
+        type="tel"
+        placeholder="Enter phone number"
+        value={phoneNo}
+        onChange={handleChange}
+        isInvalid={!!errors.phoneNo}
+      />
                           <Form.Control.Feedback type="invalid">
                             {errors.phoneNo}
                           </Form.Control.Feedback>
