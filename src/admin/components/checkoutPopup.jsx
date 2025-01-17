@@ -7,6 +7,7 @@ import ShippingRates from "../../components/ShippingRates";
 import Amount from "../../components/Amount";
 import {
   getEditQuotePay,
+  getShippingEstimatedCost,
   payment,
   shippingCost,
   updateShippingCost,
@@ -34,6 +35,7 @@ const CheckoutPopup = ({
   const [custom_rates , setCustomRates] = useState(0);
   const [UpsRates , setUpsRates] = useState(0);
   const [UpsGround , setUpsGround] = useState(0);
+  const [TaxRateVal , setTaxRateVal] = useState("");
   const existingShippingMethods = [
     {
       id: "local_pickup",
@@ -77,7 +79,7 @@ const CheckoutPopup = ({
 
     // Combine the transformed methods with existing ones
     const mergedMethods = [...existingShippingMethods];
-
+    setTaxRateVal(TaxRatesVal);
     // Update existingShippingMethods if IDs match or add new entries
     // transformedMethods.forEach((newMethod) => {
     //   const existingMethodIndex = mergedMethods.findIndex(
@@ -161,8 +163,44 @@ const CheckoutPopup = ({
     );
   };
   // Function to handle checkbox selection (only one at a time)
-  const handleCheckboxChange = (id) => {
+  const handleCheckboxChange =async (id) => {
+    
     setSelectedServiceCode(id);
+    const custom_rates = shippingMethods.find(
+      (method) => method.id === "custom_rates"
+    );
+    const custom_ratesPrice = custom_rates ? custom_rates.price : 0;
+
+    const ups_ground = shippingMethods.find(
+      (method) => method.id === "ups_ground"
+    );
+    const ups_groundPrice = ups_ground ? ups_ground.price : 0;
+
+    const ups_next_day_air = shippingMethods.find(
+      (method) => method.id === "ups_next_day_air"
+    );
+    const ups_next_day_airPrice = ups_next_day_air ? ups_next_day_air.price : 0;
+
+    const isNetTermSelected = selectedOptions.includes("NET Term");
+    const selectedMethod =
+      shippingMethods.find((method) => method.isChecked)?.id || null;
+    
+
+    try {
+      const data = {
+        id: addressDetail?._id,
+        pay_type: isNetTermSelected ? 1 : 0,
+        shipping_upsair_price: ups_next_day_airPrice,
+        shipping_upsground_price: ups_groundPrice,
+        custom_rates: custom_ratesPrice,
+        service_code: id,
+      };
+
+      const res = await getShippingEstimatedCost(data);
+      setTaxRateVal(res?.data?.tax);
+    } catch {
+
+    }
     setShippingMethods((prev) =>
       prev.map((method) => {
         const isSelected = method.id === id;
@@ -484,11 +522,11 @@ const CheckoutPopup = ({
               ) : (
                 ""
               )}
-               {TaxRatesVal != "" ? (
+               {TaxRateVal != "" ? (
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Tax ({TaxRatesVal?.tax_percentage}%)</span>
+                  <span className="quotesitem">Tax ({TaxRateVal?.tax_percentage}%)</span>
                   <span className="quotesitem quotesright">
-                    <Amount amount={parseFloat(TaxRatesVal?.tax_amount || 0)} />{" "}
+                    <Amount amount={parseFloat(TaxRateVal?.tax_amount || 0)} />{" "}
                   </span>
                 </div>
               ) : (
@@ -502,7 +540,7 @@ const CheckoutPopup = ({
                       parseFloat(addressDetail?.total_amount || 0) +
                       parseFloat(addressDetail?.total_bend_price || 0) +
                       parseFloat(rateVal == "" ? 0 : rateVal || 0) + 
-                      parseFloat(TaxRatesVal?.tax_amount || 0)
+                      parseFloat(TaxRateVal?.tax_amount || 0)
                     }
                   />
                 </span>

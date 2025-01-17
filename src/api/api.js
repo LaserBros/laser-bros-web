@@ -1067,6 +1067,20 @@ export const updateShippingCost = async (data) => {
   }
 };
 
+export const  getShippingEstimatedCost = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getShippingEstimatedCost
+    `,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const AdminaddNotes = async (id, text) => {
   try {
     const data = {
@@ -1335,6 +1349,17 @@ export const AdminupdateQuantity = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/updateQuantity`, data);
     // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const deleteThicknessDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/deleteThicknessDetails`, data);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

@@ -20,17 +20,37 @@ import file from "../../assets/img/file1.jpg";
 import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
 import {
+  deleteThicknessDetails,
   discount,
   getFinishAdmin,
   getMaterialsAndThickness,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 const DataBase = () => {
   const [Finishes, setFinishes] = useState([]);
   const [Quantities, setQuantities] = useState([]);
   const [Materials, setMaterials] = useState([]);
   const [LoadData, setLoadData] = useState(false);
-
+const handleClose = () => setModalShow(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [title, setTitle] = useState("");
+  const [thickId, setThickId] = useState("");
+  const [loadingBtn,setloadingBtn] = useState(false);
+  const changeStatus = async () => {
+      setloadingBtn(true);
+      try {
+        const data = {
+          id:thickId
+        }
+        const res = await deleteThicknessDetails(data);
+        handleTabSelect("finishes");
+        setModalShow(false);
+        setloadingBtn(false);
+      } catch (error) {
+        
+      }
+  }
   const handleTabSelect = async (tabKey) => {
     setLoadData(true);
     console.log("tabKey", tabKey);
@@ -135,12 +155,26 @@ const DataBase = () => {
                             {data.thickness.map((item, increment) => (
                               <tr>
                                 <td>
+                                  <div className="d-flex gap-2">
                                   <Link
                                     className="btnedit"
                                     to={`/admin/database/edit-material/${item._id}`}
                                   >
                                     <Icon icon="tabler:edit" />
                                   </Link>
+                                  {/* <Link
+                                    className="btnedit"
+                                    onClick={() =>{
+                                      setTitle(
+                                        "Are you sure you want to delete this thickness?"
+                                      );
+                                      setThickId(item._id);
+                                      setModalShow(true);
+                                    }}
+                                  > 
+                                    <Icon icon="tabler:trash" />
+                                  </Link> */}
+                                  </div>
                                 </td>
                                 <td>
                                   {data.material_name} {data.material_grade}
@@ -300,6 +334,16 @@ const DataBase = () => {
           </Card>
         </Tab>
       </Tabs>
+      <ConfirmationModal
+        show={modalShow}
+        onHide={handleClose}
+        title={"Are you sure?"}
+        desc={title}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={changeStatus}
+        loading={loadingBtn}
+      />
     </React.Fragment>
   );
 };

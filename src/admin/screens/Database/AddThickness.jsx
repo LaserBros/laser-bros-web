@@ -351,7 +351,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.material_density}
                   onChange={(e) => handleChange(e, "material_density")}
                   className={`form-control ${
@@ -370,7 +369,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.price}
                   onChange={(e) => handleChange(e, "price")}
                   className={`form-control ${errors.price ? "is-invalid" : ""}`}
@@ -385,7 +383,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.cutting_speed}
                   onChange={(e) => handleChange(e, "cutting_speed")}
                   className={`form-control ${
@@ -402,7 +399,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.cutting_cost}
                   onChange={(e) => handleChange(e, "cutting_cost")}
                   className={`form-control ${
@@ -419,7 +415,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.material_markup}
                   onChange={(e) => handleChange(e, "material_markup")}
                   className={`form-control ${
@@ -438,7 +433,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.pierce_price}
                   onChange={(e) => handleChange(e, "pierce_price")}
                   className={`form-control ${
@@ -507,7 +501,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.rfq_dimension_shift}
                   onChange={(e) => handleChange(e, "rfq_dimension_shift")}
                   className="form-control"
@@ -519,7 +512,6 @@ const navigate = useNavigate();
               <td>
                 <input
                   type="number"
-                  min={1}
                   value={material.rfq_weight_shift}
                   onChange={(e) => handleChange(e, "rfq_weight_shift")}
                   className="form-control"
@@ -542,7 +534,6 @@ const navigate = useNavigate();
               <td>
               <input
                   type="number"
-                  min={1}
                   value={material.min_part_size}
                   onChange={(e) => handleChange(e, "min_part_size")}
                   className={`form-control ${
@@ -559,7 +550,6 @@ const navigate = useNavigate();
               <td>
               <input
                   type="number"
-                  min={1}
                   value={material.max_part_size}
                   onChange={(e) => handleChange(e, "max_part_size")}
                   
