@@ -16,19 +16,17 @@ const Footer = () => {
             </div>
             <div className="right-area">
               <div className="social-area">
-                <Link>
+                <a href="https://www.facebook.com/laserbrosusa" target="_blank">
                   <Icon icon="ri:facebook-fill" />{" "}
-                </Link>
-                <Link>
+                </a>
+                <a href="https://www.youtube.com/@laserbrosusa" target="_blank">
                   {" "}
                   <Icon icon="ri:youtube-fill" />{" "}
-                </Link>
-                <Link>
+                </a>
+                <a href="https://www.instagram.com/laser_bros_usa" target="_blank">
                   <Icon icon="ri:instagram-line" />{" "}
-                </Link>
-                <Link>
-                  <Icon icon="ri:tiktok-fill" />{" "}
-                </Link>
+                </a>
+                
               </div>
               <Link to="mailto:info@LaserBros.com" className="mailtext">
                 info@LaserBros.com
@@ -42,16 +40,16 @@ const Footer = () => {
           <Row>
             <Col md={6} lg={3} xl={3}>
               <div className="footer-column">
-                <h2 className="footer-heading">Help & Support</h2>
+                <h2 className="footer-heading">Contact Us</h2>
                 <ul className="help-support list-unstyled">
                   <li>
-                    <a href="#">909 E. Elm St. Suite 102 Graham, NC 27253</a>
+                    <a href="#"><b>Shop Location: </b>909 E. Elm St. Suite 102 Graham, NC 27253</a>
                   </li>
                   <li>
-                    <a href="telto:919-495-2902">919-495-2902</a>
+                    <a href="telto:919-495-2902"><b>Call or text: </b>919-495-2902</a>
                   </li>
                   <li>
-                    <a href="mailto:info@LaserBros.com">info@LaserBros.com</a>
+                    <a href="mailto:info@LaserBros.com"><b>Email: </b>info@LaserBros.com</a>
                   </li>
                 </ul>
               </div>
@@ -127,7 +125,7 @@ const Footer = () => {
       <div className="copyright-area text-center">
         <Container>
           <p>
-            © Copyright 2024 <b>Laser Bros.</b> All Rights Reserved.
+          © Copyright {new Date().getFullYear()} <b>Laser Bros.</b> All Rights Reserved.
           </p>
         </Container>
       </div>

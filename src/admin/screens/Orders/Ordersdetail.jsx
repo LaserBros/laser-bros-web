@@ -828,6 +828,37 @@ const OrdersDetail = () => {
       toast.error("Something wents wrong.");
     }
   };
+
+
+  const downloadFile = (url) => {
+    // Extract file name and extension from URL
+    const fileNameWithParams = url.split("/").pop(); // Get everything after the last "/"
+    const [fileName] = fileNameWithParams.split("?"); // Remove query parameters if present
+    const extension = fileName.split(".").pop(); // Get the file extension
+  
+    // Clean the file name (remove digits and unwanted patterns at the start of the name)
+    const cleanFileName = fileName
+      .replace(/^\d+-/, "") // Remove timestamp or numerical prefix (e.g., "1734240670591-")
+      .replace(/(\s*\(\d+\))?\.[^.]+$/, `.${extension}`); // Clean trailing patterns like "(5)" before the extension
+  
+    // Fetch and download the file
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = cleanFileName; // Set the final cleaned file name
+        link.click();
+        window.URL.revokeObjectURL(link.href); // Clean up
+      })
+      .catch((error) => console.error("Error downloading the file:", error));
+  };
+  
   return (
     <div id="pdf-content">
       <React.Fragment>
@@ -1791,11 +1822,12 @@ const OrdersDetail = () => {
                         {wo.bend_count > 0 ? (
                           <div>
                             {wo.bendupload_url.map((url, index) => (
-                              <a
-                                href={url}
-                                download="filename.pdf"
-                                style={{ paddingLeft: "9px" }}
-                              >
+                                <Link
+                                                                     // href={`${url}`}
+                                                                     // target="_blank"
+                                                                     onClick={() => downloadFile(url)}
+                                                                     style={{ paddingRight: "5px" }}
+                                                                   >
                                 <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
                                   <Image
                                     src={attachment}
@@ -1804,7 +1836,7 @@ const OrdersDetail = () => {
                                   />
                                   <span>Attachment {String(index + 1)}</span>
                                 </div>
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         ) : (

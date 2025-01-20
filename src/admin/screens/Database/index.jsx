@@ -20,6 +20,7 @@ import file from "../../assets/img/file1.jpg";
 import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
 import {
+  deleteMaterialDetails,
   deleteThicknessDetails,
   discount,
   getFinishAdmin,
@@ -27,34 +28,54 @@ import {
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import ConfirmationModal from "../../../components/ConfirmationModal";
+import { toast } from "react-toastify";
 const DataBase = () => {
   const [Finishes, setFinishes] = useState([]);
   const [Quantities, setQuantities] = useState([]);
   const [Materials, setMaterials] = useState([]);
   const [LoadData, setLoadData] = useState(false);
-const handleClose = () => setModalShow(false);
+  const handleClose = () => setModalShow(false);
   const [modalShow, setModalShow] = useState(false);
   const [title, setTitle] = useState("");
   const [thickId, setThickId] = useState("");
-  const [loadingBtn,setloadingBtn] = useState(false);
+  const [type, setType] = useState("");
+  const [loadingBtn, setloadingBtn] = useState(false);
   const changeStatus = async () => {
-      setloadingBtn(true);
+    setloadingBtn(true);
+    if (type == "thickness") {
       try {
         const data = {
-          id:thickId
-        }
+          id: thickId,
+        };
         const res = await deleteThicknessDetails(data);
-        handleTabSelect("finishes");
+        toast.success("Thickness deleted successfully!");
+        handleTabSelect("materials");
         setModalShow(false);
         setloadingBtn(false);
       } catch (error) {
-        
+        toast.error("Something wents wrong..");
       }
-  }
+    }
+    if (type == "material") {
+      try {
+        const data = {
+          id: thickId,
+        };
+        const res = await deleteMaterialDetails(data);
+        toast.success("Material deleted successfully!");
+        handleTabSelect("materials");
+        setModalShow(false);
+        setloadingBtn(false);
+      } catch (error) {
+        toast.error("Something wents wrong..");
+      }
+    }
+  };
   const handleTabSelect = async (tabKey) => {
     setLoadData(true);
     console.log("tabKey", tabKey);
     if (tabKey == "finishes") {
+      // setFinishes([]);
       const res = await getFinishAdmin();
       setFinishes(res.data);
       setLoadData(false);
@@ -104,7 +125,21 @@ const handleClose = () => setModalShow(false);
               {Materials.map((data, index) => (
                 <Accordion.Item eventKey={index} className="mb-3">
                   <Accordion.Header>
-                    {data.material_name} {data.material_grade}
+                    {data.material_name} {data.material_grade}{" "}
+                    <Link
+                      className="btnedit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTitle(
+                          "Are you sure you want to delete this material?"
+                        );
+                        setThickId(data.material_id);
+                        setType("material");
+                        setModalShow(true);
+                      }}
+                    >
+                      <Icon icon="tabler:trash" />
+                    </Link>
                   </Accordion.Header>
                   <Accordion.Body>
                     <Card>
@@ -112,7 +147,7 @@ const handleClose = () => setModalShow(false);
                         <Table className="tablecustom" responsive>
                           <thead>
                             <tr>
-                            <th>Edit</th>
+                              <th>Edit</th>
                               <th style={{ minWidth: 150 }}>Grade</th>
                               <th>Thickness</th>
                               <th>Stocked?</th>
@@ -148,7 +183,6 @@ const handleClose = () => setModalShow(false);
                               <th style={{ minWidth: 150 }}>
                                 RFQ Weight Shift
                               </th>
-                              
                             </tr>
                           </thead>
                           <tbody>
@@ -156,24 +190,25 @@ const handleClose = () => setModalShow(false);
                               <tr>
                                 <td>
                                   <div className="d-flex gap-2">
-                                  <Link
-                                    className="btnedit"
-                                    to={`/admin/database/edit-material/${item._id}`}
-                                  >
-                                    <Icon icon="tabler:edit" />
-                                  </Link>
-                                  {/* <Link
-                                    className="btnedit"
-                                    onClick={() =>{
-                                      setTitle(
-                                        "Are you sure you want to delete this thickness?"
-                                      );
-                                      setThickId(item._id);
-                                      setModalShow(true);
-                                    }}
-                                  > 
-                                    <Icon icon="tabler:trash" />
-                                  </Link> */}
+                                    <Link
+                                      className="btnedit"
+                                      to={`/admin/database/edit-material/${item._id}`}
+                                    >
+                                      <Icon icon="tabler:edit" />
+                                    </Link>
+                                    <Link
+                                      className="btnedit"
+                                      onClick={() => {
+                                        setTitle(
+                                          "Are you sure you want to delete this thickness?"
+                                        );
+                                        setThickId(item._id);
+                                        setType("thickness");
+                                        setModalShow(true);
+                                      }}
+                                    >
+                                      <Icon icon="tabler:trash" />
+                                    </Link>
                                   </div>
                                 </td>
                                 <td>
@@ -197,7 +232,6 @@ const handleClose = () => setModalShow(false);
                                 <td>{item.estimated_lead_time}</td>
                                 <td>{item.rfq_dimension_shift}</td>
                                 <td>{item.rfq_weight_shift}</td>
-                                
                               </tr>
                             ))}
                           </tbody>
@@ -208,8 +242,19 @@ const handleClose = () => setModalShow(false);
                 </Accordion.Item>
               ))}
               <div>
-              <Link to={'/admin/database/add-material'} className=" gap-2 btn btn-primary d-inline-flex align-items-center justify-content-center">Add Material</Link>
-              <Link style={{marginLeft:'15px'}} to={'/admin/database/add-thickness'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Thickness</Link>
+                <Link
+                  to={"/admin/database/add-material"}
+                  className=" gap-2 btn btn-primary d-inline-flex align-items-center justify-content-center"
+                >
+                  Add Material
+                </Link>
+                <Link
+                  style={{ marginLeft: "15px" }}
+                  to={"/admin/database/add-thickness"}
+                  className="btn btn-primary d-inline-flex align-items-center justify-content-center"
+                >
+                  Add Thickness
+                </Link>
               </div>
             </Accordion>
           )}
@@ -220,14 +265,13 @@ const handleClose = () => setModalShow(false);
               <Table className="tablecustom" responsive>
                 <thead>
                   <tr>
-                  <th>Action</th>
+                    <th>Action</th>
                     <th>Finishing Code</th>
                     <th>Finishing Description</th>
                     <th>Minimum Size</th>
                     <th>Maximum Size</th>
                     <th>Notes</th>
                     <th>Price Per Part</th>
-                   
                   </tr>
                 </thead>
                 <tbody>
@@ -262,19 +306,23 @@ const handleClose = () => setModalShow(false);
                         <td>
                           <Amount amount={item.price} />
                         </td>
-                        
+
                         <td>F{item?.finishing_code}</td>
                         <td>{item.finishing_desc}</td>
                         <td>{item.minimum_size}</td>
                         <td>{item.maximum_size}</td>
                         <td>{item.notes_text}</td>
-                        
                       </tr>
                     ))
                   )}
                 </tbody>
               </Table>
-              <Link to={'/admin/database/add-finish'}  className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Finish</Link>
+              <Link
+                to={"/admin/database/add-finish"}
+                className="btn btn-primary d-inline-flex align-items-center justify-content-center"
+              >
+                Add Finish
+              </Link>
             </Card.Body>
           </Card>
         </Tab>
@@ -284,10 +332,9 @@ const handleClose = () => setModalShow(false);
               <Table className="tablecustom" responsive>
                 <thead>
                   <tr>
-                  <th>Action</th>
+                    <th>Action</th>
                     <th>Part Quantity</th>
                     <th>% discount Applied</th>
-                   
                   </tr>
                 </thead>
                 <tbody>
@@ -306,7 +353,7 @@ const handleClose = () => setModalShow(false);
                   ) : (
                     Quantities.map((item, index) => (
                       <tr>
-                         <td>
+                        <td>
                           <div className="d-inline-flex align-items-center gap-1">
                             <Link
                               className="btnedit"
@@ -321,16 +368,18 @@ const handleClose = () => setModalShow(false);
                         </td>
                         <td>{item?.quantity}</td>
                         <td>{item.discount}%</td>
-
-                       
                       </tr>
                     ))
                   )}
                 </tbody>
               </Table>
-              <Link to={'/admin/database/add-quantity'} className="btn btn-primary d-inline-flex align-items-center justify-content-center">Add Quantity</Link>
+              <Link
+                to={"/admin/database/add-quantity"}
+                className="btn btn-primary d-inline-flex align-items-center justify-content-center"
+              >
+                Add Quantity
+              </Link>
             </Card.Body>
-           
           </Card>
         </Tab>
       </Tabs>

@@ -8,6 +8,7 @@ import serviceimg1 from "../../assets/img/services-img-1.webp";
 import serviceimg2 from "../../assets/img/services-img-2.webp";
 import img1 from "../../assets/img/img1.jpg";
 import img2 from "../../assets/img/img2.jpg";
+import img2_data from "../../assets/img/img2_data.png";
 import icon1 from "../../assets/img/icon-1.svg";
 import icon2 from "../../assets/img/icon-2.svg";
 import icon3 from "../../assets/img/icon-3.svg";
@@ -129,12 +130,12 @@ export default function Home() {
               We want to be a means to that innovation, a resource to remove
               limitations around what can be built.
             </p>
-            <FileUpload
+            {/* <FileUpload
               accept=".dxf"
               // label="Upload Your STEP File"
               instructions="We accept DXF files for instant quotes"
               onFileDrop={handleFileDrop}
-            />
+            /> */}
           </div>
         </Container>
       </section>
@@ -316,16 +317,16 @@ export default function Home() {
             </Col>
             <Col lg={6}>
               <div className="get-parts-img">
-                <img src={img2} className="img-fluid rounded-circle" alt="" />
+                <img src={img2_data} className="img-fluid rounded-circle" alt="" />
               </div>
             </Col>
           </Row>
         </Container>
       </section>
       <section className="our-testimonials position-relative">
-        <div className="testimonial-shape text-center">
+        {/* <div className="testimonial-shape text-center">
           <img src={shape5} className="img-fluid" alt="" />
-        </div>
+        </div> */}
         <Container>
           <div className="heading mb-5 text-center">
             <h2>Customer Reviews</h2>
