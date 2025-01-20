@@ -125,9 +125,9 @@ const DataBase = () => {
               {Materials.map((data, index) => (
                 <Accordion.Item eventKey={index} className="mb-3">
                   <Accordion.Header>
-                    {data.material_name} {data.material_grade}{" "}
+                   <div className="flex-grow-1"> {data.material_name} {data.material_grade}{" "}</div>
                     <Link
-                      className="btnedit"
+                      className="btntrash me-2"
                       onClick={(e) => {
                         e.stopPropagation();
                         setTitle(
