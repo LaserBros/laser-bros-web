@@ -22,7 +22,8 @@ export default function FAQ() {
 
                         <div className="resources-content mb-4" id="faq1">
 
-                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis. </p>
+                            <p>Here’s a list of our Frequently Asked Questions. </p>
+                            <p>If you don’t see an answer to your question please reach out to us!  </p>
                             <Form.Group className="mb-2 searchfaq">
                                 <div className=" position-relative">
                                     <Icon icon="flowbite:search-solid" />

@@ -19,6 +19,7 @@ import {
 import { toast } from "react-toastify";
 import Pagination from "../../components/Pagination";
 import OrderStatus from "../../../admin/components/OrderStatus";
+import getMaterialColor from "../../../admin/components/ColorCode";
 const CompleteOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,49 +71,7 @@ const CompleteOrders = () => {
       [id]: !prevState[id],
     }));
   };
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const [loadingQueue, setLoadingQueue] = useState(false);
   const moveQueue = () => {
     const checkedIds = Object.entries(checkedItems)
@@ -257,7 +216,7 @@ const CompleteOrders = () => {
                               <span
                                 className="badgestatus me-2"
                                 style={getMaterialColor(
-                                  row.material_name1 + " " + row.material_grade1
+                                  row.material_name1 + " " + row.material_grade1,row.color_code1
                                 )}
                               >
                                 {row.material_code1}
@@ -268,7 +227,7 @@ const CompleteOrders = () => {
                                   style={getMaterialColor(
                                     row.material_name2 +
                                       " " +
-                                      row.material_grade2
+                                      row.material_grade2,row.color_code2
                                   )}
                                 >
                                   {row.material_code2}

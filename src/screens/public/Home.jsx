@@ -1,19 +1,28 @@
 import React, { useCallback, useState } from "react";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Nav } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import shape1 from "../../assets/img/line-shape-1.svg";
 import shape5 from "../../assets/img/shape-5.svg";
 import serviceimg1 from "../../assets/img/services-img-1.webp";
 import serviceimg2 from "../../assets/img/services-img-2.webp";
-import img1 from "../../assets/img/img1.jpg";
-import img2 from "../../assets/img/img2.jpg";
+import eric from "../../assets/img/eric.png";
+import kyle_mac from "../../assets/img/kyle_mac.png";
+import stevan from "../../assets/img/stevan.png";
+import kyle from "../../assets/img/kyle.png";
+import tim from "../../assets/img/tim.png";
+import dustin_doss from "../../assets/img/dustin_doss.png";
+import dustin from "../../assets/img/dustin.png";
+import paul from "../../assets/img/paul.png";
+import kristi from "../../assets/img/kristi.png";
+
 import img2_data from "../../assets/img/img2_data.png";
 import icon1 from "../../assets/img/icon-1.svg";
 import icon2 from "../../assets/img/icon-2.svg";
 import icon3 from "../../assets/img/icon-3.svg";
 import quote from "../../assets/img/quote.svg";
-import frame from "../../assets/img/frame1.jpg";
+import frame1 from "../../assets/img/frame1.jpg";
+import frame from "../../assets/img/Main-Page.mp4";
 import user1 from "../../assets/img/user-1.jpg";
 import user2 from "../../assets/img/user-2.jpg";
 import dots from "../../assets/img/dots.svg";
@@ -32,7 +41,10 @@ export default function Home() {
     console.log("Files dropped:", acceptedFiles);
     // Add any additional logic for handling the files
   };
-
+  const handleRemove = () => {
+    localStorage.removeItem("setItemelementData");
+    localStorage.removeItem("setItempartsDBdata");
+  };
   const services = [
     {
       id: 1,
@@ -205,10 +217,22 @@ export default function Home() {
             <Col lg={6}>
               <div className="get-quote-img">
                 <div className="portal-inner">
-                  <div className="top-portal">
+                  {/* <div className="top-portal">
                     <img src={dots} className="img-fluid" alt="" />
-                  </div>
-                  <img src={frame} className="img-fluid bottom-img" alt="" />
+                  </div> */}
+                  {/* <img src={frame1} className="img-fluid bottom-img" alt="" /> */}
+                  <video
+                    src={frame}
+                    autoPlay
+                    controls
+                    muted
+                    loop
+                    style={{ maxWidth: "100%", height: "auto" }}
+                    width="100%"
+                    height="auto"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </div>
             </Col>
@@ -317,7 +341,11 @@ export default function Home() {
             </Col>
             <Col lg={6}>
               <div className="get-parts-img">
-                <img src={img2_data} className="img-fluid rounded-circle" alt="" />
+                <img
+                  src={img2_data}
+                  className="img-fluid rounded-circle"
+                  alt=""
+                />
               </div>
             </Col>
           </Row>
@@ -335,12 +363,11 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={user1}
+                  src={eric}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />
-                <h3>Alberta Infantio</h3>
-                <p>April 6, 2024</p>
+                <h3>Kristi Moore</h3>
                 <div className="testimonial-rating">
                   <Icon icon="ic:round-star" />
                   <Icon icon="ic:round-star" />
@@ -351,9 +378,9 @@ export default function Home() {
               </div>
               <div className="testimonials-content">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam,
+                  We had an idea and reached out to Cort. Not only was he able
+                  to make our idea reality, his customer service, knowledge and
+                  willingness to help, allowed us to create a superior product.
                 </p>
               </div>
               <span className="testimonial-quote">
@@ -363,12 +390,11 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={user1}
+                  src={paul}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />
-                <h3>Steve James</h3>
-                <p>April 6, 2024</p>
+                <h3>Paul Larosa</h3>
                 <div className="testimonial-rating">
                   <Icon icon="ic:round-star" />
                   <Icon icon="ic:round-star" />
@@ -379,9 +405,9 @@ export default function Home() {
               </div>
               <div className="testimonials-content">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam,
+                  Great company to work with ! Answers your question very
+                  quickly and will work with you on making your design and
+                  reality. 10/10 recommend them to everyone
                 </p>
               </div>
               <span className="testimonial-quote">
@@ -391,12 +417,11 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={user2}
+                  src={dustin}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />
-                <h3>Donald Jones</h3>
-                <p>April 6, 2024</p>
+                <h3>Dustin H</h3>
                 <div className="testimonial-rating">
                   <Icon icon="ic:round-star" />
                   <Icon icon="ic:round-star" />
@@ -407,9 +432,8 @@ export default function Home() {
               </div>
               <div className="testimonials-content">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam,
+                  Great customer service and fast turn around. Could not ask for
+                  more! A++
                 </p>
               </div>
               <span className="testimonial-quote">
@@ -419,12 +443,11 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={user1}
+                  src={dustin_doss}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />
-                <h3>Alberta Infantio</h3>
-                <p>April 6, 2024</p>
+                <h3>Dustin Doss</h3>
                 <div className="testimonial-rating">
                   <Icon icon="ic:round-star" />
                   <Icon icon="ic:round-star" />
@@ -435,9 +458,8 @@ export default function Home() {
               </div>
               <div className="testimonials-content">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam,
+                  Nice setup here! Great products, customer service and
+                  competitive prices! Lots of metal in stock
                 </p>
               </div>
               <span className="testimonial-quote">
@@ -447,12 +469,11 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={user1}
+                  src={tim}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />
-                <h3>Steve James</h3>
-                <p>April 6, 2024</p>
+                <h3>Tim Meschke</h3>
                 <div className="testimonial-rating">
                   <Icon icon="ic:round-star" />
                   <Icon icon="ic:round-star" />
@@ -463,9 +484,9 @@ export default function Home() {
               </div>
               <div className="testimonials-content">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam,
+                  Laser Bros does fantastic work. They’re parts are high
+                  quality, well priced, and have quick turnaround. Highly
+                  recommended for laser cutting service.
                 </p>
               </div>
               <span className="testimonial-quote">
@@ -475,12 +496,11 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={user2}
+                  src={kyle}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />
-                <h3>Donald Jones</h3>
-                <p>April 6, 2024</p>
+                <h3>Kyle Mahon</h3>
                 <div className="testimonial-rating">
                   <Icon icon="ic:round-star" />
                   <Icon icon="ic:round-star" />
@@ -491,9 +511,99 @@ export default function Home() {
               </div>
               <div className="testimonials-content">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam,
+                  Fantastic company to do business with! Cort responds to any
+                  inquiry faster than anyone I have ever done business with, and
+                  is always willing to offer advise on how to improve a file, or
+                  will recommend small changes to make the parts we order easier
+                  to fabricate. If you've used an online service before to have
+                  laser cutting, you should give laser bros the opportunity to
+                  win your business. Just one order with them, and you will
+                  never want to use anyone else! Thanks for everything Cort!
+                </p>
+              </div>
+              <span className="testimonial-quote">
+                <img src={quote} className="img-fluid mx-auto" alt="" />
+              </span>
+            </div>
+            <div className="testimonials-grid">
+              <div className="userinfo">
+                <img
+                  src={stevan}
+                  className="rounded-circle img-fluid mx-auto"
+                  alt=""
+                />
+                <h3>Steven Carlin</h3>
+                <div className="testimonial-rating">
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                </div>
+              </div>
+              <div className="testimonials-content">
+                <p>
+                  Quick turnaround and excellent customer service. If you need
+                  the right parts made fast, these are the guys to use.
+                </p>
+              </div>
+              <span className="testimonial-quote">
+                <img src={quote} className="img-fluid mx-auto" alt="" />
+              </span>
+            </div>
+            <div className="testimonials-grid">
+              <div className="userinfo">
+                <img
+                  src={kyle_mac}
+                  className="rounded-circle img-fluid mx-auto"
+                  alt=""
+                />
+                <h3>Kyle Malcolm</h3>
+                <div className="testimonial-rating">
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                </div>
+              </div>
+              <div className="testimonials-content">
+                <p>
+                  Laser Bros is all around great to work with. They are able to
+                  produce my orders in just a few days and their prices are very
+                  reasonable even when I'm placing relatively small orders. Cort
+                  is always very responsive and willing to work with me to make
+                  even the smallest adjustments so I get exactly the product I
+                  am looking for. I would definitely recommend Laser Bros to
+                  anyone who needs laser cutting services.
+                </p>
+              </div>
+              <span className="testimonial-quote">
+                <img src={quote} className="img-fluid mx-auto" alt="" />
+              </span>
+            </div>
+            <div className="testimonials-grid">
+              <div className="userinfo">
+                <img
+                  src={eric}
+                  className="rounded-circle img-fluid mx-auto"
+                  alt=""
+                />
+                <h3>Eric J.</h3>
+                <div className="testimonial-rating">
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                  <Icon icon="ic:round-star" />
+                </div>
+              </div>
+              <div className="testimonials-content">
+                <p>
+                  The work that Cort and his crew put out is second to none. The
+                  attention to detail and excellent customer service will keep
+                  me coming back. I drive over 3 hours just to get parts because
+                  they are that good.
                 </p>
               </div>
               <span className="testimonial-quote">
@@ -504,6 +614,7 @@ export default function Home() {
         </Container>
       </section>
       <CTA />
+     
     </React.Fragment>
   );
 }

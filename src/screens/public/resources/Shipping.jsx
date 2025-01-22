@@ -7,6 +7,8 @@ import {
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 import Map from "../../../assets/img/map.jpg"
+import UPS from "../../../assets/img/UPS-Map.png"
+import LTL from "../../../assets/img/LTL.png"
 export default function Shipping() {
 
     return (
@@ -21,17 +23,23 @@ export default function Shipping() {
                         </div>
 
                         <div className="resources-content mb-4" id="faq1">
-                            <p>All of our orders ship via UPS ground or LTL freight. You can also select local pickup if you’d rather pick up your parts from our facility in Graham, NC! </p>
+                            <p>All of our orders ship via UPS ground or LTL freight. You can also select local pickup if you’d rather pick up your parts from our facility in Graham, NC.</p>
+                            <p><b>Our shop address for local pickup: </b></p>
+                            <p>909 E. Elm St. <br />
+                            Suite 102 <br />
+                            Graham, NC 27253</p>
                        </div>
                         <div className="resources-content mb-4" id="faq2">
                             <h2>Here’s a map of UPS ground delivery times</h2>
                             <div className="map-resources">
-                                <Image src={Map} className="img-fluid" alt=""/>
+                                <Image src={UPS} className="img-fluid" alt=""/>
                             </div>
                         </div>
                         <div className="resources-content mb-4" id="faq3">
                             <h2>Here’s a map of LTL shipping delivery times</h2>
-                          
+                            <div className="map-resources">
+                                <Image src={LTL} className="img-fluid" alt=""/>
+                            </div>
                         </div>
 
                         <div className="resources-pagination d-flex align-items-center justify-content-between">

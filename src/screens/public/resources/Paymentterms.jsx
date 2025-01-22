@@ -15,24 +15,30 @@ export default function PaymentTerms() {
                         <div className="resources-heading mb-4">
                             <span>General</span>
                             <h1>Payment Terms</h1>
+                            <p className="mt-3"><b>Payments:</b></p>
                         </div>
 
                         <div className="resources-content mb-4">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            <p>Laser Bros accepts payments by credit card or ACH Bank Transfer.</p>
+                            <p>For pre-qualified customers we offer NET-30 payment terms. <br/>
+                            In order to get approved for NET terms you will need to reach out to us by email: <a href="mailto:info@LaserBros.com">info@LaserBros.com</a><br/>
+                            We have the following requirements for NET terms:</p>
                        </div>
-                       <hr/>
-                        <div className="resources-content mb-4">
-                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
-                            <ul className="list-unstyled">
-                                <li><Icon icon="gg:check-o" /> COD Payment</li>
-                                <li><Icon icon="gg:check-o" /> Net 30 Payment</li>
-                                <li><Icon icon="gg:check-o" /> Bank Transfer</li>
-                                <li><Icon icon="gg:check-o" /> Check</li>
-                                <li><Icon icon="gg:check-o" /> ACH Bank Transfer</li>
+                       <ul className="resources-content">
+                        <li>Established business (2-years or older)</li>
+                        <li>Estimated monthly purchase amounts of $5,000 or more </li>
+                        <li>Have an established purchasing history with Laser Bros (5+ orders)</li>
 
-                            </ul>
+                       </ul>
+                       
+                        <div className="resources-heading mb-1 mt-5">
+                            <p><b>Sales Tax:</b></p>
                         </div>
-
+                        <div className="resources-content mb-4">
+                        <p className="mt-2">Sales tax will be collected on all orders. <br />
+                            if you are tax exempt please reach out to us with your tax exempt certificate. You will be required to
+                            provide an updated tax exempt certificate once a year. Please send them to <a href="mailto:info@LaserBros.com">info@LaserBros.com</a> </p>
+                        </div>
                         <div className="resources-pagination d-flex align-items-center justify-content-between">
                             <Link className="pagination-prev" to="/resources/shipping">
                                 <span><Icon icon="streamline:next" /></span>

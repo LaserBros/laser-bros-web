@@ -25,6 +25,7 @@ import OrderStatus from "../../components/OrderStatus";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
 import Amount from "../../../components/Amount";
+import getMaterialColor from "../../components/ColorCode";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,27 +40,7 @@ const Orders = () => {
   const [operation, setoperation] = useState("");
   const indexOfLastItem = currentPage * itemsPerPage;
 
-  const getMaterialColor = (materials) => {
-    switch (materials) {
-      case "Aluminium 5052":
-        return { backgroundColor: "rgb(79 140 202)", color: "#fff" };
-      case "Steel 1008":
-      case "Steel A36":
-        return { backgroundColor: "rgb(225 31 38)", color: "#fff" };
-      case "Aluminium 6061":
-        return { backgroundColor: "rgb(160 197 233)", color: "#fff" };
-      case "Stainless Steel 304 (2b)":
-      case "Stainless Steel 304 (#4)":
-      case "Stainless Steel 316 (2b)":
-        return { backgroundColor: "rgb(42 92 23)", color: "#fff" };
-      case "Brass 260":
-        return { backgroundColor: "rgb(255 186 22)", color: "#fff" };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return { backgroundColor: "rgb(115 103 240)", color: "#fff" };
-      default:
-        return {};
-    }
-  };
+  
 
   const handleFilterChange = async (e) => {
     const selectedValue = e.target.value;
@@ -497,7 +478,7 @@ const Orders = () => {
                                   <Button
                                     key={index}
                                     style={getMaterialColor(
-                                      `${item?.material_name} ${item?.material_grade}`
+                                      `${item?.material_name} ${item?.material_grade}`,item?.color_code
                                     )}
                                     className={`tagFilter_btn ${
                                       selecttag == item?.material_code

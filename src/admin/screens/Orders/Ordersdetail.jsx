@@ -50,6 +50,7 @@ import axiosAdminInstance from "../../axios/axiosadminInstanse";
 import AddressDetails from "../../components/AddressDetails";
 import ShippingStatus from "../../../components/ShippingStatus";
 import ModalOrderData from "../../components/OrderData";
+import getMaterialColor from "../../components/ColorCode";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -386,49 +387,7 @@ const OrdersDetail = () => {
     // setBoxes(updatedBoxes);
   };
 
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
 
   const [shippingInfo, setShippingInfo] = useState([
     { height: "", weight: "", width: "", length: "" },
@@ -1458,7 +1417,7 @@ const OrdersDetail = () => {
                         key={index}
                         className="badgestatus"
                         style={getMaterialColor(
-                          wo?.material_name + " " + wo?.material_grade
+                          wo?.material_name + " " + wo?.material_grade,wo?.color_code
                         )}
                       >
                         {wo?.material_code}
@@ -1635,7 +1594,7 @@ const OrdersDetail = () => {
                               <span
                                 className="custom-label-tag"
                                 style={getMaterialColor(
-                                  wo?.material_name + " " + wo?.material_grade
+                                  wo?.material_name + " " + wo?.material_grade,wo?.color_code
                                 )}
                               >
                                 Cutting
@@ -1665,7 +1624,7 @@ const OrdersDetail = () => {
                               className="custom-label-tag"
                               htmlFor={`${wo.material_code}${wo._id}`}
                               style={getMaterialColor(
-                                wo?.material_name + " " + wo?.material_grade
+                                wo?.material_name + " " + wo?.material_grade,wo?.color_code
                               )}
                             >
                               {wo.material_code}

@@ -9,14 +9,25 @@ import {
 import shape1 from "../../../assets/img/line-shape-1.svg";
 import { Icon } from '@iconify/react';
 import frame from "../../../assets/img/frame1.jpg";
+import video from "../../../assets/img/bending-vid.mp4";
 import dots from "../../../assets/img/dots.svg";
 import img1 from "../../../assets/img/service-img-2.jpg";
 import CTA from "../../../components/cta";
 import materialimg1 from "../../../assets/img/material-img-1.jpg";
 import materialimg2 from "../../../assets/img/material-img-2.jpg";
 import materialimg3 from "../../../assets/img/material-img-3.jpg";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 export default function Bending() {
+      const navigate = useNavigate();
+  
+      const handleRedirect = () => {
+        navigate("/resources/laser-cutting");
+      };
+      const handleQuote = () => {
+          localStorage.removeItem("setItemelementData");
+          localStorage.removeItem("setItempartsDBdata");
+          navigate("/quotes/quotes-detail");
+        };
     return (
         <React.Fragment>
             <section className="banner-services banner-home pb-0">
@@ -32,10 +43,10 @@ export default function Bending() {
                                     <small> We accept DXF files for instant quotes</small>
                                 </div> */}
                                 <div className="banner-btns text-start mt-4">
-                                    <Button className="btn btn-primary">
+                                    <Button className="btn btn-primary" onClick={handleQuote}>
                                      <Icon icon="icon-park-outline:add"/> Get an Instant Quote
                                     </Button>
-                                    <Button className="btn btn-outline-primary" variant={null}>
+                                    <Button className="btn btn-outline-primary" variant={null} onClick={handleRedirect}>
                                      <Icon icon="ph:books-light"/> Laser Cutting Guidelines
                                     </Button>
                                 </div>
@@ -55,8 +66,19 @@ export default function Bending() {
                         <Col lg={6}>
                             <div className="get-quote-img">
                                 <div className="portal-inner">
-                                    <div className="top-portal"><img src={dots} className="img-fluid" alt="" /></div>
-                                    <img src={frame} className="img-fluid bottom-img" alt="" />
+                                    {/* <div className="top-portal"><img src={dots} className="img-fluid" alt="" /></div> */}
+                                        <video
+                                                        src={video}
+                                                        autoPlay
+                                                        controls
+                                                        muted
+                                                        loop
+                                                        style={{ maxWidth: "100%", height: "auto" }}
+                                                        width="100%"
+                                                        height="auto"
+                                                      >
+                                                        Your browser does not support the video tag.
+                                                      </video>
                                 </div>
                             </div>
                         </Col>
@@ -119,11 +141,11 @@ export default function Bending() {
                   <h2>Alumnimum</h2>
                 </div>
                 <div className="material-grade fw-medium d-flex flex-wrap gap-2 mt-3">
-                  <span className="min-width-84">5052</span> <span>6061</span>
+                  <span className="min-width-84">5052</span>
                 </div>
                 <div className="material-grade material-grade2 d-flex flex-wrap gap-1 mt-2">
                   <span>0.063</span> <span>0.080</span> <span>0.090</span> <span>0.100</span>
-                  <span>0.125</span> <span>0.190</span> <span>0.25</span><span>0.375</span>
+                  <span>0.125</span> <span>0.190</span> <span>0.25</span>
                 </div>
               </Link>
             </Col>
@@ -137,14 +159,12 @@ export default function Bending() {
                   <h2>Steel</h2>
                 </div>
                 <div className="material-grade fw-medium d-flex flex-wrap gap-2 mt-3">
-                  <span className="min-width-84">1008</span> <span>A36</span>
+                  <span className="min-width-84">1008</span> 
                 </div>
                 <div className="material-grade material-grade2 d-flex flex-wrap gap-1 mt-2">
                   <span>0.036</span> <span>0.048</span> <span>0.063</span> <span>0.074</span>
                   <span>0.090</span> <span>0.100</span> <span>0.120</span>
-                  <span>0.188</span><span>0.25</span> <span>0.375</span>
-                  <span>0.50</span> <span>0.75</span>
-                  <span>1.00</span>
+                  <span>0.188</span><span>0.25</span> 
                 </div>
               </Link>
             </Col>
@@ -162,7 +182,7 @@ export default function Bending() {
                 </div>
                 <div className="material-grade material-grade2 d-flex flex-wrap gap-1 mt-2">
                   <span>0.036</span> <span>0.048</span> <span>0.063</span> <span>0.074</span>
-                  <span>0.090</span> <span>0.100</span> <span>0.120</span><span>0.188</span> <span>0.25</span> <span>0.375</span>
+                  <span>0.090</span> <span>0.100</span> <span>0.120</span><span>0.188</span> <span>0.25</span>
                 </div>
               </Link>
             </Col>

@@ -2192,6 +2192,21 @@ footer {
                     font-weight    : 600;
                 }
             }
+            li {
+                font-size  : 16px;
+                color      : $paragraph-color;
+                line-height: 1.75;
+
+                @media only screen and (max-width:1199.98px) {
+                    font-size: 14px;
+                }
+
+                a {
+                    color          : $primary-color;
+                    text-decoration: none;
+                    font-weight    : 600;
+                }
+            }
 
             .resources-alerts {
                 background   : rgba($primary-color, 0.07);

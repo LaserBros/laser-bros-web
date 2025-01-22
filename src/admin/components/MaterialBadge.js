@@ -1,28 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import getMaterialColor from "./ColorCode";
 
 const MaterialBadge = ({ materialDetails }) => {
-  const getMaterialColor = (materials) => {
-    switch (materials) {
-      case "Aluminium 5052":
-        return { backgroundColor: "rgb(79 140 202)" };
-      case "Steel 1008":
-      case "Steel A36":
-        return { backgroundColor: "rgb(225 31 38)" };
-      case "Aluminium 6061":
-        return { backgroundColor: "rgb(160 197 233)" };
-      case "Stainless Steel 304 (2b)":
-      case "Stainless Steel 304 (#4)":
-      case "Stainless Steel 316 (2b)":
-        return { backgroundColor: "rgb(42 92 23)" };
-      case "Brass 260":
-        return { backgroundColor: "rgb(255 186 22)" };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return { backgroundColor: "rgb(115 103 240)" };
-      default:
-        return {};
-    }
-  };
 
   const [showModal, setShowModal] = useState(false);
 
@@ -53,7 +33,7 @@ const MaterialBadge = ({ materialDetails }) => {
               key={`visible-${index}`} // Add unique key
               className="badgestatus me-2"
               style={getMaterialColor(
-                `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
+                `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`,item?.color_code
               )}
             >
               {item?.material_code ?? ""}
@@ -87,7 +67,7 @@ const MaterialBadge = ({ materialDetails }) => {
                   key={`modal-${index}`} // Add unique key
                   className="badgestatus-more mt-1 me-2"
                   style={getMaterialColor(
-                    `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`
+                    `${item?.material_name ?? ""} ${item?.material_grade ?? ""}`,item?.color_code
                   )}
                 >
                   {item?.material_code ?? ""}

@@ -131,7 +131,7 @@ const Sidebar = () => {
         }
       >
         <div className="sidebarlogo_div">
-          <Link to="/Dashboard">
+          <Link to="/admin/dashboard">
             <img src={logo} alt="" />
           </Link>
         </div>
