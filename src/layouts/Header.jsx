@@ -100,7 +100,7 @@ const Header = () => {
             </Nav>
             <Nav className="ms-auto align-items-lg-center right-menu">
               <ThemeToggle />
-              <Nav.Link
+              {/* <Nav.Link
                 as={Link}
                 className="ps-4 pe-2 header-search"
                 ref={searchRef}
@@ -111,7 +111,7 @@ const Header = () => {
                   onClick={handleExpand}
                 />{" "}
                 <Form.Control type="text" placeholder="Search" />
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link as={Link} to="/login" className="pe-4">
                 {" "}
                 <Icon icon="mingcute:user-4-fill" />
