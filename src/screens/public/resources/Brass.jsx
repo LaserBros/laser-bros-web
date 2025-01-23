@@ -18,13 +18,20 @@ export default function Brass() {
         { name: 'Stocked?', selector: row => row.stocked, sortable: false,},
         { name: 'Bending?', selector: row => row.bending, sortable: false,},
     ]
+    // const data = [
+    //     { id: 1, grade: 'Brass 260', thickness: '0.04', metricthickness: '1.02', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.02"', stocked: 'Yes(limited)', bending: 'No' },
+    //     { id: 2, grade: 'Brass 260', thickness: '0.063', metricthickness: '1.60', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.03"', stocked: 'No', bending: 'Yes' },
+    //     { id: 3, grade: 'Brass 260', thickness: '0.093', metricthickness: '2.36', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.045"', stocked: 'Yes(limited)', bending: 'Yes' },
+    //     { id: 4, grade: 'Brass 260', thickness: '0.125', metricthickness: '3.18', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.053"', stocked: 'No', bending: 'Yes(limited)' },
+    //     { id: 5, grade: 'Brass 260', thickness: '0.19', metricthickness: '4.83', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'No', bending: 'No' },
+    //  ];
     const data = [
-        { id: 1, grade: 'Brass 260', thickness: '0.04', metricthickness: '1.02', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.02"', stocked: 'Yes(limited)', bending: 'No' },
-        { id: 2, grade: 'Brass 260', thickness: '0.063', metricthickness: '1.60', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.03"', stocked: 'No', bending: 'Yes' },
-        { id: 3, grade: 'Brass 260', thickness: '0.093', metricthickness: '2.36', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.045"', stocked: 'Yes(limited)', bending: 'Yes' },
-        { id: 4, grade: 'Brass 260', thickness: '0.125', metricthickness: '3.18', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.053"', stocked: 'No', bending: 'Yes(limited)' },
-        { id: 5, grade: 'Brass 260', thickness: '0.19', metricthickness: '4.83', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'No', bending: 'No' },
-     ];
+        { id: 1, grade: 'Brass 260', thickness: '0.04', metricthickness: '1.02', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.02"', stocked: 'Yes (limited)', bending: 'No' },
+        { id: 2, grade: 'Brass 260', thickness: '0.063', metricthickness: '1.60', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.03"', stocked: 'No', bending: 'No' },
+        { id: 3, grade: 'Brass 260', thickness: '0.093', metricthickness: '2.36', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.045"', stocked: 'Yes (limited)', bending: 'No' },
+        { id: 4, grade: 'Brass 260', thickness: '0.125', metricthickness: '3.18', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.05"', stocked: 'No', bending: 'No' },
+        { id: 5, grade: 'Brass 260', thickness: '0.188', metricthickness: '4.78', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'No', bending: 'No' }
+    ];
     return (
         <React.Fragment>
             <Row>

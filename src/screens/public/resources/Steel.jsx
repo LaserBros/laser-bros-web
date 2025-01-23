@@ -30,20 +30,38 @@ export default function Steel() {
         { name: 'Bending?', selector: row => row.bending, sortable: false,},
     ]
 
+    // const data = [
+    //     { id: 1, grade: '1008 Steel', thickness: '0.036(20 gauge)', metricthickness: '0.91', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.015"', stocked: 'Yes', bending: 'Yes' },
+    //     { id: 2, grade: '1008 Steel', thickness: '0.048(18 gauge)', metricthickness: '1.22', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.02"', stocked: 'Yes', bending: 'Yes' },
+    //     { id: 3, grade: '1008 Steel', thickness: '0.063(16 gauge)', metricthickness: '1.60', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.025"', stocked: 'Yes', bending: 'Yes' },
+    //     { id: 4, grade: '1008 Steel', thickness: '0.074(14 gauge)', metricthickness: '1.88', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.03"', stocked: 'Yes', bending: 'Yes' },
+    //     { id: 5, grade: '1008 Steel', thickness: '0.090(13 gauge)', metricthickness: '2.29', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.04"', stocked: 'Yes', bending: 'Yes(limited)' },
+    //     { id: 6, grade: '1008 Steel', thickness: '0.100(12 gauge)', metricthickness: '2.54', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'Yes', bending: 'Yes' },
+    // ];
     const data = [
         { id: 1, grade: '1008 Steel', thickness: '0.036(20 gauge)', metricthickness: '0.91', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.015"', stocked: 'Yes', bending: 'Yes' },
         { id: 2, grade: '1008 Steel', thickness: '0.048(18 gauge)', metricthickness: '1.22', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.02"', stocked: 'Yes', bending: 'Yes' },
         { id: 3, grade: '1008 Steel', thickness: '0.063(16 gauge)', metricthickness: '1.60', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.025"', stocked: 'Yes', bending: 'Yes' },
         { id: 4, grade: '1008 Steel', thickness: '0.074(14 gauge)', metricthickness: '1.88', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.03"', stocked: 'Yes', bending: 'Yes' },
-        { id: 5, grade: '1008 Steel', thickness: '0.090(13 gauge)', metricthickness: '2.29', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.04"', stocked: 'Yes', bending: 'Yes(limited)' },
-        { id: 6, grade: '1008 Steel', thickness: '0.100(12 gauge)', metricthickness: '2.54', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'Yes', bending: 'Yes' },
+        { id: 5, grade: '1008 Steel', thickness: '0.090(13 gauge)', metricthickness: '2.29', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.03"', stocked: 'Yes', bending: 'Yes' },
+        { id: 6, grade: '1008 Steel', thickness: '0.100(12 gauge)', metricthickness: '2.54', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.04"', stocked: 'Yes', bending: 'Yes' },
+        { id: 7, grade: '1008 Steel', thickness: '0.120(11 gauge)', metricthickness: '3.05', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'Yes', bending: 'Yes' },
+        { id: 8, grade: '1008 Steel', thickness: '0.135(10 gauge)', metricthickness: '3.43', minpartsize: '0.25"x0.25"', maxpartsize: '48"x96"', minfeaturesize: '0.06"', stocked: 'Yes', bending: 'Yes' },
+        { id: 9, grade: '1008 Steel', thickness: '0.188(3/16)', metricthickness: '4.78', minpartsize: '0.50"x0.50"', maxpartsize: '48"x96"', minfeaturesize: '0.08"', stocked: 'Yes', bending: 'Yes' },
+        { id: 10, grade: '1008 Steel', thickness: '0.25(1/4)', metricthickness: '6.35', minpartsize: '0.50"x0.50"', maxpartsize: '48"x96"', minfeaturesize: '0.12"', stocked: 'Yes', bending: 'Yes (limited)' },
+        { id: 11, grade: '1008 Steel', thickness: '0.375(3/8)', metricthickness: '9.53', minpartsize: '0.50"x0.50"', maxpartsize: '48"x96"', minfeaturesize: '0.190"', stocked: 'Yes', bending: 'No' },
+        { id: 12, grade: '1008 Steel', thickness: '0.50(1/2)', metricthickness: '12.70', minpartsize: '0.625"x0.625"', maxpartsize: '48"x96"', minfeaturesize: '0.25"', stocked: 'Yes', bending: 'No' }
     ];
-    const data2 = [
-        { id: 1, grade: 'A36 Steel', thickness: '0.625(5/8)', metricthickness: '15.88', minpartsize: '2"x2"', maxpartsize: '48"x96"', minfeaturesize: '0.50"', stocked: 'No', bending: 'No' },
-        { id: 2, grade: 'A36 Steel', thickness: '0.75(3/4)', metricthickness: '19.05', minpartsize: '2"x2"', maxpartsize: '48"x96"', minfeaturesize: '0.50"', stocked: 'No', bending: 'No' },
-        { id: 3, grade: 'A36 Steel', thickness: '1.00(1)', metricthickness: '25.40', minpartsize: '2"x2"', maxpartsize: '48"x96"', minfeaturesize: '0.625"', stocked: 'No', bending: 'No' },
-   ];
-
+//     const data2 = [
+//         { id: 1, grade: 'A36 Steel', thickness: '0.625(5/8)', metricthickness: '15.88', minpartsize: '2"x2"', maxpartsize: '48"x96"', minfeaturesize: '0.50"', stocked: 'No', bending: 'No' },
+//         { id: 2, grade: 'A36 Steel', thickness: '0.75(3/4)', metricthickness: '19.05', minpartsize: '2"x2"', maxpartsize: '48"x96"', minfeaturesize: '0.50"', stocked: 'No', bending: 'No' },
+//         { id: 3, grade: 'A36 Steel', thickness: '1.00(1)', metricthickness: '25.40', minpartsize: '2"x2"', maxpartsize: '48"x96"', minfeaturesize: '0.625"', stocked: 'No', bending: 'No' },
+//    ];
+const data2 = [
+    { id: 1, grade: 'A36 Steel', thickness: '0.625 (5/8)', metricthickness: '15.88', minpartsize: '2" x 2"', maxpartsize: '48" x 96"', minfeaturesize: '0.50"', stocked: 'no', bending: 'no' },
+    { id: 2, grade: 'A36 Steel', thickness: '0.75 (3/4)', metricthickness: '19.05', minpartsize: '2" x 2"', maxpartsize: '48" x 96"', minfeaturesize: '0.50"', stocked: 'no', bending: 'no' },
+    { id: 3, grade: 'A36 Steel', thickness: '1.00 (1)', metricthickness: '25.40', minpartsize: '2" x 2"', maxpartsize: '48" x 96"', minfeaturesize: '0.625"', stocked: 'no', bending: 'no' }
+];
     return (
         <React.Fragment>
             <Row>
