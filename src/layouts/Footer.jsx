@@ -43,7 +43,7 @@ const Footer = () => {
                 <h2 className="footer-heading">Contact Us</h2>
                 <ul className="help-support list-unstyled">
                   <li>
-                    <a href="#"><b>Shop Location: </b>909 E. Elm St. Suite 102 Graham, NC 27253</a>
+                    <a href="#"><b>Shop Location:<br/> </b>909 E. Elm St.<br/> Suite 102<br/> Graham, NC 27253</a>
                   </li>
                   <li>
                     <a href="telto:919-495-2902"><b>Call or text: </b>919-495-2902</a>

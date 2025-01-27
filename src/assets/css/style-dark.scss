@@ -235,6 +235,7 @@ body {
                                 background-color: transparent;
                                 color: rgba($white-color, 0.75);               
                             }
+                            
                         }
                     }
                 }
@@ -292,6 +293,9 @@ body {
                             }
                         }
                         .bend-content{
+                            button {
+                                color: $white-color;
+                            }
                             .bend-title {
                                  h2 {
                                     color:$white-color
@@ -947,7 +951,9 @@ body {
                     p {
                         color: rgba($white-color, 0.7);
                     }
-
+                    b {
+                        color: rgba($white-color, 0.7);
+                    }
                     .quote-off {
                         border-color: rgba($white-color, 0.2);
                         background-color: rgba(1, 148, 60, 0.3);

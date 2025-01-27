@@ -792,7 +792,7 @@ footer {
     }
 
     padding-top           : 75px;
-    padding-bottom        : 75px;
+    // padding-bottom        : 75px;
     // background         : url('../img/bg.jpg');
     // background-size    : cover;
     // background-repeat  : no-repeat;
@@ -926,7 +926,7 @@ footer {
 }
 
 .our-services {
-    padding-top   : 240px;
+    padding-top   : 165px;
     padding-bottom: 240px;
     position      : relative;
     overflow      : hidden;
@@ -4394,6 +4394,7 @@ textarea.form-control {
                         font-size: 14px;     
                         width: auto;                   
                     }
+                   
                     .addbend_flex {
                         display: flex;
                         align-items: center;

@@ -266,7 +266,7 @@ const AddBend = ({
                           width={60}
                         />
                       )}
-                      <p
+                      <h2
                         style={{
                           marginTop: 5,
                           fontSize: "12px",
@@ -275,7 +275,7 @@ const AddBend = ({
                         }}
                       >
                         {getFileExtension(preview.file.name)}
-                      </p>
+                      </h2>
                       <button
                         onClick={() => removePreview(index, preview.previewUrl)}
                         style={{

@@ -131,7 +131,7 @@ export default function Home() {
                 <Icon icon="ph:handshake" /> Support When You Need It
               </li>
             </ul>
-            <p className="banner-sm-text">
+            <p >
               So what makes Laser Bros any different from these other on demand
               laser cutting services? Mission:{" "}
               <b>To Support the American Innovator.</b> This is why we do what
@@ -227,7 +227,7 @@ export default function Home() {
                     controls
                     muted
                     loop
-                    style={{ maxWidth: "100%", height: "auto" }}
+                    style={{ maxWidth: "100%", height: "auto",marginTop:"-22px",marginBottom:"-30px" }}
                     width="100%"
                     height="auto"
                   >
@@ -363,7 +363,7 @@ export default function Home() {
             <div className="testimonials-grid">
               <div className="userinfo">
                 <img
-                  src={eric}
+                  src={kristi}
                   className="rounded-circle img-fluid mx-auto"
                   alt=""
                 />

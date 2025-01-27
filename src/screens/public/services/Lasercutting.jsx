@@ -55,7 +55,7 @@ export default function Lasercutting() {
                     variant={null}
                     onClick={handleRedirect}
                   >
-                    <Icon icon="ph:books-light" /> Laser Cutting Guidelines
+                    <Icon icon="ph:books-light" /> Bending Guidelines
                   </Button>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export default function Lasercutting() {
                     controls
                     muted
                     loop
-                    style={{ maxWidth: "100%", height: "auto" }}
+                    style={{ maxWidth: "100%", height: "auto" ,marginTop:"-22px",marginBottom:"-30px"}}
                     width="100%"
                     height="auto"
                   >
