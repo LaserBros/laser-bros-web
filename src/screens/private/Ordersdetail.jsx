@@ -21,6 +21,80 @@ export default function OrdersDetail() {
   const [orders, setOrders] = useState([]);
   const [orderDetails, setOrdersDetail] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+  const handlePDF = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/generateOrderPDF`;
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Set as JSON
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          orderId: orderDetails?._id, // Convert to JSON string
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      // Create a link element to trigger the download
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "WO#" + orderDetails?.search_quote + ".pdf"; // Set the desired file name
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+    }
+
+    // await loadImagesAsBase64(); // Ensure all images are converted to base64
+    // const input = document.getElementById("pdf-content");
+
+    // // Use html2canvas to create a canvas from the content
+    // const canvas = await html2canvas(input, { useCORS: true });
+    // const imgData = canvas.toDataURL("image/png");
+
+    // const pdf = new jsPDF({
+    //   orientation: "portrait",
+    //   unit: "pt",
+    //   format: "a4",
+    // });
+
+    // const imgWidth = 595.28; // A4 page width in points
+    // const imgHeight = (canvas.height * imgWidth) / canvas.width; // Scale height according to width
+
+    // // Calculate how many pages are needed
+    // const pageHeight = pdf.internal.pageSize.height; // Height of the PDF page
+    // let heightLeft = imgHeight; // Remaining height for the image
+
+    // let position = 0;
+
+    // // Add image to PDF, creating new pages as needed
+    // while (heightLeft >= 0) {
+    //   pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    //   heightLeft -= pageHeight; // Decrease height left by one page height
+    //   position -= pageHeight; // Move position for next page
+    //   if (heightLeft >= 0) {
+    //     pdf.addPage(); // Add a new page if there's still more content
+    //   }
+    // }
+
+    // pdf.save("download.pdf");
+  };
+
   const fetchOrder = async () => {
     const data = {
       id: id,
@@ -124,11 +198,20 @@ export default function OrdersDetail() {
                     ))}
                   </select>
                 )} */}
+                {/* <Link
+                    to=""
+                    onClick={handlePDF}
+                    className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
+                    style={{ marginRight: "4px" }}
+                    disabled={loadingOrder}
+                  >
+                    Download Invoice
+                  </Link> */}
                 {orderDetails.status == 3 && ordersTrack?.length > 0 && (
                   <Link
                     to=""
                     onClick={handleShow}
-                    className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
+                    className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
                     style={{ marginRight: "4px" }}
                     disabled={loadingOrder}
                   >

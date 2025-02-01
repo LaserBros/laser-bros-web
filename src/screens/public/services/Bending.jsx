@@ -21,7 +21,7 @@ export default function Bending() {
       const navigate = useNavigate();
   
       const handleRedirect = () => {
-        navigate("/resources/laser-cutting");
+        navigate("/resources/bending");
       };
       const handleQuote = () => {
           localStorage.removeItem("setItemelementData");

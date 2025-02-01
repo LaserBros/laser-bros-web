@@ -636,7 +636,7 @@ const Orders = () => {
                             </td>
                             <td className="text-nowrap">
                               <MaterialBadge
-                                materialDetails={row.material_details}
+                                materialDetails={row.materialDetails}
                               />
                             </td>
                             <td className="text-nowrap">

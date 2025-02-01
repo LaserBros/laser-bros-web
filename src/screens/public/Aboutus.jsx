@@ -62,6 +62,7 @@ export default function Aboutus() {
   };
   return (
     <React.Fragment>
+      
       <section className="banner-about banner-home">
         <Container>
           <div className="banner-content">
@@ -73,6 +74,36 @@ export default function Aboutus() {
               </span>
             </h1>
           </div>
+        </Container>
+      </section>
+      <section className="our-mission">
+        <Container>
+          <Row className="align-items-center">
+            <Col lg={6}>
+              <div className="mission-img">
+                <img src={image11} className="img-fluid" alt="" />
+              </div>
+            </Col>
+            <Col lg={6}>
+              <div className="mission-content">
+                <div className="heading mb-3">
+                  <h2>Our Mission</h2>
+                </div>
+                <h4>To Support the American Innovator.</h4>
+                <p>
+                  This is why we do what we do. The American innovator can be
+                  anyone; an entrepreneur launching their product from their
+                  garage, a group of dudes building a project car, or a company
+                  building something that’ll get launched into space.{" "}
+                </p>
+                <p>
+                  They’re all innovating in their own way. We want to be a means
+                  to that innovation, a resource to remove limitations around
+                  what can be built.
+                </p>
+              </div>
+            </Col>
+          </Row>
         </Container>
       </section>
       <section className="our-history">
@@ -180,36 +211,7 @@ export default function Aboutus() {
           </Slider>
         </Container>
       </section>
-      <section className="our-mission">
-        <Container>
-          <Row className="align-items-center">
-            <Col lg={6}>
-              <div className="mission-img">
-                <img src={image11} className="img-fluid" alt="" />
-              </div>
-            </Col>
-            <Col lg={6}>
-              <div className="mission-content">
-                <div className="heading mb-3">
-                  <h2>Our Mission</h2>
-                </div>
-                <h4>To Support the American Innovator.</h4>
-                <p>
-                  This is why we do what we do. The American innovator can be
-                  anyone; an entrepreneur launching their product from their
-                  garage, a group of dudes building a project car, or a company
-                  building something that’ll get launched into space.{" "}
-                </p>
-                <p>
-                  They’re all innovating in their own way. We want to be a means
-                  to that innovation, a resource to remove limitations around
-                  what can be built.
-                </p>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+    
       <section className="core-values">
         <Container>
           <div className="heading mb-5 text-center">

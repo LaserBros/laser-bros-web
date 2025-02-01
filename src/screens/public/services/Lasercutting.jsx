@@ -13,7 +13,7 @@ export default function Lasercutting() {
   const navigate = useNavigate();
 
   const handleRedirect = () => {
-    navigate("/resources/laser-cutting");
+    navigate("/resources/bending");
   };
   const handleQuote = () => {
     localStorage.removeItem("setItemelementData");
@@ -32,7 +32,7 @@ export default function Lasercutting() {
                     Laser Cutting
                     <img src={shape1} className="img-fluid w-100" alt="" />
                   </span>{" "}
-                  Service.
+                  Guidelines.
                 </h1>
                 <p className="text-start">
                   We use two fiber lasers to handle our cutting, a 3kw and 12kw.

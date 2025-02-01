@@ -292,44 +292,53 @@ const OrdersDetail = () => {
     TrackOrder();
   }, []);
   const handleDownloadAll = async (data) => {
-    const urls = data;
     const zip = new JSZip();
-    const fileNameCount = {}; // Object to track file name occurrences
-
+    const fileNameCount = {}; // Track occurrences of file names
+  
     try {
-      const filePromises = urls.map(async (url) => {
-        const response = await fetch(url.dxf_url);
-        const blob = await response.blob();
-        let fileName = url.quote_name;
-
-        // Check if the fileName already exists in fileNameCount
-        if (fileNameCount[fileName]) {
-          fileNameCount[fileName] += 1;
-          const extensionIndex = fileName.lastIndexOf(".");
-          if (extensionIndex !== -1) {
-            // Append numeric suffix before file extension
-            const baseName = fileName.slice(0, extensionIndex);
-            const extension = fileName.slice(extensionIndex);
-            fileName = `${baseName}(${fileNameCount[fileName]})${extension}`;
+      const filePromises = data.flatMap((item) => {
+        
+        const urls = [item.dxf_url, ...(item.bendupload_url || [])];
+  
+        return urls.map(async (url) => {
+          if (!url) return; // Skip if URL is missing
+  
+          const response = await fetch(url);
+          const blob = await response.blob();
+  
+          let fileName = url.split("/").pop(); // Extract file name from URL
+          fileName = fileName.replace(/^\d+-/, "");
+          // Check for duplicate file names
+          if (fileNameCount[fileName]) {
+            fileNameCount[fileName] += 1;
+            const extensionIndex = fileName.lastIndexOf(".");
+            if (extensionIndex !== -1) {
+              const baseName = fileName.slice(0, extensionIndex);
+              const extension = fileName.slice(extensionIndex);
+              console.log("${fileNameCount[fileName]}",`${fileNameCount[fileName]}`);
+              fileName = `${baseName}(${fileNameCount[fileName]})${extension}`;
+            } else {
+              console.log("fileName",`${fileName}`);
+              fileName = `${fileName}(${fileNameCount[fileName]})`;
+            }
           } else {
-            // Append numeric suffix if no extension
-            fileName = `${fileName}(${fileNameCount[fileName]})`;
+            fileNameCount[fileName] = 1;
           }
-        } else {
-          fileNameCount[fileName] = 1;
-        }
-
-        zip.file(fileName, blob);
+  
+          zip.file(fileName, blob);
+        });
       });
-
+  
       await Promise.all(filePromises);
-
+  
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, "WO#" + order?.newUpdatedData[0]?.search_quote + ".zip");
     } catch (error) {
       console.error("Error downloading or zipping files:", error);
     }
   };
+  
+
 
   const calculateRefresh = (index) => {
     const box = boxes[index];

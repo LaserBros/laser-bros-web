@@ -14,37 +14,26 @@ export default function RefundPolicy() {
                     <div className="resources-body">
                         <div  id="refund1">
                         <div className="resources-heading mb-4">
-                            <span>General</span>
-                            <h1>Full Refund</h1>
+                            <h1>Refund Policy</h1>
                         </div>
 
                         <div className="resources-content mb-4">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. To get started with a refund please email <a href="mailto:info@LaserBros.com">info@LaserBros.com</a></p>
+                            <p>If you are not 100% satisfied with your parts please email: <a href="mailto:info@LaserBros.com">info@LaserBros.com</a> or Call: 919-495-2902 so we can work towards a solution! </p>
                        </div>
                        </div>
                         <div className="resources-content mb-4" id="refund2">
-                            <h2>Partial Refund</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum please don't hesitate to reach out to <a href="mailto:info@LaserBros.com">info@LaserBros.com</a></p>
+                            <h2>Cancel and Refund Order</h2>
+                            <p>For order that have been placed but not cut, processed, or shipped, we can offer a cancelation and full refund of the order. If you need to cancel and refund an order please email: <a href="mailto:info@LaserBros.com">info@LaserBros.com</a> or Call: 919-495-2902 (Please reference your order number)</p>
                         </div>
                         <div className="resources-content mb-4" id="refund3">
-                        <h2>Non-refundable</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <h2>Partial Refund (if applicable)</h2>
+                        <p>For the follow reasons we can offer a partial refund. We may request pictures of damage or imperfections prior to a refund. </p>
                        </div>
-                        <div className="resources-content mb-4" id="refund4">
-                        <h2>Returns</h2>
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                       </div>
-                        <div className="resources-pagination d-flex align-items-center justify-content-between">
-                            <Link className="pagination-prev" to="/resources/privacy-policy">
-                                <span><Icon icon="streamline:next" /></span>
-                                Privacy Policy
-                            </Link>
-                            <Link className="pagination-next" to="/resources/terms-service">
-                                <span><Icon icon="streamline:next" /></span>
-                                Terms Of Service
-                            </Link>
-                        </div>
+                        <ul className="resources-content">
+                            <li>Deep surface imperfections (on raw material)</li>
+                            <li>Damage from handling during shipping</li>
+                            <li>Parts processed on the wrong material grade/thickness</li>
+                        </ul>
                     </div>
                 </Col>
                 {/* <Col lg={12} xl="auto" className="d-none d-xl-block width-258">

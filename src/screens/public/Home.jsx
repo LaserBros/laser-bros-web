@@ -117,8 +117,8 @@ export default function Home() {
               Innovator
             </h1>
             <p>
-              On Demand Sheet Metal Services. Old-school customer service
-              combined with new-school technology.
+              On Demand Sheet Metal Services. <br/>
+              Old-school customer service combined with new-school technology.
             </p>
             <ul className="list-unstyled">
               <li>
@@ -132,8 +132,6 @@ export default function Home() {
               </li>
             </ul>
             <p >
-              So what makes Laser Bros any different from these other on demand
-              laser cutting services? Mission:{" "}
               <b>To Support the American Innovator.</b> This is why we do what
               we do. The American innovator can be anyone; an entrepreneur
               launching their product from their garage, a group of dudes

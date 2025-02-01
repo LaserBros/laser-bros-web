@@ -2140,8 +2140,16 @@ footer {
                 }
             }
         }
-
+     
         .resources-content {
+            
+            .table-less-format {
+                li {
+                        padding-left: 0px !important;
+                        padding-bottom: 0px !important;
+                    }
+            }
+           
             .map-resources {
                 text-align   : center;
                 padding      : 30px;
