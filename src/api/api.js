@@ -542,7 +542,7 @@ export const generateRfqPDF = async (data) => {
       `/users/generateRfqPDF`,
       data
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Something wents wrong.", error);
     throw error;
