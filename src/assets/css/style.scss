@@ -23,7 +23,16 @@ html,
 body {
     background-color: $white-color !important;
 }
-
+.img_data_collapse{
+    height: 440px;
+    width: 440px;
+}
+.mission_img_width {
+    height: 509px !important;
+    @media only screen and (max-width:1199.98px) {
+        height: 409px !important;
+    }
+}
 body {
     overflow-x: hidden;
 }

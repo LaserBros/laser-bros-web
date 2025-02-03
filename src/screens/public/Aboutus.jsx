@@ -16,7 +16,7 @@ import image7 from "../../assets/img/Early2024.jpg";
 import image8 from "../../assets/img/Future.jpg";
 import image9 from "../../assets/img/Late2023.jpg";
 import image10 from "../../assets/img/Mid2022.jpg";
-import image11 from "../../assets/img/Mission2.jpg";
+import image11 from "../../assets/img/Mission2.png";
 
 import img1 from "../../assets/img/img3.jpg";
 import { Icon } from "@iconify/react";
@@ -81,7 +81,7 @@ export default function Aboutus() {
           <Row className="align-items-center">
             <Col lg={6}>
               <div className="mission-img">
-                <img src={image11} className="img-fluid" alt="" />
+                <img src={image11} className="img-fluid mission_img_width" alt="" />
               </div>
             </Col>
             <Col lg={6}>

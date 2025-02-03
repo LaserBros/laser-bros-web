@@ -6,7 +6,9 @@ import pdfIcon from "../../assets/img/file.png";
 import Amount from "../../components/Amount";
 import { deleteBendQuoteImage } from "../../api/api";
 import { Link } from "react-router-dom";
-
+import pdf_icon from "../../assets/img/pdf_icon.png";
+import step_file_img from "../../assets/img/step_file.jpg";
+import png_file from "../../assets/img/png_file.png";
 const AddBend = ({
   show2,
   handleClose2,
@@ -225,74 +227,59 @@ const AddBend = ({
 
                 {/* Display file previews */}
                 {filePreviews?.map((preview, index) => {
-                  // Check if previewUrl is an array and contains any PDF URLs
-                  const isPdf =
-                    Array.isArray(preview.previewUrl) &&
-                    preview.previewUrl.some((url) =>
-                      url.toLowerCase().includes(".pdf")
-                    );
+  // Ensure preview.previewUrl is an array
+  const previewUrls = Array.isArray(preview.previewUrl) ? preview.previewUrl : [preview.previewUrl];
 
-                  console.log(
-                    "filePreviews",
-                    filePreviews,
-                    typeof preview.previewUrl
-                  );
+  const extension = preview.file?.name.split('.').pop()?.toLowerCase();
+  const isPdf = extension === "pdf";
+  const isStep = extension === "step";
+  const isPng = extension === "png";
 
-                  return (
-                    <div
-                      key={index}
-                      style={{
-                        position: "relative",
-                        display: "inline-block",
-                        marginRight: 10,
-                        width: "auto",
-                        height: "auto",
-                      }}
-                    >
-                      {isPdf ? (
-                        <Image
-                          src={pdfIcon}
-                          className="img-fluid"
-                          alt="Preview"
-                          height={60}
-                          width={60}
-                        />
-                      ) : (
-                        <Image
-                          src={pdfIcon}
-                          className="img-fluid"
-                          alt="Preview"
-                          height={60}
-                          width={60}
-                        />
-                      )}
-                      <h2
-                        style={{
-                          marginTop: 5,
-                          fontSize: "12px",
-                          wordBreak: "break-word",
-                          textAlign: "center",
-                        }}
-                      >
-                        {getFileExtension(preview.file.name)}
-                      </h2>
-                      <button
-                        onClick={() => removePreview(index, preview.previewUrl)}
-                        style={{
-                          position: "absolute",
-                          top: -13,
-                          right: -6,
-                          background: "transparent",
-                          border: "none",
-                          fontSize: "18px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  );
-                })}
+  return (
+    <div
+      key={index}
+      style={{
+        position: "relative",
+        display: "inline-block",
+        marginRight: 10,
+        width: "auto",
+        height: "auto",
+      }}
+    >
+      <Image
+        src={isPdf ? pdf_icon : isStep ? step_file_img : isPng ? png_file : pdfIcon}
+        className="img-fluid"
+        alt="Preview"
+        height={60}
+        width={60}
+      />
+      <h2
+        style={{
+          marginTop: 5,
+          fontSize: "12px",
+          wordBreak: "break-word",
+          textAlign: "center",
+        }}
+      >
+        {preview.file ? getFileExtension(preview.file.name) : "Unknown"}
+      </h2>
+      <button
+        onClick={() => removePreview(index, preview.previewUrl)}
+        style={{
+          position: "absolute",
+          top: -13,
+          right: -6,
+          background: "transparent",
+          border: "none",
+          fontSize: "18px",
+          cursor: "pointer",
+        }}
+      >
+        &times;
+      </button>
+    </div>
+  );
+})}
               </div>
             </div>
           </div>

@@ -5,6 +5,8 @@ import { Icon } from "@iconify/react";
 import file1 from "../../assets/img/file1.jpg";
 import {
   UsergetParticularOrderDetails,
+  generateOrderPDFUser,
+  generateRfqPDF,
   getOrders,
   getParticularOrderDetails,
   orderTrackingDetails,
@@ -24,75 +26,36 @@ export default function OrdersDetail() {
 
 
   const handlePDF = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/generateOrderPDF`;
-
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Set as JSON
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          orderId: orderDetails?._id, // Convert to JSON string
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to download PDF");
-      }
-
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-
-      // Create a link element to trigger the download
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = "WO#" + orderDetails?.search_quote + ".pdf"; // Set the desired file name
-      document.body.appendChild(link);
-      link.click();
-
-      // Cleanup
-      link.remove();
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Error downloading PDF:", error);
-    }
-
-    // await loadImagesAsBase64(); // Ensure all images are converted to base64
-    // const input = document.getElementById("pdf-content");
-
-    // // Use html2canvas to create a canvas from the content
-    // const canvas = await html2canvas(input, { useCORS: true });
-    // const imgData = canvas.toDataURL("image/png");
-
-    // const pdf = new jsPDF({
-    //   orientation: "portrait",
-    //   unit: "pt",
-    //   format: "a4",
-    // });
-
-    // const imgWidth = 595.28; // A4 page width in points
-    // const imgHeight = (canvas.height * imgWidth) / canvas.width; // Scale height according to width
-
-    // // Calculate how many pages are needed
-    // const pageHeight = pdf.internal.pageSize.height; // Height of the PDF page
-    // let heightLeft = imgHeight; // Remaining height for the image
-
-    // let position = 0;
-
-    // // Add image to PDF, creating new pages as needed
-    // while (heightLeft >= 0) {
-    //   pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    //   heightLeft -= pageHeight; // Decrease height left by one page height
-    //   position -= pageHeight; // Move position for next page
-    //   if (heightLeft >= 0) {
-    //     pdf.addPage(); // Add a new page if there's still more content
-    //   }
-    // }
-
-    // pdf.save("download.pdf");
+     try {
+          const data = {
+            orderId: orderDetails?._id
+          }
+          const response = await generateOrderPDFUser(data);
+          if (response.data && response.data.pdf_url) {
+            const pdfUrl = response.data.pdf_url;
+            const fileName = `WO#${orders[0]?.search_quote}.pdf`;
+        
+            // Fetch the PDF file as a blob
+            const pdfResponse = await fetch(pdfUrl);
+            const blob = await pdfResponse.blob();
+        
+            // Create a blob URL
+            const blobUrl = window.URL.createObjectURL(blob);
+        
+            // Create a link element and trigger download
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = fileName; // Custom filename
+            document.body.appendChild(link);
+            link.click();
+        
+            // Cleanup
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(blobUrl);
+          }
+        } catch (error) {
+          console.error("Error downloading PDF:", error);
+        }
   };
 
   const fetchOrder = async () => {
@@ -104,8 +67,6 @@ export default function OrdersDetail() {
       setShipping(res.data);
       setOrders(res.data.newUpdatedData);
       setOrdersDetail(res.data.orderedQuote);
-      console.log(orders, "Sdsdsdsddsddsdssddssd");
-      console.log("res", res.data);
       setLoading(false);
     } catch (error) {
       setOrders([]);
@@ -198,15 +159,14 @@ export default function OrdersDetail() {
                     ))}
                   </select>
                 )} */}
-                {/* <Link
+                <Link
                     to=""
                     onClick={handlePDF}
                     className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
                     style={{ marginRight: "4px" }}
-                    disabled={loadingOrder}
                   >
                     Download Invoice
-                  </Link> */}
+                  </Link>
                 {orderDetails.status == 3 && ordersTrack?.length > 0 && (
                   <Link
                     to=""
@@ -393,7 +353,8 @@ export default function OrdersDetail() {
                             amount={
                               parseFloat(orderDetails.total_amount || 0) -
                               parseFloat(Shipping.bendPrice || 0) -
-                              parseFloat(Shipping.shippingPrice || 0)
+                              parseFloat(Shipping.shippingPrice || 0) - 
+                              parseFloat(orderDetails.tax_amount || 0)
                             }
                           />
                         </span>

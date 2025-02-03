@@ -100,6 +100,18 @@ export const generateOrderPDF = async (data) => {
   }
 };
 
+export const generateOrderPDFAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/generateOrderPDF`, data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const deleteBendQuoteImage = async (data) => {
   try {
     const response = await axiosInstance.post(
@@ -503,6 +515,31 @@ export const orderTrackingDetails = async (data) => {
   try {
     const response = await axiosInstance.post(
       `/users/orderTrackingDetails`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const generateOrderPDFUser = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/generateOrderPDF`, data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const generateRfqPDF = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      `/users/generateRfqPDF`,
       data
     );
     return response.data;

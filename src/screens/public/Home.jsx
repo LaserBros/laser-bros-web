@@ -341,7 +341,7 @@ export default function Home() {
               <div className="get-parts-img">
                 <img
                   src={img2_data}
-                  className="img-fluid rounded-circle"
+                  className="img-fluid rounded-circle img_data_collapse"
                   alt=""
                 />
               </div>

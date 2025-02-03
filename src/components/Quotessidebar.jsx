@@ -31,6 +31,7 @@ const QuotesSidebar = ({
   quoteData,
   isPayble,
   loadId,
+  bendAmount
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
@@ -376,7 +377,7 @@ const QuotesSidebar = ({
             <div className="d-flex align-items-center justify-content-between mb-2">
               <span className="quotesitem">Services</span>
               <span className="quotesitem quotesright">
-                <Amount amount={quoteDataVal.total_bend_price} />{" "}
+                <Amount amount={bendAmount} />{" "}
               </span>
             </div>
 
@@ -403,7 +404,7 @@ const QuotesSidebar = ({
                     <Amount
                       amount={
                         parseFloat(amount || 0) +
-                        parseFloat(quoteDataVal.total_bend_price || 0)
+                        parseFloat(bendAmount || 0)
                       }
                     />
                   </span>
@@ -530,7 +531,7 @@ const QuotesSidebar = ({
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Services</span>
                   <span className="quotesitem quotesright">
-                    <Amount amount={quoteDataVal.total_bend_price} />{" "}
+                    <Amount amount={bendAmount} />{" "}
                   </span>
                 </div>
                 {rateVal != "" ? (
@@ -557,7 +558,7 @@ const QuotesSidebar = ({
                     <Amount
                       amount={
                         parseFloat(amount || 0) +
-                        parseFloat(quoteDataVal.total_bend_price || 0) +
+                        parseFloat(bendAmount || 0) +
                         parseFloat(
                           rateVal == "" ? 0 : quoteDataVal.shipping_price || 0
                         ) +
@@ -767,7 +768,7 @@ const QuotesSidebar = ({
                         <Amount
                           amount={
                             parseFloat(amount || 0) +
-                            parseFloat(quoteDataVal.total_bend_price || 0) +
+                            parseFloat(bendAmount || 0) +
                             parseFloat(
                               rateVal == ""
                                 ? 0
@@ -794,6 +795,7 @@ const QuotesSidebar = ({
       <PaymentDone show={modalShow} handleClose={handleClose} />
       {isPayble ? (
         <CheckOutPay
+        bendAmountPrice={bendAmount}
           show={modalShowPay}
           loadingPayId={loadingPayId}
           handleClose={handleClosePay}
@@ -803,6 +805,7 @@ const QuotesSidebar = ({
         />
       ) : (
         <CheckoutPopup
+          bendAmountPrice={bendAmount}
           loadingPayId={loadingPayId}
           show={modalShowPay}
           handleClose={handleClosePay}

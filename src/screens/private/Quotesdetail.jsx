@@ -127,6 +127,13 @@ export default function QuotesDetail() {
       return sum + (isNaN(amount) ? 0 : amount);
     }, 0);
   };
+  const getBendAmount = () => {
+    if (!Array.isArray(quoteData)) return 0;
+    return quoteData.reduce((sum, quote) => {
+      const amount = (parseFloat(quote.per_bend_price) * quote.bend_count) * quote.quantity ;
+      return sum + (isNaN(amount) ? 0 : amount);
+    }, 0);
+  };
   const [materials, setmaterials] = useState([]);
 
   useEffect(() => {
@@ -417,6 +424,10 @@ export default function QuotesDetail() {
     if (Array.isArray(quoteData) && quoteData.length > 0) {
       const fetchAllThicknessOptionsData = async () => {
         setbtnText(0);
+        if(quoteList.check_status == 1) {
+          setbtnText(1);
+          return;
+        }
         for (const quote of quoteData) {
           if (quote._id) {
             console.log(
@@ -1165,6 +1176,7 @@ export default function QuotesDetail() {
                 {/* --{orderDe} */}
                 <QuotesSidebar
                   amount={getTotalAmount().toFixed(2)}
+                  bendAmount={getBendAmount().toFixed(2)}
                   buttonText={btnText}
                   quoteData={quoteList}
                   // loadId={}

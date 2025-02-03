@@ -35,6 +35,7 @@ import {
   fetchShippingBoxDetails,
   orderAdminTrackingDetails,
   getSubQuote,
+  generateOrderPDFAdmin,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -122,38 +123,34 @@ const OrdersDetail = () => {
   // };
 
   const downloadPDF = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/admin/generateOrderPDF`;
 
     try {
-      const token = localStorage.getItem("adminToken");
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Set as JSON
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          orderId: order?.orderedQuote._id, // Convert to JSON string
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to download PDF");
+      const data = {
+        orderId: order?.orderedQuote._id
       }
-
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-
-      // Create a link element to trigger the download
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = "WO#" + order?.newUpdatedData[0]?.search_quote + ".pdf"; // Set the desired file name
-      document.body.appendChild(link);
-      link.click();
-
-      // Cleanup
-      link.remove();
-      window.URL.revokeObjectURL(blobUrl);
+      const response = await generateOrderPDFAdmin(data);
+      if (response.data && response.data.pdf_url) {
+        const pdfUrl = response.data.pdf_url;
+        const fileName = `WO#${order?.newUpdatedData[0]?.search_quote}.pdf`;
+    
+        // Fetch the PDF file as a blob
+        const pdfResponse = await fetch(pdfUrl);
+        const blob = await pdfResponse.blob();
+    
+        // Create a blob URL
+        const blobUrl = window.URL.createObjectURL(blob);
+    
+        // Create a link element and trigger download
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.download = fileName; // Custom filename
+        document.body.appendChild(link);
+        link.click();
+    
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      }
     } catch (error) {
       console.error("Error downloading PDF:", error);
     }

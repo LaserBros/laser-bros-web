@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import file1 from "../../assets/img/file1.jpg";
 import {
   UsergetParticularOrderDetails,
+  generateRfqPDF,
   getOrders,
   getParticularOrderDetails,
   getParticularRFQDetails,
@@ -95,6 +96,43 @@ export default function RfqDetail() {
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
+
+
+   const handlePDF = async () => {
+       try {
+            const data = {
+              id: orderDetails?._id
+            }
+            const response = await generateRfqPDF(data);
+            if (response.data && response.data.pdf_url) {
+              const pdfUrl = response.data.pdf_url;
+              const fileName = `WO#${orderDetails?.search_quote}.pdf`;
+          
+              // Fetch the PDF file as a blob
+              const pdfResponse = await fetch(pdfUrl);
+              const blob = await pdfResponse.blob();
+          
+              // Create a blob URL
+              const blobUrl = window.URL.createObjectURL(blob);
+          
+              // Create a link element and trigger download
+              const link = document.createElement("a");
+              link.href = blobUrl;
+              link.download = fileName; // Custom filename
+              document.body.appendChild(link);
+              link.click();
+          
+              // Cleanup
+              document.body.removeChild(link);
+              window.URL.revokeObjectURL(blobUrl);
+            }
+          } catch (error) {
+            console.error("Error downloading PDF:", error);
+          }
+    };
+
+
+
   useEffect(() => {
     fetchOrder();
   }, []);
@@ -105,14 +143,24 @@ export default function RfqDetail() {
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap ">
               <h5>RFQ's Detail</h5>{" "}
+             <div>
+             <Link
+                                  to=""
+                                  onClick={handlePDF}
+                                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
+                                  style={{ marginRight: "4px" }}
+                                >
+                                  Download Invoice
+                                </Link>
               <Link
                 to="/rfqs"
-                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159"
+                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159 ms-3"
               >
                 Back To RFQ's
               </Link>
-            </Card.Header>
-
+            
+          </div>
+          </Card.Header>
             {loading ? (
               <span
                 role="status"

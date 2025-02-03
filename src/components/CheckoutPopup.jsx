@@ -17,6 +17,7 @@ import PaymentDone from "./Paymentdone";
 const CheckoutPopup = ({
   loadingPayId,
   show,
+  bendAmountPrice,
   handleClose,
   address,
   shippingInfo,
@@ -498,7 +499,7 @@ const CheckoutPopup = ({
                 <span className="quotesitem">Services</span>
                 <span className="quotesitem quotesright">
                   <Amount
-                    amount={shippingInfoData?.requestQuoteDB?.total_bend_price}
+                    amount={bendAmountPrice} 
                   />{" "}
                 </span>
               </div>
@@ -538,7 +539,7 @@ const CheckoutPopup = ({
                         shippingInfoData?.requestQuoteDB?.total_amount || 0
                       ) +
                       parseFloat(
-                        shippingInfoData?.requestQuoteDB?.total_bend_price || 0
+                        bendAmountPrice || 0
                       ) +
                       parseFloat(rateVal == "" ? 0 : rateVal || 0) +
                       parseFloat(taxAmount || 0)
@@ -590,8 +591,7 @@ const CheckoutPopup = ({
                                   ?.total_amount || 0
                               ) +
                               parseFloat(
-                                shippingInfoData?.requestQuoteDB
-                                  ?.total_bend_price || 0
+                                bendAmountPrice || 0
                               ) +
                               parseFloat(rateVal == "" ? 0 : rateVal || 0)
                             }
