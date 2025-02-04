@@ -10,7 +10,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   getAllMaterialCodesFilter,
   getBendingFilter,
@@ -27,10 +27,13 @@ import MaterialBadge from "../../components/MaterialBadge";
 import Amount from "../../../components/Amount";
 import getMaterialColor from "../../components/ColorCode";
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
+  const location = useLocation();
+  const [orders, setOrders] = useState(location.state?.orders || []);
   const [loading, setLoading] = useState(true);
   const [totalPage, settotalPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(location.state?.currentPage || 1);
+
+  // const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [name, searchName] = useState("");
   const [sortOrder, setSortOrder] = useState("");
@@ -112,6 +115,7 @@ const Orders = () => {
     }
   };
   const onPageChange = (pageNumber) => {
+    console.log("trigger 2")
     setCurrentPage(pageNumber);
     loadOrders(
       name,
@@ -124,6 +128,7 @@ const Orders = () => {
     );
   };
   useEffect(() => {
+    // if (!location.state) {
     loadOrders(
       name,
       1,
@@ -133,6 +138,7 @@ const Orders = () => {
       operation === "post_ops" ? selecttag : "",
       SortVal
     );
+  // }
   }, [SortVal, Phase, selecttag, name]);
   const handleSortChangeFilter = async (type, data) => {
     if (type == "sort") {
@@ -197,7 +203,12 @@ const Orders = () => {
   };
 
   useEffect(() => {
+    // console.log("location.state",location.state)
+    // if (!location.state) {
+      console.log(":Trigger Here")
     loadOrders("", currentPage);
+    // }
+
   }, []);
   const getMonthYear = (dateStr) => {
     const date = new Date(dateStr);

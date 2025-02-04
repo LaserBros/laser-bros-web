@@ -795,7 +795,7 @@ const QuotesSidebar = ({
       <PaymentDone show={modalShow} handleClose={handleClose} />
       {isPayble ? (
         <CheckOutPay
-        bendAmountPrice={bendAmount}
+          bendAmountPrice={bendAmount}
           show={modalShowPay}
           loadingPayId={loadingPayId}
           handleClose={handleClosePay}

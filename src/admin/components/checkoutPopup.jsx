@@ -39,7 +39,7 @@ const CheckoutPopup = ({
   const existingShippingMethods = [
     {
       id: "local_pickup",
-      name: "Local Pickup",
+      name: "Local Pickup (FREE)",
       price: 0.0,
       isChecked: false,
       isEditing: false,

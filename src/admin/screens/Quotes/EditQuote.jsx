@@ -70,6 +70,15 @@ const EditRFQS = () => {
     "B8",
     "B9",
     "B10",
+    "B11",
+    "B12",
+    "B13",
+    "B15",
+    "B16",
+    "B17",
+    "B18",
+    "B19",
+    "B20",
     "MB1",
     "MB2",
     "MB3",
@@ -80,6 +89,16 @@ const EditRFQS = () => {
     "MB8",
     "MB9",
     "MB10",
+    "MB11",
+    "MB12",
+    "MB13",
+    "MB14",
+    "MB15",
+    "MB16",
+    "MB17",
+    "MB18",
+    "MB19",
+    "MB20",
   ];
   const [idSelect, setidSelect] = useState("");
   const [quotePost, setquotePost] = useState("");
@@ -1212,7 +1231,7 @@ const EditRFQS = () => {
                           {/* )} */}
                         </div>
                         <div className="quotes-services mt-3">
-                          <p style={{ fontSize: "12px", color: "#00000080" }}>
+                          <p style={{ fontSize: "12px" }}>
                             Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
                             {"   "}
                             {quote.bendupload_url?.length > 0 &&

@@ -738,7 +738,7 @@ const OrdersDetail = () => {
     }),
   };
   const handleBack = () => {
-    navigate(-1); // Redirects to the previous page
+    navigate("/admin/orders",{ state: { message: "Hello from Home Page" } }); 
   };
   // <p>{formatDate(order.createdAt)}</p>;
   const [selectedEmp, setSelectedEmp] = useState("");
@@ -1249,13 +1249,13 @@ const OrdersDetail = () => {
                                           disabled
                                           checked={
                                             order?.serviceCode?.name ==
-                                            "Local Pickup"
+                                            "Local Pickup (FREE)"
                                               ? true
                                               : false
                                           }
                                         />
                                         <label htmlFor="localPickup">
-                                          Local Pickup ($0.00)
+                                          Local Pickup (FREE)
                                         </label>
                                       </div>
 

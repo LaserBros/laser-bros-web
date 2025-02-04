@@ -7,7 +7,8 @@ import Amount from "../../components/Amount";
 import { deleteBendQuoteImage } from "../../api/api";
 import { Link } from "react-router-dom";
 import pdf_icon from "../../assets/img/pdf_icon.png";
-import step_file_img from "../../assets/img/step_file.jpg";
+import step_file_img from "../../assets/img/step_file.png";
+import jpg_img from "../../assets/img/jpg.png";
 import png_file from "../../assets/img/png_file.png";
 const AddBend = ({
   show2,
@@ -85,7 +86,7 @@ const AddBend = ({
       "image/png",
       "application/octet-stream",
     ];
-    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step"];
+    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step",".PDF", ".JPG", ".JPEG", ".PNG", ".STEP" ];
 
     if (newFile) {
       const fileType = newFile.type;
@@ -164,9 +165,9 @@ const AddBend = ({
                 <div className="addbend_flex">
                   {!editPrice ? (
                     <>
-                      <p>
+                      <h2 className="custom_h2_clr">
                         Price per bend : <Amount amount={bendPrice} />
-                      </p>
+                      </h2>
                     </>
                   ) : (
                     <input
@@ -234,7 +235,8 @@ const AddBend = ({
   const isPdf = extension === "pdf";
   const isStep = extension === "step";
   const isPng = extension === "png";
-
+  const isJpg = extension === "jpg";
+  const isJpeg = extension === "jpeg";
   return (
     <div
       key={index}
@@ -247,7 +249,7 @@ const AddBend = ({
       }}
     >
       <Image
-        src={isPdf ? pdf_icon : isStep ? step_file_img : isPng ? png_file : pdfIcon}
+        src={isPdf ? pdf_icon : isStep ? step_file_img : isPng ? png_file : isJpg ? jpg_img : isJpeg ? jpg_img : pdfIcon}
         className="img-fluid"
         alt="Preview"
         height={60}

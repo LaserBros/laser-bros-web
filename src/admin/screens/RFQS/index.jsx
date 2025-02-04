@@ -123,7 +123,7 @@ const RFQS = () => {
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
     setSortOrder(selectedValue);
-    // loadData(1, name, selectedValue);
+    loadData(1, name, selectedValue);
   };
 
   const loadData = async (page, search = "", sortOrder = "") => {
@@ -144,7 +144,7 @@ const RFQS = () => {
 
   useEffect(() => {
     loadData(currentPage);
-  }, []);
+  }, [currentPage]);
 
   return (
     <React.Fragment>
@@ -173,7 +173,7 @@ const RFQS = () => {
                       onChange={(e) => {
                         setCurrentPage(1);
                         searchName(e.target.value);
-                        // loadData(1, e.target.value, sortOrder);
+                        loadData(1, e.target.value, sortOrder);
                       }}
                       className="rounded-5"
                     />

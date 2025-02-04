@@ -6,7 +6,8 @@ import pdfIcon from "../assets/img/file.png";
 import Amount from "./Amount";
 import { deleteBendQuoteImage } from "../api/api";
 import pdf_icon from "../assets/img/pdf_icon.png";
-import step_file_img from "../assets/img/step_file.jpg";
+import step_file_img from "../assets/img/step_file.png";
+import jpg_img from "../assets/img/jpg.png";
 import png_file from "../assets/img/png_file.png";
 
 const AddBend = ({
@@ -59,7 +60,7 @@ const AddBend = ({
       "image/png",
       "application/octet-stream",
     ];
-    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step"];
+    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step",".PDF", ".JPG", ".JPEG", ".PNG", ".STEP"];
 
     if (newFile) {
       const fileType = newFile.type;
@@ -157,6 +158,8 @@ const AddBend = ({
   const isPdf = extension === "pdf";
   const isStep = extension === "step";
   const isPng = extension === "png";
+  const isJpg = extension === "jpg";
+  const isJpeg = extension === "jpeg";
 
   return (
     <div
@@ -170,7 +173,7 @@ const AddBend = ({
       }}
     >
       <Image
-        src={isPdf ? pdf_icon : isStep ? step_file_img : isPng ? png_file : pdfIcon}
+        src={isPdf ? pdf_icon : isStep ? step_file_img : isPng ? png_file : isJpg ? jpg_img : isJpeg ? jpg_img : pdfIcon}
         className="img-fluid"
         alt="Preview"
         height={60}
