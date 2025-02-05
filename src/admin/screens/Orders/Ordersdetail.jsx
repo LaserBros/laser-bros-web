@@ -30,7 +30,7 @@ import {
   moveOrderToComplete,
   startPackaging,
   generateOrderPDF,
-  updateWorkStatus,
+  updateWorkStatus, 
   getShippingRates,
   fetchShippingBoxDetails,
   orderAdminTrackingDetails,
@@ -460,6 +460,7 @@ const OrdersDetail = () => {
   };
 
   const handleSubmitData = async (index) => {
+    
     const box = boxes[index];
     if (!box.length || !box.width || !box.height || !box.weight) {
       alert("Please fill in all fields for dimensions and weight.");
@@ -481,6 +482,8 @@ const OrdersDetail = () => {
       weight: box.weight,
       box_id: "box_" + id + "_" + orderInfo?.length + parseInt(index) + 1,
       id: id,
+      service_code:selectedMethod
+
     };
     try {
       setloadingInfo(index);
@@ -746,6 +749,7 @@ const OrdersDetail = () => {
   const [EmpLoad, setEmpLoad] = useState(false);
   const { theme, togglenewTheme } = useTheme();
   useEffect(() => {
+    setSelectedMethod(order?.orderedQuote?.service_code);
     const defaultEmployee = Emp.find(
       (emp) => emp.value === order?.orderedQuote?.task_assigned
     );
@@ -755,6 +759,7 @@ const OrdersDetail = () => {
         value: defaultEmployee?.value,
         label: defaultEmployee?.label,
       });
+      
     } else {
       setSelectedEmp();
     }
@@ -794,7 +799,10 @@ const OrdersDetail = () => {
     }
   };
 
-
+  const [selectedMethod, setSelectedMethod] = useState(null);
+  const handleCheckboxChange = (service_code) => {
+    setSelectedMethod(service_code);
+  };
   const downloadFile = (url) => {
     // Extract file name and extension from URL
     const fileNameWithParams = url.split("/").pop(); // Get everything after the last "/"
@@ -836,6 +844,7 @@ const OrdersDetail = () => {
                   {order?.newUpdatedData[0]?.search_quote}
                 </h5>
                 <div className="d-flex">
+                  {/* {order?.orderedQuote.move_status} ====== */}
                   {order?.serviceCode?.name == "Local Pickup" &&
                     order?.orderedQuote.move_status === 2 && (
                       <>
@@ -845,6 +854,7 @@ const OrdersDetail = () => {
                             // className="my-3 ms-3"
                             onClick={handleCompleteShip}
                             disabled={loadingWeight}
+                            className="me-2"
                           >
                             {loadingWeight ? (
                               <span
@@ -1267,14 +1277,15 @@ const OrdersDetail = () => {
                                           <input
                                             type="checkbox"
                                             id={method.service_code}
-                                            disabled
+                                            // disabled
                                             checked={
-                                              order?.orderedQuote
-                                                ?.service_code ==
+                                              selectedMethod ==
                                               method.service_code
                                                 ? true
                                                 : false
                                             }
+                                            onChange={() => handleCheckboxChange(method.service_code)}
+
                                           />
                                           <label htmlFor={method.service_code}>
                                             {method.service_type} (

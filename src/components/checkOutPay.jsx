@@ -598,19 +598,19 @@ const CheckOutPay = ({
             </Row>
             <div className="main_price text-center">
               <div className="d-flex align-items-center justify-content-between mb-2">
-                <span className="quotesitem">Laser Cutting</span>
+                <span className="quotesitem">Subtotal</span>
                 <span className="quotesitem quotesright">
-                  <Amount amount={shippingInfo?.requestQuoteDB?.total_amount} />{" "}
+                  <Amount amount={shippingInfo?.requestQuoteDB?.total_amount + parseFloat(shippingInfo?.requestQuoteDB?.total_bend_price)} />{" "}
                 </span>
               </div>
-              <div className="d-flex align-items-center justify-content-between mb-2">
+              {/* <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="quotesitem">Services</span>
                 <span className="quotesitem quotesright">
                   <Amount
                     amount={shippingInfo?.requestQuoteDB?.total_bend_price}
                   />{" "}
                 </span>
-              </div>
+              </div> */}
               {rateVal != "" ? (
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Shipping</span>
@@ -622,7 +622,7 @@ const CheckOutPay = ({
                 ""
               )}
               <div className="d-flex align-items-center justify-content-between">
-                <span className="quotessubtotal">Subtotal</span>
+                <span className="quotessubtotal">Total</span>
                 <span className="quotesprice">
                   <Amount
                     amount={

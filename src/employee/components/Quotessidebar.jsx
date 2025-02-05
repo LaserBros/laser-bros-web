@@ -77,8 +77,8 @@ const QuotesSidebar = ({ amount, showDiv }) => {
       {showDiv1 && (
         <div className="quotes-sidebar">
           <div className="quotes-inner">
-            <div className="head-quotes">
-              <h2 className="mb-0">Quote Summary</h2>
+            <div className="head-quotes  d-none">
+              <h2 className="mb-0 d-none">Quote Summary</h2>
             </div>
             <div className="d-flex align-items-center justify-content-between">
               <span className="quotesitem">Laser Cutting</span>
@@ -146,13 +146,13 @@ const QuotesSidebar = ({ amount, showDiv }) => {
               </div>
               <Form className="accountform">
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Laser Cutting</span>
+                  <span className="quotesitem">Subtotal</span>
                   <span className="quotesitem quotesright">
                     ${amount.toLocaleString("en-US")}{" "}
                   </span>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
-                  <span className="quotessubtotal">Subtotal</span>
+                  <span className="quotessubtotal">Total</span>
                   <span className="quotesprice">
                     ${amount.toLocaleString("en-US")}
                   </span>

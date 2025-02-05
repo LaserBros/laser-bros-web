@@ -500,18 +500,18 @@ const CheckoutPopup = ({
             </Row>
             <div className="main_price text-center mt-3">
               <div className="d-flex align-items-center justify-content-between mb-2">
-                <span className="quotesitem">Laser Cutting</span>
+                <span className="quotesitem">Subtotal</span>
                 <span className="quotesitem quotesright">
-                  <Amount amount={addressDetail?.total_amount} />{" "}
+                  <Amount amount={addressDetail?.total_amount + parseFloat(addressDetail?.total_bend_price)} />{" "}
                 </span>
               </div>
-              <div className="d-flex align-items-center justify-content-between mb-2">
+              {/* <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="quotesitem">Services</span>
                 <span className="quotesitem quotesright">
                   <Amount amount={addressDetail?.total_bend_price} />{" "}
                 </span>
               </div>
-              
+               */}
               {rateVal != "" ? (
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Shipping</span>
@@ -533,7 +533,7 @@ const CheckoutPopup = ({
                 ""
               )}
               <div className="d-flex align-items-center justify-content-between">
-                <span className="quotessubtotal">Subtotal</span>
+                <span className="quotessubtotal">Total</span>
                 <span className="quotesprice">
                   <Amount
                     amount={

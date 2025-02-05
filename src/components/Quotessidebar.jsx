@@ -365,11 +365,11 @@ const QuotesSidebar = ({
       {showDiv1 && (
         <div className="quotes-sidebar">
           <div className="quotes-inner">
-            <div className="head-quotes">
-              <h2 className="mb-0">Quote Summary</h2>
+            <div className="head-quotes d-none">
+              <h2 className="mb-0 d-none">Quote Summary</h2>
             </div>
             <div className="d-flex align-items-center justify-content-between">
-              <span className="quotesitem">Laser Cutting</span>
+              <span className="quotesitem">Subtotal</span>
               <span className="quotesitem quotesright">
                 <Amount amount={amount} />
               </span>
@@ -399,7 +399,7 @@ const QuotesSidebar = ({
             {token != "" && token != undefined && token != null ? (
               <>
                 <div className="d-flex align-items-center justify-content-between">
-                  <span className="quotessubtotal">Subtotal</span>
+                  <span className="quotessubtotal">Total</span>
                   <span className="quotesprice">
                     <Amount
                       amount={
@@ -523,17 +523,17 @@ const QuotesSidebar = ({
               </div>
               <Form className="accountform">
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Laser Cutting</span>
+                  <span className="quotesitem">Subtotal</span>
                   <span className="quotesitem quotesright">
-                    <Amount amount={amount} />{" "}
+                    <Amount amount={amount + parseFloat(bendAmount)} />{" "}
                   </span>
                 </div>
-                <div className="d-flex align-items-center justify-content-between mb-2">
+                {/* <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Services</span>
                   <span className="quotesitem quotesright">
                     <Amount amount={bendAmount} />{" "}
                   </span>
-                </div>
+                </div> */}
                 {rateVal != "" ? (
                   <div className="d-flex align-items-center justify-content-between mb-2">
                     <span className="quotesitem">Shipping</span>
@@ -553,7 +553,7 @@ const QuotesSidebar = ({
                   </div>
                 )}
                 <div className="d-flex align-items-center justify-content-between">
-                  <span className="quotessubtotal">Subtotal</span>
+                  <span className="quotessubtotal">Total</span>
                   <span className="quotesprice">
                     <Amount
                       amount={
