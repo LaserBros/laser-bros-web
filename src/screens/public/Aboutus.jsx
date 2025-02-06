@@ -95,8 +95,7 @@ export default function Aboutus() {
                   anyone; an entrepreneur launching their product from their
                   garage, a group of dudes building a project car, or a company
                   building something that’ll get launched into space.{" "}
-                </p>
-                <p>
+               
                   They’re all innovating in their own way. We want to be a means
                   to that innovation, a resource to remove limitations around
                   what can be built.

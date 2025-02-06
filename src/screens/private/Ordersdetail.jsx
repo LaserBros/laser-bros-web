@@ -194,7 +194,7 @@ export default function OrdersDetail() {
                 )}
                 <Link
                   to="/orders"
-                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
+                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-2"
                 >
                   Back To Orders
                 </Link>
@@ -352,14 +352,14 @@ export default function OrdersDetail() {
                           <Amount
                             amount={
                               parseFloat(orderDetails.total_amount || 0) -
-                              parseFloat(Shipping.bendPrice || 0) -
+                              // parseFloat(Shipping.bendPrice || 0) -
                               parseFloat(Shipping.shippingPrice || 0) - 
                               parseFloat(orderDetails.tax_amount || 0)
                             }
                           />
                         </span>
                       </p>
-                      <p>
+                      {/* <p>
                         Bending{" "}
                         <span>
                           {" "}
@@ -367,7 +367,7 @@ export default function OrdersDetail() {
                             amount={parseFloat(Shipping.bendPrice || 0)}
                           />
                         </span>
-                      </p>
+                      </p> */}
                       <p>
                         Shipping{" "}
                         <span>

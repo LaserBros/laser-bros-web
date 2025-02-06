@@ -749,6 +749,7 @@ const OrdersDetail = () => {
   const [EmpLoad, setEmpLoad] = useState(false);
   const { theme, togglenewTheme } = useTheme();
   useEffect(() => {
+    console.log("order?.orderedQuote?.service_code",order?.orderedQuote?.service_code)
     setSelectedMethod(order?.orderedQuote?.service_code);
     const defaultEmployee = Emp.find(
       (emp) => emp.value === order?.orderedQuote?.task_assigned
@@ -980,7 +981,6 @@ const OrdersDetail = () => {
                         <p>Download Labels:&nbsp;&nbsp;</p>
                         {order?.orderedQuote?.label_url?.map((url, index) => (
                           <a
-                            key={index}
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -1093,7 +1093,6 @@ const OrdersDetail = () => {
                       <div className="section packageDeminsionMain_div">
                         {boxes?.map((box, index) => (
                           <Row
-                            key={index}
                             className="section DeminsionMain_div"
                           >
                             <Col lg={6} className="align-self-center">
@@ -1258,7 +1257,7 @@ const OrdersDetail = () => {
                                           id="localPickup"
                                           disabled
                                           checked={
-                                            order?.serviceCode?.name ==
+                                            selectedMethod == "local_pickup" || selectedMethod ==
                                             "Local Pickup (FREE)"
                                               ? true
                                               : false
@@ -1271,7 +1270,6 @@ const OrdersDetail = () => {
 
                                       {box.shippingMethods?.map((method) => (
                                         <div
-                                          key={method.service_code}
                                           className="dimensionShowCheckbox_div"
                                         >
                                           <input
@@ -1431,7 +1429,6 @@ const OrdersDetail = () => {
                       ).values(),
                     ]?.map((wo, index) => (
                       <span
-                        key={index}
                         className="badgestatus"
                         style={getMaterialColor(
                           wo?.material_name + " " + wo?.material_grade,wo?.color_code

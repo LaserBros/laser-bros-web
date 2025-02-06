@@ -124,6 +124,7 @@ const QuotesSidebar = ({
   const [loadingPay, setLoadingPay] = useState(false);
   const [modalShowPay, setModalShowPay] = useState(false);
   const [PayLoad, setPayLoad] = useState(false);
+  const [PayLoadRfq, setPayLoadRfq] = useState(false);
   const [shippingInfo, setshippingInfo] = useState(false);
   const RequestQuote = async (id) => {
     const data = {
@@ -144,7 +145,7 @@ const QuotesSidebar = ({
       toast.error("Something wents wrong.");
     }
   };
-  const handleUpdateQuoteChange = async () => {
+  const handleUpdateQuoteChange = async (type_param) => {
     const elementId = localStorage.getItem("setItemelementData");
     const updatedQuoteData = JSON.parse(
       localStorage.getItem("setItempartsDBdata")
@@ -183,19 +184,46 @@ const QuotesSidebar = ({
       }
       const data = {
         id: id,
+        type:type_param
       };
       console.log("wswdwdwdwdwdwdwdwd", getId, elementId);
       // return;
       try {
-        setPayLoad(true);
+        if(type_param == "rfq") {
+          setPayLoadRfq(true)
+        } else {
+          setPayLoad(true);
+        }
+
         const response = await getEditQuotePayment(data);
         setshippingInfo(response.data);
+
+        // if (response.data?.requestQuoteDB?.check_status) {
+          const updatedShippingInfo = { 
+            ...response.data, 
+            requestQuoteDB: {
+              ...response.data.requestQuoteDB,
+              check_status: type_param == 'rfq' ? 1 : response.data?.requestQuoteDB?.check_status, // or whatever value you want to set
+            }
+          };
+          setshippingInfo(updatedShippingInfo);
+        // }
+
+
         setLoadingPayID(getId);
         setModalShowPay(true);
-        setPayLoad(false);
+        if(type_param == "rfq") {
+          setPayLoadRfq(false)
+        } else {
+          setPayLoad(false);
+        }
         // setModalShowPay(false);
       } catch (error) {
-        setPayLoad(false);
+        if(type_param == "rfq") {
+          setPayLoadRfq(false)
+        } else {
+          setPayLoad(false);
+        }
         // setModalShowPay(false);
         toast.error("Something wents wrong.");
       }
@@ -365,23 +393,24 @@ const QuotesSidebar = ({
       {showDiv1 && (
         <div className="quotes-sidebar">
           <div className="quotes-inner">
-            <div className="head-quotes d-none">
-              <h2 className="mb-0 d-none">Quote Summary</h2>
+            <div className="head-quotes">
+              <h2 className="mb-0">Quote Summary</h2>
             </div>
             <div className="d-flex align-items-center justify-content-between">
               <span className="quotesitem">Subtotal</span>
               <span className="quotesitem quotesright">
-                <Amount amount={amount} />
+                <Amount amount={ parseFloat(amount || 0) +
+                        parseFloat(bendAmount || 0)} />
               </span>
             </div>
-            <div className="d-flex align-items-center justify-content-between mb-2">
+            {/* <div className="d-flex align-items-center justify-content-between mb-2">
               <span className="quotesitem">Services</span>
               <span className="quotesitem quotesright">
                 <Amount amount={bendAmount} />{" "}
               </span>
-            </div>
+            </div> */}
 
-            <hr className="quotes-separator" />
+            {/* <hr className="quotes-separator" /> */}
             {/* When Not Login Start*/}
             {/* <div className='quotes-login mb-3'>
                                     <p className='text-center mb-1'>Price is for cutting only.</p>
@@ -398,7 +427,7 @@ const QuotesSidebar = ({
             {/* When Not Login Ends*/}
             {token != "" && token != undefined && token != null ? (
               <>
-                <div className="d-flex align-items-center justify-content-between">
+                {/* <div className="d-flex align-items-center justify-content-between">
                   <span className="quotessubtotal">Total</span>
                   <span className="quotesprice">
                     <Amount
@@ -408,7 +437,7 @@ const QuotesSidebar = ({
                       }
                     />
                   </span>
-                </div>
+                </div> */}
                 <div className="text-color-shipping">
                   {buttonText == 1 ? (
                     <>
@@ -459,9 +488,10 @@ const QuotesSidebar = ({
                     )}
                   </>
                 ) : (
+                  <>
                   <Button
                     className="w-100 mt-3"
-                    onClick={() => handleUpdateQuoteChange()}
+                    onClick={() => handleUpdateQuoteChange("")}
                     disabled={PayLoad}
                   >
                     {PayLoad ? (
@@ -476,6 +506,24 @@ const QuotesSidebar = ({
                       "Proceed to checkout"
                     )}
                   </Button>
+                  {/* {buttonText != 1 &&
+                      <Button
+                      className="w-100 mt-3"
+                      onClick={() => handleUpdateQuoteChange("rfq")}
+                      disabled={PayLoadRfq}
+                      >
+                      {PayLoadRfq ? (
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                      ) :
+                        "Request a Quote"
+                      }
+                      </Button>
+                  } */}
+                  </>
                 )}
               </>
             ) : (
@@ -525,7 +573,7 @@ const QuotesSidebar = ({
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Subtotal</span>
                   <span className="quotesitem quotesright">
-                    <Amount amount={amount + parseFloat(bendAmount)} />{" "}
+                    <Amount amount={parseFloat(amount) + parseFloat(bendAmount)} />{" "}
                   </span>
                 </div>
                 {/* <div className="d-flex align-items-center justify-content-between mb-2">

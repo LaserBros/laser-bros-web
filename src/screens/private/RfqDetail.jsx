@@ -151,11 +151,11 @@ export default function RfqDetail() {
                                   className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
                                   style={{ marginRight: "4px" }}
                                 >
-                                  Download Invoice
+                                  Download RFQ
                                 </Link>
               <Link
                 to="/rfqs"
-                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159 ms-3"
+                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159 ms-2"
               >
                 Back To RFQ's
               </Link>
@@ -343,6 +343,7 @@ export default function RfqDetail() {
                     <QuotesSidebar
                       amount={orderDetails.total_amount}
                       buttonText={orderDetails.check_status}
+                      bendAmount={orderDetails.total_bend_price}
                       quoteData={orderDetails}
                       loadId={orderDetails._id}
                       isPayble={true}
