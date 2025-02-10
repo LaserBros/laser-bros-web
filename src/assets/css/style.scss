@@ -4571,3 +4571,13 @@ textarea.form-control {
         }
     }
 }
+
+.btncstm {
+    color: $black-color;
+    border-bottom:none;
+    border-radius: 0;
+    font-size: 14px;
+&:hover{
+    opacity: 0.75;
+}
+}

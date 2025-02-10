@@ -22,6 +22,8 @@ import { toast } from "react-toastify";
 import Amount from "./Amount";
 import ShippingRates from "./ShippingRates";
 import CheckOutPay from "./checkOutPay";
+import AddAddressModal from "../screens/private/AddaddressModal";
+import AddCard from "./Addcard";
 const QuotesSidebar = ({
   amount,
   showDiv,
@@ -37,6 +39,12 @@ const QuotesSidebar = ({
   const [quoteDataVal, setquoteData] = useState(false);
   const [rateVal, setrateVal] = useState("");
   const [loadingPayId, setLoadingPayID] = useState();
+
+    const [modalShowCard, setModalShowCard] = useState(false);
+  
+    const handleShowCard = () => setModalShowCard(true);
+    const handleCloseCard = () => setModalShowCard(false);
+
   useEffect(() => {
     setquoteData(quoteData);
     console.log("quoteData", quoteData);
@@ -60,6 +68,7 @@ const QuotesSidebar = ({
       localStorage.setItem("setItemelementDataPay", JSON.stringify(res.data));
     } catch (error) {}
   };
+ 
   const PaymentSubmit = async () => {
     console.log("SDsdsddssd", rateVal);
     if (rateVal == "" || rateVal == null) {
@@ -93,6 +102,22 @@ const QuotesSidebar = ({
       setLoading(false);
     }
   };
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const handleShow = () => {
+    setShowModal(true);
+  }
+  const handleCloseModal = () => {
+    setShowModal(false);
+  }
+
+    
+    useEffect(() => {
+      console.log("Dsddsdsdsdsdsdsds=d-=sd-s=d-s-d-sd=s-")
+      setShowModal(false);
+      loadData();
+      setSuccessMessage("");
+    },[successMessage])
   const handleClose = () => setModalShow(false);
   const handleClosePay = () => setModalShowPay(false);
   const [key, setKey] = useState("card");
@@ -425,6 +450,7 @@ const QuotesSidebar = ({
                                     </div> 
                                 </div> */}
             {/* When Not Login Ends*/}
+            
             {token != "" && token != undefined && token != null ? (
               <>
                 {/* <div className="d-flex align-items-center justify-content-between">
@@ -842,6 +868,12 @@ const QuotesSidebar = ({
         </>
       )}
       <PaymentDone show={modalShow} handleClose={handleClose} />
+      <AddCard 
+        show={modalShowCard}
+        handleClose={handleCloseCard}
+        onCardAdded={loadCards}
+        title="Add Card"
+      />
       {isPayble ? (
         <CheckOutPay
           bendAmountPrice={bendAmount}
@@ -856,8 +888,16 @@ const QuotesSidebar = ({
         <CheckoutPopup
           bendAmountPrice={bendAmount}
           loadingPayId={loadingPayId}
+          setSuccessMessage={setSuccessMessage}
           show={modalShowPay}
+          successMessage={successMessage}
+          handleShow={handleShow}
+          showPopup={showModal}
+          handleCloseModal={handleCloseModal}
           handleClose={handleClosePay}
+          modalShowCard={modalShowCard}
+          handleShowCard={handleShowCard}
+          handleCloseCard={handleCloseCard}
           address={address}
           shippingInfo={shippingInfo}
           cardsData={cardsData}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Image, Form } from "react-bootstrap";
+import { Row, Col, Container, Image, Form, Button } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, json, useNavigate } from "react-router-dom";
 import file1 from "../../assets/img/file1.jpg";
@@ -27,6 +27,7 @@ import {
 } from "../../api/api";
 import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
+import AddAddressModal from "./AddaddressModal";
 export default function QuotesDetail() {
   const currentDate = new Date();
   const navigate = useNavigate();
@@ -118,6 +119,10 @@ export default function QuotesDetail() {
       console.log("errororoor ----", error);
     }
   };
+
+  
+
+
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
@@ -918,6 +923,7 @@ export default function QuotesDetail() {
                 error={error}
                 className={"mb-4"}
               />
+               
               {quoteData &&
                 quoteData.length > 0 &&
                 quoteData.map((quote, index) => (

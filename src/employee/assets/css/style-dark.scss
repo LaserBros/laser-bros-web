@@ -5,6 +5,13 @@ body {
     &.dark {
         background-color: $black-color !important;
         min-height      : 100vh;
+        .btncstm {
+            color: $white-color;
+            border-bottom:none;
+            border-radius: 0;
+            font-size: 14px;
+
+        }
         .editmaterialtable{
             --bs-table-bg:$dark-color;
             --bs-table-border-color:rgba(255,255,255,0.20);

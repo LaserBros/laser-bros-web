@@ -14,23 +14,33 @@ import {
 import axiosInstance from "../axios/axiosInstance";
 import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
+import AddAddressModal from "../screens/private/AddaddressModal";
 const CheckoutPopup = ({
   loadingPayId,
   show,
   bendAmountPrice,
   handleClose,
   address,
-  shippingInfo,
+  shippingInfo, 
   cardsData,
+  setSuccessMessage,
+  handleShow,
+  showPopup,
+  handleCloseModal,
+  modalShowCard,
+          handleShowCard,
+          handleCloseCard,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
   const [selectedShippingAddress, setShippingSelectedAddress] = useState(null);
   const [handleCloseTrigger, sethandleCloseTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [shippingInfoData, setshippingInfo] = useState("");
+  
   useEffect(() => {
     setSelectedAddress(null);
     setShippingSelectedAddress(null);
@@ -38,6 +48,8 @@ const CheckoutPopup = ({
     setIsSameAsShipping(false);
     setshippingInfo(shippingInfo);
   }, [show]);
+
+
 
   useEffect(() => {
     if (cardsData.length > 0) {
@@ -286,7 +298,11 @@ const CheckoutPopup = ({
               <Col lg={6}>
                 {/* Shipping Address */}
                 <div className="shipping_addr_name bill_addr_name">
-                  <h2 className="shipping_head">Shipping Address</h2>
+                <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+                  <h2 className="shipping_head mb-0">Shipping Address</h2>
+                  <Button onClick={handleShow}  variant={null} className="btncstm p-0"><Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add Address</Button>
+                  <AddAddressModal show={showPopup} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} />
+                  </div>
                   <Form.Select
                     aria-label="Select Address"
                     onChange={handleShippingAddressChange}
@@ -433,7 +449,12 @@ const CheckoutPopup = ({
               </Col>
               <Col lg={6}>
                 <div className="cards_sect">
-                  <h2 className="shipping_head">Payment Method </h2>
+                  <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+                  <h2 className="shipping_head mb-0">Payment Method </h2>
+                   <Button onClick={handleShowCard} variant={null} className="btncstm p-0">
+                                <Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add New
+                                </Button>
+                  </div> 
                   {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
                     <>
                       <div className="text-center mt-2">
@@ -615,6 +636,7 @@ const CheckoutPopup = ({
             </div>
           </div>
           <PaymentDone show={modalShow} handleClose={handleCloseTrigger} />
+          
         </Modal.Body>
       </Modal>
     </React.Fragment>

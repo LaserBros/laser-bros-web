@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
 
-export default function AddAddress() {
+export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
   const [formData, setFormData] = useState({
     full_name: "",
     nickname: "",
@@ -77,6 +77,9 @@ export default function AddAddress() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+   useEffect(() => {
+      console.log("openPop",openPop);
+   }, []);
 
   const validateForm = () => {
     let formErrors = {};
@@ -143,6 +146,7 @@ export default function AddAddress() {
   };
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     if (validateForm()) {
       try {
@@ -153,9 +157,12 @@ export default function AddAddress() {
         );
         console.log(response);
         toast.success("Address added sucessfully");
-
         setLoading(false);
-        navigate("/my-addresses");
+        if(openPop) {
+          setSuccessMessage(true);
+        } else {
+          navigate("/my-addresses");
+        }
       } catch (error) {
         setLoading(false);
         // Check if error.response exists and is a 400 status
@@ -174,9 +181,11 @@ export default function AddAddress() {
 
   return (
     <React.Fragment>
-      <section className="myaccount ptb-50">
+      
+      <section className={`myaccount ${openPop ? "" : "ptb-50"}`}>
         <Container>
           <Card>
+            {!openPop &&
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap">
               <h5>Add Address</h5>
               <Link
@@ -185,7 +194,8 @@ export default function AddAddress() {
               >
                 Back To Address
               </Link>
-            </Card.Header>
+            </Card.Header>            
+            }
             <Card.Body>
               <Form className="accountform" onSubmit={handleSubmit}>
                 <Row>
@@ -357,6 +367,7 @@ export default function AddAddress() {
                     </Form.Group>
                   </Col>
                 </Row>
+                <div className="d-flex align-items-center flex-wrap gap-3">
                 <Button
                   type="submit"
                   className="min-width-159 mt-2"
@@ -372,6 +383,19 @@ export default function AddAddress() {
                     "Save"
                   )}
                 </Button>
+                {openPop &&
+                <Button
+                  type="submit"
+                  as={Link}
+                  className="min-width-159 mt-2 d-inline-flex align-items-center justify-content-center "
+                  variant="outline-primary"
+                  onClick={handleClose}
+
+                >
+                  Close
+                  </Button>
+              }
+              </div>
               </Form>
             </Card.Body>
           </Card>
