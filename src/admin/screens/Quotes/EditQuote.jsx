@@ -1295,13 +1295,9 @@ const EditRFQS = () => {
                           </span>
                         </div>
                         <p className="mb-0 text-md-end">
-                          {quote.estimated_lead_time
-                            ? "Typical Lead Time " +
-                              quote.estimated_lead_time +
-                              " days"
-                            : "Typical Lead Time " +
-                              quote?.type_option[0]?.estimated_lead_time +
-                              " days"}
+                        {quote?.estimated_lead_time
+  ? `Typical Lead Time ${quote.estimated_lead_time} days`
+  : `Typical Lead Time ${quote?.type_option?.[0]?.estimated_lead_time ?? "2 - 3"} days`}
                         </p>
 
                         <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">

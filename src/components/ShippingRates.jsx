@@ -16,7 +16,7 @@ const ShippingRates = ({
     const newSelectedRate = selectedRate === carrierId ? null : carrierId;
     setSelectedRate(newSelectedRate);
     if (newSelectedRate) {
-      onRateSelected(rate, price);
+      onRateSelected(rate, price); 
     }
   };
 
@@ -24,7 +24,7 @@ const ShippingRates = ({
     <div className="mt-3">
       <hr />
       <div className="head-quotes d-flex align-items-center justify-content-between">
-        <span className="quotessubtotal">Shipping methodss</span>
+        <span className="quotessubtotal">Shipping method</span>
       </div>
       {selectedShippingAddress ? (
         <>
@@ -50,7 +50,6 @@ const ShippingRates = ({
               &nbsp;&nbsp;Local Pickup (FREE)
             </label>
           </div>
-
           {shippingRates && shippingRates.length > 0 ? (
             <>
               {shippingRates.map((rate, index) => (

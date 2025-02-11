@@ -847,7 +847,7 @@ const OrdersDetail = () => {
                 <div className="d-flex">
                   {/* {order?.orderedQuote.move_status} ====== */}
                   {order?.serviceCode?.name == "Local Pickup" &&
-                    order?.orderedQuote.move_status === 2 && (
+                    order?.orderedQuote.status === 3 && (
                       <>
                         <div className="orders-shipping mb-2">
                           <Button
@@ -1867,6 +1867,7 @@ const OrdersDetail = () => {
           show={modalShowTrack}
           handleClose={handleCloseTrack}
           ordersTrack={ordersTrack}
+          shipType={order?.serviceCode?.name}
         />
 
         <ModalOrderData

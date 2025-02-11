@@ -20,6 +20,7 @@ import file from "../../assets/img/file1.jpg";
 import attachment from "../../assets/img/attachment.svg";
 import AddNote from "../../components/AddNote";
 import {
+  deleteFinishDetails,
   deleteMaterialDetails,
   deleteThicknessDetails,
   discount,
@@ -64,6 +65,20 @@ const DataBase = () => {
         const res = await deleteMaterialDetails(data);
         toast.success("Material deleted successfully!");
         handleTabSelect("materials");
+        setModalShow(false);
+        setloadingBtn(false);
+      } catch (error) {
+        toast.error("Something wents wrong..");
+      }
+    }
+    if (type == "finishes") {
+      try {
+        const data = {
+          id: thickId,
+        };
+        const res = await deleteFinishDetails(data);
+        toast.success("Finished deleted successfully!");
+        handleTabSelect("finishes");
         setModalShow(false);
         setloadingBtn(false);
       } catch (error) {
@@ -298,20 +313,29 @@ const DataBase = () => {
                             >
                               <Icon icon="tabler:edit" />
                             </Link>
-                            {/* <Link className="btnedit">
-                                <Icon icon="uiw:delete" />
-                              </Link> */}
+                            <Link
+                                      className="btnedit"
+                                      onClick={() => {
+                                        setTitle(
+                                          "Are you sure you want to delete this finishing?"
+                                        );
+                                        setThickId(item?._id);
+                                        setType("finishes");
+                                        setModalShow(true);
+                                      }}
+                                    >
+                                      <Icon icon="tabler:trash" />
+                                    </Link>
                           </div>
                         </td>
-                        <td>
-                          <Amount amount={item.price} />
-                        </td>
-
                         <td>F{item?.finishing_code}</td>
                         <td>{item.finishing_desc}</td>
                         <td>{item.minimum_size}</td>
                         <td>{item.maximum_size}</td>
                         <td>{item.notes_text}</td>
+                        <td>
+                          <Amount amount={item.price} />
+                        </td>
                       </tr>
                     ))
                   )}

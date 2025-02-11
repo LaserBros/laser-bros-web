@@ -208,7 +208,7 @@ export default function QuotesDetail() {
                 ...quote,
                 finishOptions: fetchedOptions,
                 binding_option: response.data.bending,
-                finish_check_status: res_status.check_status,
+                finish_check_status: response.data.check_status,
               }
             : quote
         )

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 
-const ShippingStatus = ({ show, handleClose, ordersTrack }) => {
+const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
   return (
     <React.Fragment>
       <Modal
@@ -14,7 +14,20 @@ const ShippingStatus = ({ show, handleClose, ordersTrack }) => {
           <Modal.Title className="mx-auto">Track Order</Modal.Title>
         </Modal.Header>
         <Modal.Body className="px-lg-5 px-4 pb-4 add_custom_color_track">
-          {ordersTrack.map((data) => (
+          {shipType == "Local Pickup" || shipType == "local_pickup"  ?
+            <div className="events-list">
+            <div className="events-list">
+                  <div className="event-item mb-3 text-center" style={{fontStyle:'italic'}}>
+                    <p>Your order is ready for Local Pickup<br/>
+                      Pickup Address:<br/>
+                      909 E. Elm St.<br/>
+                      Suite 102<br/>
+                      Graham, NC 27253</p>
+                   </div>   
+                   </div>
+                   </div>
+          :
+          ordersTrack.map((data) => (
             <>
               <div className="tracking-info">
                 <h5>Tracking Number: {data?.tracking_number}</h5>
@@ -58,7 +71,8 @@ const ShippingStatus = ({ show, handleClose, ordersTrack }) => {
                 </div>
               </div>
             </>
-          ))}
+          ))
+          }
         </Modal.Body>
         {/* <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

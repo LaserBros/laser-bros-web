@@ -167,7 +167,7 @@ export default function OrdersDetail() {
                   >
                     Download Invoice
                   </Link>
-                {orderDetails.status == 3 && ordersTrack?.length > 0 && (
+                {orderDetails.status == 3 && (orderDetails.shipping == "Local Pickup" ||ordersTrack?.length > 0) && (
                   <Link
                     to=""
                     onClick={handleShow}
@@ -418,6 +418,7 @@ export default function OrdersDetail() {
         show={modalShow}
         handleClose={handleClose}
         ordersTrack={ordersTrack}
+        shipType={orderDetails.shipping}
       />
     </React.Fragment>
   );

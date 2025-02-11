@@ -365,7 +365,7 @@ const CheckoutPopup = ({
                   <div className="mt-3">
                     <hr />
                     <div className="head-quotes d-flex align-items-center justify-content-between">
-                      <span className="quotessubtotal">Shipping Methods</span>
+                      <span className="quotessubtotal">Shipping Method</span>
                     </div>
                     {shippingMethods?.map((method) => (
                       <div
@@ -406,7 +406,7 @@ const CheckoutPopup = ({
                                         method.price
                                       )
                                     }
-                                  >
+                                  > 
                                     <Icon icon="lucide:check" />
                                   </Button>
                                   <Button
@@ -422,7 +422,7 @@ const CheckoutPopup = ({
                               )}
                             </div>
                           ) : (
-                             <Amount amount={method.price} />
+                             <Amount amount={parseFloat(method.price) * parseFloat(divideWeight) } /> 
                           )}
                           )
                         </label>

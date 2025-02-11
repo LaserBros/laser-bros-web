@@ -47,8 +47,8 @@ const AddressDetails = ({
   const formatString = (input) => {
     if (!input) return "";
     return input
-      .replace(/_/g, " ") // Replace underscores with spaces
-      .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first character
+      .replace(/_/g, " ")
+      .replace(/^\w/, (c) => c.toUpperCase()); 
   };
 
   const formatPhoneNumber = (number) => {
@@ -116,6 +116,7 @@ const AddressDetails = ({
               <b className="minWidth_110">Order date:</b>{" "}
               <DateFormat dateString={addressDetail?.createdAt} />
             </p>
+            
             {(addressDetail?.service_code || addressDetail?.shipping) && (
               <p>
                 <b className="minWidth_110">Shipping Type:</b>{" "}
@@ -218,7 +219,7 @@ const AddressDetails = ({
                 variant={null}
                 onClick={onClickTrack}
               >
-                Track Order
+                Track Order 
               </Button>
             )}
          

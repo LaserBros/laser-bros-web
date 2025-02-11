@@ -1414,6 +1414,18 @@ export const deleteMaterialDetails = async (data) => {
   }
 };
 
+
+export const deleteFinishDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/deleteFinishDetails`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 export const getBendingFilter = async (data) => {
   try {
     const response = await axiosAdminInstance.get(`/getBendingFilter`);

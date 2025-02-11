@@ -30,12 +30,17 @@ const CheckoutPopup = ({
   modalShowCard,
           handleShowCard,
           handleCloseCard,
+          ParamType
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
   const [selectedShippingAddress, setShippingSelectedAddress] = useState(null);
   const [handleCloseTrigger, sethandleCloseTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [rateVal, setrateVal] = useState("");
+  const [taxPercentage, setaxPercentage] = useState(0);
+  const [taxAmount, setaxAmount] = useState(0);
 
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
@@ -47,6 +52,11 @@ const CheckoutPopup = ({
     setShippingSelectedAddress(null);
     setIsSameAsShipping(false);
     setshippingInfo(shippingInfo);
+    if(ParamType == "rfq") {
+      setaxAmount(0);
+      setaxPercentage(0);
+      setrateVal("");
+    }
   }, [show]);
 
 
@@ -159,6 +169,7 @@ const CheckoutPopup = ({
         status: 1,
         billing_id: billingAddressId,
         address_id: selectedShippingAddressId,
+        type:ParamType
       };
 
       try {
@@ -226,6 +237,16 @@ const CheckoutPopup = ({
     };
     const res = await getShippingRatesAll(data);
     setshippingInfo(res.data);
+    if(ParamType == "rfq") {
+    const updatedShippingInfo = { 
+      ...res.data, 
+      requestQuoteDB: {
+        ...res.data.requestQuoteDB,
+        check_status: 1, 
+      }
+    };
+    setshippingInfo(updatedShippingInfo);
+  }
     setloadingShip(false);
   };
 
@@ -246,16 +267,15 @@ const CheckoutPopup = ({
       setSelectedAddress(null);
     }
   };
-  const [rateVal, setrateVal] = useState("");
-  const [taxPercentage, setaxPercentage] = useState(0);
-  const [taxAmount, setaxAmount] = useState(0);
+
   const handleRateSelected = async (rate, price) => {
-    // console.log("shippingInfo?.requestQuoteDB?.check_status",)
+    // console.log("shippingInfo?.requestQuoteDB?.check_status",shippingInfoData?.requestQuoteDB?.check_status)
+   
+    setrateVal(price);
     if (shippingInfoData?.requestQuoteDB?.check_status == 1) {
       setrateVal(0);
-      return;
+      // return;
     }
-    setrateVal(price);
     const elementId = localStorage.getItem("setItemelementData");
     var getId = "";
     if (elementId) {
@@ -267,16 +287,23 @@ const CheckoutPopup = ({
       service_code: rate,
       id: loadingPayId?._id,
       address_id: selectedShippingAddress?._id,
+      type :  shippingInfoData?.requestQuoteDB?.check_status == 1 ? 'request' : ''
     };
     try {
       const res = await shippingCost(data);
       console.log(
         "shippingInfo?.userDBdata?.tax_exempt",
-        shippingInfo?.userDBdata?.tax_exempt
+        shippingInfo?.requestQuoteDB?.check_status
       );
       if (shippingInfo?.userDBdata?.tax_exempt == 0) {
         setaxAmount(res.data.tax_amount);
         setaxPercentage(res.data.tax_percentage);
+        if (shippingInfoData?.requestQuoteDB?.check_status == 1 || ParamType == 'rfq') {
+          setrateVal(0);
+          setaxAmount(0);
+          setaxPercentage(0);
+          // return;
+        }
       }
     } catch (error) {
       setaxAmount(0);
@@ -300,6 +327,7 @@ const CheckoutPopup = ({
                 <div className="shipping_addr_name bill_addr_name">
                 <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
                   <h2 className="shipping_head mb-0">Shipping Address</h2>
+                  
                   <Button onClick={handleShow}  variant={null} className="btncstm p-0"><Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add Address</Button>
                   <AddAddressModal show={showPopup} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} />
                   </div>
@@ -357,7 +385,6 @@ const CheckoutPopup = ({
               <Col lg={6}>
                 <div className="ship_methods mb-4">
                   <h2 className="shipping_head">Shipping Method</h2>
-
                   {loadingShip ? (
                     <span
                       role="status"

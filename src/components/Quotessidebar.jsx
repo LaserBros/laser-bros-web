@@ -151,6 +151,7 @@ const QuotesSidebar = ({
   const [PayLoad, setPayLoad] = useState(false);
   const [PayLoadRfq, setPayLoadRfq] = useState(false);
   const [shippingInfo, setshippingInfo] = useState(false);
+  const [ParamType, setParamType] = useState("");
   const RequestQuote = async (id) => {
     const data = {
       id: id,
@@ -517,7 +518,10 @@ const QuotesSidebar = ({
                   <>
                   <Button
                     className="w-100 mt-3"
-                    onClick={() => handleUpdateQuoteChange("")}
+                    onClick={() =>{
+                       handleUpdateQuoteChange("");
+                       setParamType(""); 
+                    }}
                     disabled={PayLoad}
                   >
                     {PayLoad ? (
@@ -532,10 +536,13 @@ const QuotesSidebar = ({
                       "Proceed to checkout"
                     )}
                   </Button>
-                  {/* {buttonText != 1 &&
+                  {buttonText != 1 &&
                       <Button
                       className="w-100 mt-3"
-                      onClick={() => handleUpdateQuoteChange("rfq")}
+                      onClick={() => {
+                        handleUpdateQuoteChange("rfq") 
+                        setParamType("rfq"); 
+                      }}
                       disabled={PayLoadRfq}
                       >
                       {PayLoadRfq ? (
@@ -546,9 +553,9 @@ const QuotesSidebar = ({
                         ></span>
                       ) :
                         "Request a Quote"
-                      }
+                      } 
                       </Button>
-                  } */}
+                  }
                   </>
                   
                 )}
@@ -901,6 +908,7 @@ const QuotesSidebar = ({
           address={address}
           shippingInfo={shippingInfo}
           cardsData={cardsData}
+          ParamType={ParamType}
         />
       )}
     </>

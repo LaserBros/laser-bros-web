@@ -25,7 +25,8 @@ const CheckOutPay = ({
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedRate, setSelectedRate] = useState("");
-
+  const [taxPercentage, setaxPercentage] = useState(0);
+  const [taxAmount, settaxAmount] = useState(0);
   useEffect(() => {
     setSelectedAddress(null);
     setShippingSelectedAddress(null);
@@ -34,6 +35,8 @@ const CheckOutPay = ({
     setActiveTab("card");
     setpoNumber("");
     setfileUpload("");
+    setaxPercentage(shippingInfo?.tax?.tax_percentage);
+    settaxAmount(shippingInfo?.tax?.tax_amount);
     setSelectedRate(shippingInfo?.requestQuoteDB?.service_code);
     if (shippingInfo?.requestQuoteDB?.service_code != null) {
       handleRateSelected(
@@ -226,6 +229,7 @@ const CheckOutPay = ({
   };
 
   const [rateVal, setrateVal] = useState("");
+
   const handleRateSelected = async (rate, price) => {
     setSelectedRate(rate);
     // console.log("shippingInfo?.requestQuoteDB?.check_status",)
@@ -240,11 +244,16 @@ const CheckOutPay = ({
       service_code: rate,
       id: loadingPayId,
       address_id: selectedShippingAddress?._id,
+       type :  shippingInfo?.requestQuoteDB?.check_status == 1 ? 'request' : ''
     };
     try {
-      const res = shippingCost(data);
+      const res = await shippingCost(data);
+      setaxPercentage(res?.data?.tax_percentage);
+      settaxAmount(res?.data?.tax_amount);
     } catch (error) {}
   };
+
+
   return (
     <React.Fragment>
       <Modal
@@ -616,6 +625,16 @@ const CheckOutPay = ({
                   <span className="quotesitem">Shipping</span>
                   <span className="quotesitem quotesright">
                     <Amount amount={rateVal || 0} />{" "}
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+               {taxAmount != "" ? (
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <span className="quotesitem">Tax <b>({taxPercentage}%)</b></span>
+                  <span className="quotesitem quotesright">
+                    <Amount amount={taxAmount || 0} />{" "}
                   </span>
                 </div>
               ) : (
