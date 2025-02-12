@@ -40,7 +40,7 @@ export default function Specialty() {
     return (
         <React.Fragment>
             <Row>
-                <Col lg={12} xl="auto" className="w-calc-100-258">
+                <Col lg={12} xl="auto" className="">
                     <div className="resources-body">
                         <div className="resources-heading mb-4">
                             <span>Materials</span>

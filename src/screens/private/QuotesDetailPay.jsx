@@ -325,6 +325,7 @@ export default function QuotesDetailPay() {
             <Col lg={8} xl={9}>
               {quoteData &&
                 quoteData.length > 0 &&
+                Array.isArray(quoteData) &&
                 quoteData.map((quote, index) => (
                   <div className="list-quotes-main">
                     <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">

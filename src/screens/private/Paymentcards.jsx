@@ -170,12 +170,12 @@ export default function PaymentCards() {
         show={DeletemodalShow}
         onHide={handleCloseModal}
         title={"Are you sure?"}
-        desc={"You want to delete this address"}
+        desc={"Are you sure you want to delete this card?"}
         yesBtnText={"Yes"}
         noBtnText={"No"}
         onConfirm={deleteCardHandler}
         loading={Deleteloading}
-        message="Do you want to delete this address?"
+        message="Are you sure you want to delete this card?"
       />
     </React.Fragment>
   );

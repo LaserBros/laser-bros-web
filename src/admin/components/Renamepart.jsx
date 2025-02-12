@@ -42,6 +42,7 @@ const RenamePart = ({ show3, handleClose3, title, quote, onSave }) => {
                 value={name} // Controlled component
                 onChange={handleNameChange} // Ensure this is properly set
                 isInvalid={!!error} // Show validation error if exists
+                maxLength={50}
               />
               {error && (
                 <Form.Control.Feedback type="invalid">

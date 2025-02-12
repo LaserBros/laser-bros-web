@@ -214,7 +214,7 @@ const ViewCustomer = () => {
                       <b>Email :</b> {customer.email}
                     </p>
                     <p>
-                      <b>Phone Numbersss :</b>{" "}
+                      <b>Phone Number :</b>{" "}
                       {formatPhoneNumber(customer.phone_number)}
                     </p>
                     <p>
