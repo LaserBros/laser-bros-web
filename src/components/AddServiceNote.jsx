@@ -15,7 +15,7 @@ const AddServiceNote = ({ show3, name, handleClose3, title, onSave }) => {
         </Modal.Header> 
 
         <Modal.Body className="px-lg-5 px-4">
-          <p style={{textAlign:'center',marginBottom:'0px'}}>Please Sign In or Sign Up to add services!</p>
+          <p style={{textAlign:'center',marginBottom:'0px',paddingBottom:'47px'}}>Please Sign In or Sign Up to add services!</p>
         </Modal.Body>
       </Modal>
     </React.Fragment>
