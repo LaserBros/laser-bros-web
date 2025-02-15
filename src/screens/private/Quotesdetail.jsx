@@ -900,7 +900,7 @@ export default function QuotesDetail() {
       <section className="myaccount ptb-50">
         <Container>
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
-            {quoteData && quoteData.length > 0 ? (
+            {Array.isArray(quoteData)  && quoteData && quoteData.length > 0 ? (
               <>
                 <h2 className="quotes-head">Quote #{quoteList.search_quote}</h2>
               </>
@@ -936,6 +936,7 @@ export default function QuotesDetail() {
                
               {quoteData &&
                 quoteData.length > 0 &&
+                Array.isArray(quoteData) &&
                 quoteData.map((quote, index) => (
                   <div className="list-quotes-main">
                     <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
