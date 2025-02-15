@@ -161,6 +161,8 @@ const ViewCustomer = () => {
       settotalPage(response.data?.total);
       setQuotes(response.data?.updatedQuotes || []);
     } catch (error) {
+      settotalPage(1);
+      setQuotes([]);
       console.error("Error fetching cards:", error);
     } finally {
       setLoadingData(false);

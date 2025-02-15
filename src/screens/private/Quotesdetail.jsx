@@ -28,6 +28,7 @@ import {
 import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
 import AddAddressModal from "./AddaddressModal";
+import AddServiceNote from "../../components/AddServiceNote";
 export default function QuotesDetail() {
   const currentDate = new Date();
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export default function QuotesDetail() {
 
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
+  const [modalShow4, setModalShow4] = useState(false);
   const handleShow = (quote, id) => {
     setSelectedQuote(quote);
     setSelectedPartId(id);
@@ -334,6 +336,12 @@ export default function QuotesDetail() {
     id,
     checked
   ) => {
+    
+    const token = localStorage.getItem("authToken");
+    if(token == "" || token == undefined || token == null) {
+      setModalShow4(true);
+      return;
+    }
     if (checked) {
       setimage_url(image_url);
       setquote_name(quote_name);
@@ -342,6 +350,7 @@ export default function QuotesDetail() {
       setid_quote(id);
       setModalShow2(true);
     } else {
+    
       const isConfirmed = window.confirm(
         "Are you sure you want to remove bending?"
       );
@@ -417,6 +426,7 @@ export default function QuotesDetail() {
   const handleClose2 = () => setModalShow2(false);
 
   const handleClose3 = () => setModalShow3(false);
+  const handleClose4 = () => setModalShow4(false);
   const [quantities, setQuantities] = useState({
     item1: 1,
     item2: 1,
@@ -1217,6 +1227,10 @@ export default function QuotesDetail() {
         handleClose3={handleClose3}
         onSave={(newNote) => updateQuoteNote(selectedPartId, newNote)}
         title="Notes"
+      />
+      <AddServiceNote
+        show3={modalShow4}
+        handleClose3={handleClose4}
       />
     </React.Fragment>
   );

@@ -2958,10 +2958,12 @@ textarea.form-control {
             }
         }
     }
+    
     .modal-dialog {
+        
         .modal-content {
             border-radius: 20px;
-
+            
             .modal-header {
                 .modal-title {
                     font-size  : 24px;
@@ -4580,4 +4582,16 @@ textarea.form-control {
 &:hover{
     opacity: 0.75;
 }
+}
+
+.modal_header_blocking {
+    .modal-header{
+        // display: none;
+       
+    }
+    .modal-body{
+          p{
+        color: $black-color;
+        }
+    }
 }

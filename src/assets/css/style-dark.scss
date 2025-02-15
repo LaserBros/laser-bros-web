@@ -3,6 +3,13 @@
 
 body {
     &.dark {
+        .modal_header_blocking {
+            .modal-body{
+                  p{
+                color: $white-color;
+                }
+            }
+        }
         .account_show_tax label {
             color: $white-color;
         }
@@ -1075,6 +1082,9 @@ body {
             }
              .quotes-inner {
                 background:rgba($white-color, 0.1);
+                p {
+                    color: rgba($white-color, 0.75);
+                }
                 .head-quotes{
                     h2{
                         color:$white-color;
@@ -1368,3 +1378,5 @@ body {
   }
     }
 }
+
+
