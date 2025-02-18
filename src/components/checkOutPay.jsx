@@ -38,6 +38,7 @@ const CheckOutPay = ({
     setaxPercentage(shippingInfo?.tax?.tax_percentage);
     settaxAmount(shippingInfo?.tax?.tax_amount);
     setSelectedRate(shippingInfo?.requestQuoteDB?.service_code);
+    console.log(shippingInfo.requestQuoteDB?.service_code,".requestQuoteDB")
     if (shippingInfo?.requestQuoteDB?.service_code != null) {
       handleRateSelected(
         shippingInfo?.requestQuoteDB?.service_code,
@@ -45,6 +46,8 @@ const CheckOutPay = ({
           ? shippingInfo?.requestQuoteDB?.shipping_upsair_price
           : shippingInfo?.requestQuoteDB?.service_code == "ups_ground"
           ? shippingInfo?.requestQuoteDB?.shipping_upsground_price
+          : shippingInfo?.requestQuoteDB?.service_code == "ups_2nd_day_air"
+          ? shippingInfo?.requestQuoteDB?.shipping_ups_2nd_day_air_price
           : shippingInfo?.requestQuoteDB?.service_code == "custom_rates"
           ? shippingInfo?.requestQuoteDB?.custom_rates
           : "0.00"
@@ -232,7 +235,6 @@ const CheckOutPay = ({
 
   const handleRateSelected = async (rate, price) => {
     setSelectedRate(rate);
-    // console.log("shippingInfo?.requestQuoteDB?.check_status",)
     if (shippingInfo?.requestQuoteDB?.check_status == 1) {
       setrateVal(0);
       return;
@@ -323,6 +325,7 @@ const CheckOutPay = ({
                   <h2 className="shipping_head">Shipping Method</h2>
                   {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
                     <>
+                    
                       {selectedRate === "local_pickup" && (
                         <div className="rate-option">
                           <label>
@@ -335,6 +338,29 @@ const CheckOutPay = ({
                               }
                             />
                             &nbsp;&nbsp;Local Pickup (FREE)
+                          </label>
+                        </div>
+                      )}
+                       {selectedRate === "ups_2nd_day_air" && (
+                        <div className="rate-option">
+                          <label>
+                            <input
+                              type="checkbox"
+                              value="ups_2nd_day_air"
+                              checked={selectedRate === "ups_2nd_day_air"}
+                              onChange={() =>
+                                handleRateSelected("ups_2nd_day_air",  shippingInfo?.requestQuoteDB
+                                  ?.shipping_ups_2nd_day_air_price)
+                              }
+                            />
+                            &nbsp;&nbsp; &nbsp;&nbsp;UPS - UPS 2nd Day Air® (
+                            <Amount
+                              amount={
+                                shippingInfo?.requestQuoteDB
+                                  ?.shipping_ups_2nd_day_air_price
+                              }
+                              />
+                            )
                           </label>
                         </div>
                       )}

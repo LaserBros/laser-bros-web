@@ -176,7 +176,7 @@ export default function RFQS() {
           )}
         >
           {row.status == 1
-            ? "Pending"
+            ? "Pending Review"
             : row.status == 2
             ? "Approved!"
             : "Rejected"}

@@ -1,6 +1,6 @@
 const OrderStatus = ({ status }) => {
   return status == 0
-    ? "New"
+    ? "Order Received"
     : status == 1
     ? "In Progress"
     : status == 3
@@ -9,6 +9,6 @@ const OrderStatus = ({ status }) => {
     ? "Ready For Shipping"
     : status == 3
     ? "Delivered"
-    : "";
+    : ""; 
 };
 export default OrderStatus;

@@ -3,11 +3,24 @@ import { Row, Col, Card, CardHeader, CardBody, Button } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 import { Link, useParams } from "react-router-dom";
 import file from "../../assets/img/file1.jpg";
+import { Icon } from "@iconify/react";
 import { getParticularTransaction } from "../../../api/api";
+import RefundOrder from "../../components/RefundOrder";
 const ViewPayment = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [refund, serRefund] = useState(false);
   const [transaction, setTransaction] = useState([]);
+  const [modalShow2, setModalShow2] = useState(false);
+  const [refundBtn, setrefundBtn] = useState(false);
+  const handleClose2 = () => setModalShow2(false);
+  const moveRefund = () => {
+    setModalShow2(true);
+  }
+  const onRefund = (reason,customReason) => {
+    setrefundBtn(true);
+    console.log("reason,customReason",reason,customReason);
+  }
   const fetchOrder = async () => {
     const data = {
       id: id,
@@ -140,6 +153,25 @@ const ViewPayment = () => {
                         <span className="statusactive">Paid</span>
                       </div>
                     </div>
+                    <Button
+                      variant={null}
+                      onClick={moveRefund}
+                      className="btn-outline-primary min-width-147"
+                      disabled={refund}
+                    >
+                      {refund ? (
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                      ) : (
+                        <>
+                        <Icon icon="lets-icons:refund-back" />
+                        Refund
+                        </>
+                      )}
+                    </Button>
                   </Col>
                 </Row>
                 <DataTable
@@ -199,6 +231,12 @@ const ViewPayment = () => {
           </Col>
         )}
       </Card>
+      <RefundOrder
+       show2={modalShow2}
+       handleClose2={handleClose2}
+       onRefund={onRefund}
+       refundBtn={refundBtn}
+     />
     </React.Fragment>
   );
 };

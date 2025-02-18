@@ -35,6 +35,7 @@ const CheckoutPopup = ({
   const [custom_rates , setCustomRates] = useState(0);
   const [UpsRates , setUpsRates] = useState(0);
   const [UpsGround , setUpsGround] = useState(0);
+  const [shipping_ups_2nd_day_air_price , setshipping_ups_2nd_day_air_price] = useState(0);
   const [TaxRateVal , setTaxRateVal] = useState("");
   const existingShippingMethods = [
     {
@@ -54,20 +55,28 @@ const CheckoutPopup = ({
     {
       id: "ups_ground",
       name: "UPS® Ground",
-      price:  UpsGround != 0 ? UpsGround : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsground_price : UserData[0]?.service_code == 'ups_ground' ? UserData[0]?.shipping_amount?.amount : UpsGround,
+      price:  UpsGround != 0 ? UpsGround : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsground_price : UserData[1]?.service_code == 'ups_ground' ? UserData[1]?.shipping_amount?.amount : UpsGround,
+      isChecked: false,
+      isEditing: false,
+    },
+    {
+      id: "ups_2nd_day_air",
+      name: "UPS 2nd Day Air®",
+      price:  shipping_ups_2nd_day_air_price != 0 ? shipping_ups_2nd_day_air_price : addressDetail.shipping_ups_2nd_day_air_price == 1 ? addressDetail.shipping_ups_2nd_day_air_price : UserData[0]?.service_code == 'ups_2nd_day_air' ? UserData[0]?.shipping_amount?.amount : shipping_ups_2nd_day_air_price,
       isChecked: false,
       isEditing: false,
     },
     {
       id: "ups_next_day_air",
       name: "UPS Next Day Air®",
-      price:  UpsRates != 0 ? UpsRates : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsair_price : UserData[1]?.service_code == 'ups_next_day_air' ? UserData[1]?.shipping_amount?.amount : UpsRates,
+      price:  UpsRates != 0 ? UpsRates : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsair_price : UserData[2]?.service_code == 'ups_next_day_air' ? UserData[2]?.shipping_amount?.amount : UpsRates,
       isChecked: false,
       isEditing: false,
     },
   ];
 
   useEffect(() => {
+    console.log("shipping_ups_2nd_day_air_price",shipping_ups_2nd_day_air_price, UserData)
     console.log("addressDetail ---=-=-=-",addressDetail.custom_rates)
     // const transformedMethods = UserData.map((rate) => ({
     //   id: rate.service_code,
@@ -181,6 +190,11 @@ const CheckoutPopup = ({
     );
     const ups_next_day_airPrice = ups_next_day_air ? ups_next_day_air.price : 0;
 
+      const ups_2nd_day_air = shippingMethods.find(
+      (method) => method.id === "ups_2nd_day_air"
+    );
+    const ups_2nd_day_airPrice = ups_2nd_day_air ? ups_2nd_day_air.price : 0;
+
     const isNetTermSelected = selectedOptions.includes("NET Term");
     const selectedMethod =
       shippingMethods.find((method) => method.isChecked)?.id || null;
@@ -192,6 +206,7 @@ const CheckoutPopup = ({
         pay_type: isNetTermSelected ? 1 : 0,
         shipping_upsair_price: ups_next_day_airPrice,
         shipping_upsground_price: ups_groundPrice,
+        shipping_ups_2nd_day_air_price: ups_2nd_day_airPrice,
         custom_rates: custom_ratesPrice,
         service_code: id,
       };
@@ -234,6 +249,12 @@ const CheckoutPopup = ({
     );
     const ups_next_day_airPrice = ups_next_day_air ? ups_next_day_air.price : 0;
 
+
+    const shipping_ups_2nd_day_air_price = shippingMethods.find(
+      (method) => method.id === "ups_2nd_day_air"
+    );
+    const shipping_ups_2nd_day_airPrice = shipping_ups_2nd_day_air_price ? shipping_ups_2nd_day_air_price.price : 0;
+
     const isNetTermSelected = selectedOptions.includes("NET Term");
     const selectedMethod =
       shippingMethods.find((method) => method.isChecked)?.id || null;
@@ -245,6 +266,7 @@ const CheckoutPopup = ({
         pay_type: isNetTermSelected ? 1 : 0,
         shipping_upsair_price: ups_next_day_airPrice,
         shipping_upsground_price: ups_groundPrice,
+        shipping_ups_2nd_day_air_price:shipping_ups_2nd_day_airPrice,
         custom_rates: custom_ratesPrice,
         service_code: selectedServiceCode,
       };
@@ -252,6 +274,7 @@ const CheckoutPopup = ({
       const res = await updateShippingCost(data);
       setCustomRates(res.data.updateShippingCosts.custom_rates || 0);
       setUpsGround(res.data.updateShippingCosts.shipping_upsground_price || 0)
+      setshipping_ups_2nd_day_air_price(res.data.updateShippingCosts.shipping_ups_2nd_day_air_price || 0);
       setUpsRates(res.data.updateShippingCosts.shipping_upsair_price || 0)
       onSave(res.data);
     } catch (error) {}
@@ -298,6 +321,12 @@ const CheckoutPopup = ({
     setShippingSelectedAddress(null);
     setIsSameAsShipping(false);
     console.log("addressDetail", addressDetail);
+    if(addressDetail.shipping_price_update == 1) {
+      setCustomRates(addressDetail.custom_rates || 0);
+      setUpsGround(addressDetail.shipping_upsground_price || 0)
+      setshipping_ups_2nd_day_air_price(addressDetail.shipping_ups_2nd_day_air_price || 0);
+      setUpsRates(addressDetail.shipping_upsair_price || 0)
+    }
   }, [show]);
 
   const [modalShow, setModalShow] = useState(false);

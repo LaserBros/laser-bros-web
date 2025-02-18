@@ -19,6 +19,36 @@ const AddressDetails = ({
   onClickTrack,
   TaxRatesVal
 }) => {
+  const getStatusColorOrder = (status) => {
+      switch (status) {
+        case 1:
+          return {
+            backgroundColor: "rgba(233,240,248,1)", 
+            color: "#4F8CCA",
+            padding: 6,
+          };
+        case 3:
+          return {
+            backgroundColor: "rgba(1,148,60,0.10)",
+            color: "#01943C",
+            padding: 6,
+          };
+        case 2:
+          return {
+            backgroundColor: "rgba(79,140,202,0.10)",
+            color: "#4F8CCA",
+            padding: 6,
+          };
+        case 0:
+          return {
+            backgroundColor: "rgba(233,240,248,1)", 
+            color: "#4F8CCA",
+            padding: 6,
+          };
+        default:
+          return {};
+      }
+  }
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved!":
@@ -147,13 +177,13 @@ const AddressDetails = ({
                   className="badge_success"
                   style={getStatusColor(isPassShipping)}
                 >
-                  {isPassShipping}
+                  {isPassShipping == "Pending" ? 'Pending Review' : isPassShipping}
                 </span>
               </p>
             ) : (
               <p>
                 <b className="minWidth_110">Status:</b>{" "}
-                <span className="badge_success">
+                <span className="badge_success" style={getStatusColorOrder(addressDetail?.status)}>
                   {" "}
                   <OrderStatus status={addressDetail?.status} />
                 </span>

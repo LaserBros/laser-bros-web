@@ -5,11 +5,12 @@ import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
 
 export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ 
     full_name: "",
     nickname: "",
     email: "",
-    country: "",
+    country: "USA",
+    company_name:"", 
     address_line_1: "",
     address_line_2: "",
     city: "",
@@ -217,6 +218,18 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
                   </Col>
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
+                      <Form.Label>Company Name (optional)</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="company_name"
+                        value={formData.company_name}
+                        onChange={handleChange}
+                        placeholder="Enter Company Name"
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
                       <Form.Label>Address Nickname</Form.Label>
                       <Form.Control
                         type="text"
@@ -228,80 +241,6 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.nickName}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>Email Address</Form.Label>
-                      <Form.Control
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Enter email address"
-                        isInvalid={!!errors.email}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.email}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>Country</Form.Label>
-                      <Form.Select
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        isInvalid={!!errors.country}
-                      >
-                        <option disabled value="">
-                          Select
-                        </option>
-                        <option value="USA">USA</option>
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        {errors.country}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>State</Form.Label>
-                      <Form.Select
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        isInvalid={!!errors.state}
-                      >
-                        <option disabled value="">
-                          Select
-                        </option>
-                        {usStates.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid">
-                        {errors.state}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        placeholder="Enter your city"
-                        isInvalid={!!errors.city}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.city}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
@@ -333,7 +272,45 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
                       />
                     </Form.Group>
                   </Col>
-
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>City</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="Enter your city"
+                        isInvalid={!!errors.city}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.city}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>State</Form.Label>
+                      <Form.Select
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        isInvalid={!!errors.state}
+                      >
+                        <option disabled value="">
+                          Select
+                        </option>
+                        {usStates.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.state}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
                       <Form.Label>Zip Code</Form.Label>
@@ -347,6 +324,25 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.zipCode}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>Country</Form.Label>
+                      <Form.Select
+                        name="country"
+                        value={formData.country}
+                        onChange={handleChange}
+                        isInvalid={!!errors.country}
+                      >
+                        <option disabled value="">
+                          Select
+                        </option>
+                        <option value="USA">USA</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.country}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
@@ -366,6 +362,23 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>Email Address</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter email address"
+                        isInvalid={!!errors.email}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                 
                 </Row>
                 <div className="d-flex align-items-center flex-wrap gap-3">
                 <Button

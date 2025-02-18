@@ -13,6 +13,7 @@ export default function AddAddress() {
     full_name: "",
     nickname: "",
     email: "",
+    company_name:"", 
     address_line_1: "",
     address_line_2: "",
     city: "",
@@ -178,83 +179,30 @@ export default function AddAddress() {
                   </Col>
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
+                      <Form.Label>Company Name (optional)</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="company_name"
+                        placeholder="Enter Company Name"
+                        value={formValues.company_name}
+                        onChange={handleChange}
+                        isInvalid={!!errors.company_name}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
                       <Form.Label>Address Nickname</Form.Label>
                       <Form.Control
                         type="text"
                         name="nickname"
-                        placeholder="Enter full name"
+                        placeholder="Enter address nickname"
                         value={formValues.nickname}
                         onChange={handleChange}
                         isInvalid={!!errors.nickname}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.nickname}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>Email Address</Form.Label>
-                      <Form.Control
-                        type="email"
-                        name="email"
-                        placeholder="Enter email address"
-                        value={formValues.email}
-                        onChange={handleChange}
-                        isInvalid={!!errors.email}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.email}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>Country</Form.Label>
-                      <Form.Select
-                        name="country"
-                        value={formValues.country || ""}
-                        onChange={handleChange}
-                      >
-                        <option disabled value="">
-                          Select
-                        </option>
-                        <option value="USA">USA</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>State</Form.Label>
-                      <Form.Select
-                        name="state"
-                        value={formValues.state || ""}
-                        onChange={handleChange}
-                      >
-                        <option disabled value="">
-                          Select
-                        </option>
-                        {usStates.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6} lg={4}>
-                    <Form.Group className="mb-3 form-group">
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="city"
-                        placeholder="Enter your city"
-                        value={formValues.city}
-                        onChange={handleChange}
-                        isInvalid={!!errors.city}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.city}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
@@ -286,6 +234,43 @@ export default function AddAddress() {
                       />
                     </Form.Group>
                   </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>City</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="city"
+                        placeholder="Enter your city"
+                        value={formValues.city}
+                        onChange={handleChange}
+                        isInvalid={!!errors.city}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.city}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>State</Form.Label>
+                      <Form.Select
+                        name="state"
+                        value={formValues.state || ""}
+                        onChange={handleChange}
+                      >
+                        <option disabled value="">
+                          Select
+                        </option>
+                        {usStates.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                 
+                  
 
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
@@ -305,6 +290,21 @@ export default function AddAddress() {
                   </Col>
                   <Col md={6} lg={4}>
                     <Form.Group className="mb-3 form-group">
+                      <Form.Label>Country</Form.Label>
+                      <Form.Select
+                        name="country"
+                        value={formValues.country || ""}
+                        onChange={handleChange}
+                      >
+                        <option disabled value="">
+                          Select
+                        </option>
+                        <option value="USA">USA</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
                       <Form.Label>Phone No.</Form.Label>
                       <Form.Control
                         type="tel"
@@ -319,6 +319,24 @@ export default function AddAddress() {
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
+                  <Col md={6} lg={4}>
+                    <Form.Group className="mb-3 form-group">
+                      <Form.Label>Email Address</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        placeholder="Enter email address"
+                        value={formValues.email}
+                        onChange={handleChange}
+                        isInvalid={!!errors.email}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.email}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  
+                  
                 </Row>
                 <Button
                   type="submit"

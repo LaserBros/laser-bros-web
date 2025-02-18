@@ -151,12 +151,12 @@ export default function Orders() {
     // loadOrders(page, PerPage);
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status) => {  
     switch (status) {
       case 1:
         return {
-          backgroundColor: "rgba(156,39,176,0.10)",
-          color: "#9C27B0",
+          backgroundColor: "rgba(79,140,202,0.10)",
+          color: "#4F8CCA",
           padding: 6,
         };
       case 3:
@@ -173,8 +173,8 @@ export default function Orders() {
         };
       case 0:
         return {
-          backgroundColor: "rgba(250 ,204,21,0.10)",
-          color: "#facc15",
+          backgroundColor: "rgba(79,140,202,0.10)",
+          color: "#4F8CCA",
           padding: 6,
         };
       default:
