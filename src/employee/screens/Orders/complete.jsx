@@ -233,7 +233,7 @@ const CompleteOrders = () => {
                                   {row.material_code2}
                                 </span>
                               )}
-                            </td>
+                            </td> 
                             <td className="text-nowrap">
                               <span className="statusnew">
                                 <OrderStatus status={row.status} />
