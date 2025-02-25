@@ -21,10 +21,19 @@ export default function OrdersDetail() {
   const { id } = useParams();
   const [Shipping, setShipping] = useState(0);
   const [orders, setOrders] = useState([]);
+  const [Refund, setRefund] = useState([]);
   const [orderDetails, setOrdersDetail] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
+  const totalRefundAmount = Array.isArray(Refund)
+  ? Refund.reduce((sum, row) => sum + (row.refund_amount || 0), 0)
+  : 0;
+  const formatReason = (reason) => {
+    return reason
+      ?.split("_") // Split by underscore
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .join(" "); // Join with space
+  };
   const handlePDF = async () => {
      try {
           const data = {
@@ -64,7 +73,8 @@ export default function OrdersDetail() {
     };
     try {
       const res = await UsergetParticularOrderDetails(data);
-      setShipping(res.data);
+      setShipping(res.data); 
+      setRefund(res.data.refundDetails);
       setOrders(res.data.newUpdatedData);
       setOrdersDetail(res.data.orderedQuote);
       setLoading(false);
@@ -167,7 +177,7 @@ export default function OrdersDetail() {
                   >
                     Download Invoice
                   </Link>
-                {orderDetails.status == 3 && (orderDetails.shipping == "Local Pickup" ||ordersTrack?.length > 0) && (
+                {orderDetails.status == 3 && (orderDetails.shipping == "Local Pickup" || ordersTrack?.service_code == "custom_rates" || ordersTrack?.length > 0) && ( 
                   <Link
                     to=""
                     onClick={handleShow}
@@ -393,12 +403,33 @@ export default function OrdersDetail() {
                           </span>
                         </p>
                       )}
+                      {Array.isArray(Refund) && Refund.length >= 1 &&
+                      <hr />
+                      }
+                      {Array.isArray(Refund) && Refund.map((row, index) => (
+                      <p>
+                      <b>Refund 
+                        {Refund.length > 1 &&
+                        index + 1 
+                        }
+                        {row?.reason &&
+                      <>
+                       {" "}({formatReason(row?.reason)})
+                       </>
+                        }
+                       </b>
+                      <span>
+                        {" -"} 
+                        <Amount amount={row?.refund_amount} />
+                      </span>
+                    </p>
+                    ))}
                       <p className="grandtotal">
                         Total{" "}
                         <span>
                           {" "}
                           <Amount
-                            amount={parseFloat(orderDetails.total_amount)}
+                            amount={parseFloat(orderDetails.total_amount) - parseFloat(totalRefundAmount)}
                           />
                         </span>
                       </p>

@@ -1016,6 +1016,20 @@ html {
                     line-height: 25px;
                     text-transform: capitalize;
                 }
+                .statuscancle {
+                    font-size      : 12px;
+                    border-radius  : 30px;
+                    min-width      : 62px;
+                    display        : inline-flex;
+                    align-items    : center;
+                    justify-content: center;
+                    color          : red!important;
+                    background: rgba(rgb(255, 0, 0), 0.10);
+                    padding: 0 9px;
+                    height: 25px;
+                    line-height: 25px;
+                    text-transform: capitalize;
+                }
                 .download-wo-allfiles{
                     border: 1px dashed rgba($black-color, 0.1);
                     border-radius: 12px;

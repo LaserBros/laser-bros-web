@@ -47,7 +47,7 @@ const CheckoutPopup = ({
     },
     {
       id: "custom_rates",
-      name: "Custom Rates",
+      name: "Freight Shipping",
       price:  custom_rates != 0 ? custom_rates : addressDetail.shipping_price_update == 1 ? addressDetail.custom_rates : custom_rates,
       isChecked: false,
       isEditing: false,

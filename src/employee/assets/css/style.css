@@ -309,25 +309,25 @@ body {
   min-width: 23px;
   text-align: end;
 }
-.modal-custom .modal-dialog .modal-content .modal-body .form-control {
+.modal-custom .modal-dialog .modal-content .modal-body .form-control, .modal-custom .modal-dialog .modal-content .modal-body .form-select {
   height: auto;
   border-radius: 12px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   color: #000000;
   padding-left: 20px;
-  padding-top: 10px;
+  min-height: 38px;
   padding-right: 20px;
   font-size: 14px;
   resize: none;
 }
-.modal-custom .modal-dialog .modal-content .modal-body .form-control:focus {
+.modal-custom .modal-dialog .modal-content .modal-body .form-control:focus, .modal-custom .modal-dialog .modal-content .modal-body .form-select:focus {
   box-shadow: none;
 }
-.modal-custom .modal-dialog .modal-content .modal-body .form-control::-moz-placeholder {
+.modal-custom .modal-dialog .modal-content .modal-body .form-control::-moz-placeholder, .modal-custom .modal-dialog .modal-content .modal-body .form-select::-moz-placeholder {
   color: #000000;
   opacity: 0.5;
 }
-.modal-custom .modal-dialog .modal-content .modal-body .form-control::placeholder {
+.modal-custom .modal-dialog .modal-content .modal-body .form-control::placeholder, .modal-custom .modal-dialog .modal-content .modal-body .form-select::placeholder {
   color: #000000;
   opacity: 0.5;
 }
@@ -915,6 +915,20 @@ body {
   justify-content: center;
   color: #01943C !important;
   background: rgba(1, 148, 60, 0.1);
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+  text-transform: capitalize;
+}
+.wrapper .maincontent_div .card .card-body .statuscancle {
+  font-size: 12px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: red !important;
+  background: rgba(255, 0, 0, 0.1);
   padding: 0 9px;
   height: 25px;
   line-height: 25px;
@@ -1779,4 +1793,69 @@ body {
   opacity: 0.5;
   position: absolute;
   top: 10px;
+}
+
+.btntrash {
+  width: 25px;
+  height: 25px;
+  background: #E11F26;
+  color: #ffffff;
+  min-width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
+.statusactiveData {
+  font-size: 12px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: red !important;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+  text-transform: capitalize;
+}
+
+.statusactiveNew {
+  font-size: 12px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 148, 60, 0.1);
+  color: #01943C;
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+  text-transform: capitalize;
+}
+
+.refund-content p {
+  font-size: 14px;
+  font-weight: 400;
+}
+.refund-content p a {
+  text-decoration: underline;
+  color: #4F8CCA;
+  font-weight: 500;
+}
+
+.removefileimg {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tracking-info.custom_rate p .maxwidth130 {
+  max-width: 130px;
+  display: inline-block;
+  width: 100%;
 }/*# sourceMappingURL=style.css.map */

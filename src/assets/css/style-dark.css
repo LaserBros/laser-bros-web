@@ -3,6 +3,9 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .modal_header_blocking .modal-body p {
+  color: #ffffff;
+}
 body.dark .account_show_tax label {
   color: #ffffff;
 }
@@ -224,6 +227,9 @@ body.dark .modal .modal-dialog .modal-content .modal-body .bend-img-main p {
   color: rgba(255, 255, 255, 0.5);
 }
 body.dark .modal .modal-dialog .modal-content .modal-body .bend-img-main p span {
+  color: #ffffff;
+}
+body.dark .modal .modal-dialog .modal-content .modal-body .bend-content button {
   color: #ffffff;
 }
 body.dark .modal .modal-dialog .modal-content .modal-body .bend-content .bend-title h2 {
@@ -556,6 +562,9 @@ body.dark .resources-main .resources-body .resources-pagination {
 body.dark .resources-main .resources-body .resources-heading h1 {
   color: #ffffff;
 }
+body.dark .resources-main .resources-body .resources-heading p, body.dark .resources-main .resources-body .resources-heading b {
+  color: #ffffff;
+}
 body.dark .resources-main .resources-body .searchfield svg,
 body.dark .resources-main .resources-body .searchfaq svg {
   color: #ffffff;
@@ -572,6 +581,16 @@ body.dark .resources-main .resources-body .searchfield .form-control::-moz-place
 body.dark .resources-main .resources-body .searchfield .form-control::placeholder,
 body.dark .resources-main .resources-body .searchfaq .form-control::placeholder {
   color: rgba(255, 255, 255, 0.75);
+}
+body.dark .resources-main .resources-body .resources-content h5 {
+  color: #ffffff;
+}
+body.dark .resources-main .resources-body .resources-content h6, body.dark .resources-main .resources-body .resources-content strong, body.dark .resources-main .resources-body .resources-content b {
+  color: #ffffff;
+}
+body.dark .resources-main .resources-body .resources-content table td {
+  background-color: #000000;
+  color: #ffffff;
 }
 body.dark .resources-main .resources-body .resources-content .map-resources {
   background: rgba(255, 255, 255, 0.1);
@@ -600,6 +619,9 @@ body.dark .resources-main .resources-body .resources-content p {
   color: #bfbfbf;
 }
 body.dark .resources-main .resources-body .resources-content ul li {
+  color: #bfbfbf;
+}
+body.dark .resources-main .resources-body .resources-content li {
   color: #bfbfbf;
 }
 body.dark .resources-main .resources-body .resources-content .resources-alerts p {
@@ -662,6 +684,9 @@ body.dark .list-quotes-main .input-group button:hover svg {
   color: #000000;
 }
 body.dark .list-quotes-main .list-quotes .right-quote p {
+  color: rgba(255, 255, 255, 0.7);
+}
+body.dark .list-quotes-main .list-quotes .right-quote b {
   color: rgba(255, 255, 255, 0.7);
 }
 body.dark .list-quotes-main .list-quotes .right-quote .quote-off {
@@ -732,6 +757,9 @@ body.dark .quotes-sidebar .customtabs li.nav-item button.nav-link.active {
 }
 body.dark .quotes-sidebar .quotes-inner {
   background: rgba(255, 255, 255, 0.1);
+}
+body.dark .quotes-sidebar .quotes-inner p {
+  color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .head-quotes h2 {
   color: #ffffff;

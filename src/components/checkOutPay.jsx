@@ -431,7 +431,7 @@ const CheckOutPay = ({
                                   )
                                 }
                               />
-                              &nbsp;&nbsp;Custom Rates (
+                              &nbsp;&nbsp;Freight Shipping (
                               <Amount
                                 amount={
                                   shippingInfo?.requestQuoteDB?.custom_rates
@@ -677,7 +677,7 @@ const CheckOutPay = ({
                       parseFloat(
                         shippingInfo?.requestQuoteDB?.total_bend_price || 0
                       ) +
-                      parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0) +  parseFloat(taxAmount == "" ? 0 : taxAmount || 0)
                     }
                   />
                 </span>
@@ -731,7 +731,7 @@ const CheckOutPay = ({
                                     shippingInfo?.requestQuoteDB
                                       ?.total_bend_price || 0
                                   ) +
-                                  parseFloat(rateVal == "" ? 0 : rateVal || 0)
+                                  parseFloat(rateVal == "" ? 0 : rateVal || 0) +  parseFloat(taxAmount == "" ? 0 : taxAmount || 0)
                                 }
                               />
                             </b>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal,Image } from "react-bootstrap";
+import pdf_icon from "../assets/img/preview_pdf.png";
 
 const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
   return (
@@ -14,7 +15,20 @@ const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
           <Modal.Title className="mx-auto">Track Order</Modal.Title>
         </Modal.Header>
         <Modal.Body className="px-lg-5 px-4 pb-4 add_custom_color_track">
-          {shipType == "Local Pickup" || shipType == "local_pickup"  ?
+          {ordersTrack.service_code == 'custom_rates' ?
+             <div className="tracking-info custom_rate">
+             <div className="events-list">
+                   <div className="event-item mb-3">
+                     <p className="mb-1"><b>Your Order has been Shipped!</b></p>
+                    <p className="mb-1"><b className="maxwidth130">Carrier Name:</b>{ordersTrack?.freight_carrier_name}</p>
+                    <p className="mb-1"><b className="maxwidth130">Tracking:</b>{ordersTrack?.freight_tracking}</p>
+                    <p className="mb-1"><b className="maxwidth130">Download BOL:</b><a href={ordersTrack?.freight_bol_file} target="_blank"><Image src={pdf_icon} style={{width:'100px',height:'100px'}} /></a></p>
+                  
+                    </div>   
+                    </div>
+                    </div>
+          : 
+          shipType == "Local Pickup" || shipType == "local_pickup"  ?
             <div className="events-list">
             <div className="events-list">
                   <div className="event-item mb-3 text-center" style={{fontStyle:'italic'}}>
@@ -27,7 +41,7 @@ const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
                    </div>
                    </div>
           :
-          ordersTrack.map((data) => (
+          Array.isArray(ordersTrack) && ordersTrack.map((data) => (
             <>
               <div className="tracking-info">
                 <h5>Tracking Number: {data?.tracking_number}</h5>

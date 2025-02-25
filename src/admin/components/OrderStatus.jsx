@@ -9,6 +9,8 @@ const OrderStatus = ({ status }) => {
     ? "Ready For Shipping"
     : status == 3
     ? "Delivered"
+    : status == 4
+    ? "Order Canceled"
     : ""; 
 };
 export default OrderStatus;

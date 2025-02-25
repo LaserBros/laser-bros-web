@@ -227,7 +227,7 @@ const CompleteOrders = () => {
                               />
                             </td>
                             <td className="text-nowrap">
-                              <span className="statusnew">
+                              <span className={row.status == 4 ? 'statuscancle' : `statusnew`}>
                                 <OrderStatus status={row.status} />
                               </span>
                             </td>

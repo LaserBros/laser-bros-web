@@ -74,7 +74,7 @@ const RFQS = () => {
       }));
       setLoadingBtn(false);
       setModalShow(false);
-      // loadData();
+      loadData(currentPage, name, sortOrder,true);
     }
   };
 
@@ -126,10 +126,14 @@ const RFQS = () => {
     loadData(1, name, selectedValue);
   };
 
-  const loadData = async (page, search = "", sortOrder = "") => {
+  const loadData = async (page, search = "", sortOrder = "",type) => {
+    if(!type) {
     setLoading(true);
+    }
     try {
+      if(!type) {
       setQuotes([]);
+      }
       const [response] = await Promise.all([
         AdminfetchRFQ(page, search, sortOrder),
       ]);

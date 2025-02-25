@@ -353,13 +353,14 @@ html {
                           }
                       }
                 }
-                .form-control {
+                .form-control ,  .form-select {
                     height       : auto;
                     border-radius: 12px;
                     border       : 1px solid rgba($black-color, 0.15);
                     color        : $black-color;
                     padding-left : 20px;
-                    padding-top : 10px;
+                    // padding-top : 10px;
+                    min-height: 38px;
                     padding-right: 20px;
                     font-size    : 14px;
                     resize: none;
@@ -1057,6 +1058,20 @@ html {
                     justify-content: center;
                     color          : #01943C!important;
                     background: rgba(#01943C, 0.10);
+                    padding: 0 9px;
+                    height: 25px;
+                    line-height: 25px;
+                    text-transform: capitalize;
+                }
+                .statuscancle {
+                    font-size      : 12px;
+                    border-radius  : 30px;
+                    min-width      : 62px;
+                    display        : inline-flex;
+                    align-items    : center;
+                    justify-content: center;
+                    color          : red!important;
+                    background: rgba(rgb(255, 0, 0), 0.10);
                     padding: 0 9px;
                     height: 25px;
                     line-height: 25px;
@@ -2021,4 +2036,59 @@ html {
     justify-content: center;
     border-radius: 50%;
     font-size: 14px;
+}
+
+.statusactiveData {
+    font-size      : 12px;
+    border-radius  : 30px;
+    min-width      : 62px;
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+    color          : red!important;
+    background: rgba(rgb(255, 0, 0), 0.10);
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    text-transform: capitalize;
+}
+
+.statusactiveNew {
+    font-size      : 12px;
+    border-radius  : 30px;
+    min-width      : 62px;
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+    background: rgba(1, 148, 60, 0.1);
+    color: #01943C;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    text-transform: capitalize;
+}
+.refund-content{
+    p{
+        font-size: 14px;
+        font-weight: 400;
+        a{
+            text-decoration: underline;
+            color:$primary-color;
+            font-weight: 500;
+        }
+    }
+}
+.removefileimg{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.tracking-info.custom_rate{
+    p  {
+        .maxwidth130{
+            max-width: 130px;
+            display: inline-block;
+            width: 100%;
+        }
+    }
 }

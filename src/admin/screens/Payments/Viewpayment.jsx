@@ -4,29 +4,62 @@ import DataTable from "react-data-table-component";
 import { Link, useParams } from "react-router-dom";
 import file from "../../assets/img/file1.jpg";
 import { Icon } from "@iconify/react";
-import { getParticularTransaction } from "../../../api/api";
+import { CancleRefund, getParticularTransaction } from "../../../api/api";
 import RefundOrder from "../../components/RefundOrder";
+import { toast } from "react-toastify";
+import ConfirmationModal from "../../../components/ConfirmationModal";
+import Amount from "../../../components/Amount";
 const ViewPayment = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [Refundloading, setLoadingRefund] = useState(false);
   const [refund, serRefund] = useState(false);
   const [transaction, setTransaction] = useState([]);
+  const [RefundData, setRefundData] = useState([]);
   const [modalShow2, setModalShow2] = useState(false);
+  const handleClose = () => setModalShow(false);
+  const handleCancle = () => setModalShow(true);
+  const [modalShow, setModalShow] = useState(false);
   const [refundBtn, setrefundBtn] = useState(false);
   const handleClose2 = () => setModalShow2(false);
   const moveRefund = () => {
     setModalShow2(true);
-  }
-  const onRefund = (reason,customReason) => {
-    setrefundBtn(true);
-    console.log("reason,customReason",reason,customReason);
-  }
+  };
+  const onRefund = async (type,reason, customReason, amount) => {
+    setLoadingRefund(true);
+    const data = {
+      id: transaction?.transactions?.orderDetails?._id,
+      reason: reason,
+      type: type,
+      amount: amount,
+    };
+    try {
+      const res = await CancleRefund(data);
+      setLoadingRefund(false);
+      fetchOrder();
+      setModalShow2(false);
+      setModalShow(false);
+      if(type == 'refund') {
+        toast.success("Refund initiated Successfully");
+      } else {
+        toast.success("Order cancle Successfully");
+      }
+      
+      return;
+    } catch (error) {
+      toast.error(error.response.data.error);
+      setLoadingRefund(false);
+      setModalShow(false);
+      return;
+    }
+  };
   const fetchOrder = async () => {
     const data = {
       id: id,
     };
     try {
       const res = await getParticularTransaction(data);
+      setRefundData(res.data.transactions?.refundDetails);
       setTransaction(res.data);
       setLoading(false);
     } catch (error) {
@@ -34,9 +67,19 @@ const ViewPayment = () => {
       setLoading(false);
     }
   };
+  const totalRefundAmount = Array.isArray(RefundData)
+  ? RefundData.reduce((sum, row) => sum + (row.refund_amount || 0), 0)
+  : 0;
   useEffect(() => {
     fetchOrder();
   }, []);
+
+  const formatReason = (reason) => {
+    return reason
+      ?.split("_") // Split by underscore
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .join(" "); // Join with space
+  };
   const columns = [
     {
       name: "Image",
@@ -113,19 +156,19 @@ const ViewPayment = () => {
                     <div className="payment-card">
                       <div className="d-flex align-items-center mb-3">
                         <label>Name </label>{" "}
-                        <span>{transaction?.userDetails?.full_name}</span>
+                        <span>{transaction?.transactions?.userDetails?.full_name}</span>
                       </div>
                       <div className="d-flex align-items-center mb-3">
                         <label>Email Address </label>{" "}
-                        <span>{transaction?.userDetails?.email}</span>
+                        <span>{transaction?.transactions?.userDetails?.email}</span>
                       </div>
                       <div className="d-flex align-items-center">
                         <label>Phone No </label>{" "}
-                        <span>{transaction?.userDetails?.phone_number}</span>
+                        <span>{transaction?.transactions?.userDetails?.phone_number}</span>
                       </div>
                     </div>
                   </Col>
-                  <Col xl={3} lg={4} md={6}>
+                  <Col xl={4} lg={4} md={6}>
                     <div className="payment-card">
                       <div className="d-flex align-items-center mb-3">
                         <label>Work Order </label>{" "}
@@ -142,7 +185,7 @@ const ViewPayment = () => {
                             currency: "USD", // Change to your desired currency
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
-                          }).format(transaction?.orderDetails?.total_amount)}
+                          }).format(transaction?.transactions?.orderDetails?.total_amount)}
                         </span>
                       </div>
                       <div className="d-flex align-items-center mb-3">
@@ -150,33 +193,45 @@ const ViewPayment = () => {
                       </div>
                       <div className="d-flex align-items-center">
                         <label>Status </label>{" "}
+                        {transaction?.transactions?.orderDetails?.status == 4 ?
+                        <span className="statusactive" style={{backgroundColor:'red',color:'#fff'}}>Order Canceled</span>
+                        :
                         <span className="statusactive">Paid</span>
+                        }
                       </div>
                     </div>
+                    {transaction?.transactions?.orderDetails?.status != 4 ?
+                    <div className="d-flex align-items-center gap-2 mt-3 flex-wrap">
                     <Button
                       variant={null}
                       onClick={moveRefund}
-                      className="btn-outline-primary min-width-147"
+                      className="btn-outline-primary flex-grow-1"
+                    >
+                      <Icon icon="lets-icons:refund-back" />
+                      Refund
+                    </Button>
+                  {Array.isArray(RefundData) && RefundData.length >= 1 ? null :
+                  <>
+                    <Button
+                      variant={null}
+                      onClick={handleCancle}
+                      className="btn-outline-primary flex-grow-1"
                       disabled={refund}
                     >
-                      {refund ? (
-                        <span
-                          className="spinner-border spinner-border-sm"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
-                      ) : (
-                        <>
-                        <Icon icon="lets-icons:refund-back" />
-                        Refund
-                        </>
-                      )}
+                  
+                          {/* <Icon icon="lets-icons:refund-back" /> */} 
+                          Order Canceled
+                  
                     </Button>
+                    </>
+                }
+                    </div> 
+                    : null }
                   </Col>
                 </Row>
                 <DataTable
                   columns={columns}
-                  data={transaction?.updatedSubQuoteData}
+                  data={transaction?.transactions?.subQuote}
                   responsive
                   className="custom-table"
                 />
@@ -191,19 +246,29 @@ const ViewPayment = () => {
                           currency: "USD", // Change to your desired currency
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
-                        }).format(transaction?.orderDetails?.total_amount)}
+                        }).format(transaction?.transactions?.orderDetails?.total_amount)}
+                      </span>
+                    </p> 
+                    {Array.isArray(RefundData) && RefundData.map((row, index) => (
+                      <p>
+                      <b>Refund {index + 1} {row?.reason &&
+                      <>
+                       ({formatReason(row?.reason)})
+                       </>
+                        }
+                       </b>
+                      <span>
+                        {" -"}
+                        <Amount amount={row?.refund_amount} />
                       </span>
                     </p>
+                    ))}
+                    
                     <p>
                       <b>Total Amount</b>{" "}
                       <b>
                         {" "}
-                        {new Intl.NumberFormat("en-US", {
-                          style: "currency",
-                          currency: "USD", // Change to your desired currency
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(transaction?.orderDetails?.total_amount)}
+                        <Amount amount={transaction?.transactions?.orderDetails?.total_amount - totalRefundAmount} />
                       </b>
                     </p>
                   </Col>
@@ -232,11 +297,23 @@ const ViewPayment = () => {
         )}
       </Card>
       <RefundOrder
-       show2={modalShow2}
-       handleClose2={handleClose2}
-       onRefund={onRefund}
-       refundBtn={refundBtn}
-     />
+        show2={modalShow2}
+        handleClose2={handleClose2}
+        onRefund={onRefund}
+        amount={transaction?.transactions?.orderDetails?.total_amount - totalRefundAmount}
+        refundBtn={refundBtn}
+        RefundloadingLoad={Refundloading}
+      />
+       <ConfirmationModal
+        show={modalShow}
+        onHide={handleClose}
+        title={"Are you sure?"}
+        desc={"If you cancel this order, a full refund will be automatically issued to the user."}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={() => onRefund("cancel")}
+        loading={Refundloading}
+      />
     </React.Fragment>
   );
 };

@@ -17,7 +17,9 @@ const AddressDetails = ({
   onClickDownloadAllFile,
   isShowTrack,
   onClickTrack,
-  TaxRatesVal
+  TaxRatesVal,
+  isShippingInfo,
+  onClickShipping
 }) => {
   const getStatusColorOrder = (status) => {
       switch (status) {
@@ -33,6 +35,12 @@ const AddressDetails = ({
             color: "#01943C",
             padding: 6,
           };
+          case 4:
+            return {
+              backgroundColor: "rgba(255, 0, 0, 0.1)",
+              color: "red",
+              padding: 6,
+            };  
         case 2:
           return {
             backgroundColor: "rgba(79,140,202,0.10)",
@@ -75,6 +83,7 @@ const AddressDetails = ({
     }
   };
   const formatString = (input) => {
+    if(input == "custom_rates") return "Freight Shipping";
     if (!input) return "";
     return input
       .replace(/_/g, " ")
@@ -150,6 +159,7 @@ const AddressDetails = ({
             {(addressDetail?.service_code || addressDetail?.shipping) && (
               <p>
                 <b className="minWidth_110">Shipping Type:</b>{" "}
+                 
                 {formatString(
                   addressDetail?.service_code || addressDetail?.shipping
                 )}
@@ -255,6 +265,15 @@ const AddressDetails = ({
          
             {isShowDownload && (
               <>
+              {isShippingInfo && addressDetail?.status == 2 && addressDetail?.move_status == 2 && addressDetail?.service_code == 'custom_rates' &&
+                   <Button
+                  className="QuoteBillDownload_btn ms-2 mt-2"
+                  variant={null}
+                  onClick={onClickShipping}
+                >
+                  Enter Shipping Info
+                </Button>
+              }
                 <Button
                   className="QuoteBillDownload_btn ms-2 mt-2"
                   variant={null}

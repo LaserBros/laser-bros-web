@@ -52,6 +52,7 @@ import AddressDetails from "../../components/AddressDetails";
 import ShippingStatus from "../../../components/ShippingStatus";
 import ModalOrderData from "../../components/OrderData";
 import getMaterialColor from "../../components/ColorCode";
+import ModalShippingInfo from "../../components/ModalShippingInfo";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -217,6 +218,7 @@ const OrdersDetail = () => {
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
   const [modalShow4, setModalShow4] = useState(false);
+  const [modalShow5, setModalShow5] = useState(false);
   const [customer_note, setcustomer_note] = useState(false);
   const [admin_note, setadmin_note] = useState(false);
   const navigate = useNavigate();
@@ -262,6 +264,7 @@ const OrdersDetail = () => {
       setLoadingOrderQuote("");
     }
   };
+  const handleClose5 = () => setModalShow5(false);
   const handleClose4 = () => setModalShow4(false);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -335,7 +338,9 @@ const OrdersDetail = () => {
     }
   };
   
-
+  const onClickShipping = () => {
+    setModalShow5(true);
+  }
 
   const calculateRefresh = (index) => {
     const box = boxes[index];
@@ -642,6 +647,29 @@ const OrdersDetail = () => {
     setordersTrack(res.data);
     // settrackNumber(res.data);
   };
+  const ShippingInfoData = async (form) => {
+    console.log("Sdsdsdsdsds",form)
+    var formData = new FormData();
+    formData.append("file", form.file);
+    formData.append("freight_carrier_name", form.freight_carrier_name);
+    formData.append("freight_tracking", form.freight_tracking);
+    formData.append("id", order?.orderedQuote._id);
+    formData.append("move_status", 3);
+    formData.append("status", 3);
+    try {
+      await moveOrderToComplete(formData);
+      toast.success("Shipping information added sucessfully!")
+      setLoadingWeight(false);
+      navigate("/admin/complete-orders");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      setLoadingWeight(false);
+      return;
+    }
+      
+
+  }
+
   const handleCheckboxChangeEvent = async () => {
     const event = eventId;
     const id = Ids;
@@ -870,7 +898,15 @@ const OrdersDetail = () => {
                         </div>
                       </>
                     )}
-
+                  <Button
+                    as={Link}
+                    to={'/admin/payment-history/view-payment/'+order.transactionDetails?._id}
+                     target="_blank"
+                      rel="noopener noreferrer"
+                    className="d-inline-flex align-items-center justify-content-center me-2"
+                  >
+                    View Transaction
+                  </Button>
                   <Button
                     onClick={handleBack}
                     className="d-inline-flex align-items-center justify-content-center"
@@ -1005,6 +1041,8 @@ const OrdersDetail = () => {
                   }
                   isShowTrack={true}
                   onClickTrack={handleShowTrack}
+                  isShippingInfo={true}
+                  onClickShipping={onClickShipping}
                 />
 
                 {order?.orderedQuote.status == 0 ? (
@@ -1065,8 +1103,8 @@ const OrdersDetail = () => {
                     )}
                   </>
                 )}
-                {/* {order?.serviceCode?.name != "Local Pickup" ? ( */}
-                {order?.orderedQuote.move_status === 2 ? (
+                {order?.orderedQuote?.service_code != "custom_rates" && (
+                order?.orderedQuote.move_status === 2 ? (
                   <div className="orders-shipping">
                     <div className="shipping-container">
                       {orderInfo?.map((Info, index) => (
@@ -1091,6 +1129,7 @@ const OrdersDetail = () => {
                         </div>
                       ))}
                       <div className="section packageDeminsionMain_div">
+                        
                         {boxes?.map((box, index) => (
                           <Row
                             className="section DeminsionMain_div"
@@ -1415,7 +1454,8 @@ const OrdersDetail = () => {
                 ) : (
                   // )
                   <div></div>
-                )}
+                )
+              )}
 
                 <div className="orders-shipping d-flex align-items-center justify-content-between flex-wrap mt-3">
                   <div className="d-inline-flex align-items-center gap-2 my-1">
@@ -1874,6 +1914,12 @@ const OrdersDetail = () => {
           QuoteData={subquote_number}
           modalShow4={modalShow4}
           handleClose4={handleClose4}
+        />
+         <ModalShippingInfo
+          QuoteData={subquote_number}
+          modalShow4={modalShow5}
+          handleClose4={handleClose5}
+          ShippingInfoData={ShippingInfoData}
         />
       </React.Fragment>
     </div>

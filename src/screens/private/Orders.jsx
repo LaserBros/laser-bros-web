@@ -165,7 +165,7 @@ export default function Orders() {
           color: "#01943C",
           padding: 6,
         };
-      case 2:
+      case 2: 
         return {
           backgroundColor: "rgba(79,140,202,0.10)",
           color: "#4F8CCA",
@@ -177,6 +177,12 @@ export default function Orders() {
           color: "#4F8CCA",
           padding: 6,
         };
+        case 4:
+          return {
+            backgroundColor: "rgba(255, 0, 0, 0.1)",
+            color: "red",
+            padding: 6,
+          };  
       default:
         return {};
     }

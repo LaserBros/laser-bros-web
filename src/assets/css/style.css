@@ -25,6 +25,20 @@ body {
   background-color: #ffffff !important;
 }
 
+.img_data_collapse {
+  height: 440px;
+  width: 440px;
+}
+
+.mission_img_width {
+  height: 509px !important;
+}
+@media only screen and (max-width: 1199.98px) {
+  .mission_img_width {
+    height: 409px !important;
+  }
+}
+
 body {
   overflow-x: hidden;
 }
@@ -694,7 +708,6 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 /*Home Css Start*/
 .banner-home {
   padding-top: 75px;
-  padding-bottom: 75px;
   width: 100%;
   min-height: 900px;
   display: flex;
@@ -822,7 +835,7 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 }
 
 .our-services {
-  padding-top: 240px;
+  padding-top: 165px;
   padding-bottom: 240px;
   position: relative;
   overflow: hidden;
@@ -1910,6 +1923,10 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
     font-size: 28px;
   }
 }
+.resources-main .resources-body .resources-content .table-less-format li {
+  padding-left: 0px !important;
+  padding-bottom: 0px !important;
+}
 .resources-main .resources-body .resources-content .map-resources {
   text-align: center;
   padding: 30px;
@@ -1951,6 +1968,21 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   }
 }
 .resources-main .resources-body .resources-content p a {
+  color: #4F8CCA;
+  text-decoration: none;
+  font-weight: 600;
+}
+.resources-main .resources-body .resources-content li {
+  font-size: 16px;
+  color: #6C6A72;
+  line-height: 1.75;
+}
+@media only screen and (max-width: 1199.98px) {
+  .resources-main .resources-body .resources-content li {
+    font-size: 14px;
+  }
+}
+.resources-main .resources-body .resources-content li a {
   color: #4F8CCA;
   text-decoration: none;
   font-weight: 600;
@@ -2850,7 +2882,7 @@ textarea.form-control {
 .list-quotes-main .list-quotes .img-quote .bublenumber {
   position: absolute;
   top: -10px;
-  left: -16px;
+  left: -14px;
   background: #98c1eb;
   display: inline-block;
   border-radius: 10px;
@@ -3993,4 +4025,18 @@ textarea.form-control {
 }
 .ModalPostOPS_check .form-check .form-check-input:checked ~ .form-check-label {
   background: #ff8cd3;
+}
+
+.btncstm {
+  color: #000000;
+  border-bottom: none;
+  border-radius: 0;
+  font-size: 14px;
+}
+.btncstm:hover {
+  opacity: 0.75;
+}
+
+.modal_header_blocking .modal-body p {
+  color: #000000;
 }/*# sourceMappingURL=style.css.map */

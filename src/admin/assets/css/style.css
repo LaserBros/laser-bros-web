@@ -897,6 +897,20 @@ body {
   line-height: 25px;
   text-transform: capitalize;
 }
+.wrapper .maincontent_div .card .card-body .statuscancle {
+  font-size: 12px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: red !important;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+  text-transform: capitalize;
+}
 .wrapper .maincontent_div .card .card-body .download-wo-allfiles {
   border: 1px dashed rgba(0, 0, 0, 0.1);
   border-radius: 12px;

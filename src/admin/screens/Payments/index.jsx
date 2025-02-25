@@ -75,6 +75,18 @@ const PaymentHistory = () => {
       sortable: true,
     },
     {
+      name: "Status",
+      cell: (row) => (
+        <>
+        {row.refund == 1 ?
+          <span className="statusactiveData">Order Canceled</span>
+          :
+          <span className="statusactiveNew">Paid</span>
+        }
+        </>
+      ),
+    },
+    {
       name: "Actions",
       cell: (row) => (
         <>
