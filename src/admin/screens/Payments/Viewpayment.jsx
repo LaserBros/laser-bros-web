@@ -212,6 +212,8 @@ const ViewPayment = () => {
                     </Button>
                   {Array.isArray(RefundData) && RefundData.length >= 1 ? null :
                   <>
+                  {(transaction?.transactions?.orderDetails?.status != 2 && transaction?.transactions?.orderDetails?.move_status != 2) &&
+                  (transaction?.transactions?.orderDetails?.status != 3 && transaction?.transactions?.orderDetails?.move_status != 3) &&
                     <Button
                       variant={null}
                       onClick={handleCancle}
@@ -223,6 +225,7 @@ const ViewPayment = () => {
                           Order Canceled
                   
                     </Button>
+                  }
                     </>
                 }
                     </div> 
@@ -311,7 +314,7 @@ const ViewPayment = () => {
         desc={"If you cancel this order, a full refund will be automatically issued to the user."}
         yesBtnText={"Yes"}
         noBtnText={"No"}
-        onConfirm={() => onRefund("cancel")}
+        onConfirm={() => onRefund("cancel","requested_by_customer")}
         loading={Refundloading}
       />
     </React.Fragment>

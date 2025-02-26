@@ -17,11 +17,11 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../localstorage/UserProfileContext";
 import User from "../../assets/img/user-3.jpg"; // Default image
 import {
-  EmpupdateProfile,
-  Empupdatepassword,
-  EmpuploadImage,
-  EmpfetchProfile,
-} from "../../api/api";
+  AdminfetchProfile,
+  AdminupdateProfile,
+  Adminupdatepassword,
+  AdminuploadImage,
+} from "../../api/empApi";
 const EditProfile = () => {
   const [key, setKey] = useState("basicinfo");
 
@@ -43,7 +43,7 @@ const EditProfile = () => {
     // Simulate an API call to fetch user info
     const fetchUserInfo = async () => {
       try {
-        const response = await EmpfetchProfile();
+        const response = await AdminfetchProfile();
         console.log(response, "sdsssdsdds");
         setName(response.data.full_name);
         setshowName(response.data.full_name);
@@ -139,7 +139,7 @@ const EditProfile = () => {
       try {
         setLoading(true);
         try {
-          const response = await Empupdatepassword(
+          const response = await Adminupdatepassword(
             newPassword,
             currentPassword
           ); // Fetch the address using the id
@@ -171,7 +171,7 @@ const EditProfile = () => {
           phone_number: phoneNo,
         };
 
-        await EmpupdateProfile(data);
+        await AdminupdateProfile(data);
         updateName(name);
 
         setshowName(name);
@@ -211,7 +211,7 @@ const EditProfile = () => {
       try {
         const formData = new FormData();
         formData.append("profile", file);
-        const updated_image = await EmpuploadImage(formData);
+        const updated_image = await AdminuploadImage(formData);
         updateImage(updated_image.data.path);
         toast.success("Profile Image Changed!!");
       } catch (error) {
@@ -333,10 +333,10 @@ const EditProfile = () => {
                       </Col>
                       <Col lg={6}>
                         <Form.Group className="mb-3 form-group">
-                          <Form.Label>Phone No</Form.Label>
+                          <Form.Label>Phone No.</Form.Label>
                           <Form.Control
                             type="tel"
-                            placeholder="Enter phone no"
+                            placeholder="Enter phone no."
                             value={phoneNo}
                             isInvalid={!!errors.phoneNo}
                             onChange={(e) => setPhoneNo(e.target.value)}

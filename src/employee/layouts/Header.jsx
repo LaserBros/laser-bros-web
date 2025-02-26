@@ -18,12 +18,14 @@ const Header = ({ title }) => {
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("email");
+      localStorage.removeItem("employeePermision");
       navigate("/login");
     } catch (error) {
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
+      localStorage.removeItem("employeePermision");
       navigate("/login");
       console.log("errr", error);
     }

@@ -898,7 +898,7 @@ const OrdersDetail = () => {
                         </div>
                       </>
                     )}
-                  <Button
+                  {/* <Button
                     as={Link}
                     to={'/admin/payment-history/view-payment/'+order.transactionDetails?._id}
                      target="_blank"
@@ -906,7 +906,7 @@ const OrdersDetail = () => {
                     className="d-inline-flex align-items-center justify-content-center me-2"
                   >
                     View Transaction
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={handleBack}
                     className="d-inline-flex align-items-center justify-content-center"

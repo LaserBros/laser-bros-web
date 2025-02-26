@@ -18,10 +18,10 @@ import { saveAs } from "file-saver";
 import { Icon } from "@iconify/react";
 import attachment from "../../assets/img/attachment.svg";
 import {
-  EmpdownloadParticularFile,
-  EmpfetchOrdersInArchive,
-  EmpgetAllMaterialCodes,
-} from "../../../api/api";
+  downloadParticularFile,
+  fetchOrdersInArchive,
+  getAllMaterialCodes,
+} from "../../../api/empApi";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import { useTheme } from "../../../components/Themecontext";
@@ -71,10 +71,7 @@ const Cut = () => {
   const loadOrders = async (selectedValue = "", currentPage = 1) => {
     try {
       setLoading(true);
-      const response = await EmpfetchOrdersInArchive(
-        selectedValue,
-        currentPage
-      );
+      const response = await fetchOrdersInArchive(selectedValue, currentPage);
       console.log("response.data", response.data);
       setOrders(response.data.result);
       settotalPage(response.data.total);
@@ -94,7 +91,7 @@ const Cut = () => {
   };
   const getCode = async () => {
     try {
-      const res = await EmpgetAllMaterialCodes();
+      const res = await getAllMaterialCodes();
       const options = res.data.map((code) => ({
         label: code,
         value: code,
@@ -142,7 +139,7 @@ const Cut = () => {
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
 
-    return `${month}/${day}/${year} `;
+    return `${day}/${month}/${year} `;
   };
   const handleDownloadAll = async (data, id) => {
     const checkedIds = Object.keys(checkedItems).filter(
@@ -166,7 +163,7 @@ const Cut = () => {
         type: 0,
       };
       try {
-        const result = await EmpdownloadParticularFile(param);
+        const result = await downloadParticularFile(param);
       } catch (error) {}
     });
     const zip = new JSZip();
@@ -196,7 +193,11 @@ const Cut = () => {
           <h5>Archive</h5>
         </CardHeader>
         <CardBody>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Row className="px-2 gx-3">
               <Col lg={6} xxl={7}>
                 <div className="d-flex align-items-center gap-2">

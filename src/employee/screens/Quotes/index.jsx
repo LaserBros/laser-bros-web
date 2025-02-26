@@ -13,8 +13,11 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   AdmingetEditQuote,
   AdmingetUnAllRequestQuotes,
-} from "../../../api/api";
+} from "../../../api/empApi";
 import Pagination from "../../components/Pagination";
+import DateFormat from "../../components/DateFormat";
+import Amount from "../../../components/Amount";
+import QuoteRow from "../../components/Quotes";
 const Quotes = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -25,49 +28,7 @@ const Quotes = () => {
     }));
   };
 
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
   const [totalPage, settotalPage] = useState(10);
@@ -110,7 +71,7 @@ const Quotes = () => {
       JSON.stringify(res.data.requestQuoteDB)
     );
     localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
-    // navigate("/admin/quote/view-quote");
+    navigate("/admin/quotes/view-quote");
   };
 
   const onPageChange = (pageNumber) => {
@@ -217,54 +178,11 @@ const Quotes = () => {
                       dateObj.getFullYear()
                     ).slice(-2);
                     return (
-                      <React.Fragment>
-                        <tr>
-                          <td className="text-nowrap">
-                            <Link
-                              to=""
-                              onClick={() => EditQuote(row._id)}
-                              className="workorders"
-                            >
-                              <b>
-                                WO# LB-
-                                {row.search_quote}
-                              </b>
-                            </Link>
-                          </td>
-                          <td className="text-nowrap">
-                            {/* {row.material.map((materials, index) => ( */}
-                            <span
-                              className="badgestatus me-2"
-                              style={getMaterialColor(
-                                row.material_name1 + " " + row.material_grade1
-                              )}
-                            >
-                              {row.material_code1}
-                            </span>
-                            {row.material_code2 && (
-                              <span
-                                className="badgestatus me-2"
-                                style={getMaterialColor(
-                                  row.material_name2 + " " + row.material_grade2
-                                )}
-                              >
-                                {row.material_code2}
-                              </span>
-                            )}
-                            {/* ))} */}
-                          </td>
-                          <td className="text-end">
-                            <div className="d-inline-flex align-items-center gap-3">
-                              <Link
-                                className="btnedit"
-                                onClick={() => EditQuote(row._id)}
-                              >
-                                <Icon icon="teenyicons:eye-outline" />
-                              </Link>
-                            </div>
-                          </td>
-                        </tr>
-                      </React.Fragment>
+                      <QuoteRow
+                        key={row._id}
+                        row={row}
+                        EditQuote={EditQuote}
+                      />
                     );
                   })
                 )}

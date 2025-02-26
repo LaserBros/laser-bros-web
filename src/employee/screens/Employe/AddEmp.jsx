@@ -12,7 +12,7 @@ import {
 import { Icon } from "@iconify/react";
 import Avatar from "../../assets/img/Avatar.jpg";
 import axios from "axios";
-import { empSignup, getEmpDetails, updateEmpDetails } from "../../../api/api"; // Add updateEmpDetails API
+import { empSignup, getEmpDetails, updateEmpDetails } from "../../../api/empApi"; // Add updateEmpDetails API
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 

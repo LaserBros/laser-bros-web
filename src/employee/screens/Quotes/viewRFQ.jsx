@@ -23,7 +23,8 @@ import {
   AdmingetThicknessMaterialFinish,
   AdminupdateQuantity,
   AdminupdateSubQuoteDetails,
-} from "../../../api/api";
+  getSubQuote,
+} from "../../../api/empApi";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
 import QuotesSidebar from "../../components/Quotessidebar";
@@ -32,6 +33,8 @@ import AddBend from "../../components/Addbend";
 import AdminAddNote from "../../components/AddNote";
 import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
+import DimensionsToggle from "../../../components/DimensionsToggle";
+import ModalOrderData from "../../components/OrderData";
 const ViewRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -80,6 +83,22 @@ const ViewRFQS = () => {
   useEffect(() => {
     // fetchOptions();
   }, []);
+
+  function formatPhoneNumber(input) {
+    const cleanInput = input.replace(/\D/g, "");
+
+    // Dynamically add "-" based on input length
+    if (cleanInput.length <= 3) {
+      return cleanInput; // No formatting for 1-3 digits
+    } else if (cleanInput.length <= 6) {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(3)}`; // Format as XXX-XXX
+    } else {
+      return `${cleanInput.slice(0, 3)}-${cleanInput.slice(
+        3,
+        6
+      )}-${cleanInput.slice(6)}`; // Format as XXX-XXX-XXXX
+    }
+  }
 
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
@@ -176,7 +195,7 @@ const ViewRFQS = () => {
   // ];
 
   const handleShow3 = (quote, notes_admin, id) => {
-    console.log("Sdsd notes");
+    // console.log("Sdsd notes");
     setSelectedNote(quote);
     setSelectedAdminNote(notes_admin);
     setSelectedPartId(id);
@@ -316,17 +335,18 @@ const ViewRFQS = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
+  const [UserDataAdmin, setUserDataAdmin] = useState("");
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
+    const userData = localStorage.getItem("UserDataAdmin");
 
     if (storedData) {
       // Parse the JSON string into an object
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
       setQuoteList(quote_list_val);
-
+      setUserDataAdmin(JSON.parse(userData));
       setQuoteData(parsedData);
     }
   }, []);
@@ -351,6 +371,25 @@ const ViewRFQS = () => {
       }
     }, 1000);
   }, [quoteData]);
+
+  const [modalShow4, setModalShow4] = useState(false);
+  const [subquote_number, setsubquote_number] = useState("");
+  const [loadingOrderQuote, setLoadingOrderQuote] = useState(false);
+  const [subquote_piece, setsubquote_piece] = useState("");
+  const handleShow4 = async (id, number) => {
+    try {
+      setsubquote_piece(number);
+      setLoadingOrderQuote(id);
+      const res = await getSubQuote(id);
+      setsubquote_number(res.data);
+      setLoadingOrderQuote("");
+      setModalShow4(true);
+    } catch (error) {
+      setLoadingOrderQuote("");
+    }
+  };
+  const handleClose4 = () => setModalShow4(false);
+
   const uploadQuote = async (formData) => {
     try {
       await AdminupdateQuantity(formData);
@@ -480,7 +519,27 @@ const ViewRFQS = () => {
       console.error("Error updating quote:", response);
     }
   };
+  const handleDownload = async (url, name) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
 
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", name);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl); // Revoke the blob URL after the download
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   const handleOptionSelect = async (selectedOption, type, id) => {
     try {
       const data = {
@@ -639,6 +698,31 @@ const ViewRFQS = () => {
             </div>
           </div>
           <Row>
+            <div className="QuoteBillMain_div">
+              <Row>
+                <Col lg={3} md={6}>
+                  <div className="QuoteBill_box">
+                    <p>
+                      <b>Customer Name:</b>
+                      &nbsp;&nbsp;&nbsp;{UserDataAdmin?.full_name}
+                    </p>
+                    {UserDataAdmin?.email && (
+                      <p>
+                        <b>Email:</b>
+                        &nbsp;&nbsp;&nbsp;{UserDataAdmin?.email}
+                      </p>
+                    )}
+                    {UserDataAdmin?.phone_number && (
+                      <p>
+                        <b>Phone Number:</b>
+                        &nbsp;&nbsp;&nbsp;
+                        {formatPhoneNumber(UserDataAdmin?.phone_number)}
+                      </p>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </div>
             <Col lg={12} xl={12}>
               {quoteData &&
                 quoteData.length > 0 &&
@@ -653,12 +737,50 @@ const ViewRFQS = () => {
                         />
                       </div>
                       <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                        <h2>{quote.quote_name}</h2>
+                        <h2>
+                          {quote.quote_name}{" "}
+                          <Icon
+                            icon="material-symbols-light:download-sharp"
+                            onClick={() =>
+                              handleDownload(quote?.dxf_url, quote.quote_name)
+                            }
+                          />
+                        </h2>
                         <p className="num-dim-main">
                           <span className="num-dim">
-                            {quote.subquote_number}
+                            {quote.type_option[0]?.material_code}-
+                            {quoteList.search_quote}-
+                            {String(index + 1).padStart(3, "0")}
                           </span>
                         </p>
+                        {quote.material_id && quote.thickness_id && (
+                          <div className="datamain mb-2">
+                            <Link
+                              className="btndata"
+                              onClick={() => {
+                                handleShow4(
+                                  quote._id,
+                                  quote.type_option[0]?.material_code +
+                                    "-" +
+                                    quoteList.search_quote +
+                                    "-" +
+                                    String(index + 1).padStart(3, "0")
+                                );
+                              }}
+                              style={{ minWidth: 42 }}
+                            >
+                              {loadingOrderQuote == quote._id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                ></span>
+                              ) : (
+                                "Data"
+                              )}
+                            </Link>
+                          </div>
+                        )}
                         <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
                           <SelectDropdowns
                             options={materials}
@@ -766,11 +888,22 @@ const ViewRFQS = () => {
                         <span className="quote-off">
                           {quote.discount}% Saved
                         </span>
-                        <p className="mb-0 text-md-end">
-                          Typical Lead Time 2-3 days
-                        </p>
+                        {quote?.type_option[0]?.estimated_lead_time && (
+                          <p className="mb-0 text-md-end">
+                            Typical Lead Time{" "}
+                            {quote?.type_option[0]?.estimated_lead_time} days
+                          </p>
+                        )}
                       </div>
                     </div>
+                    <span className="num-dim">
+                      <DimensionsToggle
+                        dimensions={quote.dimensions}
+                        id={quote._id}
+                        type={quote.dimension_type}
+                        // isEdit={true}
+                      />
+                    </span>
                     <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2">
                       <p>
                         Qty : {quote.quantity}{" "}
@@ -878,6 +1011,12 @@ const ViewRFQS = () => {
         id={selectedPartId}
         handleClose={handleClose3}
         title="Notes"
+      />
+      <ModalOrderData
+        QuoteNumber={subquote_piece}
+        QuoteData={subquote_number}
+        modalShow4={modalShow4}
+        handleClose4={handleClose4}
       />
     </React.Fragment>
   );

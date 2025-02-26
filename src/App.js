@@ -24,6 +24,26 @@ import AdminQuotes from "./admin/screens/Quotes";
 import AdminQuotesDetail from "./admin/screens/Quotes/Quotesdetail";
 import AdminRFQS from "./admin/screens/RFQS";
 import AdminRfqsDetail from "./admin/screens/RFQS/Rfqsdetail";
+import EditRFQS from "./admin/screens/Quotes/EditQuote";
+import ViewRFQS from "./admin/screens/Quotes/viewRFQ";
+import CompleteOrders from "./admin/screens/Orders/complete";
+import Employe from "./admin/screens/Employe";
+import AddEmp from "./admin/screens/Employe/AddEmp";
+import ShippingAddress from "./admin/screens/Orders/Shipping";
+import Customers from "./admin/screens/Customers";
+import ViewCustomer from "./admin/screens/Customers/ViewCustomer";
+import DataBase from "./admin/screens/Database";
+import EditFinishing from "./admin/screens/Database/EditFinishing";
+import EditQty from "./admin/screens/Database/EditQty";
+import EditMaterial from "./admin/screens/Database/EditMaterial";
+import AddQty from "./admin/components/AddQty";
+import AddQtyDatabase from "./admin/screens/Database/AddQty";
+import AddFinish from "./admin/screens/Database/AddFinish";
+import AddMaterial from "./admin/screens/Database/AddMaterial";
+import AddThickness from "./admin/screens/Database/AddThickness";
+import AdminLayout from "./admin/Layout";
+
+
 
 import EmpDashboard from "./employee/screens/Dashboard";
 import EmpPaymentHistory from "./employee/screens/Payments";
@@ -37,7 +57,38 @@ import EmpQuotes from "./employee/screens/Quotes";
 import EmpQuotesDetail from "./employee/screens/Quotes/Quotesdetail";
 import EmpRFQS from "./employee/screens/RFQS";
 import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
+import EmpEditRFQS from "./employee/screens/Quotes/EditQuote";
+import EmpViewRFQS from "./employee/screens/Quotes/viewRFQ";
 import EmpCompleteOrders from "./employee/screens/Orders/complete";
+import EmpEmploye from "./employee/screens/Employe";
+import EmpAddEmp from "./employee/screens/Employe/AddEmp";
+import EmpShippingAddress from "./employee/screens/Orders/Shipping";
+import EmpCustomers from "./employee/screens/Customers";
+import EmpViewCustomer from "./employee/screens/Customers/ViewCustomer";
+import EmpDataBase from "./employee/screens/Database";
+import EmpEditFinishing from "./employee/screens/Database/EditFinishing";
+import EmpEditQty from "./employee/screens/Database/EditQty";
+import EmpEditMaterial from "./employee/screens/Database/EditMaterial";
+import EmpAddQty from "./employee/components/AddQty";
+import EmpAddQtyDatabase from "./employee/screens/Database/AddQty";
+import EmpAddFinish from "./employee/screens/Database/AddFinish";
+import EmpAddMaterial from "./employee/screens/Database/AddMaterial";
+import EmpAddThickness from "./employee/screens/Database/AddThickness";
+import EmpAdminLayout from "./employee/Layout";
+
+// import EmpDashboard from "./employee/screens/Dashboard";
+// import EmpPaymentHistory from "./employee/screens/Payments";
+// import EmpViewPayment from "./employee/screens/Payments/Viewpayment";
+// import EmpEditProfile from "./employee/screens/Editprofile";
+// import EmpCut from "./employee/screens/Cut";
+// import EmpQueue from "./employee/screens/Queue";
+// import EmpOrders from "./employee/screens/Orders";
+// import EmpOrdersDetail from "./employee/screens/Orders/Ordersdetail";
+// import EmpQuotes from "./employee/screens/Quotes";
+// import EmpQuotesDetail from "./employee/screens/Quotes/Quotesdetail";
+// import EmpRFQS from "./employee/screens/RFQS";
+// import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
+// import EmpCompleteOrders from "./employee/screens/Orders/complete";
 // import EmpDashboard from "./employee/screens/Dashboard";
 // import EmpPaymentHistory from "./employee/screens/Payments";
 // import EmpViewPayment from "./employee/screens/Payments/Viewpayment";
@@ -51,7 +102,7 @@ import EmpCompleteOrders from "./employee/screens/Orders/complete";
 // import EmpRFQS from "./employee/screens/RFQS";
 // import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
 
-import AdminLayout from "./admin/Layout";
+
 import Layouts from "./employee/Layout";
 import Layout from "./Layout";
 import Layout2 from "./Layout2";
@@ -98,24 +149,8 @@ import { UserProvider } from "./localstorage/UserProfileContext";
 import EmployeRoute from "./middleware/Employe";
 import AdminRoute from "./middleware/AdminRoute";
 import QuotesDetailPay from "./screens/private/QuotesDetailPay";
-import EditRFQS from "./admin/screens/Quotes/EditQuote";
 import RfqDetail from "./screens/private/RfqDetail";
-import ViewRFQS from "./admin/screens/Quotes/viewRFQ";
-import CompleteOrders from "./admin/screens/Orders/complete";
-import Employe from "./admin/screens/Employe";
-import AddEmp from "./admin/screens/Employe/AddEmp";
-import ShippingAddress from "./admin/screens/Orders/Shipping";
-import Customers from "./admin/screens/Customers";
-import ViewCustomer from "./admin/screens/Customers/ViewCustomer";
-import DataBase from "./admin/screens/Database";
-import EditFinishing from "./admin/screens/Database/EditFinishing";
-import EditQty from "./admin/screens/Database/EditQty";
-import EditMaterial from "./admin/screens/Database/EditMaterial";
-import AddQty from "./admin/components/AddQty";
-import AddQtyDatabase from "./admin/screens/Database/AddQty";
-import AddFinish from "./admin/screens/Database/AddFinish";
-import AddMaterial from "./admin/screens/Database/AddMaterial";
-import AddThickness from "./admin/screens/Database/AddThickness";
+
 function App() {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -505,10 +540,9 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
                   <Route
-                    path="/employee/payment-history/view-payment"
+                    path="/employee/payment-history/view-payment/:id"
                     element={
                       <EmployeRoute
                         element={
@@ -518,8 +552,7 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
                   <Route
                     path="/employee/edit-profile"
                     element={
@@ -531,21 +564,7 @@ function App() {
                         }
                       />
                     }
-                  />
-
-                  <Route
-                    path="/employee/complete-orders"
-                    element={
-                      <EmployeRoute
-                        element={
-                          <Layouts title={"Complete Orders"}>
-                            <EmpCompleteOrders />
-                          </Layouts>
-                        }
-                      />
-                    }
-                  />
-
+                  ></Route>
                   <Route
                     path="/employee/archive"
                     element={
@@ -557,8 +576,7 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
                   <Route
                     path="/employee/queue"
                     element={
@@ -570,8 +588,7 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
                   <Route
                     path="/employee/orders"
                     element={
@@ -583,8 +600,31 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
+                  <Route
+                    path="/employee/complete-orders"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Complete Orders"}>
+                            <EmpCompleteOrders />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/shipping-orders"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Shipping Orders"}>
+                            <EmpShippingAddress />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
                   <Route
                     path="/employee/orders-detail/:id"
                     element={
@@ -596,7 +636,55 @@ function App() {
                         }
                       />
                     }
-                  />
+                  ></Route>
+                  <Route
+                    path="/employee/employes"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Employee"}>
+                            <EmpEmploye />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/customers"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Customers"}>
+                            <EmpCustomers />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/customers/:id"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"View Customer"}>
+                            <EmpViewCustomer />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/add/:id?"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Add Employee"}>
+                            <EmpAddEmp />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
 
                   <Route
                     path="/employee/quotes"
@@ -609,8 +697,7 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
                   <Route
                     path="/employee/quotes/quotes-detail"
                     element={
@@ -622,8 +709,7 @@ function App() {
                         }
                       />
                     }
-                  />
-
+                  ></Route>
                   <Route
                     path="/employee/rfqs"
                     element={
@@ -635,8 +721,32 @@ function App() {
                         }
                       />
                     }
-                  />
+                  ></Route>
 
+                  <Route
+                    path="/employee/rfqs/edit-quote"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Edit Quote"}>
+                            <EmpEditRFQS />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/quotes/view-quote"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"View RFQ's"}>
+                            <EmpViewRFQS />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
                   <Route
                     path="/employee/rfqs/rfqs-detail"
                     element={
@@ -648,7 +758,107 @@ function App() {
                         }
                       />
                     }
-                  />
+                  ></Route>
+
+                  <Route
+                    path="/employee/database"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Database"}>
+                            <EmpDataBase />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+
+                  <Route
+                    path="/employee/database/edit-finish/:id"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Edit Finishing"}>
+                            <EmpEditFinishing />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/database/add-finish"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Add Finishing"}>
+                            <EmpAddFinish />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/database/edit-material/:id"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Edit Material"}>
+                            <EmpEditMaterial />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                    <Route
+                    path="/employee/database/add-material"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Add Material"}>
+                            <EmpAddMaterial />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                   <Route
+                    path="/employee/database/add-thickness"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Add Thickness"}>
+                            <EmpAddThickness />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                  <Route
+                    path="/employee/database/edit-quantity/:id"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Edit Quantity"}>
+                            <EmpEditQty />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+                     <Route
+                    path="/employee/database/add-quantity"
+                    element={
+                      <EmployeRoute
+                        element={
+                          <Layouts title={"Add Quantity"}>
+                            <EmpAddQtyDatabase />
+                          </Layouts>
+                        }
+                      />
+                    }
+                  ></Route>
+
+                  
 
                   {/* End Employee API's */}
 

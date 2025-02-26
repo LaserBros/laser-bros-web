@@ -20,12 +20,12 @@ import { saveAs } from "file-saver";
 import {
   AdmingetThickness,
   downloadAllFiles,
-  EmpdownloadParticularFile,
-  EmpfetchOrdersInQueue,
-  EmpgetAllMaterialCodes,
-  EmpmoveOrderStatus,
+  downloadParticularFile,
+  fetchOrdersInQueue,
+  getAllMaterialCodes,
+  moveOrderStatus,
   moveOrderToQueue,
-} from "../../../api/api";
+} from "../../../api/empApi";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../../components/Themecontext";
@@ -65,13 +65,10 @@ const Queue = () => {
     }),
   };
   const loadOrders = async (selectedValue = "") => {
-    // alert("Your file is being uploaded!");
-
     try {
       setLoading(true);
       setOrders([]);
-      const response = await EmpfetchOrdersInQueue(selectedValue);
-      console.log("response.data.data.result", response.data.data.result);
+      const response = await fetchOrdersInQueue(selectedValue);
       setOrders(response.data.data.result);
     } catch (error) {
       setOrders([]);
@@ -82,7 +79,7 @@ const Queue = () => {
   };
   const getCode = async () => {
     try {
-      const res = await EmpgetAllMaterialCodes();
+      const res = await getAllMaterialCodes();
       const options = res.data.map((code) => ({
         label: code, // What you want to display in the dropdown
         value: code, // The value associated with the option
@@ -128,7 +125,7 @@ const Queue = () => {
           id: id,
         };
         try {
-          const res = await EmpmoveOrderStatus(data);
+          const res = await moveOrderStatus(data);
           if (res.data.status == "failure") {
             toast.error("This quote not downloaded yet. Please download quote");
           }
@@ -193,7 +190,7 @@ const Queue = () => {
         type: 0,
       };
       try {
-        const result = await EmpdownloadParticularFile(param);
+        const result = await downloadParticularFile(param);
       } catch (error) {}
     });
     const zip = new JSZip();
@@ -226,7 +223,11 @@ const Queue = () => {
           <h5>Queue</h5>
         </CardHeader>
         <CardBody>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Row className="px-2 gx-3">
               <Col lg={6} xxl={7}>
                 <div className="d-flex align-items-center gap-2">

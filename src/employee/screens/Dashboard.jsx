@@ -34,9 +34,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
+import { getDashboardDetails } from "../../api/empApi";
 import { Link } from "react-router-dom";
-import { EmpgetDashboardDetails } from "../../api/api";
 
 // const data = [
 //   {
@@ -179,7 +178,7 @@ const Dashboard = () => {
 
   const loadData = async () => {
     setLoading(true);
-    const res = await EmpgetDashboardDetails(fromDate, toDate);
+    const res = await getDashboardDetails(fromDate, toDate);
 
     const data_array = res.data.result;
     setordersCount(res.data.ordersCount);
@@ -229,7 +228,7 @@ const Dashboard = () => {
             </div>
           </div>
         </Col>
-        {/* <Col xl={3} lg={4} md={6} className="mb-4">
+        <Col xl={3} lg={4} md={6} className="mb-4">
           <div className="stats d-flex align-items-center">
             <span className="statsicon statsred">
               {" "}
@@ -240,7 +239,7 @@ const Dashboard = () => {
               <h4>Orders in RFQ's</h4>
             </div>
           </div>
-        </Col> */}
+        </Col>
 
         <Col xl={3} lg={4} md={6} className="mb-4">
           <div className="stats d-flex align-items-center">
@@ -351,13 +350,13 @@ const Dashboard = () => {
                 style={{ opacity: 0.5 }}
                 name="Number Of Quotes"
               /> */}
-                {/* <Bar
+                <Bar
                   dataKey="rfq"
                   stackId="a"
                   fill="#F46920"
                   style={{ opacity: 0.5 }}
                   name="Request For Quote’s"
-                /> */}
+                />
                 <Bar
                   dataKey="orders"
                   stackId="a"

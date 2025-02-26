@@ -40,6 +40,8 @@ const AddEmp = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const [selectedPermissions, setSelectedPermissions] = useState({});
+
 
   const fetchEmployeeDetails = async (empId) => {
     try {
@@ -52,10 +54,36 @@ const AddEmp = () => {
       setCName(empData.company_name);
       setEmail(empData.email);
       setPhone(empData.phone_number);
+      localStorage.setItem("employeePermision", response.employee_permissions);
+      setSelectedPermissions(empData.employee_permissions || {});
     } catch (error) {
       toast.error("Error fetching employee details");
     }
   };
+
+
+  const handleCheckboxChange = (key) => {
+    setSelectedPermissions((prev) => ({
+      ...prev,
+      [key]: prev[key] === 1 ? 0 : 1,
+    }));
+  };
+
+  const permissionsList = [
+    { key: "dashboard_permission", label: "Dashboard" },
+    { key: "employee_permission", label: "Employees" },
+    { key: "quotes_permission", label: "Quotes" },
+    { key: "rfq_permission", label: "RFQ’s" },
+    { key: "orders_permission", label: "Orders" },
+    { key: "queue_permission", label: "Queue" },
+    { key: "archive_permission", label: "Archive" },
+    { key: "shipping_order_permission", label: "Shipping Orders" },
+    { key: "complete_order_permission", label: "Complete Orders" },
+    { key: "customer_permission", label: "Customers" },
+    { key: "payment_permission", label: "Payment History" },
+    { key: "database_permission", label: "Database" },
+    
+  ];
 
   const validate = () => {
     let errors = {};
@@ -95,6 +123,8 @@ const AddEmp = () => {
         phone_number: phone,
         ...(password && { password }),
         ...(id && { id }),
+        ...selectedPermissions,
+
       };
 
       try {
@@ -210,6 +240,29 @@ const AddEmp = () => {
                   </Col>
                   {/* )} */}
                 </Row>
+
+                <table className="table">
+      <thead>
+        <tr>
+          <th>Permissions</th>
+          <th>Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        {permissionsList.map(({ key, label }) => (
+          <tr key={key}>
+            <td>{label}</td>
+            <td>
+              <input
+                type="checkbox"
+                checked={selectedPermissions[key] === 1}
+                onChange={() => handleCheckboxChange(key)}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
                 <Button
                   type="submit"
                   className="btn btn-primary mt-2"

@@ -7,14 +7,30 @@ import "react-phone-input-2/lib/style.css";
 import cards from "../../assets/img/cards.png";
 import cvv from "../../assets/img/cvv.png";
 import PaymentDone from "./Paymentdone";
-import { editSubQuote, fetchAddress, getCard, payment } from "../../api/api";
-import axiosEmployeeInstance from "../axios/axiosemployeeInstanse";
+import { editSubQuote, fetchAddress, getCard, payment } from "../../api/empApi";
+import axiosEmployeeInstance from "../axios/axiosemployeeInstanse"
 import { toast } from "react-toastify";
-const QuotesSidebar = ({ amount, showDiv }) => {
+import Amount from "../../components/Amount";
+import CheckoutPopup from "./checkoutPopup";
+const QuotesSidebar = ({
+  amount,
+  showDiv,
+  quoteData,
+  UserData,
+  divideWeight,
+  TaxRatesVal
+}) => {
   const [modalShow, setModalShow] = useState(false);
+  const [quoteDataVal, setquoteData] = useState(false);
+  const [checkOutmodal, setcheckOutmodal] = useState(false);
+  useEffect(() => {
+    setquoteData(quoteData);
+  }, [quoteData]);
   // const handleShow = () => setModalShow(true);
+  const OnSave = (data) => {
+    setcheckOutmodal(false);
+  };
   const updateQuote = async () => {
-    console.log("sdsdsdd =-=-=-=-=-=-=-");
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
 
@@ -72,21 +88,46 @@ const QuotesSidebar = ({ amount, showDiv }) => {
       return () => clearTimeout(timer);
     }
   }, [modalShow]);
+  const EditCheckout = () => {
+    setcheckOutmodal(true);
+  };
+  const handleClosePop = () => {
+    setcheckOutmodal(false);
+  };
   return (
     <>
       {showDiv1 && (
         <div className="quotes-sidebar">
           <div className="quotes-inner">
-            <div className="head-quotes  d-none">
+            <div className="head-quotes d-none">
               <h2 className="mb-0 d-none">Quote Summary</h2>
             </div>
             <div className="d-flex align-items-center justify-content-between">
-              <span className="quotesitem">Laser Cutting</span>
+              <span className="quotesitem">Subtotal</span>
               <span className="quotesitem quotesright">
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   currency: "USD",
                 }).format(amount)}
+              </span>
+            </div>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="quotesitem">Bending</span>
+              <span className="quotesitem quotesright">
+                <Amount amount={quoteDataVal.total_bend_price} />{" "}
+              </span>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <span className="quotessubtotal">Total</span>
+              <span className="quotesprice">
+                <Amount
+                  amount={
+                    parseFloat(amount || 0) +
+                    parseFloat(quoteDataVal.total_bend_price || 0) +
+                    parseFloat(TaxRatesVal.tax_amount || 0) +
+                    parseFloat(quoteDataVal.shipping_price || 0) 
+                  }
+                />
               </span>
             </div>
             <hr className="quotes-separator" />
@@ -126,6 +167,22 @@ const QuotesSidebar = ({ amount, showDiv }) => {
                     )}
                   </Button>
                 </div>
+                <div>
+                  <Button
+                    variant={null}
+                    className="w-100 me-2 btn-outline-primary mt-3"
+                    onClick={() => EditCheckout()}
+                    disabled={loading}
+                  >
+                    {/* {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span> */}
+                    Edit Checkout
+                  </Button>
+                </div>
               </>
             )}
             {/* <hr className="quotes-separator" /> */}
@@ -146,13 +203,13 @@ const QuotesSidebar = ({ amount, showDiv }) => {
               </div>
               <Form className="accountform">
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Subtotal</span>
+                  <span className="quotesitem">Laser Cutting</span>
                   <span className="quotesitem quotesright">
                     ${amount.toLocaleString("en-US")}{" "}
                   </span>
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
-                  <span className="quotessubtotal">Total</span>
+                  <span className="quotessubtotal">Subtotal</span>
                   <span className="quotesprice">
                     ${amount.toLocaleString("en-US")}
                   </span>
@@ -305,6 +362,16 @@ const QuotesSidebar = ({ amount, showDiv }) => {
         </>
       )}
       {/* <PaymentDone show={modalShow} handleClose={handleClose} /> */}
+
+      <CheckoutPopup
+        show={checkOutmodal}
+        handleClose={handleClosePop}
+        addressDetail={quoteData}
+        UserData={UserData}
+        divideWeight={divideWeight}
+        onSave={OnSave}
+        TaxRatesVal={TaxRatesVal}
+      />
     </>
   );
 };

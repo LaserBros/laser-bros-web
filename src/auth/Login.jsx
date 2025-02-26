@@ -78,6 +78,7 @@ export default function Login() {
 
         if (response.data.data.role_type == 2) {
           localStorage.setItem("employeeToken", response.data.data.token);
+          localStorage.setItem("employeePermision", response.data.data.user_permission);
         }
         if (response.data.data.role_type == 3) {
           localStorage.setItem("authToken", response.data.data.token);

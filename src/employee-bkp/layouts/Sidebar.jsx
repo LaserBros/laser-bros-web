@@ -14,6 +14,7 @@ const Sidebar = () => {
       localStorage.removeItem("full_name");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("email");
+      localStorage.removeItem("employeePermision");
       navigate("/login");
     } catch (error) {
       // console.log(error);
@@ -21,6 +22,7 @@ const Sidebar = () => {
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
+      localStorage.removeItem("employeePermision");
       navigate("/login");
       console.log("errr", error);
     }

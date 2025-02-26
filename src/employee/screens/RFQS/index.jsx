@@ -15,9 +15,14 @@ import {
   AdminfetchRFQ,
   AdmingetEditQuote,
   fetchRFQ,
+  getParticularEditQuoteAdmin,
   updateQuoteState,
-} from "../../../api/api";
+} from "../../../api/empApi";
 import Pagination from "../../components/Pagination";
+import CommonModal from "../../../components/Modal";
+import ConfirmationModal from "../../../components/ConfirmationModal";
+import DateFormat from "../../components/DateFormat";
+import MaterialBadge from "../../components/MaterialBadge";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -30,18 +35,28 @@ const RFQS = () => {
       [id]: !prevState[id],
     }));
   };
+
   const [loadingRows, setLoadingRows] = useState({});
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const handleClose = () => setModalShow(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [title, setTitle] = useState("");
+  const [Ids, setIds] = useState("");
+  const [type, setType] = useState("");
 
   const [totalPage, settotalPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
-  const changeStatus = async (status, id) => {
+  const changeStatus = async () => {
+    const id = Ids;
+    const status = type;
     setLoadingRows((prevState) => ({
       ...prevState,
       [id]: true,
     }));
     try {
+      setLoadingBtn(true);
       const res = await updateQuoteState(id, status);
       if (status == 2) {
         toast.success("RFQ accepted successfully");
@@ -57,7 +72,9 @@ const RFQS = () => {
         ...prevState,
         [id]: false,
       }));
-      loadData();
+      setLoadingBtn(false);
+      setModalShow(false);
+      loadData(currentPage, name, sortOrder,true);
     }
   };
 
@@ -67,13 +84,15 @@ const RFQS = () => {
   const onPageChange = (pageNumber) => {
     console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
-    loadData(pageNumber);
+    // loadData(pageNumber);
   };
+  const [loadingId, setLoadingId] = useState("");
   const EditQuote = async (id) => {
     const data = {
       id: id,
     };
-    const res = await AdmingetEditQuote(data);
+    setLoadingId(id);
+    const res = await getParticularEditQuoteAdmin(data);
     console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
@@ -83,52 +102,20 @@ const RFQS = () => {
       "setItemelementDataAdmin",
       JSON.stringify(res.data.requestQuoteDB)
     );
-    localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
+    // localStorage.setItem("UserDataAdmin", JSON.stringify(res.data.userDBdata));
+    localStorage.setItem(
+      "shippingRates",
+      JSON.stringify(res.data.shippingRates)
+    );
+    localStorage.setItem(
+      "taxRates",
+      JSON.stringify(res.data.tax)
+    );
+    localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
+    setLoadingId("");
     navigate("/admin/rfqs/edit-quote");
   };
-  const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
-    switch (materials) {
-      case "Aluminium 5052":
-        return {
-          backgroundColor: "rgb(79 140 202)",
-        };
-      case "Steel 1008":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Steel A36":
-        return {
-          backgroundColor: "rgb(225 31 38)",
-        };
-      case "Aluminium 6061":
-        return {
-          backgroundColor: "rgb(160 197 233)",
-        };
-      case "Stainless Steel 304 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 304 (#4)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Stainless Steel 316 (2b)":
-        return {
-          backgroundColor: "rgb(42 92 23)",
-        };
-      case "Brass 260":
-        return {
-          backgroundColor: "rgb(255 186 22)",
-        };
-      case "Custom i.e. Titanium, Incolnel, etc.":
-        return {
-          backgroundColor: "rgb(115 103 240)",
-        };
-      default:
-        return {};
-    }
-  };
+
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
   const [name, searchName] = useState("");
@@ -139,13 +126,17 @@ const RFQS = () => {
     loadData(1, name, selectedValue);
   };
 
-  const loadData = async (page, search = "", sortOrder = "") => {
+  const loadData = async (page, search = "", sortOrder = "",type) => {
+    if(!type) {
     setLoading(true);
+    }
     try {
+      if(!type) {
+      setQuotes([]);
+      }
       const [response] = await Promise.all([
         AdminfetchRFQ(page, search, sortOrder),
       ]);
-      console.log(",response.data.data", response.data);
       setQuotes(response.data.updatedQuotes);
       settotalPage(response.data.total);
     } catch (error) {
@@ -157,7 +148,7 @@ const RFQS = () => {
 
   useEffect(() => {
     loadData(currentPage);
-  }, []);
+  }, [currentPage]);
 
   return (
     <React.Fragment>
@@ -166,7 +157,11 @@ const RFQS = () => {
           <h5>RFQ's</h5>
         </CardHeader>
         <CardBody>
-          <Form>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
             <Row className="px-2 gx-3">
               <Col lg={3} xxl={3}>
                 <Form.Group className="form-group mb-2 searchfield">
@@ -213,7 +208,7 @@ const RFQS = () => {
                     setCurrentPage(1);
                     setSortOrder("value1");
                     searchName("");
-                    loadData(1);
+                    // loadData(1);
                   }}
                 >
                   {" "}
@@ -271,33 +266,31 @@ const RFQS = () => {
                               </b>
                             </Link>
                           </td>
-                          <td className="text-nowrap">
-                            <span
-                              className="badgestatus me-2"
-                              style={getMaterialColor(
-                                row.material_name1 + " " + row.material_grade1
-                              )}
-                            >
-                              {row.material_code1}
-                            </span>
-                            {row.material_code2 && (
-                              <span
-                                className="badgestatus me-2"
-                                style={getMaterialColor(
-                                  row.material_name2 + " " + row.material_grade2
-                                )}
-                              >
-                                {row.material_code2}
-                              </span>
-                            )}
+                          <td>
+                            <DateFormat dateString={row.createdAt} />
                           </td>
+
+                          <td className="text-nowrap">
+                            <MaterialBadge
+                              materialDetails={row.material_details}
+                            />
+                          </td>
+
                           <td className="text-nowrap">
                             <div className="d-inline-flex align-items-center gap-3">
                               {row.status == 1 ? (
                                 <>
                                   <Link
                                     className="btnaccept"
-                                    onClick={() => changeStatus(2, row._id)}
+                                    // onClick={() => changeStatus(2, row._id)}
+                                    onClick={() => {
+                                      setModalShow(true);
+                                      setTitle(
+                                        "Are you sure you want to accept this quote?"
+                                      );
+                                      setIds(row._id);
+                                      setType(2);
+                                    }}
                                   >
                                     {loadingRows[row._id] ? (
                                       <span
@@ -314,7 +307,15 @@ const RFQS = () => {
                                   </Link>
                                   <Link
                                     className="btnreject"
-                                    onClick={() => changeStatus(3, row._id)}
+                                    // onClick={() => changeStatus(3, row._id)}
+                                    onClick={() => {
+                                      setModalShow(true);
+                                      setTitle(
+                                        "Are you sure you want to reject this quote?"
+                                      );
+                                      setIds(row._id);
+                                      setType(3);
+                                    }}
                                   >
                                     {loadingRows[row._id] ? (
                                       <span
@@ -346,13 +347,27 @@ const RFQS = () => {
                             </div>
                           </td>
                           <td>
-                            {row.status == 1 && (
+                            {(row.status == 1 || row.status == 2) && (
                               <Link
                                 className="btnaccept"
                                 onClick={() => EditQuote(row._id)}
                               >
-                                <Icon icon="tabler:edit" />
-                                Edit Quote
+                                {loadingId == row._id ? (
+                                  <>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span
+                                      className="spinner-border spinner-border-sm"
+                                      role="status"
+                                      aria-hidden="true"
+                                    ></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                  </>
+                                ) : (
+                                  <>
+                                    <Icon icon="tabler:edit" />
+                                    Edit Quote
+                                  </>
+                                )}
                               </Link>
                             )}
                           </td>
@@ -362,7 +377,7 @@ const RFQS = () => {
                               currency: "USD", // Change to your desired currency
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            }).format(row.total_amount)}
+                            }).format(row.total_amount + row.total_bend_price + row.shipping_price)}
                           </td>
                         </tr>
                       </React.Fragment>
@@ -382,6 +397,16 @@ const RFQS = () => {
           )}
         </CardBody>
       </Card>
+      <ConfirmationModal
+        show={modalShow}
+        onHide={handleClose}
+        title={"Are you sure?"}
+        desc={title}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={changeStatus}
+        loading={loadingBtn}
+      />
     </React.Fragment>
   );
 };

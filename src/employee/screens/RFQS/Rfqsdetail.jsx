@@ -76,7 +76,7 @@ const RfqsDetail = () => {
     <React.Fragment>
       <Card>
         <CardHeader className="d-flex align-items-center justify-content-between flex-wrap">
-          <h5>WO# LB-6-24-0001</h5>
+          <h5>WO#6-24-0001</h5>
           <div className="d-flex gap-2">
             <Button
               as={Link}
