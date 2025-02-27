@@ -2091,4 +2091,36 @@ html {
             width: 100%;
         }
     }
+}      
+.formtable{
+    &.table>:not(caption)>*>*{
+        border-bottom: none;
+        background-color:transparent;
+        
+    }
+   tr{
+    td{
+        input[type="checkbox"]
+        {
+         width: 17px!important;
+         height: 17px!important;
+        }
+    }
+   }
+}
+.nopermission{
+    .card-body{
+        min-height: calc(100vh - 120px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    h1{
+        font-size: 40px;
+        margin: 12px 0;
+    }
+    p{
+        margin-bottom: 0;
+    }
 }

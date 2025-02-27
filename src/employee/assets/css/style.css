@@ -1858,4 +1858,28 @@ body {
   max-width: 130px;
   display: inline-block;
   width: 100%;
+}
+
+.formtable.table > :not(caption) > * > * {
+  border-bottom: none;
+  background-color: transparent;
+}
+.formtable tr td input[type=checkbox] {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+.nopermission .card-body {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.nopermission h1 {
+  font-size: 40px;
+  margin: 12px 0;
+}
+.nopermission p {
+  margin-bottom: 0;
 }/*# sourceMappingURL=style.css.map */

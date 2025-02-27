@@ -36,9 +36,9 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit, onApiResponse }) => {
       );
       const res = await updateDimensionStatus(data);
       onApiResponse(res.data);
-      console.log("updateDimensionType", res.data, updatedQuoteData);
+      // console.log("updateDimensionType", res.data, updatedQuoteData);
     } catch (error) {
-      console.log("SDsdsdsdsd", error);
+      // console.log("SDsdsdsdsd", error);
     }
   };
 

@@ -99,7 +99,7 @@ const CheckoutPopup = ({
     const updatedQuoteData = JSON.parse(
       localStorage.getItem("setItempartsDBdata")
     );
-    console.log("updatedQuoteData =-=-=-=-", updatedQuoteData);
+    // console.log("updatedQuoteData =-=-=-=-", updatedQuoteData);
     let isValid = true;
     for (const quote of updatedQuoteData) {
       if (!quote.material_id) {
@@ -120,7 +120,7 @@ const CheckoutPopup = ({
     }
 
     if (isValid) {
-      // console.log(
+      // // console.log(
       //   "dassdasdsadadssadsadsds",
       //   selectedAddress,
       //   selectedShippingAddress
@@ -150,7 +150,7 @@ const CheckoutPopup = ({
         : selectedAddress?._id;
 
       const selectedShippingAddressId = selectedShippingAddress._id;
-      // console.log(
+      // // console.log(
       //   "billingAddressId",
       //   billingAddressId,
       //   "selectedShippingAddressId",
@@ -206,14 +206,14 @@ const CheckoutPopup = ({
               setLoading(false);
             }
           } catch (error) {
-            console.log(error);
+            // console.log(error);
             setLoading(false);
             toast.error("Something went wrong.");
           }
         }
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        // console.log(error);
         toast.error("Something went wrong.");
       }
       // }
@@ -229,7 +229,7 @@ const CheckoutPopup = ({
     if (isSameAsShipping && selectedAddress) {
       setSelectedAddress(selectedAddress || null);
     }
-    // console.log("Dsdsdsdssddsd");
+    // // console.log("Dsdsdsdssddsd");
     setloadingShip(true);
     const data = {
       id: loadingPayId?._id,
@@ -269,7 +269,7 @@ const CheckoutPopup = ({
   };
 
   const handleRateSelected = async (rate, price) => {
-    // console.log("shippingInfo?.requestQuoteDB?.check_status",shippingInfoData?.requestQuoteDB?.check_status)
+    // // console.log("shippingInfo?.requestQuoteDB?.check_status",shippingInfoData?.requestQuoteDB?.check_status)
    
     setrateVal(price);
     if (shippingInfoData?.requestQuoteDB?.check_status == 1) {
@@ -281,7 +281,7 @@ const CheckoutPopup = ({
     if (elementId) {
       getId = JSON.parse(elementId);
     }
-    // console.log("selectedAddress?._id", selectedShippingAddress);
+    // // console.log("selectedAddress?._id", selectedShippingAddress);
     // return;
     const data = {
       service_code: rate,
@@ -291,10 +291,10 @@ const CheckoutPopup = ({
     };
     try {
       const res = await shippingCost(data);
-      console.log(
-        "shippingInfo?.userDBdata?.tax_exempt",
-        shippingInfo?.requestQuoteDB?.check_status
-      );
+      // console.log(
+      //   "shippingInfo?.userDBdata?.tax_exempt",
+      //   shippingInfo?.requestQuoteDB?.check_status
+      // );
       if (shippingInfo?.userDBdata?.tax_exempt == 0) {
         setaxAmount(res.data.tax_amount);
         setaxPercentage(res.data.tax_percentage);

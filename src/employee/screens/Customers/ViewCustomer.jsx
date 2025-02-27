@@ -69,7 +69,7 @@ const ViewCustomer = () => {
       id: id,
     };
     const res = await AdmingetEditQuote(data);
-    console.log(res);
+    // console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
       JSON.stringify(res.data.partsDBdata)
@@ -79,7 +79,7 @@ const ViewCustomer = () => {
       JSON.stringify(res.data.requestQuoteDB)
     );
     localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
-    navigate("/admin/quotes/view-quote");
+    navigate("/employee/quotes/view-quote");
   };
   const [isTaxExempt, setIsTaxExempt] = useState("");
   const handleCheckboxChange = async (value) => {
@@ -106,7 +106,7 @@ const ViewCustomer = () => {
       const response = await getParticularProfile(data);
       setCustomer(response.data);
       setIsTaxExempt(response.data?.tax_exempt);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {
@@ -340,7 +340,7 @@ const ViewCustomer = () => {
                                       <tr>
                                         <td className="text-nowrap">
                                           <Link
-                                            // to="/admin/rfqs/rfqs-detail"
+                                            // to="/employee/rfqs/rfqs-detail"
                                             className="workorders"
                                             // onClick={() => getQueue(row._id)}
                                           >
@@ -511,7 +511,7 @@ const ViewCustomer = () => {
                                           <td>
                                             <Link
                                               className="workorders"
-                                              to={`/admin/orders-detail/${row._id}`}
+                                              to={`/employee/orders-detail/${row._id}`}
                                             >
                                               <b>
                                                 WO#

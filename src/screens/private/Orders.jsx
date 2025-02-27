@@ -146,7 +146,7 @@ export default function Orders() {
 
 
   const handlePageChange = (page) => {
-    console.log("handlePageChange , handlePageChange", page);
+    // console.log("handlePageChange , handlePageChange", page);
     setCurrentPage(page);
     // loadOrders(page, PerPage);
   };

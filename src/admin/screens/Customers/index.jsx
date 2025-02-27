@@ -40,7 +40,7 @@ const Customers = () => {
   }
   const indexOfLastItem = currentPage * itemsPerPage;
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     loadCustomer(pageNumber, name);
   };
@@ -50,7 +50,7 @@ const Customers = () => {
       setCustomer([]);
       settotalPage(1);
       const response = await getAllCustomers(page, search_name);
-      //   console.log("sdsddsdds", response.data.employees);
+      //   // console.log("sdsddsdds", response.data.employees);
       setCustomer(response.data.customers);
       settotalPage(response.data.total);
     } catch (error) {

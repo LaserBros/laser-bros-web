@@ -72,7 +72,7 @@ export default function QuotesDetail() {
   const [colors, setcolors] = useState([]);
 
   const handleUpload = async (file, id, quantities, pdf_url) => {
-    console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
+    // console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
     if (file.length == 0) {
       alert("Please upload a STEP or PDF file before saving.");
       return;
@@ -118,7 +118,7 @@ export default function QuotesDetail() {
       setModalShow2(false);
     } catch (error) {
       setaddLoading(false);
-      console.log("errororoor ----", error);
+      // console.log("errororoor ----", error);
     }
   };
 
@@ -196,7 +196,7 @@ export default function QuotesDetail() {
         id: quoteId,
       };
       const response = await fetchSelectedFinishes(data);
-      console.log("fetchSelectedFinishes", response.data);
+      // console.log("fetchSelectedFinishes", response.data);
       const res_status = response.data.data;
       const fetchedOptions = res_status.map((item) => ({
         value: item._id,
@@ -272,14 +272,14 @@ export default function QuotesDetail() {
         const quoteDataVal = JSON.parse(
           localStorage.getItem("setItempartsDBdata")
         );
-        console.log("quoteDataVal =-=-=- quoteList -=-", quoteDataVal);
+        // console.log("quoteDataVal =-=-=- quoteList -=-", quoteDataVal);
         let total = 0;
         for (const quote of quoteDataVal) {
           total += quote.bend_count; // Accumulate bend_count values
         }
 
         const quoteList = localStorage.getItem("setItemelementData");
-        console.log("quoteDataVal =-=-=- quoteList", quoteList);
+        // console.log("quoteDataVal =-=-=- quoteList", quoteList);
         if (quoteList) {
           // Parse the stored JSON data
           const parsedQuoteList = JSON.parse(quoteList);
@@ -288,7 +288,7 @@ export default function QuotesDetail() {
           if (total == 0) {
             parsedQuoteList.check_status = 0;
           }
-          console.log("parsedQuoteList", parsedQuoteList);
+          // console.log("parsedQuoteList", parsedQuoteList);
 
           setQuoteList(parsedQuoteList);
         }
@@ -296,7 +296,7 @@ export default function QuotesDetail() {
         setquoteDataCon(true);
         setQuoteData(updatedQuoteData);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
 
       return updatedQuoteData;
@@ -354,7 +354,7 @@ export default function QuotesDetail() {
       const isConfirmed = window.confirm(
         "Are you sure you want to remove bending?"
       );
-      console.log(isConfirmed, "isConfirmed");
+      // console.log(isConfirmed, "isConfirmed");
       if (isConfirmed) {
         const formData = new FormData();
         formData.append("id", id);
@@ -368,7 +368,7 @@ export default function QuotesDetail() {
 
           const updatedSetItemElementData = parsedQuoteList.map((item) => {
             if (item && item._id === id) {
-              console.log("Dsdssdsdssdsdsdsdsdsddssdsd");
+              // console.log("Dsdssdsdssdsdsdsdsdsddssdsd");
               return {
                 ...item,
                 bend_count: 0,
@@ -393,21 +393,21 @@ export default function QuotesDetail() {
             total += quote.bend_count;
           }
           const quoteListValues = localStorage.getItem("setItemelementData");
-          console.log("quoteList ---==--=", quoteListValues);
+          // console.log("quoteList ---==--=", quoteListValues);
           if (quoteListValues) {
             // Parse the stored JSON data
             const parsedQuoteList = JSON.parse(quoteListValues);
 
-            console.log("parsedQuoteList", parsedQuoteList);
+            // console.log("parsedQuoteList", parsedQuoteList);
             parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
             if (total == 0) {
               parsedQuoteList.check_status = 0;
             }
-            console.log(
-              "quoteList ---==--=",
-              JSON.stringify(parsedQuoteList),
-              "0-0-0-0"
-            );
+            // console.log(
+            //   "quoteList ---==--=",
+            //   JSON.stringify(parsedQuoteList),
+            //   "0-0-0-0"
+            // );
             localStorage.setItem(
               "setItemelementData",
               JSON.stringify(parsedQuoteList)
@@ -418,7 +418,7 @@ export default function QuotesDetail() {
           setquoteDataCon(true);
           setQuoteData(updatedSetItemElementData);
         } catch (err) {
-          console.log("eroroorororor", err);
+          // console.log("eroroorororor", err);
         }
       }
     }
@@ -445,28 +445,28 @@ export default function QuotesDetail() {
         }
         for (const quote of quoteData) {
           if (quote._id) {
-            console.log(
-              "calling function here -0-0-0-",
-              quote.price_check_status
-            );
+            // console.log(
+            //   "calling function here -0-0-0-",
+            //   quote.price_check_status
+            // );
             setbtnText(quote.check_status);
             if (quote.bend_count >= 1) {
-              console.log("bend_count", quote.bend_count);
+              // console.log("bend_count", quote.bend_count);
               setbtnText(1);
               return; // Exit the entire function
             }
             if (quote.price_check_status == 1) {
-              console.log("price_check_status", quote.price_check_status);
+              // console.log("price_check_status", quote.price_check_status);
               setbtnText(1);
               return; // Exit the entire function
             }
             if (quote.finish_check_status) {
-              console.log("finish_check_status", quote.finish_check_status);
+              // console.log("finish_check_status", quote.finish_check_status);
               setbtnText(1);
               return; // Exit the entire function
             }
             if (quote.check_status === 1) {
-              console.log("check_status is 1, exiting function.");
+              // console.log("check_status is 1, exiting function.");
               return; // Exit the entire function
             }
           }
@@ -504,7 +504,7 @@ export default function QuotesDetail() {
 
   const [apiResponse, setApiResponse] = useState(null);
   const handleApiResponse = async (selectedOption, type, id) => {
-    console.log(selectedOption, type, id);
+    // console.log(selectedOption, type, id);
     const data = {
       id: id,
       dimension_type: selectedOption.value,
@@ -539,7 +539,7 @@ export default function QuotesDetail() {
     // Check if data exists and update based on _id match
     const updatedLocalStorageData = parsedData.map((quote) => {
       if (quote._id === response._id) {
-        // console.log(
+        // // console.log(
         //   "response.updateSubQuote.amount",
         //   response.updateSubQuote.amount
         // );
@@ -610,7 +610,7 @@ export default function QuotesDetail() {
       const discount = response.data.updateQuantity.discount;
       const price = response.data.updateQuantity.amount;
       const price_status = response.data.updatedPrice.check_status;
-      console.log("price_status updates", price_status);
+      // console.log("price_status updates", price_status);
       const finalQuoteData = quoteData.map((quote) =>
         quote._id === Id
           ? {
@@ -665,12 +665,12 @@ export default function QuotesDetail() {
     const response = await uploadQuote(formData);
 
     if (response && response.data) {
-      console.log(response, "Sdsdsdsdds= response,", response.data);
+      // console.log(response, "Sdsdsdsdds= response,", response.data);
       const discount = response.data.updateQuantity.discount;
       const price = response.data.updateQuantity.amount;
       const price_status = response.data.updatedPrice.check_status;
-      console.log("price_status updates", price_status);
-      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+      // console.log("price_status updates", price_status);
+      //   // console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = updatedQuoteData.map((quote) =>
         quote._id === Id
@@ -726,7 +726,7 @@ export default function QuotesDetail() {
         }
 
         const quoteList = localStorage.getItem("setItemelementData");
-        // console.log("quoteDataVal =-=-=- quoteList", quoteList);
+        // // console.log("quoteDataVal =-=-=- quoteList", quoteList);
         if (quoteList) {
           // Parse the stored JSON data
           const parsedQuoteList = JSON.parse(quoteList);
@@ -735,14 +735,14 @@ export default function QuotesDetail() {
           if (total == 0) {
             parsedQuoteList.check_status = 0;
           }
-          console.log("parsedQuoteList", parsedQuoteList);
+          // console.log("parsedQuoteList", parsedQuoteList);
 
           setQuoteList(parsedQuoteList);
           return updatedQuoteData;
         }
       });
     } catch (error) {
-      console.log("Error duplicating quote:", error);
+      // console.log("Error duplicating quote:", error);
     }
   };
 
@@ -818,10 +818,10 @@ export default function QuotesDetail() {
 
       const setItempartsDBdata =
         JSON.parse(localStorage.getItem("setItempartsDBdata")) || [];
-      console.log(
-        "select drop down check status",
-        response.data.data.updated_data.check_status
-      );
+      // console.log(
+      //   "select drop down check status",
+      //   response.data.data.updated_data.check_status
+      // );
       const updatedQuoteDataVal = updatedQuoteData.map((quote) =>
         quote._id === id
           ? {
@@ -846,7 +846,7 @@ export default function QuotesDetail() {
       // Update state with the new quoteData
       setQuoteData(updatedQuoteDataVal);
 
-      console.log("Updated totalAmount:", totalAmount);
+      // console.log("Updated totalAmount:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
     }
@@ -871,7 +871,7 @@ export default function QuotesDetail() {
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
   const handleFileDrop = (data) => {
-    console.log("Files dropped: ---------", data);
+    // console.log("Files dropped: ---------", data);
 
     // Check if data is defined and has the expected structure
     if (data && data.partsDBdata && data.requestQuoteDB) {
@@ -892,7 +892,7 @@ export default function QuotesDetail() {
     localStorage.removeItem("setItemelementData");
 
     localStorage.removeItem("setItempartsDBdata");
-    console.log("SDdsd");
+    // console.log("SDdsd");
     navigate("/quotes");
   };
   return (

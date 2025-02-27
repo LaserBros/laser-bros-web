@@ -75,7 +75,7 @@ const Employe = () => {
       setEmp([]);
       settotalPage(1);
       const response = await getAllEmployees(page, search, sortOrder);
-      //   console.log("sdsddsdds", response.data.employees);
+      //   // console.log("sdsddsdds", response.data.employees);
       setEmp(response.data.employees);
       settotalPage(response.data.total);
     } catch (error) {
@@ -86,7 +86,7 @@ const Employe = () => {
   };
 
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     loadEmp(pageNumber);
   };

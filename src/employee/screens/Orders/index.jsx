@@ -115,7 +115,7 @@ const Orders = () => {
     }
   };
   const onPageChange = (pageNumber) => {
-    console.log("trigger 2")
+    // console.log("trigger 2")
     setCurrentPage(pageNumber);
     loadOrders(
       name,
@@ -203,9 +203,9 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    // console.log("location.state",location.state)
+    // // console.log("location.state",location.state)
     // if (!location.state) {
-      console.log(":Trigger Here")
+      // console.log(":Trigger Here")
     loadOrders("", currentPage);
     // }
 
@@ -634,7 +634,7 @@ const Orders = () => {
                             <td>
                               <Link
                                 className="workorders"
-                                to={`/admin/orders-detail/${row._id}`}
+                                to={`/employee/orders-detail/${row._id}`}
                               >
                                 <b>
                                   WO#

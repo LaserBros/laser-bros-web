@@ -13,7 +13,7 @@ const QuantitySelector = ({
   }, [quantity]);
   const handleInputChange = (e) => {
     const value = e.target.value;
-    console.log("Sdsddsd", value);
+    // console.log("Sdsddsd", value);
     if (/^\d*$/.test(value)) {
       setInputValue(value);
       if (value !== "") {

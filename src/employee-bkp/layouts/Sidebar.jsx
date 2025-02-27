@@ -17,14 +17,14 @@ const Sidebar = () => {
       localStorage.removeItem("employeePermision");
       navigate("/login");
     } catch (error) {
-      // console.log(error);
+      // // console.log(error);
       localStorage.removeItem("employeeToken");
       localStorage.removeItem("profile_pic");
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
       localStorage.removeItem("employeePermision");
       navigate("/login");
-      console.log("errr", error);
+      // console.log("errr", error);
     }
   };
   useEffect(() => {

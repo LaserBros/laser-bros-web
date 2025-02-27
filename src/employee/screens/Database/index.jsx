@@ -88,7 +88,7 @@ const DataBase = () => {
   };
   const handleTabSelect = async (tabKey) => {
     setLoadData(true);
-    console.log("tabKey", tabKey);
+    // console.log("tabKey", tabKey);
     if (tabKey == "finishes") {
       // setFinishes([]);
       const res = await getFinishAdmin();
@@ -207,7 +207,7 @@ const DataBase = () => {
                                   <div className="d-flex gap-2">
                                     <Link
                                       className="btnedit"
-                                      to={`/admin/database/edit-material/${item._id}`}
+                                      to={`/employee/database/edit-material/${item._id}`}
                                     >
                                       <Icon icon="tabler:edit" />
                                     </Link>
@@ -258,14 +258,14 @@ const DataBase = () => {
               ))}
               <div>
                 <Link
-                  to={"/admin/database/add-material"}
+                  to={"/employee/database/add-material"}
                   className=" gap-2 btn btn-primary d-inline-flex align-items-center justify-content-center"
                 >
                   Add Material
                 </Link>
                 <Link
                   style={{ marginLeft: "15px" }}
-                  to={"/admin/database/add-thickness"}
+                  to={"/employee/database/add-thickness"}
                   className="btn btn-primary d-inline-flex align-items-center justify-content-center"
                 >
                   Add Thickness
@@ -309,7 +309,7 @@ const DataBase = () => {
                           <div className="d-inline-flex align-items-center gap-1">
                             <Link
                               className="btnedit"
-                              to={`/admin/database/edit-finish/${item._id}`}
+                              to={`/employee/database/edit-finish/${item._id}`}
                             >
                               <Icon icon="tabler:edit" />
                             </Link>
@@ -342,7 +342,7 @@ const DataBase = () => {
                 </tbody>
               </Table>
               <Link
-                to={"/admin/database/add-finish"}
+                to={"/employee/database/add-finish"}
                 className="btn btn-primary d-inline-flex align-items-center justify-content-center"
               >
                 Add Finish
@@ -381,7 +381,7 @@ const DataBase = () => {
                           <div className="d-inline-flex align-items-center gap-1">
                             <Link
                               className="btnedit"
-                              to={`/admin/database/edit-quantity/${item._id}`}
+                              to={`/employee/database/edit-quantity/${item._id}`}
                             >
                               <Icon icon="tabler:edit" />
                             </Link>
@@ -398,7 +398,7 @@ const DataBase = () => {
                 </tbody>
               </Table>
               <Link
-                to={"/admin/database/add-quantity"}
+                to={"/employee/database/add-quantity"}
                 className="btn btn-primary d-inline-flex align-items-center justify-content-center"
               >
                 Add Quantity

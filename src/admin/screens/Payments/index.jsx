@@ -14,7 +14,7 @@ const PaymentHistory = () => {
   const fetchData = async (page) => {
     try {
       const res = await getAllTransactions(page);
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setTransaction(res.data.data.transactions);
       settotalPage(res.data.data.total);
       setLoading(false);

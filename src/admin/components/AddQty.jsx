@@ -19,7 +19,7 @@ const AddQty = ({ show3, handleClose3, title, quote, price, onSave }) => {
   };
 
   useEffect(() => {
-    console.log("price:", price);
+    // // console.log("price:", price);
     setPrice(price);
   }, [show3]);
 

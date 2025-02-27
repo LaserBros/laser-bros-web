@@ -88,7 +88,7 @@ const DataBase = () => {
   };
   const handleTabSelect = async (tabKey) => {
     setLoadData(true);
-    console.log("tabKey", tabKey);
+    // console.log("tabKey", tabKey);
     if (tabKey == "finishes") {
       // setFinishes([]);
       const res = await getFinishAdmin();

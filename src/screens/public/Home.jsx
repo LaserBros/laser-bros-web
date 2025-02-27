@@ -38,7 +38,7 @@ import FileUpload from "../../components/FileUpload";
 export default function Home() {
   const [hovered, setHovered] = useState(null);
   const handleFileDrop = (acceptedFiles) => {
-    console.log("Files dropped:", acceptedFiles);
+    // console.log("Files dropped:", acceptedFiles);
     // Add any additional logic for handling the files
   };
   const handleRemove = () => {

@@ -107,7 +107,7 @@ const navigate = useNavigate();
     let valid = true;
     let errors = {};
 
-    console.log(material, "Ssdsdsdsdsd");
+    // console.log(material, "Ssdsdsdsdsd");
     if (!material.material_id) {
       errors.material_id = "Please select material";
       valid = false;
@@ -189,7 +189,7 @@ const navigate = useNavigate();
   const handleChange = (e, field) => {
     const value = e.target.value;
     if (field === "finishing_options") {
-      console.log("value value value value", value);
+      // console.log("value value value value", value);
       const options = getFinishes
         ? getFinishes.map((option) => option.value)
         : [];
@@ -215,7 +215,7 @@ const navigate = useNavigate();
         const res = await addThickness(material);
         toast.success("Material added successfully!");
         setLoadingBtn(false);
-        navigate('/admin/database');
+        navigate('/employee/database');
       } catch (error) {
         setLoadingBtn(false);
         toast.error("Something wents wrong!");
@@ -232,7 +232,7 @@ const navigate = useNavigate();
       value: finish.finishing_code,
       label: "F" + finish.finishing_code,
     }));
-    console.log("transformedOptions", transformedOptions, "res.data", res.data);
+    // console.log("transformedOptions", transformedOptions, "res.data", res.data);
     setgetFinishes(transformedOptions);
   };
   useEffect(() => {

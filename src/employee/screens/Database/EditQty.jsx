@@ -34,7 +34,7 @@ const EditQty = () => {
     const fetchFinish = async () => {
       try {
         const response = await getParticularDiscount(id);
-        console.log(response.data, "SDdsdsdssdsds");
+        // console.log(response.data, "SDdsdsdssdsds");
         setFormData((prevFormData) => ({
           ...response.data,
           id: response.data._id,
@@ -70,7 +70,7 @@ const EditQty = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    console.log("formData", formData.discount);
+    // console.log("formData", formData.discount);
     if (
       formData.discount === "" ||
       formData.discount === null ||

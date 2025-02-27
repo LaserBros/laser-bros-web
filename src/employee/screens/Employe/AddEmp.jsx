@@ -59,7 +59,7 @@ const AddEmp = () => {
 
   const validate = () => {
     let errors = {};
-    console.log("Sdsdsd password", password.trim());
+    // console.log("Sdsdsd password", password.trim());
     if (!name.trim()) errors.name = "Full name is required";
     if (!cname.trim()) errors.cname = "Company name is required";
     if (!email.trim()) {
@@ -111,7 +111,7 @@ const AddEmp = () => {
         }
 
         setLoading(false);
-        navigate("/admin/employes");
+        navigate("/employee/employes");
       } catch (error) {
         setLoading(false);
         toast.error(error.response.data.message);

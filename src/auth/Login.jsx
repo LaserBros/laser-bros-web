@@ -64,7 +64,7 @@ export default function Login() {
         password: password,
       };
       try {
-        console.log("Dsdd");
+        // console.log("Dsdd");
         setLoading(true);
         var getId = "";
         const response = await axiosInstance.post("/signin", data);
@@ -78,7 +78,7 @@ export default function Login() {
 
         if (response.data.data.role_type == 2) {
           localStorage.setItem("employeeToken", response.data.data.token);
-          localStorage.setItem("employeePermision", response.data.data.user_permission);
+          localStorage.setItem("employeePermision", JSON.stringify(response.data.data.user_permission));
         }
         if (response.data.data.role_type == 3) {
           localStorage.setItem("authToken", response.data.data.token);
@@ -112,12 +112,17 @@ export default function Login() {
         }
         toast.success("Login Successfully!!");
         setLoading(false);
-        console.log("response.data.data.", response.data.data);
+        // console.log("response.data.data.", response.data.data);
         if (response.data.data.role_type == 1) {
           navigate("/admin/dashboard");
         }
         if (response.data.data.role_type == 2) {
-          navigate("/employee/dashboard");
+          const permissions = JSON.parse(localStorage.getItem("employeePermision")) || {};
+          if (permissions.dashboard_permission === 1) {
+            navigate("/employee/dashboard"); // Redirect to dashboard if permission is granted
+          } else {
+            navigate("/employee/fallback-page"); // Redirect to fallback page if no permission
+          }
         }
         if (response.data.data.role_type == 3) {
           navigate("/quotes");
@@ -134,7 +139,7 @@ export default function Login() {
         }
       }
     } else {
-      console.log("Form is invalid. Not submitting.");
+      // console.log("Form is invalid. Not submitting.");
     }
   };
 

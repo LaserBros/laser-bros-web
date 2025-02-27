@@ -45,7 +45,7 @@ const Quotes = () => {
   }, [currentPage, PerPage, loadData]);
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    // console.log(pageNumber, currentPage);
+    // // console.log(pageNumber, currentPage);
     // fetchData(pageNumber);
     // }
   };
@@ -83,7 +83,7 @@ const Quotes = () => {
       id: id,
     };
     const response = await getEditQuote(data);
-    console.log("resss-----", response.data);
+    // console.log("resss-----", response.data);
     localStorage.setItem(
       "setItemelementData",
       JSON.stringify(response.data.requestQuoteDB)
@@ -222,7 +222,7 @@ const Quotes = () => {
   ];
 
   const handleRowsPerPageChange = (newRowsPerPage, page) => {
-    console.log(" setPerPage", newRowsPerPage);
+    // console.log(" setPerPage", newRowsPerPage);
     setPerPage(newRowsPerPage);
   };
 

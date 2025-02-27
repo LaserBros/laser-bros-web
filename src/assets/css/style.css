@@ -1429,6 +1429,7 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   align-items: center;
   justify-content: center;
   gap: 7px;
+  flex-wrap: wrap;
 }
 .maincontent_div .pagination_order li.page-item {
   display: inline-block;

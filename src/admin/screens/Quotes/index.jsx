@@ -61,7 +61,7 @@ const Quotes = () => {
       id: id,
     };
     const res = await AdmingetEditQuote(data);
-    console.log(res);
+    // console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
       JSON.stringify(res.data.partsDBdata)

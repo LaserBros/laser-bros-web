@@ -626,7 +626,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const AdminbendQuotes = async (data) => {
     try {
       var response_api = await axiosEmployeeInstance.post(`/bendQuotes`, data);
-      // console.log("response_api", response_api);
+      // // console.log("response_api", response_api);
       // return;
       return response_api;
     } catch (error) {
@@ -638,7 +638,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const AdmingetMaterials = async (data) => {
     try {
       const response = await axiosEmployeeInstance.get(`/getMaterials`, data);
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -649,7 +649,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const AdmingetThickness = async (data) => {
     try {
       const response = await axiosEmployeeInstance.post(`/getThickness`, data);
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -663,7 +663,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
         `/updateThicknessDetails`,
         data
       );
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -678,7 +678,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
         `/addThickness`,
         data
       );
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -692,7 +692,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
         `/addMaterials`,
         data
       );
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -704,7 +704,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const getAllMaterialCodes = async () => {
     try {
       const response = await axiosEmployeeInstance.get(`/getAllMaterialCodes`);
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -715,7 +715,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const getAllMaterialCodesFilter = async () => {
     try {
       const response = await axiosEmployeeInstance.get(`/getAllMaterialCodesFilter`);
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -726,7 +726,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const getFinishingFilter = async () => {
     try {
       const response = await axiosEmployeeInstance.get(`/getFinishingFilter`);
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -851,7 +851,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
         `/editSubQuoteDetailsAdmin`,
         params
       );
-      // console.log("response_api", response_api);
+      // // console.log("response_api", response_api);
       // return;
       return response_api;
     } catch (error) {
@@ -863,7 +863,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const AdminupdateQuantity = async (data) => {
     try {
       const response = await axiosEmployeeInstance.post(`/updateQuantity`, data);
-      // console.log("responseeee", response.data);
+      // // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -907,7 +907,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const getBendingFilter = async (data) => {
     try {
       const response = await axiosEmployeeInstance.get(`/getBendingFilter`);
-      // console.log("responseeee", response.data);
+      // // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -921,7 +921,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
         `/updateSubQuoteDetails`,
         data
       );
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -932,7 +932,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   export const editSubQuote = async (data) => {
     try {
       const response = await axiosEmployeeInstance.post(`/editSubQuote`, data);
-      console.log("responseeee", response.data);
+      // console.log("responseeee", response.data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
@@ -1011,7 +1011,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
         formData
       );
       // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
-      console.log("responseeee ------", response.data);
+      // console.log("responseeee ------", response.data);
       // return;
       return response.data;
     } catch (error) {
@@ -1024,7 +1024,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
     try {
       const response = await axiosEmployeeInstance.post(`/uploaddxfFiles`, formData);
       // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
-      console.log("responseeee ------", response.data);
+      // console.log("responseeee ------", response.data);
       // return;
       return response.data;
     } catch (error) {

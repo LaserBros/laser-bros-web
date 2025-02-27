@@ -119,7 +119,7 @@ const AddressDetails = ({
             <p>
               {billAdress?.full_name} <br />
               {/* {addressDetail?.address_details?.full_name} <br /> */}
-              {billAdress?.address_line_1} 0909 <br />
+              {billAdress?.address_line_1} <br />
               {billAdress?.address_line_2 != null ? (
                 <>
                   {billAdress.address_line_2}

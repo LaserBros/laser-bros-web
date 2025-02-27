@@ -47,7 +47,7 @@ const QuotesSidebar = ({
 
   useEffect(() => {
     setquoteData(quoteData);
-    console.log("quoteData", quoteData);
+    // console.log("quoteData", quoteData);
   }, [quoteData]);
   const handleRateSelected = async (rate) => {
     setrateVal(rate);
@@ -70,7 +70,7 @@ const QuotesSidebar = ({
   };
  
   const PaymentSubmit = async () => {
-    console.log("SDsdsddssd", rateVal);
+    // console.log("SDsdsddssd", rateVal);
     if (rateVal == "" || rateVal == null) {
       toast.error("Please Select Shipping Option.");
       return;
@@ -113,7 +113,7 @@ const QuotesSidebar = ({
 
     
     useEffect(() => {
-      console.log("Dsddsdsdsdsdsdsds=d-=sd-s=d-s-d-sd=s-")
+      // console.log("Dsddsdsdsdsdsdsds=d-=sd-s=d-s-d-sd=s-")
       setShowModal(false);
       loadData();
       setSuccessMessage("");
@@ -176,9 +176,9 @@ const QuotesSidebar = ({
     const updatedQuoteData = JSON.parse(
       localStorage.getItem("setItempartsDBdata")
     );
-    console.log("updatedQuoteData",updatedQuoteData) 
+    // console.log("updatedQuoteData",updatedQuoteData) 
     let isValid = true; // Assume everything is valid initially
-    console.log("loading od");
+    // console.log("loading od");
     // Use a for...of loop to allow breaking out of the loop
     for (const quote of updatedQuoteData) {
       if (!quote.material_id) {
@@ -212,7 +212,7 @@ const QuotesSidebar = ({
         id: id,
         type:type_param
       };
-      console.log("wswdwdwdwdwdwdwdwd", getId, elementId);
+      // console.log("wswdwdwdwdwdwdwdwd", getId, elementId);
       // return;
       try {
         if(type_param == "rfq") {
@@ -317,7 +317,7 @@ const QuotesSidebar = ({
               id: getId._id,
             };
             const response = await getEditQuotePay(data);
-            console.log("resss-----", response.data);
+            // console.log("resss-----", response.data);
             localStorage.setItem(
               "setItemelementDataPay",
               JSON.stringify(response.data.requestQuoteDB)
@@ -355,7 +355,7 @@ const QuotesSidebar = ({
     setLoading(true);
     try {
       const [response] = await Promise.all([fetchAddress()]);
-      console.log(response.data.data);
+      // console.log(response.data.data);
       setAddresss(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -381,7 +381,7 @@ const QuotesSidebar = ({
     loadCards();
     setShowDiv2(showDiv);
     setShowDiv1(!showDiv);
-    console.log("sdsdsd-sds-d-sd-d-sd-sd-ds-d", ShippingDBdataPay);
+    // console.log("sdsdsd-sds-d-sd-d-sd-sd-ds-d", ShippingDBdataPay);
   }, []);
 
   const HandleName = () => {

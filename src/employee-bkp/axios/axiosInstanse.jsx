@@ -44,7 +44,7 @@ const refreshToken = async () => {
     );
     const { token } = response.data.data;
     localStorage.setItem("employeeToken", token);
-    console.log(response.data, "sasas");
+    // console.log(response.data, "sasas");
     return token;
   } catch (error) {
     if (error.response.data.status_code === 401) {

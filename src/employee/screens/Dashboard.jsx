@@ -156,7 +156,7 @@ const Dashboard = () => {
     const startOfWeekDate = startOfWeek(date);
     const endOfWeekDate = endOfWeek(date);
     setStartDate(date);
-    console.log(startOfWeekDate, endOfWeekDate);
+    // console.log(startOfWeekDate, endOfWeekDate);
     setFromDate(format(startOfWeekDate, "yyyy-MM-dd"));
     setToDate(format(endOfWeekDate, "yyyy-MM-dd"));
   };
@@ -195,7 +195,7 @@ const Dashboard = () => {
       };
     });
     setLoading(false);
-    console.log("convertedData", convertedData);
+    // console.log("convertedData", convertedData);
     setdataArr(convertedData);
   };
 

@@ -168,7 +168,7 @@ const Queue = () => {
     );
 
     if (checkedIds.length === 0) {
-      console.log("No items selected");
+      // console.log("No items selected");
       return;
     }
     const selectedOrders = orders.filter((order) =>
@@ -180,7 +180,7 @@ const Queue = () => {
       "Do you want to proceed with the download?"
     );
     if (!confirmSave) {
-      console.log("User canceled the download.");
+      // console.log("User canceled the download.");
       return; // Exit if the user clicks "Cancel"
     }
     selectedOrders.map(async (order) => {

@@ -102,7 +102,7 @@ export default function AddAddress() {
 
   const validateForm = () => {
     const newErrors = {};
-    console.log("SDdsdd");
+    // console.log("SDdsdd");
     if (!formValues.full_name) newErrors.name = "Full Name is required";
     if (!formValues.nickname)
       newErrors.nickname = "Address Nickname is required";

@@ -104,7 +104,7 @@ const OrdersDetail = () => {
   //   e.preventDefault();
   //   if (validateFields()) {
   //     setLoadingWeight(true);
-  //     // console.log(height, weight, width, length);
+  //     // // console.log(height, weight, width, length);
   //     try {
   //       const data = {
   //         id: order?.orderedQuote._id,
@@ -115,7 +115,7 @@ const OrdersDetail = () => {
   //       };
   //       const res = await startPackaging(data);
   //       setLoadingWeight(false);
-  //       navigate("/admin/complete-orders");
+  //       navigate("/employee/complete-orders");
   //     } catch (error) {
   //       setLoadingWeight(false);
   //     }
@@ -314,10 +314,10 @@ const OrdersDetail = () => {
             if (extensionIndex !== -1) {
               const baseName = fileName.slice(0, extensionIndex);
               const extension = fileName.slice(extensionIndex);
-              console.log("${fileNameCount[fileName]}",`${fileNameCount[fileName]}`);
+              // console.log("${fileNameCount[fileName]}",`${fileNameCount[fileName]}`);
               fileName = `${baseName}(${fileNameCount[fileName]})${extension}`;
             } else {
-              console.log("fileName",`${fileName}`);
+              // console.log("fileName",`${fileName}`);
               fileName = `${fileName}(${fileNameCount[fileName]})`;
             }
           } else {
@@ -456,7 +456,7 @@ const OrdersDetail = () => {
       };
       await moveOrderToComplete(new_data);
       setLoadingWeight(false);
-      navigate("/admin/complete-orders");
+      navigate("/employee/complete-orders");
     } catch (error) {
       console.error("Error submitting data:", error);
       setLoadingWeight(false);
@@ -477,7 +477,7 @@ const OrdersDetail = () => {
       parseFloat(box.width) +
       parseFloat(box.height) +
       parseFloat(box.weight);
-    // console.log(":Fdfdfdf=-==-=", orderInfo.length + parseInt(index) + 1);
+    // // console.log(":Fdfdfdf=-==-=", orderInfo.length + parseInt(index) + 1);
     // return;
     const data = {
       length: box.length,
@@ -570,7 +570,7 @@ const OrdersDetail = () => {
       setErrors(newErrors);
     } else {
       // Submit form data
-      console.log("Submitting data:", shippingInfo);
+      // console.log("Submitting data:", shippingInfo);
       try {
         // Prepare an array of data for each shippingInfo item
         const dataArray = shippingInfo.map((info) => ({
@@ -592,7 +592,7 @@ const OrdersDetail = () => {
         };
         await moveOrderToComplete(new_data);
         setLoadingWeight(false);
-        navigate("/admin/complete-orders");
+        navigate("/employee/complete-orders");
       } catch (error) {
         console.error("Error submitting data:", error);
         setLoadingWeight(false);
@@ -633,7 +633,7 @@ const OrdersDetail = () => {
     try {
       const res = await AdminmoveOrderStatus(data);
       toast.success("Order move sucessfully.");
-      navigate("/admin/shipping-orders");
+      navigate("/employee/shipping-orders");
     } catch (error) {
       toast.error("Something wents wrong.");
     }
@@ -647,7 +647,7 @@ const OrdersDetail = () => {
     // settrackNumber(res.data);
   };
   const ShippingInfoData = async (form) => {
-    console.log("Sdsdsdsdsds",form)
+    // console.log("Sdsdsdsdsds",form)
     var formData = new FormData();
     formData.append("file", form.file);
     formData.append("freight_carrier_name", form.freight_carrier_name);
@@ -659,7 +659,7 @@ const OrdersDetail = () => {
       await moveOrderToComplete(formData);
       toast.success("Shipping information added sucessfully!")
       setLoadingWeight(false);
-      navigate("/admin/complete-orders");
+      navigate("/employee/complete-orders");
     } catch (error) {
       console.error("Error submitting data:", error);
       setLoadingWeight(false);
@@ -676,7 +676,7 @@ const OrdersDetail = () => {
 
     const isChecked = event.target.checked;
     var checked = 0;
-    console.log("setevent", isChecked);
+    // console.log("setevent", isChecked);
     setLoadingBtn(true);
     if (!isChecked) {
       checked = 1;
@@ -689,7 +689,7 @@ const OrdersDetail = () => {
       }
       return wo; // Return original object if not matching
     });
-    console.log(updatedMaterials);
+    // console.log(updatedMaterials);
     setOrders((prevOrders) => ({
       ...prevOrders,
       newUpdatedData: updatedMaterials, // Update the specific part of the state
@@ -768,7 +768,7 @@ const OrdersDetail = () => {
     }),
   };
   const handleBack = () => {
-    navigate("/admin/orders",{ state: { message: "Hello from Home Page" } }); 
+    navigate("/employee/orders",{ state: { message: "Hello from Home Page" } }); 
   };
   // <p>{formatDate(order.createdAt)}</p>;
   const [selectedEmp, setSelectedEmp] = useState("");
@@ -776,7 +776,7 @@ const OrdersDetail = () => {
   const [EmpLoad, setEmpLoad] = useState(false);
   const { theme, togglenewTheme } = useTheme();
   useEffect(() => {
-    console.log("order?.orderedQuote?.service_code",order?.orderedQuote?.service_code)
+    // console.log("order?.orderedQuote?.service_code",order?.orderedQuote?.service_code)
     setSelectedMethod(order?.orderedQuote?.service_code);
     const defaultEmployee = Emp.find(
       (emp) => emp.value === order?.orderedQuote?.task_assigned
@@ -899,7 +899,7 @@ const OrdersDetail = () => {
                     )}
                   {/* <Button
                     as={Link}
-                    to={'/admin/payment-history/view-payment/'+order.transactionDetails?._id}
+                    to={'/employee/payment-history/view-payment/'+order.transactionDetails?._id}
                      target="_blank"
                       rel="noopener noreferrer"
                     className="d-inline-flex align-items-center justify-content-center me-2"

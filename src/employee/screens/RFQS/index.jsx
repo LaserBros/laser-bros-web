@@ -27,7 +27,7 @@ const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
   const getQueue = (id) => {
-    console.log(id, "----------");
+    // console.log(id, "----------");
   };
   const handleCheckboxChange = (id) => {
     setCheckedItems((prevState) => ({
@@ -82,7 +82,7 @@ const RFQS = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     // loadData(pageNumber);
   };
@@ -93,7 +93,7 @@ const RFQS = () => {
     };
     setLoadingId(id);
     const res = await getParticularEditQuoteAdmin(data);
-    console.log(res);
+    // console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
       JSON.stringify(res.data.partsDBdata)
@@ -113,7 +113,7 @@ const RFQS = () => {
     );
     localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
     setLoadingId("");
-    navigate("/admin/rfqs/edit-quote");
+    navigate("/employee/rfqs/edit-quote");
   };
 
   const [loading, setLoading] = useState(true);
@@ -256,7 +256,7 @@ const RFQS = () => {
                         <tr>
                           <td className="text-nowrap">
                             <Link
-                              // to="/admin/rfqs/rfqs-detail"
+                              // to="/employee/rfqs/rfqs-detail"
                               className="workorders"
                               onClick={() => getQueue(row._id)}
                             >

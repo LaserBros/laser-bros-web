@@ -79,7 +79,7 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
     setFormData({ ...formData, [name]: value });
   };
    useEffect(() => {
-      console.log("openPop",openPop);
+      // console.log("openPop",openPop);
    }, []);
 
   const validateForm = () => {
@@ -156,7 +156,7 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
           "/users/addAddress",
           formData
         );
-        console.log(response);
+        // console.log(response);
         toast.success("Address added sucessfully");
         setLoading(false);
         if(openPop) {
@@ -176,7 +176,7 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
         }
       }
     } else {
-      console.log("Form is invalid.");
+      // console.log("Form is invalid.");
     }
   };
 

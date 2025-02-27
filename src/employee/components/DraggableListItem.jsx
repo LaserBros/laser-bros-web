@@ -23,7 +23,7 @@ const DragDropList = ({ id, dragoption }) => {
     const updatedItems = [...items];
     const [movedItem] = updatedItems.splice(fromIndex, 1);
     updatedItems.splice(toIndex, 0, movedItem);
-    console.log("updatedItems", updatedItems);
+    // console.log("updatedItems", updatedItems);
 
     let existingData = localStorage.getItem("setItempartsDBdataAdmin");
     let parsedData = existingData ? JSON.parse(existingData) : [];
@@ -45,7 +45,7 @@ const DragDropList = ({ id, dragoption }) => {
     let parsedData = existingData ? JSON.parse(existingData) : [];
 
     let existingQuote = parsedData.find((item) => item._id === idSelect);
-    console.log(":", existingQuote.post_ops, selected);
+    // console.log(":", existingQuote.post_ops, selected);
     if (existingQuote && existingQuote.post_ops) {
       existingQuote.post_ops = existingQuote.post_ops.filter(
         (item) => item !== selected

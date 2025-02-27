@@ -247,7 +247,7 @@ export default function QuotesDetailPay() {
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
   const handleFileDrop = (data) => {
-    console.log("Files dropped: ---------", data);
+    // console.log("Files dropped: ---------", data);
 
     // Check if data is defined and has the expected structure
     if (data && data.partsDBdata && data.requestQuoteDB) {

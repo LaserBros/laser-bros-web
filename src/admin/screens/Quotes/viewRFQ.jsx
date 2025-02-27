@@ -167,7 +167,7 @@ const ViewRFQS = () => {
         value: item._id,
         label: item.finishing_desc,
       }));
-      //   console.log("fetchedOptions ,fetchedOptions", response.bending);
+      //   // console.log("fetchedOptions ,fetchedOptions", response.bending);
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId
@@ -195,7 +195,7 @@ const ViewRFQS = () => {
   // ];
 
   const handleShow3 = (quote, notes_admin, id) => {
-    // console.log("Sdsd notes");
+    // // console.log("Sdsd notes");
     setSelectedNote(quote);
     setSelectedAdminNote(notes_admin);
     setSelectedPartId(id);
@@ -229,7 +229,7 @@ const ViewRFQS = () => {
   };
 
   const handleDeleteNote = (indexToDelete, partId) => {
-    // console.log("indexToDelete, partId", indexToDelete, partId);
+    // // console.log("indexToDelete, partId", indexToDelete, partId);
     setQuoteData((prevQuoteData) => {
       const updatedQuoteData = prevQuoteData.map((quote) => {
         if (quote._id === partId) {
@@ -398,7 +398,7 @@ const ViewRFQS = () => {
     }
   };
   const updateQuantityAPI = async (quantity, id) => {
-    console.log("Dssdsdsdsd", quantity);
+    // console.log("Dssdsdsdsd", quantity);
     let data = "";
     let type = "";
     let params = "";
@@ -431,7 +431,7 @@ const ViewRFQS = () => {
     if (response && response.data) {
       const discount = response.data.data.updateData.discount;
       const price = response.data.data.updateData.price;
-      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+      //   // console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = updatedQuoteData.map((quote) => {
         if (quote._id === id) {
@@ -497,7 +497,7 @@ const ViewRFQS = () => {
     if (response && response.data) {
       const discount = response.data.data.updateData.discount;
       const price = response.data.data.updateData.price;
-      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+      //   // console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = updatedQuoteData.map((quote) =>
         quote._id === Id
@@ -629,7 +629,7 @@ const ViewRFQS = () => {
 
       // Update state with the new quoteData
       setQuoteData(updatedQuoteData);
-      console.log("Total sum of prices:", totalAmount);
+      // console.log("Total sum of prices:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
     }
@@ -654,7 +654,7 @@ const ViewRFQS = () => {
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
   const handleFileDrop = (data) => {
-    console.log("Files dropped: ---------", data);
+    // console.log("Files dropped: ---------", data);
 
     // Check if data is defined and has the expected structure
     if (data && data.partsDBdata && data.requestQuoteDB) {

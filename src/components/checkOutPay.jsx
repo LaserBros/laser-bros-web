@@ -38,7 +38,7 @@ const CheckOutPay = ({
     setaxPercentage(shippingInfo?.tax?.tax_percentage);
     settaxAmount(shippingInfo?.tax?.tax_amount);
     setSelectedRate(shippingInfo?.requestQuoteDB?.service_code);
-    console.log(shippingInfo.requestQuoteDB?.service_code,".requestQuoteDB")
+    // console.log(shippingInfo.requestQuoteDB?.service_code,".requestQuoteDB")
     if (shippingInfo?.requestQuoteDB?.service_code != null) {
       handleRateSelected(
         shippingInfo?.requestQuoteDB?.service_code,
@@ -81,7 +81,7 @@ const CheckOutPay = ({
   const [fileUpload, setfileUpload] = useState("");
   const handlePONumberChange = (e) => {
     const poNumber = e.target.value;
-    console.log("PO Number:", poNumber);
+    // console.log("PO Number:", poNumber);
     setpoNumber(poNumber);
     // Perform any necessary state updates or validation here
   };
@@ -89,7 +89,7 @@ const CheckOutPay = ({
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // console.log("Uploaded file:", file);
+      // // console.log("Uploaded file:", file);
       if (file.type !== "application/pdf") {
         alert("Please upload a valid PDF file.");
         return;
@@ -104,7 +104,7 @@ const CheckOutPay = ({
     var po_number_type = "";
     var po_upload_type = "";
     if (isValid) {
-      // console.log(
+      // // console.log(
       //   "dassdasdsadadssadsadsds",
       //   selectedAddress,
       //   selectedShippingAddress
@@ -146,7 +146,7 @@ const CheckOutPay = ({
       //   : selectedAddress?._id;
 
       // const selectedShippingAddressId = selectedShippingAddress._id;
-      // console.log("activeTab", fileUpload);
+      // // console.log("activeTab", fileUpload);
       // return;
       const data_id = {
         id: loadingPayId,
@@ -190,14 +190,14 @@ const CheckOutPay = ({
               setLoading(false);
             }
           } catch (error) {
-            console.log(error);
+            // console.log(error);
             setLoading(false);
             toast.error("Something went wrong.");
           }
         }
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        // console.log(error);
         toast.error("Something went wrong.");
       }
     }

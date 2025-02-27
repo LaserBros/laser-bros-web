@@ -31,9 +31,9 @@ const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
           shipType == "Local Pickup" || shipType == "local_pickup"  ?
             <div className="events-list">
             <div className="events-list">
-                  <div className="event-item mb-3 text-center" style={{fontStyle:'italic'}}>
-                    <p>Your order is ready for Local Pickup<br/>
-                      Pickup Address:<br/>
+                  <div className="event-item mb-3">
+                    <p><b>Your order is ready for local pickup!</b></p>
+                    <p><b>Pickup Address:</b><br/>
                       909 E. Elm St.<br/>
                       Suite 102<br/>
                       Graham, NC 27253</p>
@@ -41,7 +41,7 @@ const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
                    </div>
                    </div>
           :
-          Array.isArray(ordersTrack) && ordersTrack.map((data) => (
+          Array.isArray(ordersTrack) && ordersTrack?.map((data) => (
             <>
               <div className="tracking-info">
                 <h5>Tracking Number: {data?.tracking_number}</h5>

@@ -23,7 +23,7 @@ const FileUpload = ({
     // Check if the current file count exceeds 5
     var count = JSON.parse(localStorage.getItem("setItempartsDBdataAdmin"));
     const token = localStorage.getItem("authToken");
-    // console.log(
+    // // console.log(
     //   "uploadedFiles.length + acceptedFiles.length",
     //   uploadedFiles.length + acceptedFiles.length
     // );
@@ -56,7 +56,7 @@ const FileUpload = ({
       setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
 
       const formData = new FormData();
-      console.log("SAasasas", acceptedFiles);
+      // console.log("SAasasas", acceptedFiles);
       for (let i = 0; i < acceptedFiles.length; i++) {
         formData.append("quote_image", acceptedFiles[i]);
       }
@@ -76,7 +76,7 @@ const FileUpload = ({
 
       try {
         const response = await uploadQuoteAdmin(formData);
-        console.log("response_api", response.data);
+        // console.log("response_api", response.data);
         localStorage.setItem(
           "setItemelementDataAdmin",
           JSON.stringify(response.data.requestQuoteDB)

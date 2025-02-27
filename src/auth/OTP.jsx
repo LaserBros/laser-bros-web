@@ -21,7 +21,7 @@ const OTPForm = () => {
     token_val = token;
     setType(type);
     if (token === "" || token === undefined) {
-      console.log("Navigating to /SignUp");
+      // console.log("Navigating to /SignUp");
       navigate("/SignUp");
     }
     token_val = token;
@@ -52,7 +52,7 @@ const OTPForm = () => {
       setFbtndisable(true);
       const response = await axiosInstance.post("/resendotp", data);
       token_val = response.data.data.otp_token;
-      console.log(response.data.data.otp_token, "----====", token_val);
+      // console.log(response.data.data.otp_token, "----====", token_val);
       // localStorage.setItem("authToken", "");
       // localStorage.setItem("authToken", response.data.data.otp_token);
     } catch (error) {
@@ -75,7 +75,7 @@ const OTPForm = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       if (type == "forgot") {
-        console.log(token_val);
+        // console.log(token_val);
         try {
           const data = {
             otp_get: otp,
@@ -117,7 +117,7 @@ const OTPForm = () => {
           try {
             const response = await axiosInstance.post("/signup", formData);
             toast.success("OTP Verified.");
-            console.log("SDsdsdsdsdsd", response.data);
+            // console.log("SDsdsdsdsdsd", response.data);
 
             setOtp("");
             // Reset form data

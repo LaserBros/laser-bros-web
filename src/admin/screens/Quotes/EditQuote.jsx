@@ -115,9 +115,9 @@ const EditRFQS = () => {
     let existingData = localStorage.getItem("setItempartsDBdataAdmin");
 
     let parsedData = existingData ? JSON.parse(existingData) : [];
-    // console.log(parsedData, "parsedData");
+    // // console.log(parsedData, "parsedData");
     let existingQuote = parsedData.find((item) => item._id === idSelect);
-    // console.log(existingQuote, "existingQuote", id);
+    // // console.log(existingQuote, "existingQuote", id);
     if (existingQuote) {
       // If the quote already exists, append the new postOps data
       if (!existingQuote.post_ops) {
@@ -203,10 +203,10 @@ const EditRFQS = () => {
       try {
         const response = await AdminbendQuotes(formData);
 
-        console.log(
-          "response.data.data  response.data.data",
-          response.data.data
-        );
+        // console.log(
+        //   "response.data.data  response.data.data",
+        //   response.data.data
+        // );
         localStorage.setItem(
           "setItempartsDBdataAdmin",
           JSON.stringify(response.data.data)
@@ -232,14 +232,14 @@ const EditRFQS = () => {
             JSON.stringify(parsedQuoteList)
           );
           setQuoteList(parsedQuoteList);
-          console.log("Sdssdsdsdsd", quoteList, "quoteList");
+          // console.log("Sdssdsdsdsd", quoteList, "quoteList");
         }
         setquoteDataCon(true);
         setaddLoading(false);
         setModalShow2(false);
       } catch (error) {
         setaddLoading(false);
-        console.log("errororoor ----", error);
+        // console.log("errororoor ----", error);
       }
     } catch (error) {
       setaddLoading(false);
@@ -312,7 +312,7 @@ const EditRFQS = () => {
         value: item._id,
         label: item.finishing_desc,
       }));
-      //   console.log("fetchedOptions ,fetchedOptions", response.bending);
+      //   // console.log("fetchedOptions ,fetchedOptions", response.bending);
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId
@@ -340,7 +340,7 @@ const EditRFQS = () => {
   // ];
 
   const handleShow3 = (quote, notes_admin, id) => {
-    console.log("Sdsd notes");
+    // console.log("Sdsd notes");
     setSelectedNote(quote);
     setSelectedAdminNote(notes_admin);
     setSelectedPartId(id);
@@ -374,7 +374,7 @@ const EditRFQS = () => {
   };
 
   const handleDeleteNote = (indexToDelete, partId) => {
-    // console.log("indexToDelete, partId", indexToDelete, partId);
+    // // console.log("indexToDelete, partId", indexToDelete, partId);
     setQuoteData((prevQuoteData) => {
       const updatedQuoteData = prevQuoteData.map((quote) => {
         if (quote._id === partId) {
@@ -508,15 +508,15 @@ const EditRFQS = () => {
             // Parse the stored JSON data
             const parsedQuoteList = JSON.parse(quoteList);
 
-            console.log("parsedQuoteList", parsedQuoteList);
+            // console.log("parsedQuoteList", parsedQuoteList);
             parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
 
-            console.log(
-              "total * 15",
-              total * 5,
-              parsedQuoteList,
-              "dsdsdsdsdsddsd"
-            );
+            // console.log(
+            //   "total * 15",
+            //   total * 5,
+            //   parsedQuoteList,
+            //   "dsdsdsdsdsddsd"
+            // );
             localStorage.setItem(
               "setItemelementDataAdmin",
               JSON.stringify(parsedQuoteList)
@@ -527,7 +527,7 @@ const EditRFQS = () => {
           setquoteDataCon(true);
           setQuoteData(updatedQuoteData);
         } catch (error) {
-          console.log("Dsdsdsdsdsdd", error);
+          // console.log("Dsdsdsdsdsdd", error);
         }
       }
     }
@@ -574,7 +574,7 @@ const EditRFQS = () => {
     for (const quote of updatedData) {
       total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
     }
-    console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
+    // console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
 
     const quoteList = localStorage.getItem("setItemelementDataAdmin");
 
@@ -654,7 +654,7 @@ const EditRFQS = () => {
     }
   };
   const updateQuantityAPI = async (quantity, id) => {
-    console.log("Dssdsdsdsd", quantity);
+    // console.log("Dssdsdsdsd", quantity);
     let data = "";
     let type = "";
     let params = "";
@@ -687,7 +687,7 @@ const EditRFQS = () => {
     if (response && response.data) {
       const discount = response.data.data.updateData.discount;
       const price = response.data.data.updateData.price;
-      //   console.log("response.data.discount;", response.data.data.updateData.discount);
+      //   // console.log("response.data.discount;", response.data.data.updateData.discount);
 
       const finalQuoteData = updatedQuoteData.map((quote) => {
         if (quote._id === id) {
@@ -778,7 +778,7 @@ const EditRFQS = () => {
   //   if (response && response.data) {
   //     const discount = response.data.data.updateData.discount;
   //     const price = response.data.data.updateData.price;
-  //     //   console.log("response.data.discount;", response.data.data.updateData.discount);
+  //     //   // console.log("response.data.discount;", response.data.data.updateData.discount);
 
   //     const finalQuoteData = updatedQuoteData.map((quote) =>
   //       quote._id === Id
@@ -892,7 +892,7 @@ const EditRFQS = () => {
 
       // Update state with the new quoteData
       setQuoteData(updatedQuoteData);
-      console.log("Total sum of prices:", totalAmount);
+      // console.log("Total sum of prices:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
     }
@@ -917,7 +917,7 @@ const EditRFQS = () => {
   const [error, setError] = useState(null);
   const [hovered, setHovered] = useState(null);
   const handleFileDrop = (data) => {
-    console.log("Files dropped: ---------", data);
+    // console.log("Files dropped: ---------", data);
 
     // Check if data is defined and has the expected structure
     if (data && data.partsDBdata && data.requestQuoteDB) {
@@ -1209,10 +1209,10 @@ const EditRFQS = () => {
                                 <Link
                                   className="btnicon flex-shrink-0"
                                   onClick={() => {
-                                    console.log(
-                                      quote.per_bend_price,
-                                      "quote.per_bend_price"
-                                    );
+                                    // console.log(
+                                    //   quote.per_bend_price,
+                                    //   "quote.per_bend_price"
+                                    // );
                                     setimage_url(quote.image_url);
                                     setquote_name(quote.quote_name);
                                     setbend_count(quote.bend_count);

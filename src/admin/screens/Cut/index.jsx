@@ -64,7 +64,7 @@ const Cut = () => {
   const [selectedCode, setSelectedCode] = useState("");
   const { theme, togglenewTheme } = useTheme();
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     loadOrders(selectedCode, pageNumber);
   };
@@ -72,7 +72,7 @@ const Cut = () => {
     try {
       setLoading(true);
       const response = await fetchOrdersInArchive(selectedValue, currentPage);
-      console.log("response.data", response.data);
+      // console.log("response.data", response.data);
       setOrders(response.data.result);
       settotalPage(response.data.total);
     } catch (error) {
@@ -84,7 +84,7 @@ const Cut = () => {
   const [materialCodes, setMaterialCodes] = useState([]);
 
   const handleSortChange = (value) => {
-    // console.log(":Sdsddsd", value);
+    // // console.log(":Sdsddsd", value);
     const selectedValue = value.value;
     setSelectedCode(value);
     loadOrders(selectedValue);
@@ -147,7 +147,7 @@ const Cut = () => {
     );
 
     if (checkedIds.length === 0) {
-      console.log("No items selected");
+      // console.log("No items selected");
       return;
     }
     const selectedOrders = orders.filter((order) =>
@@ -170,7 +170,7 @@ const Cut = () => {
 
     try {
       const filePromises = urls.map(async (url, index) => {
-        console.log(url.dxf_url);
+        // console.log(url.dxf_url);
         const response = await fetch(url);
         const blob = await response.blob();
         const fileName = url.subquote_number + ".dxf";

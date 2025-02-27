@@ -75,7 +75,7 @@ const Employe = () => {
       setEmp([]);
       settotalPage(1);
       const response = await getAllEmployees(page, search, sortOrder);
-      //   console.log("sdsddsdds", response.data.employees);
+      //   // console.log("sdsddsdds", response.data.employees);
       setEmp(response.data.employees);
       settotalPage(response.data.total);
     } catch (error) {
@@ -86,7 +86,7 @@ const Employe = () => {
   };
 
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     loadEmp(pageNumber);
   };
@@ -107,7 +107,7 @@ const Employe = () => {
                 <Link
                   variant={null}
                   className="btn btn-primary d-inline-flex align-items-center justify-content-center"
-                  to={"/admin/add"}
+                  to={"/employee/add"}
                   //   onClick={handleDownloadAll}
                 >
                   Add Employee
@@ -160,7 +160,7 @@ const Employe = () => {
                                 <Link
                                   className="btnedit"
                                   // onClick={() => EditQuote(row._id)}
-                                  to={`/admin/add/${row._id}`}
+                                  to={`/employee/add/${row._id}`}
                                 >
                                   <Icon icon="teenyicons:edit-outline" />
                                 </Link>

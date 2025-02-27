@@ -54,7 +54,7 @@ const ShippingAddress = () => {
   };
 
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     loadOrders(pageNumber);
   };
@@ -211,7 +211,7 @@ const ShippingAddress = () => {
                             <td>
                               <Link
                                 className="workorders"
-                                to={`/admin/orders-detail/${row._id}`}
+                                to={`/employee/orders-detail/${row._id}`}
                               >
                                 <b>
                                   WO#

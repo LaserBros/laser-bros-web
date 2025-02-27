@@ -50,7 +50,7 @@ export default function ForgotPassword() {
 
         // Navigate to the OTP page with the userId
         const token = response.data.data.token;
-        // console.log(response, response.data.data);
+        // // console.log(response, response.data.data);
         navigate(`/OTP`, {
           state: { token: token, formData: formData, type: "forgot" },
         });

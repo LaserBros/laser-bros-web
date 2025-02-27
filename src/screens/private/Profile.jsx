@@ -65,7 +65,7 @@ export default function MyProfile() {
     const fetchUserInfo = async () => {
       try {
         const response = await fetchProfile();
-        console.log(response, "sdsssdsdds");
+        // console.log(response, "sdsssdsdds");
         setName(response.data.full_name);
         setshowName(response.data.full_name);
         setCompanyName(response.data.company_name);

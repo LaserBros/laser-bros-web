@@ -150,6 +150,8 @@ import EmployeRoute from "./middleware/Employe";
 import AdminRoute from "./middleware/AdminRoute";
 import QuotesDetailPay from "./screens/private/QuotesDetailPay";
 import RfqDetail from "./screens/private/RfqDetail";
+import NotAuthorized from "./employee/screens/NotAuthorized";
+import FallbackPage from "./employee/screens/FallbackPage";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -525,9 +527,19 @@ function App() {
                             <EmpDashboard />
                           </Layouts>
                         }
+                        permissionKey="dashboard_permission"
                       />
                     }
                   />
+
+<Route
+  path="/employee/fallback-page"
+  element={
+    <Layouts title={"Welcome"}>
+      <FallbackPage />
+    </Layouts>
+  }
+/>
 
                   <Route
                     path="/employee/payment-history"
@@ -549,7 +561,8 @@ function App() {
                           <Layouts title={"View Payment"}>
                             <EmpViewPayment />
                           </Layouts>
-                        }
+                        } 
+                        permissionKey="payment_permission"
                       />
                     }
                   ></Route>
@@ -574,6 +587,7 @@ function App() {
                             <EmpCut />
                           </Layouts>
                         }
+                        permissionKey="archive_permission"
                       />
                     }
                   ></Route>
@@ -586,6 +600,7 @@ function App() {
                             <EmpQueue />
                           </Layouts>
                         }
+                         permissionKey="queue_permission"
                       />
                     }
                   ></Route>
@@ -598,9 +613,11 @@ function App() {
                             <EmpOrders />
                           </Layouts>
                         }
+                        permissionKey="orders_permission"
                       />
                     }
                   ></Route>
+                  
                   <Route
                     path="/employee/complete-orders"
                     element={
@@ -610,9 +627,10 @@ function App() {
                             <EmpCompleteOrders />
                           </Layouts>
                         }
+                        permissionKey="complete_order_permission"
                       />
                     }
-                  ></Route>
+                  ></Route> 
                   <Route
                     path="/employee/shipping-orders"
                     element={
@@ -622,6 +640,7 @@ function App() {
                             <EmpShippingAddress />
                           </Layouts>
                         }
+                        permissionKey="shipping_order_permission"
                       />
                     }
                   ></Route>
@@ -634,10 +653,11 @@ function App() {
                             <EmpOrdersDetail />
                           </Layouts>
                         }
+                        permissionKey="orders_permission"
                       />
                     }
                   ></Route>
-                  <Route
+                  {/* <Route
                     path="/employee/employes"
                     element={
                       <EmployeRoute
@@ -648,7 +668,7 @@ function App() {
                         }
                       />
                     }
-                  ></Route>
+                  ></Route> */}
                   <Route
                     path="/employee/customers"
                     element={
@@ -658,6 +678,7 @@ function App() {
                             <EmpCustomers />
                           </Layouts>
                         }
+                        permissionKey="customer_permission"
                       />
                     }
                   ></Route>
@@ -670,10 +691,11 @@ function App() {
                             <EmpViewCustomer />
                           </Layouts>
                         }
+                        permissionKey="customer_permission"
                       />
                     }
                   ></Route>
-                  <Route
+                  {/* <Route
                     path="/employee/add/:id?"
                     element={
                       <EmployeRoute
@@ -684,7 +706,7 @@ function App() {
                         }
                       />
                     }
-                  ></Route>
+                  ></Route> */}
 
                   <Route
                     path="/employee/quotes"
@@ -695,6 +717,7 @@ function App() {
                             <EmpQuotes />
                           </Layouts>
                         }
+                        permissionKey="quotes_permission"
                       />
                     }
                   ></Route>
@@ -707,6 +730,7 @@ function App() {
                             <EmpQuotesDetail />
                           </Layouts>
                         }
+                        permissionKey="quotes_permission"
                       />
                     }
                   ></Route>
@@ -719,10 +743,18 @@ function App() {
                             <EmpRFQS />
                           </Layouts>
                         }
+                        permissionKey="rfq_permission"
                       />
                     }
                   ></Route>
-
+                    <Route
+                        path="/employee/not-authorized"
+                        element={
+                          <Layouts title={"Not Authorized"}>
+                            <NotAuthorized />
+                          </Layouts>
+                        }
+                      />
                   <Route
                     path="/employee/rfqs/edit-quote"
                     element={
@@ -732,6 +764,7 @@ function App() {
                             <EmpEditRFQS />
                           </Layouts>
                         }
+                        permissionKey="rfq_permission"
                       />
                     }
                   ></Route>
@@ -744,6 +777,7 @@ function App() {
                             <EmpViewRFQS />
                           </Layouts>
                         }
+                         permissionKey="rfq_permission"
                       />
                     }
                   ></Route>
@@ -756,6 +790,7 @@ function App() {
                             <EmpRfqsDetail />
                           </Layouts>
                         }
+                         permissionKey="rfq_permission"
                       />
                     }
                   ></Route>
@@ -769,6 +804,7 @@ function App() {
                             <EmpDataBase />
                           </Layouts>
                         }
+                         permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -782,6 +818,7 @@ function App() {
                             <EmpEditFinishing />
                           </Layouts>
                         }
+                         permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -794,6 +831,7 @@ function App() {
                             <EmpAddFinish />
                           </Layouts>
                         }
+                        permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -806,6 +844,7 @@ function App() {
                             <EmpEditMaterial />
                           </Layouts>
                         }
+                        permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -818,6 +857,7 @@ function App() {
                             <EmpAddMaterial />
                           </Layouts>
                         }
+                        permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -830,6 +870,7 @@ function App() {
                             <EmpAddThickness />
                           </Layouts>
                         }
+                        permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -842,6 +883,7 @@ function App() {
                             <EmpEditQty />
                           </Layouts>
                         }
+                        permissionKey="database_permission"
                       />
                     }
                   ></Route>
@@ -854,6 +896,7 @@ function App() {
                             <EmpAddQtyDatabase />
                           </Layouts>
                         }
+                        permissionKey="database_permission"
                       />
                     }
                   ></Route>

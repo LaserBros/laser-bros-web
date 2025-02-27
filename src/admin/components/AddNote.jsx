@@ -15,9 +15,7 @@ const AdminAddNote = ({
 }) => {
   const [comment, setComment] = useState("");
   const [notes, setNotes] = useState(true);
-  useEffect(() => {
-    console.log("admin_note", admin_note);
-  }, []);
+  
   const HandleNotes = () => {
     onSave(comment);
     setComment("");

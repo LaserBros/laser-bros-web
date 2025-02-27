@@ -16,6 +16,7 @@ const Sidebar = () => {
     queue_permission: 0,
     shipping_order_permission: 0,
     complete_order_permission: 0,
+    archive_permission: 0,
     customer_permission: 0,
     payment_permission: 0,
     database_permission: 0,
@@ -25,9 +26,9 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchPermissions = async () => {
       try {
-        // Example: Fetch permissions from an API
-        const response = await axiosEmployeeInstance.get("/permissions");
-        setPermissions(response.data.permissions);
+        const response = await axiosEmployeeInstance.get("/fetchParticularEmployee");
+        setPermissions(response.data.data.employee_permissions);
+        localStorage.setItem("employeePermision", JSON.stringify(response.data.data.employee_permissions));
       } catch (error) {
         console.error("Error fetching permissions:", error);
       }
@@ -53,7 +54,6 @@ const Sidebar = () => {
       localStorage.removeItem("email");
       localStorage.removeItem("employeePermision");
       navigate("/login");
-      console.log("errr", error);
     }
   };
 
@@ -93,13 +93,6 @@ const Sidebar = () => {
       permissionKey: "dashboard_permission",
     },
     {
-      id: "employes",
-      title: "Employees",
-      link: "/employee/employes",
-      icon: "solar:user-linear",
-      permissionKey: "employee_permission",
-    },
-    {
       id: "quotes",
       title: "Quotes",
       link: "/employee/quotes",
@@ -131,6 +124,7 @@ const Sidebar = () => {
           id: "archive",
           title: "Archive",
           link: "/employee/archive",
+          permissionKey: "archive_permission",
           icon: "fluent:laser-tool-20-regular",
         },
       ],
@@ -243,17 +237,24 @@ const Sidebar = () => {
                 </NavLink>
                 {page.subMenu && (
                   <div className="submenu">
-                    {page.subMenu.map((subPage) => (
-                      <NavLink
-                        key={subPage.id}
-                        to={subPage.link}
-                        className="navitem submenu-item"
-                        onClick={handleNavLinkClick}
-                      >
-                        <Icon icon={subPage.icon} />
-                        {subPage.title}
-                      </NavLink>
-                    ))}
+                    {page.subMenu
+                      .filter((subPage) => {
+                        if (subPage.permissionKey) {
+                          return permissions[subPage.permissionKey] === 1;
+                        }
+                        return true; // Always show subpages without a permissionKey
+                      })
+                      .map((subPage) => (
+                        <NavLink
+                          key={subPage.id}
+                          to={subPage.link}
+                          className="navitem submenu-item"
+                          onClick={handleNavLinkClick}
+                        >
+                          <Icon icon={subPage.icon} />
+                          {subPage.title}
+                        </NavLink>
+                      ))}
                   </div>
                 )}
               </div>

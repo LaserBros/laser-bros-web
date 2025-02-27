@@ -4,9 +4,10 @@ import { Form, Button, Modal } from "react-bootstrap";
 const AddNote = ({ show3, name, handleClose3, title, onSave }) => {
   const [comment, setComment] = useState("");
 
+  // Update the comment state when the `name` prop changes
   useEffect(() => {
     console.log("Received name prop:", name);
-    setComment(name);
+    setComment(name || ""); // Use an empty string as fallback if `name` is null or undefined
   }, [name]);
 
   const handleNotes = () => {
@@ -15,6 +16,8 @@ const AddNote = ({ show3, name, handleClose3, title, onSave }) => {
     }
     handleClose3();
   };
+
+  // console.log("Rendering AddNote. Comment value:", comment); // Debugging: Log the comment value
 
   return (
     <React.Fragment>
@@ -30,27 +33,17 @@ const AddNote = ({ show3, name, handleClose3, title, onSave }) => {
         <Modal.Body className="px-lg-5 px-4 pb-4">
           <Form className="accountform">
             <Form.Group className="mb-5 form-group">
-              {comment == null ? (
-                <>
-                  <Form.Control
-                    as="textarea"
-                    rows="5"
-                    placeholder="Write a note"
-                    value={""}
-                    onChange={(e) => setComment(e.target.value)} // Update state with input
-                    style={{ height: "auto" }}
-                  />
-                </>
-              ) : (
-                <Form.Control
-                  as="textarea"
-                  rows="5"
-                  placeholder="Write a note"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)} // Update state with input
-                  style={{ height: "auto" }}
-                />
-              )}
+              <Form.Control
+                as="textarea"
+                rows="5"
+                placeholder="Write a note"
+                value={comment || ""} // Ensure value is always a string
+                onChange={(e) => {
+                  // console.log("Textarea changed:", e.target.value); // Debugging: Log changes
+                  setComment(e.target.value);
+                }}
+                style={{ height: "auto" }}
+              />
             </Form.Group>
             <div className="text-center">
               <Button

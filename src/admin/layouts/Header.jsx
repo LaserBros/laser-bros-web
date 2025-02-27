@@ -24,7 +24,7 @@ const Header = ({ title }) => {
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
       navigate("/login");
-      console.log("errr", error);
+      // console.log("errr", error);
     }
   };
   return (
@@ -46,6 +46,7 @@ const Header = ({ title }) => {
           >
             <ThemeToggle />
             <NavDropdown
+             className="ms-2"
               title={
                 <span>
                   <Image

@@ -254,7 +254,7 @@ const ViewPayment = () => {
                     </p> 
                     {Array.isArray(RefundData) && RefundData.map((row, index) => (
                       <p>
-                      <b>Refund {index + 1} {row?.reason &&
+                      <b>Partial Refund {index + 1} {row?.reason &&
                       <>
                        ({formatReason(row?.reason)})
                        </>

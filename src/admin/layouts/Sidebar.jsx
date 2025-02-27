@@ -22,7 +22,7 @@ const Sidebar = () => {
       localStorage.removeItem("full_name");
       localStorage.removeItem("email");
       navigate("/login");
-      console.log("errr", error);
+      // console.log("errr", error);
     }
   };
   useEffect(() => {

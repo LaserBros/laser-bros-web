@@ -23,7 +23,7 @@ export default function ResetPassword() {
     const { token } = location.state || {};
     token_val = token;
     if (token_val === "" || token_val === undefined) {
-      console.log("Navigating to /SignUp"); // Add this line for debugging
+      // console.log("Navigating to /SignUp"); // Add this line for debugging
       navigate("/SignUp");
     }
     token_val = token;

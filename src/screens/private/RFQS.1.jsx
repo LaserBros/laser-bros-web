@@ -16,7 +16,7 @@ export default function RFQS() {
     const fetchData = async () => {
       try {
         const res = await fetchRFQ();
-        console.log("SDsdsdsdsddssds", res.data);
+        // console.log("SDsdsdsdsddssds", res.data);
         setQuotes(res.data.updatedQuotes);
         setTotalRows(res.data.total);
         setLoading(false);
@@ -29,7 +29,7 @@ export default function RFQS() {
     fetchData();
   }, []);
   const handlePageChange = (page) => {
-    console.log("SDsdsdsdddsdsds", page);
+    // console.log("SDsdsdsdddsdsds", page);
     setCurrentPage(page);
     // loadOrders(page); // Load new page data
   };
@@ -38,7 +38,7 @@ export default function RFQS() {
       id: id,
     };
     const response = await getEditQuote(data);
-    console.log("resss-----", response.data);
+    // console.log("resss-----", response.data);
     localStorage.setItem(
       "setItemelementDataPay",
       JSON.stringify(response.data.requestQuoteDB)

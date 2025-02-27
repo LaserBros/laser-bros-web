@@ -61,7 +61,7 @@ const Quotes = () => {
       id: id,
     };
     const res = await AdmingetEditQuote(data);
-    console.log(res);
+    // console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
       JSON.stringify(res.data.partsDBdata)
@@ -71,7 +71,7 @@ const Quotes = () => {
       JSON.stringify(res.data.requestQuoteDB)
     );
     localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
-    navigate("/admin/quotes/view-quote");
+    navigate("/employee/quotes/view-quote");
   };
 
   const onPageChange = (pageNumber) => {

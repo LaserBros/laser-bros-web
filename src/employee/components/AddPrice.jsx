@@ -11,13 +11,13 @@ const AddPrice = ({ show3, handleClose3, title, quote, price, onSave }) => {
   };
 
   useEffect(() => {
-    console.log("price);", price);
+    // console.log("price);", price);
     setPrice(price);
   }, [show3]);
 
   const handleSave = () => {
     const parsedPrice = parseFloat(priceValue);
-    // console.log(parsedPrice);
+    // // console.log(parsedPrice);
     if (!priceValue.trim()) {
       setError("Price cannot be empty");
       return;

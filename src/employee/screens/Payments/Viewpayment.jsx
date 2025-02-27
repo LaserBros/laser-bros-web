@@ -143,7 +143,7 @@ const ViewPayment = () => {
                 <h5>{transaction?.transactions?.transaction_id}</h5>
                 <Button
                   as={Link}
-                  to="/admin/payment-history"
+                  to="/employee/payment-history"
                   className="d-inline-flex align-items-center justify-content-center"
                 >
                   Back To Payments
@@ -254,7 +254,7 @@ const ViewPayment = () => {
                     </p> 
                     {Array.isArray(RefundData) && RefundData.map((row, index) => (
                       <p>
-                      <b>Refund {index + 1} {row?.reason &&
+                      <b>Partial Refund {index + 1} {row?.reason &&
                       <>
                        ({formatReason(row?.reason)})
                        </>

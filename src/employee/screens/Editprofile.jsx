@@ -44,7 +44,7 @@ const EditProfile = () => {
     const fetchUserInfo = async () => {
       try {
         const response = await AdminfetchProfile();
-        console.log(response, "sdsssdsdds");
+        // console.log(response, "sdsssdsdds");
         setName(response.data.full_name);
         setshowName(response.data.full_name);
         setCompanyName(response.data.company_name);

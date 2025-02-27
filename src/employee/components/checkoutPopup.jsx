@@ -76,8 +76,8 @@ const CheckoutPopup = ({
   ];
 
   useEffect(() => {
-    console.log("shipping_ups_2nd_day_air_price",shipping_ups_2nd_day_air_price, UserData)
-    console.log("addressDetail ---=-=-=-",addressDetail.custom_rates)
+    // console.log("shipping_ups_2nd_day_air_price",shipping_ups_2nd_day_air_price, UserData)
+    // console.log("addressDetail ---=-=-=-",addressDetail.custom_rates)
     // const transformedMethods = UserData.map((rate) => ({
     //   id: rate.service_code,
     //   name: rate.service_type,
@@ -109,7 +109,7 @@ const CheckoutPopup = ({
 
     setShippingMethods(mergedMethods);
     const selectedService = existingShippingMethods.find((method) => method.id === selectedServiceCode);
-    // console.log("selectedService",selectedService);
+    // // console.log("selectedService",selectedService);
     setrateVal(selectedService?.price || 0);
 
 
@@ -160,7 +160,7 @@ const CheckoutPopup = ({
   // Handle submit to get the selected values
   const handleSubmit = () => {
     alert(`Selected Payment Options: ${selectedOptions.join(", ")}`);
-    console.log("Selected Payment Options:", selectedOptions);
+    // console.log("Selected Payment Options:", selectedOptions);
   };
   const handleCancelClick = (id, price) => {
     setShippingMethods((prev) =>
@@ -258,7 +258,7 @@ const CheckoutPopup = ({
     const isNetTermSelected = selectedOptions.includes("NET Term");
     const selectedMethod =
       shippingMethods.find((method) => method.isChecked)?.id || null;
-    // console.log("shippingMethods", selectedServiceCode);
+    // // console.log("shippingMethods", selectedServiceCode);
     // return;
     try {
       const data = {
@@ -320,7 +320,7 @@ const CheckoutPopup = ({
     setShippingSelectedAddress(null);
     setShippingSelectedAddress(null);
     setIsSameAsShipping(false);
-    console.log("addressDetail", addressDetail);
+    // console.log("addressDetail", addressDetail);
     if(addressDetail.shipping_price_update == 1) {
       setCustomRates(addressDetail.custom_rates || 0);
       setUpsGround(addressDetail.shipping_upsground_price || 0)

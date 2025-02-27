@@ -111,7 +111,7 @@ const Queue = () => {
     }));
   };
   const getMaterialColor = (materials) => {
-    // console.log("materials", materials);
+    // // console.log("materials", materials);
     switch (materials) {
       case "Aluminium 5052":
         return {

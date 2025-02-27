@@ -53,7 +53,7 @@ const CompleteOrders = () => {
   };
 
   const onPageChange = (pageNumber) => {
-    console.log(pageNumber, "response.data.");
+    // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
     loadOrders(pageNumber);
   };

@@ -14,7 +14,7 @@ const PaymentHistory = () => {
   const fetchData = async (page) => {
     try {
       const res = await getAllTransactions(page);
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setTransaction(res.data.data.transactions);
       settotalPage(res.data.data.total);
       setLoading(false);
@@ -92,7 +92,7 @@ const PaymentHistory = () => {
         <>
           <Link
             className="btnview"
-            to={`/admin/payment-history/view-payment/${row._id}`}
+            to={`/employee/payment-history/view-payment/${row._id}`}
           >
             <Icon icon="tabler:eye"></Icon>
           </Link>

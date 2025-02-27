@@ -5,19 +5,16 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Image,
-  Button,
   Form,
+  Button,
 } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import Avatar from "../../assets/img/Avatar.jpg";
-import axios from "axios";
-import { empSignup, getEmpDetails, updateEmpDetails } from "../../../api/api"; // Add updateEmpDetails API
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import { empSignup, getEmpDetails, updateEmpDetails } from "../../../api/api";
 
 const AddEmp = () => {
-  const { id } = useParams(); // Fetch the employee ID from the URL (for edit)
+  const { id } = useParams();
   const [name, setName] = useState("");
   const [cname, setCName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,13 +22,26 @@ const AddEmp = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false); // Track if editing
+  const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
+  const [selectedPermissions, setSelectedPermissions] = useState({
+    dashboard_permission: 0,
+    quotes_permission: 0,
+    rfq_permission: 0,
+    orders_permission: 0,
+    queue_permission: 0,
+    archive_permission: 0,
+    shipping_order_permission: 0,
+    complete_order_permission: 0,
+    customer_permission: 0,
+    payment_permission: 0,
+    database_permission: 0,
+  });
+
   useEffect(() => {
     if (id) {
-      // If there's an ID, fetch employee details
       setIsEditMode(true);
       fetchEmployeeDetails(id);
     }
@@ -40,8 +50,6 @@ const AddEmp = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const [selectedPermissions, setSelectedPermissions] = useState({});
-
 
   const fetchEmployeeDetails = async (empId) => {
     try {
@@ -50,17 +58,21 @@ const AddEmp = () => {
       };
       const response = await getEmpDetails(data);
       const empData = response.data;
+
       setName(empData.full_name);
       setCName(empData.company_name);
       setEmail(empData.email);
       setPhone(empData.phone_number);
-      localStorage.setItem("employeePermision", response.employee_permissions);
-      setSelectedPermissions(empData.employee_permissions || {});
+
+      // Merge fetched permissions with default permissions
+      setSelectedPermissions((prev) => ({
+        ...prev,
+        ...(empData.employee_permissions || {}),
+      }));
     } catch (error) {
       toast.error("Error fetching employee details");
     }
   };
-
 
   const handleCheckboxChange = (key) => {
     setSelectedPermissions((prev) => ({
@@ -71,7 +83,6 @@ const AddEmp = () => {
 
   const permissionsList = [
     { key: "dashboard_permission", label: "Dashboard" },
-    { key: "employee_permission", label: "Employees" },
     { key: "quotes_permission", label: "Quotes" },
     { key: "rfq_permission", label: "RFQ’s" },
     { key: "orders_permission", label: "Orders" },
@@ -82,12 +93,10 @@ const AddEmp = () => {
     { key: "customer_permission", label: "Customers" },
     { key: "payment_permission", label: "Payment History" },
     { key: "database_permission", label: "Database" },
-    
   ];
 
   const validate = () => {
     let errors = {};
-    console.log("Sdsdsd password", password.trim());
     if (!name.trim()) errors.name = "Full name is required";
     if (!cname.trim()) errors.cname = "Company name is required";
     if (!email.trim()) {
@@ -102,7 +111,7 @@ const AddEmp = () => {
     }
     if (!password.trim() && !isEditMode)
       errors.password = "Password is required";
-    else if (password.trim() != "") {
+    else if (password.trim() !== "") {
       if (password.length < 6 || password.length > 15) {
         errors.password = "Password must be between 6 to 15 digits";
       }
@@ -123,23 +132,18 @@ const AddEmp = () => {
         phone_number: phone,
         ...(password && { password }),
         ...(id && { id }),
-        ...selectedPermissions,
-
+        ...selectedPermissions, // Include selected permissions
       };
 
       try {
         setLoading(true);
         if (isEditMode) {
           await updateEmpDetails(employeeData);
-          // If in edit mode, update the employee
-          //   await updateEmpDetails(id, employeeData);
-          //   toast.success("Employee updated successfully");
+          toast.success("Employee updated successfully");
         } else {
-          // If adding new employee
           await empSignup(employeeData);
           toast.success("Employee added successfully");
         }
-
         setLoading(false);
         navigate("/admin/employes");
       } catch (error) {
@@ -216,7 +220,6 @@ const AddEmp = () => {
                       )}
                     </Form.Group>
                   </Col>
-                  {/* {!isEditMode && (  */}
                   <Col lg={6}>
                     <Form.Group className="mb-3 form-group">
                       <Form.Label>Password</Form.Label>
@@ -238,31 +241,31 @@ const AddEmp = () => {
                       )}
                     </Form.Group>
                   </Col>
-                  {/* )} */}
                 </Row>
 
-                <table className="table">
-      <thead>
-        <tr>
-          <th>Permissions</th>
-          <th>Access</th>
-        </tr>
-      </thead>
-      <tbody>
-        {permissionsList.map(({ key, label }) => (
-          <tr key={key}>
-            <td>{label}</td>
-            <td>
-              <input
-                type="checkbox"
-                checked={selectedPermissions[key] === 1}
-                onChange={() => handleCheckboxChange(key)}
-              />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+                <table className="table formtable">
+                  <thead>
+                    <tr>
+                      <th width="30%">Permissions</th>
+                      <th>Access</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {permissionsList.map(({ key, label }) => (
+                      <tr key={key}>
+                        <td>{label}</td>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={selectedPermissions[key] === 1}
+                            onChange={() => handleCheckboxChange(key)}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
                 <Button
                   type="submit"
                   className="btn btn-primary mt-2"

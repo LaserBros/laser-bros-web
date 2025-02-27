@@ -52,8 +52,8 @@ export default function RfqDetail() {
       const res = await getParticularRFQDetails(data);
       setOrders(res.data.newUpdatedData);
       setOrdersDetail(res.data.mainQuote);
-      console.log(orders, "Sdsdsdsddsddsdssddssd");
-      console.log("res", res.data);
+      // console.log(orders, "Sdsdsdsddsddsdssddssd");
+      // console.log("res", res.data);
       setLoading(false);
     } catch (error) {
       setOrders([]);

@@ -69,7 +69,7 @@ const ViewCustomer = () => {
       id: id,
     };
     const res = await AdmingetEditQuote(data);
-    console.log(res);
+    // console.log(res);
     localStorage.setItem(
       "setItempartsDBdataAdmin",
       JSON.stringify(res.data.partsDBdata)
@@ -106,7 +106,7 @@ const ViewCustomer = () => {
       const response = await getParticularProfile(data);
       setCustomer(response.data);
       setIsTaxExempt(response.data?.tax_exempt);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error("Error fetching cards:", error);
     } finally {

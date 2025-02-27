@@ -1582,6 +1582,7 @@ footer {
         align-items: center;
         justify-content: center;
         gap: 7px;
+        flex-wrap: wrap;
         li.page-item {
             display: inline-block;
             button.page-link {

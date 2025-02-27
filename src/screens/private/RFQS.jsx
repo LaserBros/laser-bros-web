@@ -36,7 +36,7 @@ export default function RFQS() {
     try {
       setLoading(true);
       const res = await fetchRFQ(currentPage, PerPage);
-      console.log("SDsdsdsdsddssds =-=-=-=-=-=-=-", res.data);
+      // console.log("SDsdsdsdsddssds =-=-=-=-=-=-=-", res.data);
       setQuotes(res.data.updatedQuotes);
       setTotalRows(res.data.total);
       setLoading(false);
@@ -67,7 +67,7 @@ export default function RFQS() {
     // setLoading(true);
     try {
       const [response] = await Promise.all([fetchAddress()]);
-      console.log(response.data.data);
+      // console.log(response.data.data);
       setAddresss(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -82,7 +82,7 @@ export default function RFQS() {
   }, []);
 
   const handlePageChange = (page) => {
-    console.log("SDsdsdsdddsdsds", page);
+    // console.log("SDsdsdsdddsdsds", page);
     setCurrentPage(page);
   };
   const RequestQuote = async (id) => {
@@ -102,7 +102,7 @@ export default function RFQS() {
       toast.error("Something wents wrong.");
     }
 
-    // console.log("resss-----", response.data);
+    // // console.log("resss-----", response.data);
     // localStorage.setItem(
     //   "setItemelementDataPay",
     //   JSON.stringify(response.data.requestQuoteDB)
@@ -112,7 +112,7 @@ export default function RFQS() {
     //   "setItempartsDBdataPay",
     //   JSON.stringify(response.data.partsDBdata)
     // );
-    // console.log("response.data.shippingRates", response.data.shippingRates);
+    // // console.log("response.data.shippingRates", response.data.shippingRates);
     // localStorage.setItem(
     //   "ShippingDBdataPay",
     //   JSON.stringify(response.data.shippingRates)

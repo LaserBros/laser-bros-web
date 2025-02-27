@@ -52,7 +52,7 @@ const Header = () => {
   //   setName(name);
   // }, []);
   const handleLogout = async () => {
-    console.log("Dsdsdsdsdsdd");
+    // console.log("Dsdsdsdsdsdd");
     try {
       await new Promise((resolve) => setTimeout(resolve, 100));
       localStorage.removeItem("authToken");
@@ -72,7 +72,7 @@ const Header = () => {
       localStorage.removeItem("setItempartsDBdata");
 
       navigate("/login");
-      console.log("errr", error);
+      // console.log("errr", error);
     }
   };
   // const handleShow = () => setModalShow(true);

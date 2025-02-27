@@ -43,7 +43,7 @@ const EditFinishing = () => {
           id: id,
         };
         const response = await fetchSelectedFinishesAdmin(data_param);
-        // console.log(response.data, "SDdsdsdssdsds");
+        // // console.log(response.data, "SDdsdsdssdsds");
         setFormData((prevFormData) => ({
           ...response.data,
           id: response.data._id,

@@ -9,6 +9,23 @@ body.dark .btncstm {
   border-radius: 0;
   font-size: 14px;
 }
+body.dark .pagination_order li.page-item button.page-link {
+  border: 1px solid #000000;
+  background-color: #000000;
+  color: #ffffff;
+}
+body.dark .nopermission h1, body.dark .nopermission p {
+  color: #ffffff;
+}
+body.dark .formtable.table > :not(caption) > * > * {
+  border-bottom: none;
+  background-color: transparent;
+  color: #ffffff;
+}
+body.dark .formtable tr td input[type=checkbox] {
+  width: 17px !important;
+  height: 17px !important;
+}
 body.dark .editmaterialtable {
   --bs-table-bg:$dark-color;
   --bs-table-border-color:rgba(255,255,255,0.20);

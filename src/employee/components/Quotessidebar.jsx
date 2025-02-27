@@ -38,8 +38,8 @@ const QuotesSidebar = ({
       setLoading(true);
       const parsedData = JSON.parse(storedData);
       const quote_list_val = JSON.parse(quote_list);
-      console.log(parsedData);
-      console.log(quote_list_val._id);
+      // console.log(parsedData);
+      // console.log(quote_list_val._id);
       try {
         const param = {
           id: quote_list_val._id,
@@ -48,7 +48,7 @@ const QuotesSidebar = ({
         const res = await editSubQuote(param);
         toast.success("Quote Updated Successfully...");
         setLoading(false);
-        navigate("/admin/rfqs");
+        navigate("/employee/rfqs");
       } catch (error) {
         setLoading(false);
         toast.error("Something wents wrong..");

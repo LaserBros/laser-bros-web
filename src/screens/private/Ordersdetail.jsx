@@ -106,7 +106,7 @@ export default function OrdersDetail() {
     };
     const res = await orderTrackingDetails(data);
     setordersTrack(res.data);
-    console.log(res.data, "DSsdsd");
+    // console.log(res.data, "DSsdsd");
     // settrackNumber(res.data);
   };
   useEffect(() => {
@@ -408,7 +408,7 @@ export default function OrdersDetail() {
                       }
                       {Array.isArray(Refund) && Refund.map((row, index) => (
                       <p>
-                      <b>Refund 
+                      <b>Partial Refund{" "} 
                         {Refund.length > 1 &&
                         index + 1 
                         }

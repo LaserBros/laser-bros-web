@@ -102,7 +102,7 @@ const AddMaterial = () => {
   const handleChange = (e, field) => {
     const value = e.target.value;
     if (field === "finishing_options") {
-      console.log("value value value value", value);
+      // console.log("value value value value", value);
       const options = getFinishes
         ? getFinishes.map((option) => option.value)
         : [];
@@ -138,15 +138,15 @@ const AddMaterial = () => {
 
   const handleDropdownChange = (e) => {
     const selectedValue = e.target.value;
-    console.log(selectedValue, "sdsdsdsdsd-0--0");
+    // console.log(selectedValue, "sdsdsdsdsd-0--0");
     setSelectedOption(selectedValue);
     const selectedMaterial = dropdownOptions.find(
       (material) => material.material_thickness === selectedValue
     );
-    console.log(
-      "selectedMaterial =-=-=- selectedMaterial",
-      selectedMaterial?.material_code
-    );
+    // console.log(
+    //   "selectedMaterial =-=-=- selectedMaterial",
+    //   selectedMaterial?.material_code
+    // );
     setMaterial((prevMaterial) => ({
       ...prevMaterial,
       material_id: selectedMaterial.material_id,
@@ -162,7 +162,7 @@ const AddMaterial = () => {
       value: finish.finishing_code,
       label: "F" + finish.finishing_code,
     }));
-    console.log("transformedOptions",transformedOptions,"res.data",res.data)
+    // console.log("transformedOptions",transformedOptions,"res.data",res.data)
     setgetFinishes(transformedOptions);
   };
   useEffect(() => {
