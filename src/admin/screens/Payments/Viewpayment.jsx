@@ -97,7 +97,7 @@ const ViewPayment = () => {
     },
     {
       name: "Name",
-      selector: (row) => row.material_code + "-" + row.quote_name,
+      selector: (row) =>  row.quote_name,
       sortable: true,
     },
     {

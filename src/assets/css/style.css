@@ -4040,4 +4040,16 @@ textarea.form-control {
 
 .modal_header_blocking .modal-body p {
   color: #000000;
+}
+
+.smalltext {
+  font-size: 12px;
+  color: #6C6A72;
+  display: block;
+  margin-top: -5px;
+}
+
+.iconinfotext {
+  top: -5px;
+  right: -5px;
 }/*# sourceMappingURL=style.css.map */

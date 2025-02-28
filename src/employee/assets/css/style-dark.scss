@@ -5,6 +5,14 @@ body {
     &.dark {
         background-color: $black-color !important;
         min-height      : 100vh;
+        .smalltext{
+            color:rgba($white-color, 0.75);
+        }
+        .iconinfotext{
+           .iconify{
+            color: $white-color;
+           }
+        }
         .btncstm {
             color: $white-color;
             border-bottom:none;

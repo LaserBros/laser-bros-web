@@ -29,6 +29,7 @@ import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
 import AddAddressModal from "./AddaddressModal";
 import AddServiceNote from "../../components/AddServiceNote";
+import { Tooltip } from "react-tooltip";
 export default function QuotesDetail() {
   const currentDate = new Date();
   const navigate = useNavigate();
@@ -70,7 +71,13 @@ export default function QuotesDetail() {
   //   { label: "Gloss Orange P.C.", value: "#f37520" },
   // ];
   const [colors, setcolors] = useState([]);
-
+  const handleClick = (tooltipId) => {
+       // Hide the tooltip using react-tooltip's hide method
+       const tooltipElement = document.querySelector(`[data-tooltip-id="${tooltipId}"]`);
+       if (tooltipElement && tooltipElement._tippy) {
+         tooltipElement._tippy.hide(); // Hide the tooltip
+       }
+  };
   const handleUpload = async (file, id, quantities, pdf_url) => {
     // console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
     if (file.length == 0) {
@@ -1150,36 +1157,41 @@ export default function QuotesDetail() {
                           <div></div>
 
                           <div className="rightbtns gap-2 d-inline-flex flex-wrap">
-                            <Link
-                              className="btnshare"
-                              onClick={() =>
-                                handleShow3(quote.notes_text, quote._id)
-                              }
-                            >
-                              Add Note
-                            </Link>
-                            <Link
-                              className="btnicon"
-                              onClick={() =>
-                                handleShow(quote.quote_name, quote._id)
-                              }
-                            >
-                              <Icon icon="mynaui:edit" />
-                            </Link>
-                            <Link
-                              className="btnicon"
-                              onClick={() => {
-                                handleDuplicateQuote(quote, quote._id);
-                              }}
-                            >
-                              <Icon icon="heroicons:document-duplicate" />
-                            </Link>
-                            <Link
-                              className="btnicon"
-                              onClick={() => handleDeleteQuote(quote._id)}
-                            >
-                              <Icon icon="uiw:delete" />
-                            </Link>
+                          <Link
+  className="btnshare"
+  onClick={() => { handleShow3(quote.notes_text, quote._id); handleClick("add-note-tooltip"); }}
+  data-tooltip-id="add-note-tooltip"
+>
+  Add Note
+</Link>
+<Tooltip id="add-note-tooltip" place="bottom" content="Add a Note to This Part" />
+
+<Link
+  className="btnicon"
+  onClick={() => {handleShow(quote.quote_name, quote._id);     handleClick("edit-tooltip");  }}
+  data-tooltip-id="edit-tooltip"
+>
+  <Icon icon="mynaui:edit" />
+</Link>
+<Tooltip id="edit-tooltip" place="bottom" content="Rename This Part" />
+
+<Link
+  className="btnicon"
+  onClick={() => { handleDuplicateQuote(quote, quote._id); handleClick("duplicate-tooltip"); }}
+  data-tooltip-id="duplicate-tooltip"
+>
+  <Icon icon="heroicons:document-duplicate" />
+</Link>
+<Tooltip id="duplicate-tooltip" place="bottom" content="Duplicate This Part" />
+
+<Link
+  className="btnicon"
+  onClick={() => {handleDeleteQuote(quote._id); handleClick("delete-tooltip");}}
+  data-tooltip-id="delete-tooltip"
+>
+  <Icon icon="uiw:delete" />
+</Link>
+<Tooltip id="delete-tooltip" place="bottom" content="Delete This Part" />
                           </div>
                         </div>
                       </Col>

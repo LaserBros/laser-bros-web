@@ -3,6 +3,12 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .smalltext {
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .iconinfotext .iconify {
+  color: #ffffff;
+}
 body.dark .btncstm {
   color: #ffffff;
   border-bottom: none;

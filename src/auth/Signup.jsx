@@ -144,7 +144,7 @@ export default function SignUp() {
                 </div>
                 <div className="headlogin_div mb-4 text-center">
                   <h2>Create Your Account</h2>
-                  <p>Please fill the details below to create an account.</p>
+                  <p>Please provide the required details below to create your account.</p>
                 </div>
                 <Form noValidate onSubmit={handleSubmit}>
                   <Row>
@@ -192,10 +192,10 @@ export default function SignUp() {
                     )}
                   </Form.Group>
                   <Form.Group className="mb-3 form-group">
-                    <Form.Label>Phone No</Form.Label>
+                    <Form.Label>Phone Number</Form.Label>
                     <Form.Control
                       type="tel"
-                      placeholder="Enter your phone no"
+                      placeholder="Enter your phone number"
                       name="phone_number"
                       value={formData.phone_number}
                       onChange={handleInputChange}
@@ -206,6 +206,7 @@ export default function SignUp() {
                   </Form.Group>
                   <Form.Group className="mb-3 form-group">
                     <Form.Label>Password</Form.Label>
+                    <small className="mb-2 smalltext">Password must be at least 8 characters long, contain uppercase, lowercase, number, and special character.</small>
                     <div className="password-input-group position-relative">
                       <Form.Control
                         type={showPassword ? "text" : "password"}

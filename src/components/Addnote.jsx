@@ -7,8 +7,8 @@ const AddNote = ({ show3, name, handleClose3, title, onSave }) => {
   // Update the comment state when the `name` prop changes
   useEffect(() => {
     console.log("Received name prop:", name);
-    setComment(name || ""); // Use an empty string as fallback if `name` is null or undefined
-  }, [name]);
+    setComment(name || ""); 
+  }, [show3]);
 
   const handleNotes = () => {
     if (comment.trim() && onSave) {

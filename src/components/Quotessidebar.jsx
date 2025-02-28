@@ -24,6 +24,7 @@ import ShippingRates from "./ShippingRates";
 import CheckOutPay from "./checkOutPay";
 import AddAddressModal from "../screens/private/AddaddressModal";
 import AddCard from "./Addcard";
+import { Tooltip } from "react-tooltip";
 const QuotesSidebar = ({
   amount,
   showDiv,
@@ -479,13 +480,23 @@ const QuotesSidebar = ({
                           </p>
                         )
                       ) : (
-                        ""
+                        <>
+                          <p className="text-start">
+                            A Request For Quote is needed for one of the following reasons:
+                              <ul className="ps-3">
+                            <li> Part is over our 36 inch limit and needs review</li>
+                            <li> A service has been selected and needs review</li>
+                            <li> Material is non-stock and needs review</li>
+                            </ul>
+                            We take RFQ's very seriously and will get back to you ASAP!
+                          </p>
+                        </>
                       )}
                     </>
                   ) : (
                     <>
                       <hr />
-                      {!isPayble && <span>Price is for cutting only.</span>}
+                      {/* {!isPayble && <span>Price is for cutting only.</span>} */}
                       <p>Shipping & Taxes will be calculated at checkout</p>
                     </>
                   )}
@@ -537,6 +548,9 @@ const QuotesSidebar = ({
                     )}
                   </Button>
                   {buttonText != 1 &&
+                      <>
+                      <p className="textForOr text-center mb-0 mt-3">OR</p> 
+                      <div className="btn_rfq_tooltip position-relative">
                       <Button
                       className="w-100 mt-3"
                       onClick={() => {
@@ -555,6 +569,21 @@ const QuotesSidebar = ({
                         "Request a Quote"
                       } 
                       </Button>
+                      <Link data-tooltip-id="add-request-tooltip" className="position-absolute iconinfotext">
+                      <Icon icon={"material-symbols:info-outline-rounded"} width={17} height={17}/>
+                      </Link> 
+                      <Tooltip 
+  id="add-request-tooltip" 
+  place="right" 
+  content={
+    <>
+      Request a Quote if you would<br />  
+      like Laser Bros to review your<br /> 
+      order before purchasing.
+    </>
+  } 
+/>                      </div>
+                      </>
                   }
                   </>
                   

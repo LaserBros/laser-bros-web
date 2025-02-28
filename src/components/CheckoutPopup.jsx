@@ -363,6 +363,7 @@ const CheckoutPopup = ({
                           {selectedShippingAddress.pincode},{" "}
                           {selectedShippingAddress.country}
                         </p>
+                        {selectedShippingAddress.permanent == 0 &&
                         <div className="btn-bottom">
                           <Link
                             className="btn-address"
@@ -371,6 +372,7 @@ const CheckoutPopup = ({
                             <Icon icon="mynaui:edit" />
                           </Link>
                         </div>
+                        }
                       </div>
                     </Col>
                   ) : (
@@ -455,6 +457,7 @@ const CheckoutPopup = ({
                           {selectedAddress.city} {selectedAddress?.state_code}, {selectedAddress.pincode},{" "}
                           {selectedAddress.country}
                         </p>
+                        {selectedShippingAddress.permanent == 0 &&
                         <div className="btn-bottom">
                           <Link
                             className="btn-address"
@@ -463,6 +466,7 @@ const CheckoutPopup = ({
                             <Icon icon="mynaui:edit" />
                           </Link>
                         </div>
+                        }
                       </div>
                     </Col>
                   ) : (
