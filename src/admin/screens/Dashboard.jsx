@@ -185,7 +185,7 @@ const Dashboard = () => {
     setcompletedOrderCount(res.data.completedOrderCount);
     setorderInProcess(res.data.orderInProcess);
     setordersInRFQ(res.data.ordersInRFQ);
-    const convertedData = data_array.map((item, index) => {
+    const convertedData = data_array?.map((item, index) => {
       return {
         date: item._id,
         orders: item.orderDetailsPartDate > 0 ? 1 : 0,

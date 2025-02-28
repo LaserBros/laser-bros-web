@@ -1094,7 +1094,7 @@ export default function QuotesDetail() {
                         <p className=" text-md-end">
                           <strong className="quotes-price">
                             <Amount amount={quote.amount / quote.quantity} />
-                          </strong>
+                          </strong> 
                           /each
                         </p>
                         <div className="d-flex align-item-center justify-content-end gap-2">
