@@ -1387,7 +1387,7 @@ export const AdmingetThicknessMaterialFinish = async (data, type, params) => {
     var response_api = await axiosAdminInstance.post(
       `/editSubQuoteDetailsAdmin`,
       params
-    );
+    ); 
     // // console.log("response_api", response_api);
     // return;
     return response_api;
