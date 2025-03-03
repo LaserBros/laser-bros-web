@@ -1261,7 +1261,7 @@ const EditRFQS = () => {
                             {new Intl.NumberFormat("en-US", {
                               style: "currency",
                               currency: "USD",
-                            }).format(quote.amount / quote.quantity)} 
+                            }).format(quote.amount / quote.quantity)}
                             {/* ${.toFixed(2)} */}
                           </strong>
                           /each{" "}

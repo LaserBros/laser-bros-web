@@ -1089,11 +1089,12 @@ export default function QuotesDetail() {
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
                         <p className=" text-md-end">
                           {" "}
-                          <Amount amount={quote.amount} /> total
+                          <Amount amount={quote.amount  + (quote?.bend_price * quote.quantity)} /> total
                         </p>
+                        
                         <p className=" text-md-end">
                           <strong className="quotes-price">
-                            <Amount amount={quote.amount / quote.quantity} />
+                            <Amount amount={(quote.amount / quote.quantity) + (quote?.bend_price * quote.quantity)} />
                           </strong> 
                           /each
                         </p>

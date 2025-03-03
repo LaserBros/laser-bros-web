@@ -206,7 +206,7 @@ const CheckOutPay = ({
   // Handle selection change
   const handleShippingAddressChange = (event) => {
     const selectedId = event.target.value;
-    const selectedAddr = address.find((addr) => addr._id === selectedId);
+    const selectedAddr = address.find((addr) => addr?._id === selectedId);
     setShippingSelectedAddress(selectedAddr || null);
     if (isSameAsShipping && selectedAddress) {
       setSelectedAddress(selectedAddr || null);
@@ -215,7 +215,7 @@ const CheckOutPay = ({
 
   const handleAddressChange = (event) => {
     const selectedId = event.target.value;
-    const selectedAddr = address.find((addr) => addr._id === selectedId);
+    const selectedAddr = address.find((addr) => addr?._id === selectedId);
     setSelectedAddress(selectedAddr || null);
   };
   const handleCheckboxChange = (event) => {

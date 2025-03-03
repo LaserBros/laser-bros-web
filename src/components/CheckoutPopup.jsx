@@ -338,8 +338,8 @@ const CheckoutPopup = ({
                   >
                     <option value="">Select Address</option>
                     {address.map((addr) => (
-                      <option key={addr._id} value={addr._id}>
-                        {addr.full_name} - {addr.nickname}
+                      <option key={addr?._id} value={addr?._id}>
+                        {addr?.full_name} - {addr?.nickname}
                       </option>
                     ))}
                   </Form.Select>
@@ -438,8 +438,8 @@ const CheckoutPopup = ({
                     >
                       <option value="">Select Address</option>
                       {address.map((addr) => (
-                        <option key={addr._id} value={addr._id}>
-                          {addr.full_name} - {addr.nickname}
+                        <option key={addr?._id} value={addr?._id}>
+                          {addr?.full_name} - {addr?.nickname}
                         </option>
                       ))}
                     </Form.Select>
