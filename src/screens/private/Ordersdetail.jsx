@@ -408,6 +408,11 @@ export default function OrdersDetail() {
                       }
                       {Array.isArray(Refund) && Refund.map((row, index) => (
                       <p>
+                      {orderDetails.status == 4 ?
+                      <>
+                      <b>Full Refund</b>
+                      </>
+                      : 
                       <b>Partial Refund{" "} 
                         {Refund.length > 1 &&
                         index + 1 
@@ -418,6 +423,7 @@ export default function OrdersDetail() {
                        </>
                         }
                        </b>
+                      }
                       <span>
                         {" -"} 
                         <Amount amount={row?.refund_amount} />

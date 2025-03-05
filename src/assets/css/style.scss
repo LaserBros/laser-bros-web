@@ -4605,3 +4605,33 @@ textarea.form-control {
     top:-5px;
     right: -5px;
 }
+.baseratecustom{
+    background-color: #F7F7F7;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px dashed $black-color;
+    z-index: 1;
+    .baseratetitle{
+        font-size: 14px;
+        color: $black-color;
+        font-weight: 500;
+    }
+    .labeltitle{
+        font-size: 14px!important;
+        color: $black-color!important;
+        font-weight: 500!important;
+        text-align: center;  
+        line-height: normal;
+        small{
+            display: block;
+            font-size: 10px;
+        }
+    }
+    .closebtn{
+        border: none;
+        position: absolute;
+        top: 3px;
+        background: transparent;
+        right: 7px;
+    }
+}

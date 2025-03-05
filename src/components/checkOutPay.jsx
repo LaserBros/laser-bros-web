@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
 const CheckOutPay = ({
   show,
-  loadingPayId,
+  loadingPayId, 
   handleClose,
   address,
   shippingInfo,
@@ -27,6 +27,29 @@ const CheckOutPay = ({
   const [selectedRate, setSelectedRate] = useState("");
   const [taxPercentage, setaxPercentage] = useState(0);
   const [taxAmount, settaxAmount] = useState(0);
+
+  const formatPhoneNumber = (number) => {
+    // Convert the input to a string
+    const numberStr = String(number);
+
+    // Remove non-numeric characters
+    const cleaned = numberStr.replace(/\D/g, "");
+
+    // Format based on length
+    if (cleaned.length === 10) {
+      // Format for a standard 10-digit phone number
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+    } else if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      // Format for US-style 11-digit numbers with country code "1"
+      return cleaned.replace(/(\d)(\d{3})(\d{3})(\d{4})/, "$1-$2-$3-$4");
+    } else {
+      // Generic fallback for other formats
+      return cleaned;
+    }
+  };
+
+
+
   useEffect(() => {
     setSelectedAddress(null);
     setShippingSelectedAddress(null);
@@ -292,8 +315,8 @@ const CheckOutPay = ({
                       </p>
                       <p className="mb-2">
                         {
-                          shippingInfo?.requestQuoteDB?.address_details
-                            ?.phone_number
+                          formatPhoneNumber(shippingInfo?.requestQuoteDB?.address_details
+                            ?.phone_number)
                         }
                       </p>
                       <p className="mb-3">
@@ -503,8 +526,8 @@ const CheckOutPay = ({
                       </p>
                       <p className="mb-2">
                         {
-                          shippingInfo?.requestQuoteDB?.billing_details
-                            ?.phone_number
+                          formatPhoneNumber(shippingInfo?.requestQuoteDB?.billing_details
+                            ?.phone_number)
                         }
                       </p>
                       <p className="mb-3">
@@ -512,7 +535,7 @@ const CheckOutPay = ({
                           shippingInfo?.requestQuoteDB?.billing_details
                             ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.billing_details?.city},{" "}
+                        , {shippingInfo?.requestQuoteDB?.billing_details?.city} {shippingInfo?.requestQuoteDB?.address_details?.state_code},{" "}
                         {shippingInfo?.requestQuoteDB?.billing_details?.pincode}
                         ,{" "}
                         {shippingInfo?.requestQuoteDB?.billing_details?.country}

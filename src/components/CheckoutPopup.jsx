@@ -231,22 +231,43 @@ const CheckoutPopup = ({
     }
     // // console.log("Dsdsdsdssddsd");
     setloadingShip(true);
-    const data = {
-      id: loadingPayId?._id,
-      address_id: selectedId,
-    };
-    const res = await getShippingRatesAll(data);
-    setshippingInfo(res.data);
-    if(ParamType == "rfq") {
-    const updatedShippingInfo = { 
-      ...res.data, 
-      requestQuoteDB: {
-        ...res.data.requestQuoteDB,
-        check_status: 1, 
-      }
-    };
-    setshippingInfo(updatedShippingInfo);
-  }
+    if(selectedId == "" || selectedId == null) {
+      // setshippingInfo("")
+      setIsSameAsShipping(false);
+      setaxPercentage(0);
+      setaxAmount(0);
+      setrateVal(0);
+      setSelectedAddress("")
+      setloadingShip(false);
+      return;
+    }
+    try {
+      const data = {
+        id: loadingPayId?._id,
+        address_id: selectedId,
+      };
+      
+      const res = await getShippingRatesAll(data);
+      setshippingInfo(res.data);
+      if(ParamType == "rfq") {
+      const updatedShippingInfo = { 
+        ...res.data, 
+        requestQuoteDB: {
+          ...res.data.requestQuoteDB,
+          check_status: 1, 
+        }
+      };
+      setshippingInfo(updatedShippingInfo);
+    } 
+    } catch (error) {
+      // setshippingInfo("")
+      setaxPercentage(0);
+      setaxAmount(0);
+      setrateVal(0);
+      setIsSameAsShipping(false);
+      setSelectedAddress("")
+    }
+   
     setloadingShip(false);
   };
 
@@ -363,7 +384,7 @@ const CheckoutPopup = ({
                           {selectedShippingAddress.pincode},{" "}
                           {selectedShippingAddress.country}
                         </p>
-                        {selectedShippingAddress.permanent == 0 &&
+                        {selectedShippingAddress?.permanent == 0 &&
                         <div className="btn-bottom">
                           <Link
                             className="btn-address"
@@ -457,7 +478,7 @@ const CheckoutPopup = ({
                           {selectedAddress.city} {selectedAddress?.state_code}, {selectedAddress.pincode},{" "}
                           {selectedAddress.country}
                         </p>
-                        {selectedShippingAddress.permanent == 0 &&
+                        {selectedShippingAddress?.permanent == 0 &&
                         <div className="btn-bottom">
                           <Link
                             className="btn-address"

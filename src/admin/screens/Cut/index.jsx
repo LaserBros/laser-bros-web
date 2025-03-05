@@ -169,9 +169,9 @@ const Cut = () => {
     const zip = new JSZip();
 
     try {
+      console.log("urksssssssss",urls);
       const filePromises = urls.map(async (url, index) => {
-        // console.log(url.dxf_url);
-        const response = await fetch(url);
+        const response = await fetch(url.dxf_url);
         const blob = await response.blob();
         const fileName = url.subquote_number + ".dxf";
         zip.file(fileName, blob);

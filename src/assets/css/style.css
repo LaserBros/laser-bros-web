@@ -4052,4 +4052,35 @@ textarea.form-control {
 .iconinfotext {
   top: -5px;
   right: -5px;
+}
+
+.baseratecustom {
+  background-color: #F7F7F7;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px dashed #000000;
+  z-index: 1;
+}
+.baseratecustom .baseratetitle {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 500;
+}
+.baseratecustom .labeltitle {
+  font-size: 14px !important;
+  color: #000000 !important;
+  font-weight: 500 !important;
+  text-align: center;
+  line-height: normal;
+}
+.baseratecustom .labeltitle small {
+  display: block;
+  font-size: 10px;
+}
+.baseratecustom .closebtn {
+  border: none;
+  position: absolute;
+  top: 3px;
+  background: transparent;
+  right: 7px;
 }/*# sourceMappingURL=style.css.map */

@@ -11,6 +11,9 @@
 # production
 /build
 
+src/admin/screens/Quotes/EditQuote.jsx
+src/screens/private/Quotesdetail.jsx
+
 # misc
 .DS_Store
 .env.local

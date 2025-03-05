@@ -9,6 +9,22 @@ body.dark .smalltext {
 body.dark .iconinfotext .iconify {
   color: #ffffff;
 }
+body.dark .baseratecustom {
+  background-color: #000000;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+body.dark .baseratecustom input[type=file] {
+  color: #ffffff;
+}
+body.dark .baseratecustom .iconify {
+  color: #ffffff !important;
+}
+body.dark .baseratecustom .baseratetitle {
+  color: #ffffff;
+}
+body.dark .baseratecustom .labeltitle {
+  color: #ffffff !important;
+}
 body.dark .btncstm {
   color: #ffffff;
   border-bottom: none;

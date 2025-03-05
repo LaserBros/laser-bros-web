@@ -6,6 +6,12 @@ body.dark {
 body.dark .modal_header_blocking .modal-body p {
   color: #ffffff;
 }
+body.dark .color_white_make {
+  color: #ffffff;
+}
+body.dark .attachmenttitle {
+  color: #ffffff;
+}
 body.dark .account_show_tax label {
   color: #ffffff;
 }

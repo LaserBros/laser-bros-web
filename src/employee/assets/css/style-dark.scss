@@ -13,6 +13,22 @@ body {
             color: $white-color;
            }
         }
+        .baseratecustom{
+            background-color:$black-color;
+            border: 1px dashed rgba($white-color, .2);
+            input[type="file"]{
+                color: $white-color;
+            }
+            .iconify{
+                color:$white-color!important;
+            }
+            .baseratetitle{
+                color: $white-color;
+            }
+            .labeltitle{
+                color: $white-color!important;
+            }
+        }
         .btncstm {
             color: $white-color;
             border-bottom:none;

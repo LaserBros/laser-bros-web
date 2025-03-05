@@ -576,6 +576,18 @@ export const bendQuotes = async (data) => {
   }
 };
 
+export const uploadBendingFile = async (data) => {
+  try {
+    var response_api = await axiosInstance.post(`/users/uploadBendingFile`, data);
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const copySubQuote = async (data) => {
   try {
     const response = await axiosInstance.post(`/users/copySubQuote`, data);
@@ -1171,6 +1183,20 @@ export const AdminbendQuotes = async (data) => {
     throw error;
   }
 };
+
+export const updateBendingPrice = async (data) => {
+  try {
+    var response_api = await axiosAdminInstance.post(`/updateBendingPrice`, data);
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 
 export const AdmingetMaterials = async (data) => {
   try {
