@@ -423,14 +423,14 @@ const ViewCustomer = () => {
                                               <>
                                                 <p className="text-success mb-0">
                                                   RFQ Accepted. Waiting for
-                                                  payemnt
+                                                  payment
                                                 </p>
                                               </>
                                             ) : (
                                               <>
                                                 <p className="text-danger mb-0">
                                                   RFQ Rejected. Waiting for
-                                                  payemnt
+                                                  payment
                                                 </p>
                                               </>
                                             )}

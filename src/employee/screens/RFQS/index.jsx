@@ -334,13 +334,13 @@ const RFQS = () => {
                               ) : row.status == 2 ? (
                                 <>
                                   <p className="text-success mb-0">
-                                    RFQ Accepted. Waiting for payemnt
+                                    RFQ Accepted. Waiting for payment
                                   </p>
                                 </>
                               ) : (
                                 <>
                                   <p className="text-danger mb-0">
-                                    RFQ Rejected. Waiting for payemnt
+                                    RFQ Rejected. Waiting for payment
                                   </p>
                                 </>
                               )}
