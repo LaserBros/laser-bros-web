@@ -770,9 +770,13 @@ export const fetchOrdersInComplete = async (page, search, sort) => {
 
 export const getSpecificFilters = async (type, move_status) => {
   try {
-    const response = await axiosAdminInstance.get(
-      `/getSpecificFilters?type=` + type + "&move_status=" + move_status
-    );
+    let url = `/getSpecificFilters?type=${type}`;
+
+    if (move_status) {
+      url += `&move_status=${move_status}`;
+    }
+
+    const response = await axiosAdminInstance.get(url);
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);

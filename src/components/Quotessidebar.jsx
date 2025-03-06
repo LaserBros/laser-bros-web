@@ -180,8 +180,10 @@ const QuotesSidebar = ({
     // console.log("updatedQuoteData",updatedQuoteData) 
     let isValid = true; // Assume everything is valid initially
     // console.log("loading od");
-    // Use a for...of loop to allow breaking out of the loop
+    
     for (const quote of updatedQuoteData) {
+      console.log("loading od");
+      console.log(quote.bend_count)
       if (!quote.material_id) {
         isValid = false;
         toast.error(`Please select Material.`);
@@ -196,6 +198,13 @@ const QuotesSidebar = ({
         isValid = false;
         toast.error(`Please select Finish.`);
         break; // Stop the loop if validation fails
+      }
+      if (quote.bend_count == 1) {
+        if(quote.step_file_bend == null || quote.step_file_bend == "") {
+          isValid = false;
+          toast.error(`Please upload bend STEP file.`);
+          break; // Stop the loop if validation fails
+        }
       }
     }
 

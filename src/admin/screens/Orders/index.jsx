@@ -164,7 +164,7 @@ const Orders = () => {
     if (type == "operation") {
       setoperation(data);
       setloadingTags(true);
-      const res = await getSpecificFilters(data, 0);
+      const res = await getSpecificFilters(data);
       setTags(res.data.updatedQuotes);
       setloadingTags(false);
     }

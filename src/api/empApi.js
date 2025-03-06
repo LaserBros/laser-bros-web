@@ -10,6 +10,18 @@ export const updateBendPrice = async (data) => {
       throw error;
     }
   };
+  export const updateBendingPrice = async (data) => {
+    try {
+      var response_api = await axiosEmployeeInstance.post(`/updateBendingPrice`, data);
+      // // console.log("response_api", response_api);
+      // return;
+      return response_api.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+  
   export const deleteBendQuoteImage = async (data) => {
     try {
       const response = await axiosInstance.post(
@@ -221,9 +233,13 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   
   export const getSpecificFilters = async (type, move_status) => {
     try {
-      const response = await axiosEmployeeInstance.get(
-        `/getSpecificFilters?type=` + type + "&move_status=" + move_status
-      );
+      let url = `/getSpecificFilters?type=${type}`;
+  
+      if (move_status) {
+        url += `&move_status=${move_status}`;
+      }
+  
+      const response = await axiosEmployeeInstance.get(url);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);

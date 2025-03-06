@@ -73,12 +73,12 @@ export default function RfqDetail() {
     const fileNameWithParams = url.split("/").pop(); // Get everything after the last "/"
     const [fileName] = fileNameWithParams.split("?"); // Remove query parameters if present
     const extension = fileName.split(".").pop(); // Get the file extension
-  
+
     // Clean the file name (remove digits and unwanted patterns at the start of the name)
     const cleanFileName = fileName
       .replace(/^\d+-/, "") // Remove timestamp or numerical prefix (e.g., "1734240670591-")
       .replace(/(\s*\(\d+\))?\.[^.]+$/, `.${extension}`); // Clean trailing patterns like "(5)" before the extension
-  
+
     // Fetch and download the file
     fetch(url)
       .then((response) => {
@@ -97,8 +97,7 @@ export default function RfqDetail() {
       .catch((error) => console.error("Error downloading the file:", error));
   };
 
-
-   const handlePDF = async () => {
+  const handlePDF = async () => {
     const url = `${process.env.REACT_APP_API_URL}/users/generateRfqPDF`;
     try {
       const token = localStorage.getItem("authToken");
@@ -126,13 +125,10 @@ export default function RfqDetail() {
       // Cleanup
       link.remove();
       window.URL.revokeObjectURL(blobUrl);
-      
     } catch (error) {
       console.error("Error downloading PDF:", error);
     }
-    };
-
-
+  };
 
   useEffect(() => {
     fetchOrder();
@@ -144,24 +140,23 @@ export default function RfqDetail() {
           <Card>
             <Card.Header className="d-flex justify-content-between align-items-center flex-wrap ">
               <h5>RFQ's Detail</h5>{" "}
-             <div>
-             <Link
-                                  to=""
-                                  onClick={handlePDF}
-                                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
-                                  style={{ marginRight: "4px" }}
-                                >
-                                  Download RFQ
-                                </Link>
-              <Link
-                to="/rfqs"
-                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159 ms-2"
-              >
-                Back To RFQ's
-              </Link>
-            
-          </div>
-          </Card.Header>
+              <div>
+                <Link
+                  to=""
+                  onClick={handlePDF}
+                  className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
+                  style={{ marginRight: "4px" }}
+                >
+                  Download RFQ
+                </Link>
+                <Link
+                  to="/rfqs"
+                  className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-159 ms-2"
+                >
+                  Back To RFQ's
+                </Link>
+              </div>
+            </Card.Header>
             {loading ? (
               <span
                 role="status"
@@ -257,15 +252,49 @@ export default function RfqDetail() {
                                       <h4>Services</h4>
                                       <label>
                                         Bending :{" "}
+                                        {row.step_file_bend != null &&
+                                          row.step_file_bend != "null" &&
+                                          row.step_file_bend != "" && (
+                                            <>
+                                              <Link
+                                                // href={`${url}`}
+                                                // target="_blank"
+                                                onClick={() =>
+                                                  downloadFile(
+                                                    row.step_file_bend
+                                                  )
+                                                }
+                                                style={{ paddingRight: "5px" }}
+                                              >
+                                                Step File
+                                              </Link>
+                                            </>
+                                          )}
+                                        {row.drawing_file_bend != null &&
+                                          row.drawing_file_bend != "null" &&
+                                          row.drawing_file_bend != "" && (
+                                            <>
+                                              <Link
+                                                // href={`${url}`}
+                                                // target="_blank"
+                                                onClick={() =>
+                                                  downloadFile(
+                                                    row.drawing_file_bend
+                                                  )
+                                                }
+                                                style={{ paddingRight: "5px" }}
+                                              >
+                                                Drawing File
+                                              </Link>
+                                            </>
+                                          )}
                                         {row.bendupload_url.map(
                                           (url, index) => (
-                                              <Link
-                                                                                                                                                   // href={`${url}`}
-                                                                                                                                                   // target="_blank"
-                                                                                                                                                   onClick={() => downloadFile(url)}
-                                                                                                                                                   style={{ paddingRight: "5px" }}
-                                                                                                                                                 >
-                                              Attachment {String(index + 1)} 
+                                            <Link
+                                              onClick={() => downloadFile(url)}
+                                              style={{ paddingRight: "5px" }}
+                                            >
+                                              Attachment {String(index + 1)}
                                             </Link>
                                           )
                                         )}

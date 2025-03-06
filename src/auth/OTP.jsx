@@ -45,6 +45,7 @@ const OTPForm = () => {
   const handleResendOTP = async (e) => {
     e.preventDefault();
     const data = {
+      full_name:formData.full_name,
       email: formData.email,
     };
     try {

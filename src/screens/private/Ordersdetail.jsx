@@ -301,12 +301,32 @@ export default function OrdersDetail() {
                                   <span>Finish:</span> {row.finishing_desc}
                                 </span>
                               </p>
-                              {row.bend_count > 0 && (
+                              
+                              {row.bend_count == 1  && (
                                 <div className="quotes-services mt-3">
                                   <h4>Services</h4>
                                   <label>
                                     Bending :{" "}
-                                    
+                                    {(row.step_file_bend != null && row.step_file_bend != "null" && row.step_file_bend != "") &&
+                                    <>
+                                     <Link
+                                        // href={`${url}`}
+                                        // target="_blank"
+                                        onClick={() => downloadFile(row.step_file_bend )}
+                                        style={{ paddingRight: "5px" }}
+                                      >Step File</Link>
+                                    </>
+                                    }
+                                    {(row.drawing_file_bend != null && row.drawing_file_bend != "null" && row.drawing_file_bend != "") &&
+                                    <>
+                                    <Link
+                                        // href={`${url}`}
+                                        // target="_blank"
+                                        onClick={() => downloadFile(row.drawing_file_bend )}
+                                        style={{ paddingRight: "5px" }}
+                                      >Drawing File</Link>
+                                    </>
+                                    }
                                     {row.bendupload_url.map((url, index) => (
                                       <Link
                                         // href={`${url}`}

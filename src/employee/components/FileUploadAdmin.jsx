@@ -27,20 +27,20 @@ const FileUpload = ({
     //   "uploadedFiles.length + acceptedFiles.length",
     //   uploadedFiles.length + acceptedFiles.length
     // );
-    if (!token && uploadedFiles.length + acceptedFiles.length > 5) {
-      setError(
-        "You can only upload a maximum of 5 files. Please login to upload more dxf file."
-      );
-      return;
-    }
-    if (count != null) {
-      if (!token && count.length > 5) {
-        setError(
-          "You can only upload a maximum of 5 files. Please login to upload more dxf file."
-        );
-        return;
-      }
-    }
+    // if (!token && uploadedFiles.length + acceptedFiles.length > 5) {
+    //   setError(
+    //     "You can only upload a maximum of 5 files. Please login to upload more dxf file."
+    //   );
+    //   return;
+    // }
+    // if (count != null) {
+    //   if (!token && count.length > 5) {
+    //     setError(
+    //       "You can only upload a maximum of 5 files. Please login to upload more dxf file."
+    //     );
+    //     return;
+    //   }
+    // }
     if (uploadedFiles.length + acceptedFiles.length > 20) {
       setError("You can only upload a maximum of 20 files.");
       return;
