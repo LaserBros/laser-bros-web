@@ -141,6 +141,7 @@ const Orders = () => {
   // }
   }, [SortVal, Phase, selecttag, name]);
   const handleSortChangeFilter = async (type, data) => {
+    console.log("Dsdsdsdsdsd");
     if (type == "sort") {
       setSort(data);
     }
@@ -162,10 +163,15 @@ const Orders = () => {
     //   );
     // }
     if (type == "operation") {
-      setoperation(data);
+      setoperation(data); 
       setloadingTags(true);
-      const res = await getSpecificFilters(data);
-      setTags(res.data.updatedQuotes);
+      try {
+        const res = await getSpecificFilters(data,Phase);
+        setTags(res.data.updatedQuotes);  
+      } catch (error) {
+        setTags([]);
+      }
+      
       setloadingTags(false);
     }
   };

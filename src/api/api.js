@@ -770,9 +770,10 @@ export const fetchOrdersInComplete = async (page, search, sort) => {
 
 export const getSpecificFilters = async (type, move_status) => {
   try {
+    console.log("move_status",move_status)
     let url = `/getSpecificFilters?type=${type}`;
 
-    if (move_status) {
+    if (move_status != "") {
       url += `&move_status=${move_status}`;
     }
 
