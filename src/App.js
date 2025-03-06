@@ -1016,7 +1016,7 @@ function App() {
                     />
                     <Route
                       path="/quotes/quotes-detail"
-                      element={<QuotesDetail />}
+                      element={<PrivateRoute element={<QuotesDetail />} />}
                     />
                     <Route
                       path="/quotes/pay"
