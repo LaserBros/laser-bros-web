@@ -441,7 +441,7 @@ const CheckoutPopup = ({
                   <h2 className="shipping_head">Billing Address</h2>
 
                   {/* Checkbox for "Same as Shipping Address" */}
-                  {selectedShippingAddress && (
+                  {/* {selectedShippingAddress && (
                     <Form.Check
                       type="checkbox"
                       label="Same as Shipping Address"
@@ -449,7 +449,7 @@ const CheckoutPopup = ({
                       onChange={handleCheckboxChange}
                       className="mb-3"
                     />
-                  )}
+                  )} */}
 
                   {!isSameAsShipping && (
                     <Form.Select
@@ -459,6 +459,7 @@ const CheckoutPopup = ({
                     >
                       <option value="">Select Address</option>
                       {address.map((addr) => (
+                        addr?.permanent == 0 &&
                         <option key={addr?._id} value={addr?._id}>
                           {addr?.full_name} - {addr?.nickname}
                         </option>
