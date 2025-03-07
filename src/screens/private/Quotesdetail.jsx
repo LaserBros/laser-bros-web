@@ -9,6 +9,7 @@ import QuotesSidebar from "../../components/Quotessidebar";
 import RenamePart from "../../components/Renamepart";
 import AddBend from "../../components/Addbend";
 import AddNote from "../../components/Addnote";
+import step_file_img from "../../assets/img/step_file.png";
 import FileUpload from "../../components/FileUpload";
 import {
   addNotes,
@@ -24,6 +25,8 @@ import {
   updateSubQuoteDetails,
   updateDimensionType,
   updateDimensionStatus,
+  deleteBendQuoteImage,
+  uploadBendingFile,
 } from "../../api/api";
 import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
@@ -72,14 +75,16 @@ export default function QuotesDetail() {
   // ];
   const [colors, setcolors] = useState([]);
   const handleClick = (tooltipId) => {
-       // Hide the tooltip using react-tooltip's hide method
-       const tooltipElement = document.querySelector(`[data-tooltip-id="${tooltipId}"]`);
-       if (tooltipElement && tooltipElement._tippy) {
-         tooltipElement._tippy.hide(); // Hide the tooltip
-       }
+    // Hide the tooltip using react-tooltip's hide method
+    const tooltipElement = document.querySelector(
+      `[data-tooltip-id="${tooltipId}"]`
+    );
+    if (tooltipElement && tooltipElement._tippy) {
+      tooltipElement._tippy.hide(); // Hide the tooltip
+    }
   };
   const handleUpload = async (file, id, quantities, pdf_url) => {
-    // console.log(file, id, quantities, pdf_url, "pdf_urlpdf_urlpdf_urlpdf_url");
+    console.log(file, id, quantities, "pdf_urlpdf_urlpdf_urlpdf_url");
     if (file.length == 0) {
       alert("Please upload a STEP or PDF file before saving.");
       return;
@@ -125,12 +130,12 @@ export default function QuotesDetail() {
       setModalShow2(false);
     } catch (error) {
       setaddLoading(false);
-      // console.log("errororoor ----", error);
+      console.log("errororoor ----", error);
     }
   };
 
-  
-
+  const [files, setFiles] = useState([]);
+  const [errors, setErrors] = useState("");
 
   const getTotalAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
@@ -144,7 +149,8 @@ export default function QuotesDetail() {
   const getBendAmount = () => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
-      const amount = (parseFloat(quote.per_bend_price) * quote.bend_count) * quote.quantity ;
+      const amount =
+        parseFloat(quote.per_bend_price) * quote.bend_count * quote.quantity;
       return sum + (isNaN(amount) ? 0 : amount);
     }, 0);
   };
@@ -335,6 +341,7 @@ export default function QuotesDetail() {
   const [bend_count, setbend_count] = useState(null);
   const [bendupload_url, setbendupload_url] = useState(null);
   const [id_quote, setid_quote] = useState(null);
+  const [bendApply, setbendApply] = useState(false);
   const handleShow2 = async (
     image_url,
     quote_name,
@@ -343,21 +350,52 @@ export default function QuotesDetail() {
     id,
     checked
   ) => {
-    
     const token = localStorage.getItem("authToken");
-    if(token == "" || token == undefined || token == null) {
+    if (token == "" || token == undefined || token == null) {
       setModalShow4(true);
       return;
     }
     if (checked) {
+      setbendApply(true);
       setimage_url(image_url);
       setquote_name(quote_name);
       setbend_count(bend_count);
       setbendupload_url(bendupload_url);
       setid_quote(id);
-      setModalShow2(true);
+      const updatedQuoteData = quoteData.map((quote) =>
+        quote._id === id ? { ...quote, bend_count: 1 } : quote
+      );
+      localStorage.setItem("parsedQuoteList", JSON.stringify(updatedQuoteData));
+      setQuoteData(updatedQuoteData);
+      
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("bend_count", 1);
+      const storedData = localStorage.getItem("setItempartsDBdata");
+      const parsedData = storedData ? JSON.parse(storedData) : [];
+      const updatedLocalStorageData = parsedData.map((quote) => {
+        if (quote._id === id) {
+          return {
+            ...quote,
+            bend_count: 1,
+          };
+        }
+        return quote; // Return unchanged if no match
+      });
+
+      // Update state and localStorage
+      setQuoteData(updatedLocalStorageData);
+      setquoteDataCon(true);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(updatedLocalStorageData)
+      );
+      try { 
+        // const response = bendQuotes(formData);
+        const response = uploadBendingFile(formData);
+      } catch {}
+      // setModalShow2(true);
     } else {
-    
       const isConfirmed = window.confirm(
         "Are you sure you want to remove bending?"
       );
@@ -366,9 +404,9 @@ export default function QuotesDetail() {
         const formData = new FormData();
         formData.append("id", id);
         formData.append("bend_count", 0);
-        formData.append("quote_image", "");
+        formData.append("type", "");
         try {
-          const response = bendQuotes(formData);
+          const response = uploadBendingFile(formData);
 
           const setItemelementData = quoteList;
           const parsedQuoteList = quoteData;
@@ -380,12 +418,17 @@ export default function QuotesDetail() {
                 ...item,
                 bend_count: 0,
                 bendupload_url: "",
+                step_file_bend:"",
+                drawing_file_bend:"",
                 check_status: 0,
               };
             }
             return item;
           });
-
+          localStorage.setItem(
+            "setItempartsDBdata",
+            JSON.stringify(updatedSetItemElementData)
+          );
           // Save the updated data back to localStorage
           localStorage.setItem(
             "parsedQuoteList",
@@ -421,7 +464,7 @@ export default function QuotesDetail() {
             );
             setQuoteList(parsedQuoteList);
           }
-
+          setbendApply(false);
           setquoteDataCon(true);
           setQuoteData(updatedSetItemElementData);
         } catch (err) {
@@ -446,7 +489,7 @@ export default function QuotesDetail() {
     if (Array.isArray(quoteData) && quoteData.length > 0) {
       const fetchAllThicknessOptionsData = async () => {
         setbtnText(0);
-        if(quoteList.check_status == 1) {
+        if (quoteList.check_status == 1) {
           setbtnText(1);
           return;
         }
@@ -496,6 +539,44 @@ export default function QuotesDetail() {
     };
   }, []);
 
+  const removeExistingFile = async (index, url, id) => {
+    const data = {
+      id: id,
+      bendimageurl: url,
+    };
+
+    try {
+      // Await the deletion request
+      await deleteBendQuoteImage(data);
+
+      // Retrieve stored quotes and ensure it's parsed correctly
+      const storedData = localStorage.getItem("setItempartsDBdata");
+      const parsedData = storedData ? JSON.parse(storedData) : [];
+
+      // Update quotes by removing the specified file URL
+      const updatedLocalStorageData = parsedData.map((quote) => {
+        if (quote._id === id) {
+          return {
+            ...quote,
+            bendupload_url: Array.isArray(quote.bendupload_url)
+              ? quote.bendupload_url.filter((fileUrl) => fileUrl !== url)
+              : [],
+          };
+        }
+        return quote; // Return unchanged if no match
+      });
+
+      // Update state and localStorage
+      setQuoteData(updatedLocalStorageData);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(updatedLocalStorageData)
+      );
+    } catch (error) {
+      console.error("Error removing file:", error);
+    }
+  };
+
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdata");
     const quote_list = localStorage.getItem("setItemelementData");
@@ -529,11 +610,11 @@ export default function QuotesDetail() {
             finishOptions: [],
             amount: 0,
             quantity: 1,
-            discount:0
+            discount: 0,
           }
         : quote
     );
-    
+
     localStorage.setItem(
       "setItempartsDBdata",
       JSON.stringify(updatedQuoteData)
@@ -895,6 +976,66 @@ export default function QuotesDetail() {
       // Handle the error case as necessary
     }
   };
+
+  const [uploadedFiles, setUploadedFiles] = useState({}); // Store files for each quote
+  const [loadingFiles, setLoadingFiles] = useState({}); // Track loading state for each file
+
+  const handleFileChange = async (event, id,quote_id,type_param) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      setLoadingFiles((prev) => ({ ...prev, [id]: true }));
+      console.log("loadingFiles",loadingFiles);
+      const formData = new FormData();
+      formData.append("id", quote_id);
+      formData.append("bend_count", 1);
+      formData.append("type",type_param);
+      formData.append("quote_image",file);
+      const res = await uploadBendingFile(formData);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(res.data)
+      );
+      setQuoteData(res.data);
+      setquoteDataCon(true);
+      setLoadingFiles((prev) => ({ ...prev, [id]: false })); 
+      // console.log("response uploadBendingFile",res.data);
+
+    } catch (error) {
+      
+    }
+    
+  };
+
+  const removeFile = async (id,type_param) => {
+    try {
+      // if (file) {
+      //   setUploadedFiles((prev) => ({
+      //     ...prev,
+      //     [id]: file, // Store file by quote ID
+      //   }));
+      // }
+      // console.log("id,type_param",id,type_param)
+      // return
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("bend_count", 1);
+      formData.append("type",type_param);
+      // formData.append("quote_image","");
+      const res = await uploadBendingFile(formData);
+      localStorage.setItem(
+        "setItempartsDBdata",
+        JSON.stringify(res.data)
+      );
+      setQuoteData(res.data);
+      setquoteDataCon(true);
+      // console.log("response uploadBendingFile",res.data);
+
+    } catch (error) {
+      
+    }
+  };
+
   const BackQuote = () => {
     localStorage.removeItem("setItemelementData");
 
@@ -907,7 +1048,7 @@ export default function QuotesDetail() {
       <section className="myaccount ptb-50">
         <Container>
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
-            {Array.isArray(quoteData)  && quoteData && quoteData.length > 0 ? (
+            {Array.isArray(quoteData) && quoteData && quoteData.length > 0 ? (
               <>
                 <h2 className="quotes-head">Quote #{quoteList.search_quote}</h2>
               </>
@@ -940,7 +1081,7 @@ export default function QuotesDetail() {
                 error={error}
                 className={"mb-4"}
               />
-               
+
               {quoteData &&
                 quoteData.length > 0 &&
                 Array.isArray(quoteData) &&
@@ -1017,7 +1158,7 @@ export default function QuotesDetail() {
                             onOptionSelect={handleOptionSelect}
                           />
                         </div>
-                        <div className="quotes-services quote_div_main_sect mt-3">
+                        <div className="quotes-services quote_div_main_sect mt-3 position-relative">
                           {quote.binding_option == "no" ? (
                             <p></p>
                           ) : (
@@ -1029,7 +1170,7 @@ export default function QuotesDetail() {
 
                                     <Form.Check
                                       type="checkbox"
-                                      label="Bending"
+                                      label="Add Bending"
                                       name={`options-${quote._id}`}
                                       value={`options-${quote._id}`}
                                       id={`options-${quote._id}`}
@@ -1049,7 +1190,163 @@ export default function QuotesDetail() {
                                   </div>
                                   {quote.bend_count != 0 && (
                                     <>
-                                      <div className="custom_bend_div">
+                                      <div className="baseratecustom">
+                                        <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                          <span className="baseratetitle">
+                                            Base Rate: <Amount amount={quote.per_bend_price} />
+                                          </span>
+                                          <span
+                                            className="cursor-pointer"
+                                            data-tooltip-id="custom-bending"
+                                          >
+                                            <Icon
+                                              icon="material-symbols-light:info-outline"
+                                              width={22}
+                                              height={22}
+                                              color="#000"
+                                            />
+                                          </span>
+                                          <Tooltip
+                                            id="custom-bending"
+                                            place="right"
+                                            content={
+                                              <>
+                                                Bending requires review and
+                                                approval. <br />
+                                                The base rate is just an
+                                                estimate and <br />
+                                                will be adjusted during the
+                                                review process. <br />
+                                                If you don’t have a STEP file,
+                                                please reach out <br />
+                                                directly to us via email.
+                                              </>
+                                            }
+                                          />
+                                        </div>
+                                         
+                                            <div>
+                                              {/* First Upload Field */}
+                                              <div className="mt-2 d-flex justify-content-start gap-2">
+                                                <label className="labeltitle flex-shrink-0">
+                                                  Upload STEP file{" "}
+                                                  <small>(Required)</small>
+                                                </label>
+                                                {quote.step_file_bend == null || quote.step_file_bend == "" ? (
+                                                  <>
+                                                   {loadingFiles[quote._id] ? (
+                                                    <span className="color_white_make">Uploading...</span> // Show loader while uploading
+                                                  ) : (
+                                                       
+                                                  <input
+                                                    id={quote._id}
+                                                    type="file"
+                                                    accept=".step"
+                                                    onChange={(e) =>
+                                                      handleFileChange(
+                                                        e,
+                                                        `${quote._id}`, 
+                                                        quote._id,
+                                                        'step'
+                                                      )
+                                                    }
+                                                    className="block w-full mt-1"
+                                                  />
+                                                  
+                                                  )}
+                                                  </>
+                                                
+                                                ) : (
+                                                  <div className="attachment-box">
+                                                    <span className="attachmenttitle">
+                                                      Attachment
+                                                      {/* {
+                                                        uploadedFiles[quote._id]
+                                                          .name
+                                                      } */}
+                                                    </span>
+                                                    <Link
+                                                      className="remove-icon"
+                                                      onClick={() =>
+                                                        removeFile(quote._id,'step_remove')
+                                                      }
+                                                    >
+                                                      <Icon
+                                                        icon="carbon:close-outline"
+                                                        color="#ff0000"
+                                                        width={18}
+                                                        height={18}
+                                                        className="ms-2"
+                                                      />
+                                                    </Link>
+                                                  </div>
+                                                )}
+                                              </div>
+
+                                              {/* Second Upload Field */}
+                                              <div className="mt-2 d-flex justify-content-start gap-2">
+                                                <label className="labeltitle flex-shrink-0">
+                                                  Upload Drawing{" "}
+                                                  <small>(Optional)</small>
+                                                </label>
+                                                
+                                                {quote.drawing_file_bend == null || quote.drawing_file_bend == "" ? (
+                                                  <>
+                                                  {loadingFiles[`${quote._id}-optional`] ? (
+                                                    <span>Uploading...</span> // Loader for optional upload
+                                                  ) : (
+                                                  <input
+                                                    id={`${quote._id}-optional`}
+                                                    type="file"
+                                                    accept=".pdf, .jpg, .jpeg, .png"
+                                                    onChange={(e) =>
+                                                      handleFileChange(
+                                                        e,
+                                                        `${quote._id}-optional`,
+                                                        quote._id,
+                                                        'draw'
+                                                      )
+                                                    }
+                                                    className="block w-full mt-1"
+                                                  />
+                                                  )}
+                                                  </>
+                                                ) : (
+                                                  <div className="attachment-box">
+                                                    <span className="attachmenttitle">
+                                                      {/* {
+                                                        uploadedFiles[
+                                                          `${quote._id}-optional`
+                                                        ].name
+                                                      } */}
+                                                      Attachment
+                                                    </span>
+                                                    <Link
+                                                      className="remove-icon"
+                                                      onClick={() =>
+                                                        removeFile(
+                                                          quote._id,"draw_remove"
+                                                        )
+                                                      }
+                                                    >
+                                                      <Icon
+                                                        icon="carbon:close-outline"
+                                                        color="#ff0000"
+                                                        width={18}
+                                                        height={18}
+                                                        className="ms-2"
+                                                      />
+                                                    </Link>
+                                                  </div>
+                                                )}
+                                              </div>
+
+                                              {/* Error Message */}
+                                              {/* {Object.keys(uploadedFiles).length === 0 && <p className="text-red-500 text-xs mt-1">File is required.</p>} */}
+                                            </div>
+                                         
+                                      </div>
+                                      {/* <div className="custom_bend_div">
                                         <p>
                                           Number of bends : {quote.bend_count}
                                         </p>
@@ -1073,7 +1370,7 @@ export default function QuotesDetail() {
                                         }}
                                       >
                                         <Icon icon="mynaui:edit" />
-                                      </Link>
+                                      </Link> */}
                                     </>
                                   )}
                                 </>
@@ -1089,18 +1386,18 @@ export default function QuotesDetail() {
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
                         <p className=" text-md-end">
                           {" "}
-                          <Amount amount={quote.amount  + (quote?.bend_price * quote.quantity)} /> total
+                          <Amount amount={quote.amount} /> total
                         </p>
-                        
+
                         <p className=" text-md-end">
                           <strong className="quotes-price">
-                            <Amount amount={(quote.amount / quote.quantity) + (quote?.bend_price * quote.quantity)} />
-                          </strong> 
+                            <Amount amount={quote.amount / quote.quantity} />
+                          </strong>
                           /each
                         </p>
                         <div className="d-flex align-item-center justify-content-end gap-2">
                           <div className="quanityCount_btn">
-                            {quote.thickness_id ? (
+                            {quote.finishing_id ? (
                               <>
                                 <QuantitySelector
                                   quantity={quote.quantity}
@@ -1158,41 +1455,69 @@ export default function QuotesDetail() {
                           <div></div>
 
                           <div className="rightbtns gap-2 d-inline-flex flex-wrap">
-                          <Link
-  className="btnshare"
-  onClick={() => { handleShow3(quote.notes_text, quote._id); handleClick("add-note-tooltip"); }}
-  data-tooltip-id="add-note-tooltip"
->
-  Add Note
-</Link>
-<Tooltip id="add-note-tooltip" place="bottom" content="Add a Note to This Part" />
+                            <Link
+                              className="btnshare"
+                              onClick={() => {
+                                handleShow3(quote.notes_text, quote._id);
+                                handleClick("add-note-tooltip");
+                              }}
+                              data-tooltip-id="add-note-tooltip"
+                            >
+                              Add Note
+                            </Link>
+                            <Tooltip
+                              id="add-note-tooltip"
+                              place="bottom"
+                              content="Add a Note to This Part"
+                            />
 
-<Link
-  className="btnicon"
-  onClick={() => {handleShow(quote.quote_name, quote._id);     handleClick("edit-tooltip");  }}
-  data-tooltip-id="edit-tooltip"
->
-  <Icon icon="mynaui:edit" />
-</Link>
-<Tooltip id="edit-tooltip" place="bottom" content="Rename This Part" />
+                            <Link
+                              className="btnicon"
+                              onClick={() => {
+                                handleShow(quote.quote_name, quote._id);
+                                handleClick("edit-tooltip");
+                              }}
+                              data-tooltip-id="edit-tooltip"
+                            >
+                              <Icon icon="mynaui:edit" />
+                            </Link>
+                            <Tooltip
+                              id="edit-tooltip"
+                              place="bottom"
+                              content="Rename This Part"
+                            />
 
-<Link
-  className="btnicon"
-  onClick={() => { handleDuplicateQuote(quote, quote._id); handleClick("duplicate-tooltip"); }}
-  data-tooltip-id="duplicate-tooltip"
->
-  <Icon icon="heroicons:document-duplicate" />
-</Link>
-<Tooltip id="duplicate-tooltip" place="bottom" content="Duplicate This Part" />
+                            <Link
+                              className="btnicon"
+                              onClick={() => {
+                                handleDuplicateQuote(quote, quote._id);
+                                handleClick("duplicate-tooltip");
+                              }}
+                              data-tooltip-id="duplicate-tooltip"
+                            >
+                              <Icon icon="heroicons:document-duplicate" />
+                            </Link>
+                            <Tooltip
+                              id="duplicate-tooltip"
+                              place="bottom"
+                              content="Duplicate This Part"
+                            />
 
-<Link
-  className="btnicon"
-  onClick={() => {handleDeleteQuote(quote._id); handleClick("delete-tooltip");}}
-  data-tooltip-id="delete-tooltip"
->
-  <Icon icon="uiw:delete" />
-</Link>
-<Tooltip id="delete-tooltip" place="bottom" content="Delete This Part" />
+                            <Link
+                              className="btnicon"
+                              onClick={() => {
+                                handleDeleteQuote(quote._id);
+                                handleClick("delete-tooltip");
+                              }}
+                              data-tooltip-id="delete-tooltip"
+                            >
+                              <Icon icon="uiw:delete" />
+                            </Link>
+                            <Tooltip
+                              id="delete-tooltip"
+                              place="bottom"
+                              content="Delete This Part"
+                            />
                           </div>
                         </div>
                       </Col>
@@ -1242,10 +1567,7 @@ export default function QuotesDetail() {
         onSave={(newNote) => updateQuoteNote(selectedPartId, newNote)}
         title="Notes"
       />
-      <AddServiceNote
-        show3={modalShow4}
-        handleClose3={handleClose4}
-      />
+      <AddServiceNote show3={modalShow4} handleClose3={handleClose4} />
     </React.Fragment>
   );
 }

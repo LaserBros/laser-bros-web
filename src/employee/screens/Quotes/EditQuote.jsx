@@ -27,6 +27,7 @@ import {
   updateBendPrice,
   getSubQuote,
   updateBendingPrice,
+  deleteSubQuote,
 } from "../../../api/empApi";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -52,10 +53,11 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ModalOrderData from "../../components/OrderData";
 import { Tooltip } from "react-tooltip";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
-
+  const [DeletemodalShow,setDeletemodalShow] = useState(false);
   const options = [
     "F0",
     "F1",
@@ -111,7 +113,7 @@ const EditRFQS = () => {
     setShowModal(true);
   };
   const handleCloseModal = () => setShowModal(false);
-
+  const handleCloseModalDelete = () => setDeletemodalShow(false);
   const handleSaveSelection = (selected) => {
     setSelectedItems(selected);
     let existingData = localStorage.getItem("setItempartsDBdataAdmin");
@@ -154,7 +156,7 @@ const EditRFQS = () => {
   const [selectedAdminNote, setSelectedAdminNote] = useState(null);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
-
+  const [loadingBtn , setloadingBtn] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
   const handleShow = (quote, id) => {
@@ -448,10 +450,46 @@ const EditRFQS = () => {
         price: price,
       };
       const res = await updateBendingPrice(data);
-      setQuoteData(res.data.subQuote);
-      setQuoteList(res.data.updated_data);
-      setquoteDataCon(true);
-      console.log("dsdsdsdsdsdsdsdc", res.data);
+      setQuoteData((prevQuoteData) =>
+        prevQuoteData.map((quote) =>
+          quote._id === Id
+            ? { ...quote, per_bend_price:price }
+            : quote
+        )
+      );
+
+      const quoteDataVal = JSON.parse(
+        localStorage.getItem("setItempartsDBdataAdmin")
+      );
+      let total = 0; // Change 'const' to 'let' to allow reassignment
+      for (const quote of quoteDataVal) {
+        total += quote.quantity * parseFloat(price); // Accumulate bend_count values
+      }
+      const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+      if (quoteList) {
+        const parsedQuoteList = JSON.parse(quoteList);
+        parsedQuoteList.total_bend_price = total;
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(parsedQuoteList)
+        );
+        setQuoteList(parsedQuoteList);
+        // console.log("Sdssdsdsdsd", quoteList, "quoteList");
+      }
+
+  
+      const updatedQuoteData = quoteData.map((quote) =>
+        quote._id === Id
+          ? { ...quote, per_bend_price:price }
+          : quote
+      );
+      localStorage.setItem(
+        "setItempartsDBdataAdmin",
+        JSON.stringify(updatedQuoteData)
+      );
+       
+      
     } catch (error) {}
   };
   const updatePrice = (Id, price) => {
@@ -596,6 +634,60 @@ const EditRFQS = () => {
     }
   };
   const handleClose4 = () => setModalShow4(false);
+  const [deleteId, setDeleteId] = useState("");
+  const deleteQuote = async () => {
+    try {
+      const data = {
+        id:deleteId
+      }
+      setloadingBtn(true);
+      const res = await deleteSubQuote(data);
+      
+      const storedData =
+      JSON.parse(localStorage.getItem("setItempartsDBdataAdmin")) || [];
+
+    // Filter out the item with the matching _id
+    const updatedData = storedData.filter((item) => item._id !== deleteId);
+
+    // Save the updated array back to localStorage
+    localStorage.setItem(
+      "setItempartsDBdataAdmin",
+      JSON.stringify(updatedData)
+    );
+    setQuoteData(updatedData);
+
+    let total = 0; // Change 'const' to 'let' to allow reassignment
+    for (const quote of updatedData) {
+      total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+    }
+    // console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
+
+    const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+    if (quoteList) {
+      // Parse the stored JSON data
+      const parsedQuoteList = JSON.parse(quoteList);
+
+      // Update the total_bend_price in the object
+      parsedQuoteList.total_bend_price = total;
+      localStorage.setItem(
+        "setItemelementDataAdmin",
+        JSON.stringify(parsedQuoteList)
+      );
+      setQuoteList(parsedQuoteList);
+    }
+    setloadingBtn(false);
+    setDeletemodalShow(false);
+    setquoteDataCon(true);
+    } catch (error) {
+      toast.error("Something wents wrong!")
+      setloadingBtn(false);
+    setDeletemodalShow(false);
+    }
+
+    
+
+  }
   const onDeleteAction = (id) => {
     const storedData =
       JSON.parse(localStorage.getItem("setItempartsDBdataAdmin")) || [];
@@ -757,6 +849,30 @@ const EditRFQS = () => {
         "setItempartsDBdataAdmin",
         JSON.stringify(finalQuoteData)
       );
+
+
+      const quoteDataVal = JSON.parse(
+        localStorage.getItem("setItempartsDBdataAdmin")
+      );
+      let total = 0; // Change 'const' to 'let' to allow reassignment
+      for (const quote of quoteDataVal) {
+        total += quote.quantity * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+      }
+      const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+      if (quoteList) {
+        const parsedQuoteList = JSON.parse(quoteList);
+        parsedQuoteList.total_bend_price = total;
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(parsedQuoteList)
+        );
+        setQuoteList(parsedQuoteList);
+        // console.log("Sdssdsdsdsd", quoteList, "quoteList");
+      }
+
+
+
     } else {
       console.error("Error updating quote:", response);
     }
@@ -1230,10 +1346,10 @@ const EditRFQS = () => {
                                       <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
                                         <span className="baseratetitle">
                                           Base Rate:{" "}
-                                          <Amount amount={quote.bend_price} />{" "}
+                                          <Amount amount={quote.per_bend_price} />{" "}
                                           <Link
                                             onClick={() => {
-                                              setPriceBend(quote.bend_price);
+                                              setPriceBend(quote.per_bend_price);
                                               setSelectedQuote(quote._id);
                                               setSelectedPartId(quote._id);
                                               setModalShowPriceBend(true);
@@ -1555,7 +1671,8 @@ const EditRFQS = () => {
                             className="btnicon"
                             // onClick={() => handleDeleteQuote(quote._id)}
                             onClick={() => {
-                              onDeleteAction(quote._id);
+                              setDeletemodalShow(true)
+                              setDeleteId(quote._id);
                             }}
                           >
                             <Icon icon="uiw:delete" />
@@ -1591,7 +1708,7 @@ const EditRFQS = () => {
                   quoteData={quoteList}
                   UserData={UserData}
                   divideWeight={divideWeight}
-                  TaxRatesVal={TaxRatesVal}
+                  TaxRatesVal={TaxRatesVal} 
                   // OnSave={OnSave}
                 />
               </Col>
@@ -1681,6 +1798,17 @@ const EditRFQS = () => {
         QuoteData={subquote_number}
         modalShow4={modalShow4}
         handleClose4={handleClose4}
+      />
+        <ConfirmationModal
+        show={DeletemodalShow}
+        onHide={handleCloseModalDelete}
+        title={"Are you sure?"}
+        desc={"You want to delete this quote?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={deleteQuote}
+        message="You want to delete this quote?"
+        loading={loadingBtn}
       />
     </React.Fragment>
   );

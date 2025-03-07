@@ -120,10 +120,10 @@ const AddressDetails = ({
               {billAdress?.full_name} <br />
               {/* {addressDetail?.address_details?.full_name} <br /> */}
               {billAdress?.address_line_1} <br />
-              {billAdress?.address_line_2 != null ? (
+              {billAdress?.address_line_2 ? (
                 <>
-                  {billAdress.address_line_2}
-                  <br />
+                {billAdress.address_line_2}
+                  <br/>
                 </>
               ) : null}
               {billAdress?.city}, {billAdress?.state_code} {billAdress?.pincode}
@@ -137,7 +137,7 @@ const AddressDetails = ({
               {shipAddress?.full_name} <br />
               {/* {shipAddress?.full_name} <br /> */}
               {shipAddress?.address_line_1} <br />
-              {shipAddress?.address_line_2 != null ? (
+              {shipAddress?.address_line_2 ? (
                 <>
                   {shipAddress?.address_line_2}
                   <br />
@@ -247,6 +247,13 @@ const AddressDetails = ({
               <p className="mb-0">
                 <b>Email: </b>{" "}
                 {addressDetail?.address_details?.email || addressDetail?.email}
+              </p>
+            )}
+            {isShowDownload && (addressDetail?.address_details?.company_name ||
+              addressDetail?.company_name) && (
+              <p className="mb-0">
+                <b>Company Name: </b>{" "}
+                {addressDetail?.address_details?.company_name || addressDetail?.company_name}
               </p>
             )}
           </div>

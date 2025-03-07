@@ -26,6 +26,8 @@ import {
   AdminupdateSubQuoteDetails,
   updateBendPrice,
   getSubQuote,
+  updateBendingPrice,
+  deleteSubQuoteAdmin,
 } from "../../../api/api";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -50,10 +52,12 @@ import MultiSelectModal from "../../components/PostOps";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import ModalOrderData from "../../components/OrderData";
+import { Tooltip } from "react-tooltip";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
-
+  const [DeletemodalShow,setDeletemodalShow] = useState(false);
   const options = [
     "F0",
     "F1",
@@ -109,7 +113,7 @@ const EditRFQS = () => {
     setShowModal(true);
   };
   const handleCloseModal = () => setShowModal(false);
-
+  const handleCloseModalDelete = () => setDeletemodalShow(false);
   const handleSaveSelection = (selected) => {
     setSelectedItems(selected);
     let existingData = localStorage.getItem("setItempartsDBdataAdmin");
@@ -143,14 +147,16 @@ const EditRFQS = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowQty, setModalShowQty] = useState(false);
   const [modalShowPrice, setModalShowPrice] = useState(false);
+  const [modalShowPriceBend, setModalShowPriceBend] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [selectedQty, setSelectedQty] = useState(null);
   const [price, setPrice] = useState(0);
+  const [priceBend, setPriceBend] = useState(0);
   const [selectedNote, setSelectedNote] = useState(null);
   const [selectedAdminNote, setSelectedAdminNote] = useState(null);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
-
+  const [loadingBtn , setloadingBtn] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
   const handleShow = (quote, id) => {
@@ -181,6 +187,28 @@ const EditRFQS = () => {
   useEffect(() => {
     // fetchOptions();
   }, []);
+
+  const [files, setFiles] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState({}); // Store files for each quote
+
+  const handleFileChange = (event, id) => {
+    const file = event.target.files[0]; // Get the first uploaded file
+    if (file) {
+      setUploadedFiles((prev) => ({
+        ...prev,
+        [id]: file, // Store file by quote ID
+      }));
+    }
+  };
+
+  const removeFile = (id) => {
+    setUploadedFiles((prev) => {
+      const updatedFiles = { ...prev };
+      delete updatedFiles[id];
+      return updatedFiles;
+    });
+  };
+
   const [addLoading, setaddLoading] = useState(false);
   const handleUpload = async (file, id, quantities, pdf_url, new_price) => {
     if (file.length == 0) {
@@ -415,6 +443,55 @@ const EditRFQS = () => {
     );
     // setQuoteData(updatedQuoteData);
   };
+  const updatePriceBend = async (Id, price) => {
+    try {
+      const data = {
+        id: Id,
+        price: price,
+      };
+      const res = await updateBendingPrice(data);
+      setQuoteData((prevQuoteData) =>
+        prevQuoteData.map((quote) =>
+          quote._id === Id
+            ? { ...quote, per_bend_price:price }
+            : quote
+        )
+      );
+
+      const quoteDataVal = JSON.parse(
+        localStorage.getItem("setItempartsDBdataAdmin")
+      );
+      let total = 0; // Change 'const' to 'let' to allow reassignment
+      for (const quote of quoteDataVal) {
+        total += quote.quantity * parseFloat(price); // Accumulate bend_count values
+      }
+      const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+      if (quoteList) {
+        const parsedQuoteList = JSON.parse(quoteList);
+        parsedQuoteList.total_bend_price = total;
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(parsedQuoteList)
+        );
+        setQuoteList(parsedQuoteList);
+        // console.log("Sdssdsdsdsd", quoteList, "quoteList");
+      }
+
+  
+      const updatedQuoteData = quoteData.map((quote) =>
+        quote._id === Id
+          ? { ...quote, per_bend_price:price }
+          : quote
+      );
+      localStorage.setItem(
+        "setItempartsDBdataAdmin",
+        JSON.stringify(updatedQuoteData)
+      );
+       
+      
+    } catch (error) {}
+  };
   const updatePrice = (Id, price) => {
     setQuoteData((prevQuoteData) =>
       prevQuoteData.map((quote) =>
@@ -435,6 +512,7 @@ const EditRFQS = () => {
     );
   };
   const handleClosePrice = () => setModalShowPrice(false);
+  const handleClosePriceBend = () => setModalShowPriceBend(false);
   const handleCloseQty = () => setModalShowQty(false);
   const handleClose = () => setModalShow(false);
   const navigate = useNavigate();
@@ -533,7 +611,7 @@ const EditRFQS = () => {
     }
   };
   const handleClose2 = () => setModalShow2(false);
-
+  const [loadingFiles, setLoadingFiles] = useState({}); // Track loading state for each file
   const handleClose3 = () => setModalShow3(false);
   const [quantities, setQuantities] = useState({
     item1: 1,
@@ -556,6 +634,60 @@ const EditRFQS = () => {
     }
   };
   const handleClose4 = () => setModalShow4(false);
+  const [deleteId, setDeleteId] = useState("");
+  const deleteQuote = async () => {
+    try {
+      const data = {
+        id:deleteId
+      }
+      setloadingBtn(true);
+      const res = await deleteSubQuoteAdmin(data);
+      
+      const storedData =
+      JSON.parse(localStorage.getItem("setItempartsDBdataAdmin")) || [];
+
+    // Filter out the item with the matching _id
+    const updatedData = storedData.filter((item) => item._id !== deleteId);
+
+    // Save the updated array back to localStorage
+    localStorage.setItem(
+      "setItempartsDBdataAdmin",
+      JSON.stringify(updatedData)
+    );
+    setQuoteData(updatedData);
+
+    let total = 0; // Change 'const' to 'let' to allow reassignment
+    for (const quote of updatedData) {
+      total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+    }
+    // console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
+
+    const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+    if (quoteList) {
+      // Parse the stored JSON data
+      const parsedQuoteList = JSON.parse(quoteList);
+
+      // Update the total_bend_price in the object
+      parsedQuoteList.total_bend_price = total;
+      localStorage.setItem(
+        "setItemelementDataAdmin",
+        JSON.stringify(parsedQuoteList)
+      );
+      setQuoteList(parsedQuoteList);
+    }
+    setloadingBtn(false);
+    setDeletemodalShow(false);
+    setquoteDataCon(true);
+    } catch (error) {
+      toast.error("Something wents wrong!")
+      setloadingBtn(false);
+    setDeletemodalShow(false);
+    }
+
+    
+
+  }
   const onDeleteAction = (id) => {
     const storedData =
       JSON.parse(localStorage.getItem("setItempartsDBdataAdmin")) || [];
@@ -610,8 +742,8 @@ const EditRFQS = () => {
   useEffect(() => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
-    const userDataVal = JSON.parse(localStorage.getItem("shippingRates")); 
-    const TaxRates = JSON.parse(localStorage.getItem("taxRates")); 
+    const userDataVal = JSON.parse(localStorage.getItem("shippingRates"));
+    const TaxRates = JSON.parse(localStorage.getItem("taxRates"));
     const divideWeight = JSON.parse(localStorage.getItem("divideWeight"));
 
     if (storedData) {
@@ -717,6 +849,30 @@ const EditRFQS = () => {
         "setItempartsDBdataAdmin",
         JSON.stringify(finalQuoteData)
       );
+
+
+      const quoteDataVal = JSON.parse(
+        localStorage.getItem("setItempartsDBdataAdmin")
+      );
+      let total = 0; // Change 'const' to 'let' to allow reassignment
+      for (const quote of quoteDataVal) {
+        total += quote.quantity * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+      }
+      const quoteList = localStorage.getItem("setItemelementDataAdmin");
+
+      if (quoteList) {
+        const parsedQuoteList = JSON.parse(quoteList);
+        parsedQuoteList.total_bend_price = total;
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(parsedQuoteList)
+        );
+        setQuoteList(parsedQuoteList);
+        // console.log("Sdssdsdsdsd", quoteList, "quoteList");
+      }
+
+
+
     } else {
       console.error("Error updating quote:", response);
     }
@@ -935,18 +1091,17 @@ const EditRFQS = () => {
     }
   };
 
-
   const downloadFile = (url) => {
     // Extract file name and extension from URL
     const fileNameWithParams = url.split("/").pop(); // Get everything after the last "/"
     const [fileName] = fileNameWithParams.split("?"); // Remove query parameters if present
     const extension = fileName.split(".").pop(); // Get the file extension
-  
+
     // Clean the file name (remove digits and unwanted patterns at the start of the name)
     const cleanFileName = fileName
       .replace(/^\d+-/, "") // Remove timestamp or numerical prefix (e.g., "1734240670591-")
       .replace(/(\s*\(\d+\))?\.[^.]+$/, `.${extension}`); // Clean trailing patterns like "(5)" before the extension
-  
+
     // Fetch and download the file
     fetch(url)
       .then((response) => {
@@ -964,7 +1119,7 @@ const EditRFQS = () => {
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
-  
+
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -1005,7 +1160,7 @@ const EditRFQS = () => {
             shipAddress={quoteList?.billing_details}
             billAdress={quoteList?.address_details}
             addressDetail={quoteList}
-            TaxRatesVal = {TaxRatesVal}
+            TaxRatesVal={TaxRatesVal}
           />
           <Row>
             <Col lg={8} xl={9}>
@@ -1155,22 +1310,23 @@ const EditRFQS = () => {
                           ) : (
                             <>
                               <div
-                                className={`main_service_clr${
-                                  quote.bend_count < 1 ? "s" : ""
+                                className={`d-flex align-items-start main_service_clr${
+                                  quote.bend_count < 1 ? "s" : "s"
                                 }`}
                               >
-                                {quote.thickness_id && (
+                                {quote.bend_count == 1 && (
                                   <>
                                     <div className="flex-shrink-0">
                                       {/* <h4>Services</h4> */}
 
                                       <Form.Check
                                         type="checkbox"
-                                        label="Bending"
+                                        label="Add Bending"
                                         name={`options-${quote._id}`}
                                         value={`options-${quote._id}`}
                                         id={`options-${quote._id}`}
                                         className="d-inline-flex align-items-center me-2"
+                                        disabled={true}
                                         onChange={(e) =>
                                           handleShow2(
                                             quote.image_url,
@@ -1185,11 +1341,197 @@ const EditRFQS = () => {
                                         checked={quote.bend_count >= 1}
                                       />
                                     </div>
-                                  </>
-                                )}
-                                {quote.bend_count != 0 && (
-                                  <>
-                                    <div className="custom_bend_div">
+
+                                    <div className="baseratecustom">
+                                      <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <span className="baseratetitle">
+                                          Base Rate:{" "}
+                                          <Amount amount={quote.per_bend_price} />{" "}
+                                          <Link
+                                            onClick={() => {
+                                              setPriceBend(quote.per_bend_price);
+                                              setSelectedQuote(quote._id);
+                                              setSelectedPartId(quote._id);
+                                              setModalShowPriceBend(true);
+                                            }}
+                                          >
+                                            <Icon
+                                              icon="mynaui:edit"
+                                              color="#000"
+                                              width={16}
+                                              height={16}
+                                            />
+                                          </Link>
+                                        </span>
+                                        <span
+                                          className="cursor-pointer"
+                                          data-tooltip-id="custom-bending"
+                                        >
+                                          <Icon
+                                            icon="material-symbols-light:info-outline"
+                                            width={22}
+                                            height={22}
+                                            color="#000"
+                                          />
+                                        </span>
+                                        <Tooltip
+                                          id="custom-bending"
+                                          place="right"
+                                          content={
+                                            <>
+                                              Bending requires review and
+                                              approval. <br />
+                                              The base rate is just an estimate
+                                              and <br />
+                                              will be adjusted during the review
+                                              process. <br />
+                                              If you don’t have a STEP file,
+                                              please reach out <br />
+                                              directly to us via email.
+                                            </>
+                                          }
+                                        />
+                                      </div>
+
+                                      <div>
+                                        {/* First Upload Field */}
+                                        <div className="mt-2 d-flex justify-content-start gap-2">
+                                          <label className="labeltitle flex-shrink-0">
+                                            Upload STEP File{" "}
+                                            <small>(Required)</small>
+                                          </label>
+
+                                          {!quote.step_file_bend ? (
+                                            <>
+                                             <span className="attachmenttitle">
+                                             No Attachment
+                                             </span>
+                                              {/* {loadingFiles[quote._id] ? (
+                                                <span className="color_white_make">
+                                                  Uploading...
+                                                </span> // Show loader while uploading
+                                              ) : (
+                                                <input
+                                                  id={quote._id}
+                                                  type="file"
+                                                  accept=".pdf, .jpg, .jpeg, .png"
+                                                  onChange={(e) =>
+                                                    handleFileChange(
+                                                      e,
+                                                      `${quote._id}`,
+                                                      quote._id,
+                                                      "step"
+                                                    )
+                                                  }
+                                                  className="block w-full mt-1"
+                                                />
+                                              )} */}
+                                            </>
+                                          ) : (
+                                            <div className="attachment-box">
+                                              <a
+                                                href={quote.step_file_bend}
+                                                target="_blank"
+                                              >
+                                                <span className="attachmenttitle">
+                                                  Attachment
+                                                  {/* {
+                                                                                              uploadedFiles[quote._id]
+                                                                                                .name
+                                                                                            } */}
+                                                </span>
+                                              </a>
+                                              {/* <Link
+                                                                                            className="remove-icon"
+                                                                                            onClick={() =>
+                                                                                              removeFile(quote._id,'step_remove')
+                                                                                            }
+                                                                                          >
+                                                                                            <Icon
+                                                                                              icon="carbon:close-outline"
+                                                                                              color="#ff0000"
+                                                                                              width={18}
+                                                                                              height={18}
+                                                                                              className="ms-2"
+                                                                                            />
+                                                                                          </Link> */}
+                                            </div>
+                                          )}
+                                        </div>
+
+                                        {/* Second Upload Field */}
+                                        <div className="mt-2 d-flex justify-content-start gap-2">
+                                          <label className="labeltitle flex-shrink-0">
+                                            Upload Drawing{" "}
+                                            <small>(Optional)</small>
+                                          </label>
+
+                                          {!quote.drawing_file_bend ? (
+                                            <>
+                                            <span className="attachmenttitle">
+                                             No Attachment
+                                             </span>
+                                              {/* {loadingFiles[
+                                                `${quote._id}-optional`
+                                              ] ? (
+                                                <span>Uploading...</span> // Loader for optional upload
+                                              ) : (
+                                                <input
+                                                  id={`${quote._id}-optional`}
+                                                  type="file"
+                                                  accept=".step"
+                                                  onChange={(e) =>
+                                                    handleFileChange(
+                                                      e,
+                                                      `${quote._id}-optional`,
+                                                      quote._id,
+                                                      "draw"
+                                                    )
+                                                  }
+                                                  className="block w-full mt-1"
+                                                />
+                                              )} */}
+                                            </>
+                                          ) : (
+                                            <div className="attachment-box">
+                                              <a
+                                                href={quote.drawing_file_bend}
+                                                target="_blank"
+                                              >
+                                                <span className="attachmenttitle">
+                                                  {/* {
+                                                                                              uploadedFiles[
+                                                                                                `${quote._id}-optional`
+                                                                                              ].name
+                                                                                            } */}
+                                                  Attachment
+                                                </span>
+                                              </a>
+                                              {/* <Link
+                                                                                            className="remove-icon"
+                                                                                            onClick={() =>
+                                                                                              removeFile(
+                                                                                                quote._id,"draw_remove"
+                                                                                              )
+                                                                                            }
+                                                                                          >
+                                                                                            <Icon
+                                                                                              icon="carbon:close-outline"
+                                                                                              color="#ff0000"
+                                                                                              width={18}
+                                                                                              height={18}
+                                                                                              className="ms-2"
+                                                                                            />
+                                                                                          </Link> */}
+                                            </div>
+                                          )}
+                                        </div>
+
+                                        {/* Error Message */}
+                                        {/* {Object.keys(uploadedFiles).length === 0 && <p className="text-red-500 text-xs mt-1">File is required.</p>} */}
+                                      </div>
+                                    </div>
+                                    {/* <div className="custom_bend_div">
                                       <p>
                                         Number of bends : {quote.bend_count}
                                       </p>
@@ -1201,11 +1543,12 @@ const EditRFQS = () => {
                                         Total :{" "}
                                         <Amount amount={quote.bend_price} />
                                       </p>
-                                    </div>
+                                    </div> */}
                                   </>
                                 )}
-                              </div> 
-                              {quote.bend_count != 0 && (
+                                {/* )} */}
+                              </div>
+                              {/* {quote.bend_count != 0 && (
                                 <Link
                                   className="btnicon flex-shrink-0"
                                   onClick={() => {
@@ -1224,13 +1567,13 @@ const EditRFQS = () => {
                                 >
                                   <Icon icon="mynaui:edit" />
                                 </Link>
-                              )}
+                              )} */}
                             </>
                           )}
                           {/* </> */}
                           {/* )} */}
                         </div>
-                        <div className="quotes-services mt-3">
+                        {/* <div className="quotes-services mt-3">
                           <p style={{ fontSize: "12px" }}>
                             Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
                             {"   "}
@@ -1246,7 +1589,7 @@ const EditRFQS = () => {
                                 </Link>
                               ))}
                           </p>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
                         <p className=" text-md-end">
@@ -1295,9 +1638,12 @@ const EditRFQS = () => {
                           </span>
                         </div>
                         <p className="mb-0 text-md-end">
-                        {quote?.estimated_lead_time
-  ? `Typical Lead Time ${quote.estimated_lead_time} days`
-  : `Typical Lead Time ${quote?.type_option?.[0]?.estimated_lead_time ?? "2 - 3"} days`}
+                          {quote?.estimated_lead_time
+                            ? `Typical Lead Time ${quote.estimated_lead_time} days`
+                            : `Typical Lead Time ${
+                                quote?.type_option?.[0]?.estimated_lead_time ??
+                                "2 - 3"
+                              } days`}
                         </p>
 
                         <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
@@ -1325,7 +1671,8 @@ const EditRFQS = () => {
                             className="btnicon"
                             // onClick={() => handleDeleteQuote(quote._id)}
                             onClick={() => {
-                              onDeleteAction(quote._id);
+                              setDeletemodalShow(true)
+                              setDeleteId(quote._id);
                             }}
                           >
                             <Icon icon="uiw:delete" />
@@ -1361,7 +1708,7 @@ const EditRFQS = () => {
                   quoteData={quoteList}
                   UserData={UserData}
                   divideWeight={divideWeight}
-                  TaxRatesVal={TaxRatesVal}
+                  TaxRatesVal={TaxRatesVal} 
                   // OnSave={OnSave}
                 />
               </Col>
@@ -1397,6 +1744,15 @@ const EditRFQS = () => {
         price={price}
         onSave={(price) => updatePrice(selectedPartId, price)}
         title={selectedQuote}
+      />
+
+      <AddPrice
+        show3={modalShowPriceBend}
+        handleClose3={handleClosePriceBend}
+        quote={selectedQuote}
+        price={priceBend}
+        onSave={(price) => updatePriceBend(selectedPartId, price)}
+        title={"Update Price"}
       />
       <AddQty
         show3={modalShowQty}
@@ -1442,6 +1798,17 @@ const EditRFQS = () => {
         QuoteData={subquote_number}
         modalShow4={modalShow4}
         handleClose4={handleClose4}
+      />
+        <ConfirmationModal
+        show={DeletemodalShow}
+        onHide={handleCloseModalDelete}
+        title={"Are you sure?"}
+        desc={"You want to delete this quote?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={deleteQuote}
+        message="You want to delete this quote?"
+        loading={loadingBtn}
       />
     </React.Fragment>
   );

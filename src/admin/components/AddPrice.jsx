@@ -18,7 +18,8 @@ const AddPrice = ({ show3, handleClose3, title, quote, price, onSave }) => {
   const handleSave = () => {
     const parsedPrice = parseFloat(priceValue);
     // // console.log(parsedPrice);
-    if (!priceValue.trim()) {
+    if (!(priceValue ?? "").toString().trim()) {
+
       setError("Price cannot be empty");
       return;
     } else if (isNaN(parsedPrice)) {

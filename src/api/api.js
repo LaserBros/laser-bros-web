@@ -75,6 +75,18 @@ export const updateBendPrice = async (data) => {
   }
 };
 
+
+export const deleteSubQuoteAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/deleteSubQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 export const getEstimatedDimension = async (data) => {
   try {
     const response = await axiosAdminInstance.post(

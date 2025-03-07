@@ -814,7 +814,13 @@ const ViewRFQS = () => {
                           <p style={{ fontSize: "12px", color: "#00000080" }}>
                             Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
                             {"   "}
-                            {quote.bend_count >= 1 && (
+                            {quote.step_file_bend &&(
+                              <a href={`${quote.step_file_bend}`} style={{paddingRight:'10px'}}>Step File</a> 
+                            )} 
+                            {quote.drawing_file_bend &&(
+                              <a href={`${quote.drawing_file_bend}`} style={{paddingRight:'10px'}}>Drawing File</a> 
+                            )}
+                            {(quote.bend_count >= 1 && quote.bendupload_url != "") && (
                               <a href={`${quote.bendupload_url}`}>Attachment</a>
                             )}
                           </p>

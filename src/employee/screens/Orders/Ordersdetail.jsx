@@ -53,7 +53,7 @@ import ModalOrderData from "../../components/OrderData";
 import getMaterialColor from "../../components/ColorCode";
 import ModalShippingInfo from "../../components/ModalShippingInfo";
 
-const OrdersDetail = () => {
+const OrdersDetail = () => { 
   const pdfRef = useRef();
 
   const [height, setHeight] = useState("");
@@ -1833,6 +1833,52 @@ const OrdersDetail = () => {
                         </div>
                         {wo.bend_count > 0 ? (
                           <div>
+                             {wo.step_file_bend != null &&
+                              wo.step_file_bend != "null" &&
+                              wo.step_file_bend != "" && (
+                                <>
+                                  <Link
+                                    // href={`${url}`}
+                                    // target="_blank"
+                                    onClick={() => 
+                                      downloadFile(wo.step_file_bend)
+                                    }
+                                    style={{ paddingRight: "15px" }}
+                                  >
+                                    <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                                  <Image
+                                    src={attachment}
+                                    className="img-fluid"
+                                    alt=""
+                                  />
+                                  <span>Step File</span>
+                                </div>
+                                  </Link>
+                                </>
+                              )}
+                            {wo.drawing_file_bend != null &&
+                              wo.drawing_file_bend != "null" &&
+                              wo.drawing_file_bend != "" && (
+                                <>
+                                  <Link
+                                    // href={`${url}`}
+                                    // target="_blank"
+                                    onClick={() =>
+                                      downloadFile(wo.drawing_file_bend)
+                                    }
+                                    style={{ paddingRight: "5px" }}
+                                  >
+                                    <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                                  <Image
+                                    src={attachment}
+                                    className="img-fluid"
+                                    alt=""
+                                  />
+                                  <span>Drawing File</span>
+                                </div>
+                                  </Link>
+                                </>
+                              )}
                             {wo.bendupload_url.map((url, index) => (
                                 <Link
                                                                      // href={`${url}`}

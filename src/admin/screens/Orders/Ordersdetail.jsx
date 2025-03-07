@@ -1838,10 +1838,10 @@ const OrdersDetail = () => {
                                   <Link
                                     // href={`${url}`}
                                     // target="_blank"
-                                    onClick={() =>
+                                    onClick={() => 
                                       downloadFile(wo.step_file_bend)
                                     }
-                                    style={{ paddingRight: "5px" }}
+                                    style={{ paddingRight: "15px" }}
                                   >
                                     <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
                                   <Image

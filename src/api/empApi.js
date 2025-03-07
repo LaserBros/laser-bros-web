@@ -247,6 +247,17 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
     }
   };
   
+  export const deleteSubQuote = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(`/deleteSubQuote`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+
+
   export const fetchOrdersInPackaging = async (page, search, sort) => {
     try {
       const response = await axiosEmployeeInstance.get(
