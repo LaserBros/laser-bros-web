@@ -114,7 +114,7 @@ const QuotesSidebar = ({
             <div className="d-flex align-items-center justify-content-between mb-2">
               <span className="quotesitem">Bending</span>
               <span className="quotesitem quotesright">
-                <Amount amount={quoteDataVal.total_bend_price} />{" "}
+                <Amount amount={quoteDataVal.total_bend_price} />{" "} 
               </span>
             </div>
             <div className="d-flex align-items-center justify-content-between">

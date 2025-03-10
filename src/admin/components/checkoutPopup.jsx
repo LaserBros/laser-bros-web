@@ -372,9 +372,9 @@ const CheckoutPopup = ({
                       </p>
                       <p className="mb-3">
                         {addressDetail?.address_details?.address_line_1},{" "}
-                        {addressDetail?.address_details?.city},{" "}
+                        {addressDetail?.address_details?.city} {addressDetail?.address_details?.state_code},{" "} 
                         {addressDetail?.address_details?.pincode},{" "}
-                        {addressDetail?.address_details?.country}
+                        {addressDetail?.address_details?.country} 
                       </p>
                       {/* <div className="btn-bottom"> */}
                       {/* <Link
@@ -490,7 +490,7 @@ const CheckoutPopup = ({
                     </p>
                     <p className="mb-3">
                       {addressDetail?.billing_details?.address_line_1},{" "}
-                      {addressDetail?.billing_details?.city},{" "}
+                      {addressDetail?.billing_details?.city} {addressDetail?.billing_details?.state_code},{" "}
                       {addressDetail?.billing_details?.pincode},{" "}
                       {addressDetail?.billing_details?.country}
                     </p>

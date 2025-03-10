@@ -244,7 +244,9 @@ const EditRFQS = () => {
         var data_val = response.data.data;
         let total = 0; // Change 'const' to 'let' to allow reassignment
         for (const quote of data_val) {
-          total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+          if(quote.bend_count >= 1) {
+            total += quote.bend_count * parseFloat(quote.per_bend_price); 
+          }
         }
 
         const quoteList = localStorage.getItem("setItemelementDataAdmin");
@@ -456,15 +458,20 @@ const EditRFQS = () => {
             ? { ...quote, per_bend_price:price }
             : quote
         )
-      );
+      ); 
 
       const quoteDataVal = JSON.parse(
         localStorage.getItem("setItempartsDBdataAdmin")
       );
-      let total = 0; // Change 'const' to 'let' to allow reassignment
+      let total = 0;
+      console.log("Dsdsdssdssdsdsd-=-=-=-=-",price);
       for (const quote of quoteDataVal) {
-        total += quote.quantity * parseFloat(price); // Accumulate bend_count values
+        if(quote.bend_count >= 1) {
+          console.log("quantity-=-=-=-=-",quote.quantity);
+          total += quote.quantity * parseFloat(price); 
+        }
       }
+      console.log("Dsdsdssdssdsdsd-=-=-=-=-",total);
       const quoteList = localStorage.getItem("setItemelementDataAdmin");
 
       if (quoteList) {
@@ -658,7 +665,9 @@ const EditRFQS = () => {
 
     let total = 0; // Change 'const' to 'let' to allow reassignment
     for (const quote of updatedData) {
-      total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+      if(quote.bend_count >= 1) {
+        total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+      }
     }
     // console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
 
@@ -704,7 +713,9 @@ const EditRFQS = () => {
 
     let total = 0; // Change 'const' to 'let' to allow reassignment
     for (const quote of updatedData) {
-      total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+      if(quote.bend_count >= 1) {
+        total += quote.bend_count * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+      }
     }
     // console.log("SDsdssdsdsdsdsds", total, "sdsdsdd+++++++");
 
@@ -856,7 +867,9 @@ const EditRFQS = () => {
       );
       let total = 0; // Change 'const' to 'let' to allow reassignment
       for (const quote of quoteDataVal) {
-        total += quote.quantity * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+        if(quote.bend_count >= 1) {
+          total += quote.quantity * parseFloat(quote.per_bend_price); // Accumulate bend_count values
+        }
       }
       const quoteList = localStorage.getItem("setItemelementDataAdmin");
 
