@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { addNewFinish
-import { Alert, Button, Form, Card, CardBody, CardHeader } from "react-bootstrap";
+import { Alert, Button, Form, Card, CardBody, CardHeader, InputGroup } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { addFinish } from "../../../api/api";
 
@@ -93,6 +93,16 @@ const AddFinish = () => {
       try {
         await addFinish(formData); 
         toast.success("Finish added successfully.");
+        setFormData({
+          finishing_code: "",
+          finishing_desc: "",
+          minimum_size_length: "",
+          minimum_size_width: "",
+          maximum_size_length: "",
+          maximum_size_width: "",
+          notes_text: "",
+          price: "",
+        })
         setLoadingVal(false);
       } catch (error) {
         toast.error("Failed to add finish. Please try again.");
@@ -119,13 +129,16 @@ const AddFinish = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formFinishingCode">
             <Form.Label>Finishing Code</Form.Label>
-            <Form.Control
-              type="text"
-              name="finishing_code"
-              value={formData.finishing_code}
-              onChange={handleChange}
-              isInvalid={!!errors.finishing_code}
-            />
+            <InputGroup>
+  <InputGroup.Text>F</InputGroup.Text>
+  <Form.Control
+    type="text"
+    name="finishing_code"
+    value={formData.finishing_code}
+    onChange={handleChange}
+    isInvalid={!!errors.finishing_code}
+  />
+</InputGroup>
             <Form.Control.Feedback type="invalid">
               {errors.finishing_code}
             </Form.Control.Feedback>

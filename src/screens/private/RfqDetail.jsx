@@ -14,6 +14,7 @@ import Amount from "../../components/Amount";
 import DimensionsToggle from "../../components/DimensionsToggle";
 import QuotesSidebar from "../../components/Quotessidebar";
 import AddressDetails from "../../admin/components/AddressDetails";
+import { encodeS3Url } from "../../utils/encodeS3Url";
 export default function RfqDetail() {
   const { id } = useParams();
   const getStatusColor = (status) => {
@@ -201,7 +202,7 @@ export default function RfqDetail() {
                                     {String(index + 1).padStart(3, "0")}
                                   </span>
                                   <Image
-                                    src={row.image_url}
+                                    src={encodeS3Url(row.image_url)}
                                     className="img-fluid"
                                     alt=""
                                   />

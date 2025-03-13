@@ -33,6 +33,7 @@ import DimensionsToggle from "../../components/DimensionsToggle";
 import AddAddressModal from "./AddaddressModal";
 import AddServiceNote from "../../components/AddServiceNote";
 import { Tooltip } from "react-tooltip";
+import { encodeS3Url } from "../../utils/encodeS3Url";
 export default function QuotesDetail() {
   const currentDate = new Date();
   const navigate = useNavigate();
@@ -215,7 +216,7 @@ export default function QuotesDetail() {
         value: item._id,
         label: item.finishing_desc,
       }));
-
+      console.log("response.data.check_status",response.data.check_status)
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId
@@ -465,8 +466,8 @@ export default function QuotesDetail() {
             setQuoteList(parsedQuoteList);
           }
           setbendApply(false);
-          setquoteDataCon(true);
           setQuoteData(updatedSetItemElementData);
+          setquoteDataCon(true);
         } catch (err) {
           // console.log("eroroorororor", err);
         }
@@ -486,6 +487,7 @@ export default function QuotesDetail() {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
   useEffect(() => {
+    // console.log(":fddfdffdfdfdfdfdffdff");
     if (Array.isArray(quoteData) && quoteData.length > 0) {
       const fetchAllThicknessOptionsData = async () => {
         setbtnText(0);
@@ -494,11 +496,15 @@ export default function QuotesDetail() {
           return;
         }
         for (const quote of quoteData) {
+          console.log(":quote-=-=-=-=",quote);
           if (quote._id) {
-            // console.log(
-            //   "calling function here -0-0-0-",
-            //   quote.price_check_status
-            // );
+            console.log(
+              "calling function here -0-0-0-",
+              quote.price_check_status,
+              quote.finish_check_status,
+              quote.check_status,
+              quote.bend_count 
+            );
             setbtnText(quote.check_status);
             if (quote.bend_count >= 1) {
               // console.log("bend_count", quote.bend_count);
@@ -1093,7 +1099,7 @@ export default function QuotesDetail() {
                           {String(index + 1).padStart(3, "0")}
                         </span>
                         <Image
-                          src={quote.image_url}
+                          src={encodeS3Url(quote.image_url)}
                           className="img-fluid"
                           alt=""
                         />

@@ -3,6 +3,9 @@
 
 body {
     &.dark {
+        .btnicons {
+            color:  $white-color !important;
+        }
         .modal_header_blocking {
             .modal-body{
                   p{

@@ -54,6 +54,7 @@ import { saveAs } from "file-saver";
 import ModalOrderData from "../../components/OrderData";
 import { Tooltip } from "react-tooltip";
 import ConfirmationModal from "../../../components/ConfirmationModal";
+import { encodeS3Url } from "../../../utils/encodeS3Url";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -1191,7 +1192,7 @@ const EditRFQS = () => {
                       <div className="flex-shrink-0">
                         <div className="img-quote mx-auto mx-md-0">
                           <Image
-                            src={quote.image_url}
+                            src={encodeS3Url(quote.image_url)}
                             className="img-fluid"
                             alt=""
                           />

@@ -53,6 +53,9 @@ import ShippingStatus from "../../../components/ShippingStatus";
 import ModalOrderData from "../../components/OrderData";
 import getMaterialColor from "../../components/ColorCode";
 import ModalShippingInfo from "../../components/ModalShippingInfo";
+import AddAddressModal from "../../../screens/private/AddaddressModal";
+import AddAddressModalAdmin from "../../components/AddAddressModalAdmin";
+import { encodeS3Url } from "../../../utils/encodeS3Url";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -617,6 +620,21 @@ const OrdersDetail = () => {
       console.error("Download failed:", error);
     }
   };
+  const [AddressEdit,setAddressEdit] = useState(false);
+  const [AddressInfo,SetAddressInfo] = useState("");
+  const [TypeInfo,SetTypeInfo] = useState("");
+  const handleCloseModal = () => {setAddressEdit(false);}
+  const [SuccessMessage,setSuccessMessage] = useState(""); 
+
+  useEffect(() => {
+    setLoading(true);
+      fetchOrder();
+      
+      setAddressEdit(false);
+      
+      setSuccessMessage("");
+    },[SuccessMessage])
+
   const [moveOrder, setMoveOrder] = useState(false);
   const handleMove = async (id) => {
     setMoveOrder(true);
@@ -1034,7 +1052,12 @@ const OrdersDetail = () => {
                   onClickTrack={handleShowTrack}
                   isShippingInfo={true}
                   onClickShipping={onClickShipping}
+                  setAddressEdit={setAddressEdit}
+                  SetAddressInfo={SetAddressInfo}
+                  setType={SetTypeInfo}
+                  
                 />
+
 
                 {order?.orderedQuote.status == 0 ? (
                   <>
@@ -1517,7 +1540,7 @@ const OrdersDetail = () => {
                           >
                             <div className="list-img">
                               <Image
-                                src={wo.image_url}
+                                src={encodeS3Url(wo.image_url)}
                                 alt={wo.image_url}
                                 className="img-fluid"
                                 style={{
@@ -1531,7 +1554,7 @@ const OrdersDetail = () => {
                               dimensions={wo.dimensions}
                               id={wo._id}
                               type={wo.dimension_type}
-                              // isEdit={true}
+                              // is={true}
                             />
                           </div>
 
@@ -1964,6 +1987,7 @@ const OrdersDetail = () => {
           handleClose4={handleClose5}
           ShippingInfoData={ShippingInfoData}
         />
+        <AddAddressModalAdmin show={AddressEdit} OrderId = {id}  SetAddressInfo={AddressInfo} setType={TypeInfo} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} />
       </React.Fragment>
     </div>
   );

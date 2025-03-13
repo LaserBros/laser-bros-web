@@ -3,6 +3,8 @@ import { Form, Button, Modal, Col, Row } from "react-bootstrap";
 import DateFormat from "./DateFormat";
 import OrderStatus from "./OrderStatus";
 import Amount from "../../components/Amount";
+import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const AddressDetails = ({
   shipAddress,
@@ -19,44 +21,47 @@ const AddressDetails = ({
   onClickTrack,
   TaxRatesVal,
   isShippingInfo,
-  onClickShipping
+  onClickShipping,
+  setAddressEdit,
+  SetAddressInfo,
+  setType,
 }) => {
   const getStatusColorOrder = (status) => {
-      switch (status) {
-        case 1:
-          return {
-            backgroundColor: "rgba(233,240,248,1)", 
-            color: "#4F8CCA",
-            padding: 6,
-          };
-        case 3:
-          return {
-            backgroundColor: "rgba(1,148,60,0.10)",
-            color: "#01943C",
-            padding: 6,
-          };
-          case 4:
-            return {
-              backgroundColor: "rgba(255, 0, 0, 0.1)",
-              color: "red",
-              padding: 6,
-            };  
-        case 2:
-          return {
-            backgroundColor: "rgba(79,140,202,0.10)",
-            color: "#4F8CCA",
-            padding: 6,
-          };
-        case 0:
-          return {
-            backgroundColor: "rgba(233,240,248,1)", 
-            color: "#4F8CCA",
-            padding: 6,
-          };
-        default:
-          return {};
-      }
-  }
+    switch (status) {
+      case 1:
+        return {
+          backgroundColor: "rgba(233,240,248,1)",
+          color: "#4F8CCA",
+          padding: 6,
+        };
+      case 3:
+        return {
+          backgroundColor: "rgba(1,148,60,0.10)",
+          color: "#01943C",
+          padding: 6,
+        };
+      case 4:
+        return {
+          backgroundColor: "rgba(255, 0, 0, 0.1)",
+          color: "red",
+          padding: 6,
+        };
+      case 2:
+        return {
+          backgroundColor: "rgba(79,140,202,0.10)",
+          color: "#4F8CCA",
+          padding: 6,
+        };
+      case 0:
+        return {
+          backgroundColor: "rgba(233,240,248,1)",
+          color: "#4F8CCA",
+          padding: 6,
+        };
+      default:
+        return {};
+    }
+  };
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved!":
@@ -83,11 +88,9 @@ const AddressDetails = ({
     }
   };
   const formatString = (input) => {
-    if(input == "custom_rates") return "Freight Shipping";
+    if (input == "custom_rates") return "Freight Shipping";
     if (!input) return "";
-    return input
-      .replace(/_/g, " ")
-      .replace(/^\w/, (c) => c.toUpperCase()); 
+    return input.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
   };
 
   const formatPhoneNumber = (number) => {
@@ -115,15 +118,29 @@ const AddressDetails = ({
       <Row>
         <Col lg={3} md={6}>
           <div className="QuoteBill_box">
-            <h4>Ship To:</h4>
+            <h4>
+              Ship To:{" "}
+              {isShowDownload && (
+              <Link
+              className="btnicons" 
+                onClick={() => {
+                  setAddressEdit(true);
+                  SetAddressInfo(billAdress);
+                  setType("Shipping");
+                }}
+              >
+                <Icon icon="mynaui:edit" width={16} height={16} />
+              </Link>
+              )}
+            </h4>
             <p>
               {billAdress?.full_name} <br />
               {/* {addressDetail?.address_details?.full_name} <br /> */}
               {billAdress?.address_line_1} <br />
               {billAdress?.address_line_2 ? (
                 <>
-                {billAdress.address_line_2}
-                  <br/>
+                  {billAdress.address_line_2}
+                  <br />
                 </>
               ) : null}
               {billAdress?.city}, {billAdress?.state_code} {billAdress?.pincode}
@@ -132,7 +149,26 @@ const AddressDetails = ({
         </Col>
         <Col lg={3} md={6}>
           <div className="QuoteBill_box">
-            <h4>Bill To:</h4>
+            <h4>
+              Bill To:{" "}
+              {isShowDownload && (
+                <Link
+                  className="btnicons" 
+                  onClick={() => {
+                    setAddressEdit(true);
+                    SetAddressInfo(shipAddress);
+                    setType("Billing");
+                  }}
+                >
+                  <Icon
+                    icon="mynaui:edit"
+                     
+                    width={16}
+                    height={16}
+                  />
+                </Link>
+              )}
+            </h4>
             <p>
               {shipAddress?.full_name} <br />
               {/* {shipAddress?.full_name} <br /> */}
@@ -155,11 +191,10 @@ const AddressDetails = ({
               <b className="minWidth_110">Order date:</b>{" "}
               <DateFormat dateString={addressDetail?.createdAt} />
             </p>
-            
+
             {(addressDetail?.service_code || addressDetail?.shipping) && (
               <p>
                 <b className="minWidth_110">Shipping Type:</b>{" "}
-                 
                 {formatString(
                   addressDetail?.service_code || addressDetail?.shipping
                 )}
@@ -187,20 +222,24 @@ const AddressDetails = ({
                   className="badge_success"
                   style={getStatusColor(isPassShipping)}
                 >
-                  {isPassShipping == "Pending" ? 'Pending Review' : isPassShipping}
+                  {isPassShipping == "Pending"
+                    ? "Pending Review"
+                    : isPassShipping}
                 </span>
               </p>
             ) : (
               <p>
                 <b className="minWidth_110">Status:</b>{" "}
-                <span className="badge_success" style={getStatusColorOrder(addressDetail?.status)}>
+                <span
+                  className="badge_success"
+                  style={getStatusColorOrder(addressDetail?.status)}
+                >
                   {" "}
                   <OrderStatus status={addressDetail?.status} />
                 </span>
               </p>
             )}
-            {TaxRatesVal &&
-            addressDetail?.tax_amount != 0 && (
+            {TaxRatesVal && addressDetail?.tax_amount != 0 && (
               <p className="mb-0">
                 <b className="minWidth_110">
                   Tax <b>({TaxRatesVal?.tax_percentage}%)</b>:
@@ -209,7 +248,7 @@ const AddressDetails = ({
                 <Amount amount={parseFloat(TaxRatesVal?.tax_amount || 0)} />
               </p>
             )}
-          
+
             <p className="mb-0">
               <b className="minWidth_110">Order Amount:</b>
 
@@ -217,7 +256,7 @@ const AddressDetails = ({
                 amount={
                   parseFloat(addressDetail?.total_amount || 0) +
                   parseFloat(addressDetail?.total_bend_price || 0) +
-                  parseFloat(TaxRatesVal?.tax_amount || 0) + 
+                  parseFloat(TaxRatesVal?.tax_amount || 0) +
                   parseFloat(addressDetail?.shipping_price || 0)
                 }
               />
@@ -249,13 +288,16 @@ const AddressDetails = ({
                 {addressDetail?.address_details?.email || addressDetail?.email}
               </p>
             )}
-            {isShowDownload && (addressDetail?.address_details?.company_name ||
-              addressDetail?.company_name) && (
-              <p className="mb-0">
-                <b>Company Name: </b>{" "}
-                {addressDetail?.address_details?.company_name || addressDetail?.company_name}
-              </p>
-            )}
+            {/* {addressDetail?.address_details?.company_name} -- { addressDetail?.company_name} */}
+            {isShowDownload &&
+              (addressDetail?.address_details?.company_name ||
+                addressDetail?.company_name) && (
+                <p className="mb-0">
+                  <b>Company Name: </b>{" "}
+                  {addressDetail?.address_details?.company_name ||
+                    addressDetail?.company_name}
+                </p>
+              )}
           </div>
         </Col>
         <Col lg={6}>
@@ -266,21 +308,24 @@ const AddressDetails = ({
                 variant={null}
                 onClick={onClickTrack}
               >
-                Track Order 
+                Track Order
               </Button>
             )}
-         
+
             {isShowDownload && (
               <>
-              {isShippingInfo && addressDetail?.status == 2 && addressDetail?.move_status == 2 && addressDetail?.service_code == 'custom_rates' &&
-                   <Button
-                  className="QuoteBillDownload_btn ms-2 mt-2"
-                  variant={null}
-                  onClick={onClickShipping}
-                >
-                  Enter Shipping Info
-                </Button>
-              }
+                {isShippingInfo &&
+                  addressDetail?.status == 2 &&
+                  addressDetail?.move_status == 2 &&
+                  addressDetail?.service_code == "custom_rates" && (
+                    <Button
+                      className="QuoteBillDownload_btn ms-2 mt-2"
+                      variant={null}
+                      onClick={onClickShipping}
+                    >
+                      Enter Shipping Info
+                    </Button>
+                  )}
                 <Button
                   className="QuoteBillDownload_btn ms-2 mt-2"
                   variant={null}

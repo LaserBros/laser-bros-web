@@ -4059,7 +4059,6 @@ textarea.form-control {
   border-radius: 12px;
   padding: 12px;
   border: 1px dashed #000000;
-  z-index: 1;
 }
 .baseratecustom .baseratetitle {
   font-size: 14px;

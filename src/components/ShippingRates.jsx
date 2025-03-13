@@ -36,7 +36,7 @@ const ShippingRates = ({
               </i>
             </div>
           )}
-
+          {selectedShippingAddress?.permanent == 1 &&
           <div className="rate-option">
             <label>
               <input
@@ -50,7 +50,8 @@ const ShippingRates = ({
               &nbsp;&nbsp;Local Pickup (FREE)
             </label>
           </div>
-          {shippingRates && shippingRates.length > 0 ? (
+          }
+          {shippingRates && shippingRates.length > 0 && selectedShippingAddress?.permanent == 0 ? (
             <>
               {shippingRates.map((rate, index) => (
                 <div key={index} className="rate-option">

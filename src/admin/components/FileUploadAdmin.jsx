@@ -75,21 +75,21 @@ const FileUpload = ({
       setProcessing(true);
 
       try {
-        const response = await uploadQuoteAdmin(formData);
+        const response = await uploadQuoteAdmin(formData); 
         // // console.log("response_api", response.data);
-        localStorage.setItem(
-          "setItemelementDataAdmin",
-          JSON.stringify(response.data.requestQuoteDB)
-        );
+        // localStorage.setItem(
+        //   "setItemelementDataAdmin",
+        //   JSON.stringify(response.data.requestQuoteDB)
+        // );
 
-        localStorage.setItem(
-          "setItempartsDBdataAdmin",
-          JSON.stringify(response.data.partsDBdata)
-        );
+        // localStorage.setItem(
+        //   "setItempartsDBdataAdmin",
+        //   JSON.stringify(response.data.partsDBdata)
+        // );
 
         onFileDrop({
-          requestQuoteDB: response.data.requestQuoteDB,
-          partsDBdata: response.data.partsDBdata,
+          requestQuoteDB: response.data,
+          partsDBdata: response.data,
         });
 
         setProcessing(false);

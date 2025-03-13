@@ -9,6 +9,7 @@ import RefundOrder from "../../components/RefundOrder";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import Amount from "../../../components/Amount";
+import { encodeS3Url } from "../../../utils/encodeS3Url";
 const ViewPayment = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -87,9 +88,10 @@ const ViewPayment = () => {
       cell: (row) => (
         <div className="files-image">
           <img
-            src={row.image_url}
+            src={encodeS3Url(row.image_url)}
             alt={row.image_url}
             className="img-fluid rounded-circle"
+            style={{objectFit:'none'}}
           />
         </div>
       ),

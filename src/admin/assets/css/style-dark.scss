@@ -5,7 +5,9 @@ body {
     &.dark {
         background-color: $black-color !important;
         min-height      : 100vh;
-        
+        .btnicons {
+            color:  $white-color !important;
+        }
         .modal {
             .modal-dialog {
                 .modal-content {

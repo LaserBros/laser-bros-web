@@ -52,6 +52,7 @@ import ShippingStatus from "../../../components/ShippingStatus";
 import ModalOrderData from "../../components/OrderData";
 import getMaterialColor from "../../components/ColorCode";
 import ModalShippingInfo from "../../components/ModalShippingInfo";
+import { encodeS3Url } from "../../../utils/encodeS3Url";
 
 const OrdersDetail = () => { 
   const pdfRef = useRef();
@@ -1521,7 +1522,7 @@ const OrdersDetail = () => {
                           >
                             <div className="list-img">
                               <Image
-                                src={wo.image_url}
+                                src={encodeS3Url(wo.image_url)}
                                 alt={wo.image_url}
                                 className="img-fluid"
                                 style={{

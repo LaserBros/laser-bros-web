@@ -11,6 +11,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  InputGroup,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 
@@ -167,6 +168,8 @@ const EditFinishing = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3 form-group" controlId="formFinishingCode">
             <Form.Label>Finishing Code</Form.Label>
+            <InputGroup>
+  <InputGroup.Text>F</InputGroup.Text>
             <Form.Control
               type="text"
               name="finishing_code"
@@ -174,6 +177,7 @@ const EditFinishing = () => {
               onChange={handleChange}
               isInvalid={!!errors.finishing_code}
             />
+            </InputGroup>
             <Form.Control.Feedback type="invalid">
               {errors.finishing_code}
             </Form.Control.Feedback>

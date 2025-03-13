@@ -18,7 +18,7 @@ const QuotesSidebar = ({
   quoteData,
   UserData,
   divideWeight,
-  TaxRatesVal
+  TaxRatesVal,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
@@ -33,25 +33,37 @@ const QuotesSidebar = ({
   const updateQuote = async () => {
     const storedData = localStorage.getItem("setItempartsDBdataAdmin");
     const quote_list = localStorage.getItem("setItemelementDataAdmin");
-
-    if (storedData) {
-      setLoading(true);
-      const parsedData = JSON.parse(storedData);
-      const quote_list_val = JSON.parse(quote_list);
-      // // console.log(parsedData);
-      // // console.log(quote_list_val._id);
-      try {
-        const param = {
-          id: quote_list_val._id,
-          subQuotes: parsedData,
-        };
-        const res = await editSubQuote(param);
-        toast.success("Quote Updated Successfully...");
-        setLoading(false);
-        navigate("/admin/rfqs");
-      } catch (error) {
-        setLoading(false);
-        toast.error("Something wents wrong..");
+    let isValid = true; // Assume everything is valid initially
+    const storedDataVal = JSON.parse(localStorage.getItem("setItempartsDBdataAdmin"));
+    for (const quote of storedDataVal) {
+      if (quote.bend_count == 1) {
+        if (quote.step_file_bend == null || quote.step_file_bend == "") {
+          isValid = false;
+          toast.error(`Please upload bend STEP file.`);
+          break; // Stop the loop if validation fails
+        }
+      }
+    }
+    if (isValid) {
+      if (storedData) {
+        setLoading(true);
+        const parsedData = JSON.parse(storedData);
+        const quote_list_val = JSON.parse(quote_list);
+        // // console.log(parsedData);
+        // // console.log(quote_list_val._id);
+        try {
+          const param = {
+            id: quote_list_val._id,
+            subQuotes: parsedData,
+          };
+          const res = await editSubQuote(param);
+          toast.success("Quote Updated Successfully...");
+          setLoading(false);
+          navigate("/admin/rfqs");
+        } catch (error) {
+          setLoading(false);
+          toast.error("Something wents wrong..");
+        }
       }
     }
   };
@@ -114,7 +126,7 @@ const QuotesSidebar = ({
             <div className="d-flex align-items-center justify-content-between mb-2">
               <span className="quotesitem">Bending</span>
               <span className="quotesitem quotesright">
-                <Amount amount={quoteDataVal.total_bend_price} />{" "} 
+                <Amount amount={quoteDataVal.total_bend_price} />{" "}
               </span>
             </div>
             <div className="d-flex align-items-center justify-content-between">
@@ -125,7 +137,7 @@ const QuotesSidebar = ({
                     parseFloat(amount || 0) +
                     parseFloat(quoteDataVal.total_bend_price || 0) +
                     parseFloat(TaxRatesVal.tax_amount || 0) +
-                    parseFloat(quoteDataVal.shipping_price || 0) 
+                    parseFloat(quoteDataVal.shipping_price || 0)
                   }
                 />
               </span>

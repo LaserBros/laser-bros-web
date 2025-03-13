@@ -17,6 +17,7 @@ import DimensionsToggle from "../../components/DimensionsToggle";
 import OrderStatus from "../../admin/components/OrderStatus";
 import ShippingStatus from "../../components/ShippingStatus";
 import AddressDetails from "../../admin/components/AddressDetails";
+import { encodeS3Url } from "../../utils/encodeS3Url";
 export default function OrdersDetail() {
   const { id } = useParams();
   const [Shipping, setShipping] = useState(0);
@@ -264,7 +265,7 @@ export default function OrdersDetail() {
                                 {String(index + 1).padStart(3, "0")}
                               </span>
                               <Image
-                                src={row.image_url}
+                                src={encodeS3Url(row.image_url)}
                                 className="img-fluid"
                                 alt=""
                               />

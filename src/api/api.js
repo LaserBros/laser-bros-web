@@ -55,6 +55,33 @@ export const updateDimensionStatus = async (data) => {
   }
 };
 
+export const updateDimensionStatusAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateDimensionStatus`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const fileUpload = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/fileUpload`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const shippingCost = async (data) => {
   try {
     const response = await axiosInstance.post(`/users/shippingCost`, data);
@@ -988,6 +1015,16 @@ export const getSubQuote = async (data) => {
   }
 };
 
+export const getSpecificSubQuote = async (data,thickness) => {
+  try {
+    const response = await axiosAdminInstance.get(`/getSpecificSubQuote/`+data+`?thickness_id=` + thickness);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const fetchShippingBoxDetails = async (data) => {
   try {
     const response = await axiosAdminInstance.post(
@@ -1846,7 +1883,7 @@ export const updateCustomerTaxExempt = async (formData) => {
 
 export const uploadQuoteAdmin = async (formData) => {
   try {
-    const response = await axiosAdminInstance.post(`/uploaddxfFiles`, formData);
+    const response = await axiosAdminInstance.post(`/uploaddxfAdmin`, formData);
     // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
     // console.log("responseeee ------", response.data);
     // return;

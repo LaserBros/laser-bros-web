@@ -35,6 +35,7 @@ import AddPrice from "../../components/AddPrice";
 import AddQty from "../../components/AddQty";
 import DimensionsToggle from "../../../components/DimensionsToggle";
 import ModalOrderData from "../../components/OrderData";
+import { encodeS3Url } from "../../../utils/encodeS3Url";
 const ViewRFQS = () => {
   const [quoteData, setQuoteData] = useState(null);
   const [quoteList, setQuoteList] = useState(null);
@@ -731,7 +732,7 @@ const ViewRFQS = () => {
                     <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
                       <div className="img-quote mx-auto mx-md-0">
                         <Image
-                          src={quote.image_url}
+                          src={encodeS3Url(quote.image_url)}
                           className="img-fluid"
                           alt=""
                         />
