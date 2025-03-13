@@ -1049,7 +1049,7 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   
   export const uploadQuoteAdmin = async (formData) => {
     try {
-      const response = await axiosEmployeeInstance.post(`/uploaddxfFiles`, formData);
+      const response = await axiosEmployeeInstance.post(`/uploaddxfAdmin`, formData);
       // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
       // console.log("responseeee ------", response.data);
       // return;
@@ -1059,3 +1059,41 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
       throw error;
     }
   };
+
+  export const updateDimensionStatusAdmin = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(
+        `/updateDimensionStatus`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+
+  export const fileUpload = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(
+        `/fileUpload`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+
+  export const getSpecificSubQuote = async (data,thickness) => {
+    try {
+      const response = await axiosEmployeeInstance.get(`/getSpecificSubQuote/`+data+`?thickness_id=` + thickness);
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+  
+  

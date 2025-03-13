@@ -56,7 +56,7 @@ const FileUpload = ({
       setUploadedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
 
       const formData = new FormData();
-      // console.log("SAasasas", acceptedFiles);
+      // // console.log("SAasasas", acceptedFiles);
       for (let i = 0; i < acceptedFiles.length; i++) {
         formData.append("quote_image", acceptedFiles[i]);
       }
@@ -75,21 +75,21 @@ const FileUpload = ({
       setProcessing(true);
 
       try {
-        const response = await uploadQuoteAdmin(formData);
-        // console.log("response_api", response.data);
-        localStorage.setItem(
-          "setItemelementDataAdmin",
-          JSON.stringify(response.data.requestQuoteDB)
-        );
+        const response = await uploadQuoteAdmin(formData); 
+        // // console.log("response_api", response.data);
+        // localStorage.setItem(
+        //   "setItemelementDataAdmin",
+        //   JSON.stringify(response.data.requestQuoteDB)
+        // );
 
-        localStorage.setItem(
-          "setItempartsDBdataAdmin",
-          JSON.stringify(response.data.partsDBdata)
-        );
+        // localStorage.setItem(
+        //   "setItempartsDBdataAdmin",
+        //   JSON.stringify(response.data.partsDBdata)
+        // );
 
         onFileDrop({
-          requestQuoteDB: response.data.requestQuoteDB,
-          partsDBdata: response.data.partsDBdata,
+          requestQuoteDB: response.data,
+          partsDBdata: response.data,
         });
 
         setProcessing(false);
