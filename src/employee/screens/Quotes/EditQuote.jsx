@@ -2000,11 +2000,11 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
         show={DeletemodalShow}
         onHide={handleCloseModalDelete}
         title={"Are you sure?"}
-        desc={"You want to delete this quote?"}
+        desc={"Do you want to delete this line item?"}
         yesBtnText={"Yes"}
         noBtnText={"No"}
         onConfirm={deleteQuote}
-        message="You want to delete this quote?"
+        message="Do you want to delete this line item?"
         loading={loadingBtn}
       />
     </React.Fragment>
