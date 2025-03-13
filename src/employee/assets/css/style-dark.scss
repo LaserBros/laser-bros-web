@@ -14,7 +14,7 @@ body {
            }
         }
         .baseratecustom{
-            background-color:$black-color;
+            background-color:rgba($white-color, 0.12);;
             border: 1px dashed rgba($white-color, .2);
             input[type="file"]{
                 color: $white-color;

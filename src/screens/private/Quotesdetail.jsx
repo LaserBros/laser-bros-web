@@ -1169,7 +1169,7 @@ export default function QuotesDetail() {
                             <p></p>
                           ) : (
                             <>
-                              {quote.thickness_id && (
+                              {quote.finishing_id && (
                                 <>
                                   <div className="flex-shrink-0">
                                     <h4>Services </h4>
@@ -1392,14 +1392,14 @@ export default function QuotesDetail() {
                         {/* <p className="quotes-date">May 21, 2024 3:05 pm</p> */}
                         <p className=" text-md-end">
                           {" "}
-                          <Amount amount={quote.amount} /> total
+                          <Amount amount={(quote.amount +  (quote.bend_count >= 1 && quote.per_bend_price * quote.quantity))} /> total
                         </p>
 
                         <p className=" text-md-end">
                           <strong className="quotes-price">
-                            <Amount amount={quote.amount / quote.quantity} />
+                            <Amount amount={((quote.amount / quote.quantity) + (quote.bend_count >= 1 && quote.per_bend_price))} />
                           </strong>
-                          /each
+                          /each 
                         </p>
                         <div className="d-flex align-item-center justify-content-end gap-2">
                           <div className="quanityCount_btn">
