@@ -1795,7 +1795,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                           {new Intl.NumberFormat("en-US", {
                             style: "currency",
                             currency: "USD",
-                          }).format(quote.amount)}{" "}
+                          }).format((quote.amount)  +  (quote.bend_count >= 1 && quote.per_bend_price * quote.quantity))}{" "}
                           total
                         </p>
                         <p className=" text-md-end">
@@ -1803,7 +1803,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                             {new Intl.NumberFormat("en-US", {
                               style: "currency",
                               currency: "USD",
-                            }).format(quote.amount / quote.quantity)}
+                            }).format(((quote.amount / quote.quantity) + (quote.bend_count >= 1 && quote.per_bend_price) ))}
                             {/* ${.toFixed(2)} */}
                           </strong>
                           /each{" "}

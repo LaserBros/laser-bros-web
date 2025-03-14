@@ -305,12 +305,12 @@ export default function RfqDetail() {
                                 </div>
                                 <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
                                   <p className=" text-md-end">
-                                    <Amount amount={row.amount} /> total
+                                    <Amount amount={((row.amount) +  (row.bend_count >= 1 && row.per_bend_price * row.quantity))} /> total
                                   </p>
                                   <p className=" text-md-end">
                                     <strong className="quotes-price">
                                       <Amount
-                                        amount={row.amount / row.quantity}
+                                        amount={((row.amount / row.quantity) + (row.bend_count >= 1 && row.per_bend_price))}
                                       />
                                     </strong>
                                     /each
