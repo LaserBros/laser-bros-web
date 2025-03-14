@@ -1725,7 +1725,8 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                       </div>
                                     </div>
                                   )}
-                                  {/* <div className="custom_bend_div">
+                                  {quote.bendupload_url != "" &&
+                                  <div className="custom_bend_div">
                                       <p>
                                         Number of bends : {quote.bend_count}
                                       </p>
@@ -1737,12 +1738,14 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                         Total :{" "}
                                         <Amount amount={quote.bend_price} />
                                       </p>
-                                    </div> */}
+                                    </div>
+}
                                 </>
 
                                 {/* )} */}
                               </div>
-                              {/* {quote.bend_count != 0 && (
+                              {quote.bendupload_url != "" &&
+                               quote.bend_count != 0 && (
                                 <Link
                                   className="btnicon flex-shrink-0"
                                   onClick={() => {
@@ -1761,7 +1764,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                 >
                                   <Icon icon="mynaui:edit" />
                                 </Link>
-                              )} */}
+                              )} 
                             </>
                           ) : (
                             <p></p>

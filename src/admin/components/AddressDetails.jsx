@@ -239,12 +239,12 @@ const AddressDetails = ({
                 </span>
               </p>
             )}
-          {TaxRatesVal && parseFloat(TaxRatesVal?.tax_amount) > 0 && (
+          -{TaxRatesVal && parseFloat(TaxRatesVal?.tax_amount) > 0 && (
   <p className="mb-0">
     <b className="minWidth_110">
       Tax <span>({TaxRatesVal?.tax_percentage}%)</span>:
     </b>{" "}
-    <Amount amount={parseFloat(TaxRatesVal?.tax_amount)} />
+   -- <Amount amount={parseFloat(TaxRatesVal?.tax_amount)} />
   </p>
 )}
 
