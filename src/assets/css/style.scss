@@ -4610,6 +4610,9 @@ textarea.form-control {
     border-radius: 12px;
     padding: 12px;
     border: 1px dashed $black-color;
+    .react-tooltip__show{
+        z-index:1
+    }
     // z-index: 1;
     .baseratetitle{
         font-size: 14px;
