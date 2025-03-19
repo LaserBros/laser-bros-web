@@ -12,10 +12,11 @@ import PaymentDone from "./Paymentdone";
 const CheckOutPay = ({
   show,
   loadingPayId, 
-  handleClose,
+  handleClose, 
   address,
   shippingInfo,
   cardsData,
+  handleShowCard,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
@@ -364,6 +365,32 @@ const CheckOutPay = ({
                           </label>
                         </div>
                       )}
+                      {selectedRate === "ups_ground" && (
+                        <div className="rate-option">
+                          <label>
+                            <input
+                              type="checkbox"
+                              value="ups_ground"
+                              checked={selectedRate === "ups_ground"}
+                              onChange={() =>
+                                handleRateSelected(
+                                  "ups_ground",
+                                  shippingInfo?.requestQuoteDB
+                                    ?.shipping_upsground_price
+                                )
+                              }
+                            />
+                            &nbsp;&nbsp;UPS® Ground (
+                            <Amount
+                              amount={
+                                shippingInfo?.requestQuoteDB
+                                  ?.shipping_upsground_price
+                              }
+                            />
+                            )
+                          </label>
+                        </div>
+                      )}
                        {selectedRate === "ups_2nd_day_air" && (
                         <div className="rate-option">
                           <label>
@@ -413,32 +440,7 @@ const CheckOutPay = ({
                           </label>
                         </div>
                       )}
-                      {selectedRate === "ups_ground" && (
-                        <div className="rate-option">
-                          <label>
-                            <input
-                              type="checkbox"
-                              value="ups_ground"
-                              checked={selectedRate === "ups_ground"}
-                              onChange={() =>
-                                handleRateSelected(
-                                  "ups_ground",
-                                  shippingInfo?.requestQuoteDB
-                                    ?.shipping_upsground_price
-                                )
-                              }
-                            />
-                            &nbsp;&nbsp;UPS® Ground (
-                            <Amount
-                              amount={
-                                shippingInfo?.requestQuoteDB
-                                  ?.shipping_upsground_price
-                              }
-                            />
-                            )
-                          </label>
-                        </div>
-                      )}
+                      
                       {selectedRate === "custom_rates" &&
                         shippingInfo?.requestQuoteDB?.custom_rates !== 0 && (
                           <div className="rate-option">
@@ -553,7 +555,12 @@ const CheckOutPay = ({
               </Col>
               <Col lg={6}>
                 <div className="cards_sect paymentTab_div">
-                  <h2 className="shipping_head">Payment Method </h2>
+                <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+                  <h2 className="shipping_head mb-0">Payment Method </h2>
+                    <Button onClick={handleShowCard} variant={null} className="btncstm p-0">
+                                                  <Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add New
+                                                  </Button>
+                                                  </div> 
                   {/* {shippingInfo?.requestQuoteDB?.} */}
                   <Tabs
                     defaultActiveKey="card"

@@ -1621,10 +1621,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                             </>
                                           ) : (
                                             <div className="attachment-box">
-                                              <a
-                                                href={quote.step_file_bend}
-                                                target="_blank"
-                                              >
+                                              <Link  onClick={() =>  handleDownload(quote.step_file_bend, decodeURIComponent(quote.step_file_bend.split('/').pop().replace(/^\d+-/, ''))) }>                       
                                                 <span className="attachmenttitle">
                                                   Attachment
                                                   {/* {
@@ -1632,7 +1629,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                                                                                 .name
                                                                                             } */}
                                                 </span>
-                                              </a>
+                                              </Link>
                                               <Link
                                                 className="remove-icon"
                                                 onClick={() =>
@@ -1686,10 +1683,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                             </>
                                           ) : (
                                             <div className="attachment-box">
-                                              <a
-                                                href={quote.drawing_file_bend}
-                                                target="_blank"
-                                              >
+                                             <Link  onClick={() =>  handleDownload(quote.drawing_file_bend, decodeURIComponent(quote.drawing_file_bend.split('/').pop().replace(/^\d+-/, ''))) }>                       
                                                 <span className="attachmenttitle">
                                                   {/* {
                                                                                               uploadedFiles[
@@ -1698,7 +1692,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                                                                             } */}
                                                   Attachment
                                                 </span>
-                                              </a>
+                                              </Link>
                                               <Link
                                                 className="remove-icon"
                                                 onClick={() =>

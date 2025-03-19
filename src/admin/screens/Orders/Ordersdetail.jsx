@@ -383,11 +383,26 @@ const OrdersDetail = () => {
     setloadingInfo(index);
     const res = await getShippingRates(data);
     setloadingInfo("");
+    const serviceOrder = [
+      'UPS® Ground',
+      'UPS 2nd Day Air®',
+      'UPS Next Day Air®'
+    ];
+    
+    // sort the shipping methods based on service_type
+    const sortedShippingMethods = Array.isArray(res.data)
+      ? [...res.data].sort(
+          (a, b) =>
+            serviceOrder.indexOf(a.service_type) - serviceOrder.indexOf(b.service_type)
+        )
+      : [];
+      console.log("sortedShippingMethods",sortedShippingMethods)
+    
     const updatedBoxes = boxes.map((box, i) =>
       i === index
         ? {
             ...box,
-            shippingMethods: res.data,
+            shippingMethods: sortedShippingMethods,
           }
         : box
     );

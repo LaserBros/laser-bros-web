@@ -7,14 +7,14 @@ import {
   useElements,
   CardElement,
 } from "@stripe/react-stripe-js";
-import { addCard } from "../api/api";
+import { addCard, setCardAsDefault } from "../api/api";
 import { toast } from "react-toastify";
 import { useTheme } from "./Themecontext";
 
 // Your Stripe public key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
-const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
+const AddCardForm = ({ show, handleClose, title, onCardAdded,isSetDefault }) => {
   const { theme, togglenewTheme } = useTheme();
   const stripe = useStripe();
   const elements = useElements();
@@ -58,7 +58,7 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
     // // console.log(token);
     // return;
     if (error) {
-      setGeneralError(error.message);
+      setGeneralError(error.message); 
     } else {
       const formData = {
         last4: token.card.last4,
@@ -70,7 +70,10 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded }) => {
       };
       setLoading(true);
       try {
-        await addCard(formData);
+        const res = await addCard(formData);
+        if(isSetDefault) {
+          await setCardAsDefault(res.data._id); 
+        }
         toast.success("Card added successfully!");
         setLoading(false);
         setCardHolderName("");

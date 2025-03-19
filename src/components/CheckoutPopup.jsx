@@ -507,7 +507,7 @@ const CheckoutPopup = ({
                    <Button onClick={handleShowCard} variant={null} className="btncstm p-0">
                                 <Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add New
                                 </Button>
-                  </div> 
+                  </div>  
                   {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
                     <>
                       <div className="text-center mt-2">

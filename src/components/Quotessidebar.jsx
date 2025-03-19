@@ -918,6 +918,7 @@ const QuotesSidebar = ({
         handleClose={handleCloseCard}
         onCardAdded={loadCards}
         title="Add Card"
+        isSetDefault={true} 
       />
       {isPayble ? (
         <CheckOutPay
@@ -928,6 +929,7 @@ const QuotesSidebar = ({
           address={address}
           shippingInfo={shippingInfo}
           cardsData={cardsData}
+          handleShowCard={handleShowCard}
         />
       ) : (
         <CheckoutPopup

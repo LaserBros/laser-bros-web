@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import CheckoutPopup from "../../components/CheckoutPopup";
 import CheckOutPay from "../../components/checkOutPay";
 import MaterialBadge from "../../admin/components/MaterialBadge";
+import AddCard from "../../components/Addcard";
 export default function RFQS() {
   const [loading, setLoading] = useState(true);
   const [quoteData, setQuotes] = useState([]);
@@ -47,6 +48,11 @@ export default function RFQS() {
   };
   fetchData();
 }, [currentPage, PerPage]);
+
+  const [modalShowCard, setModalShowCard] = useState(false);
+
+  const handleShowCard = () => setModalShowCard(true);
+  const handleCloseCard = () => setModalShowCard(false);
   const handleClosePay = () => setModalShowPay(false);
   const [modalShowPay, setModalShowPay] = useState(false);
   const [shippingInfo, setshippingInfo] = useState(false);
@@ -291,6 +297,13 @@ export default function RFQS() {
           </Card>
         </Container>
       </section>
+      <AddCard 
+        show={modalShowCard}
+        handleClose={handleCloseCard}
+        onCardAdded={loadCards}
+        title="Add Card"
+        isSetDefault={true}
+      />
       <CheckOutPay
         show={modalShowPay}
         loadingPayId={loadingPayId}
@@ -298,6 +311,7 @@ export default function RFQS() {
         address={address}
         shippingInfo={shippingInfo}
         cardsData={cardsData}
+        handleShowCard={handleShowCard}
       />
     </React.Fragment>
   );

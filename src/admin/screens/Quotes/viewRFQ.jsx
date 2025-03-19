@@ -816,10 +816,11 @@ const ViewRFQS = () => {
                             Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
                             {"   "}
                             {quote.step_file_bend &&(
-                              <a href={`${quote.step_file_bend}`} style={{paddingRight:'10px'}}>Step File</a> 
-                            )} 
+                              <Link  onClick={() =>  handleDownload(quote.step_file_bend, decodeURIComponent(quote.step_file_bend.split('/').pop().replace(/^\d+-/, ''))) }
+                              style={{paddingRight:'10px'}}>Step File </Link>  
+                            )}  
                             {quote.drawing_file_bend &&(
-                              <a href={`${quote.drawing_file_bend}`} style={{paddingRight:'10px'}}>Drawing File</a> 
+                               <Link  onClick={() =>  handleDownload(quote.drawing_file_bend, decodeURIComponent(quote.drawing_file_bend.split('/').pop().replace(/^\d+-/, ''))) }>Drawing File</Link> 
                             )}
                             {(quote.bend_count >= 1 && quote.bendupload_url != "") && (
                               <a href={`${quote.bendupload_url}`}>Attachment</a>

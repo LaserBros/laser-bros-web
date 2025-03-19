@@ -10,7 +10,20 @@ const ShippingRates = ({
   requestDb,
 }) => {
   const [selectedRate, setSelectedRate] = useState(service_code);
-
+  const serviceOrder = [
+    'UPS® Ground',
+    'UPS 2nd Day Air®',
+    'UPS Next Day Air®'
+  ];
+  
+  const sortedShippingRates =
+    Array.isArray(shippingRates)
+      ? [...shippingRates].sort(
+          (a, b) =>
+            serviceOrder.indexOf(a.service_type) -
+            serviceOrder.indexOf(b.service_type)
+        )
+      : [];
   // Handle checkbox selection (only one at a time)
   const handleCheckboxChange = (carrierId, rate, price) => {
     const newSelectedRate = selectedRate === carrierId ? null : carrierId;
@@ -53,7 +66,7 @@ const ShippingRates = ({
           }
           {shippingRates && shippingRates.length > 0 && selectedShippingAddress?.permanent == 0 ? (
             <>
-              {shippingRates.map((rate, index) => (
+              {sortedShippingRates.map((rate, index) => (
                 <div key={index} className="rate-option">
                   <label>
                     <input
