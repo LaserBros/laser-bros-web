@@ -1623,7 +1623,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                             <div className="attachment-box">
                                                <Link  onClick={() =>  handleDownload(quote.step_file_bend, decodeURIComponent(quote.step_file_bend.split('/').pop().replace(/^\d+-/, ''))) }>                       
                                                 <span className="attachmenttitle">
-                                                  Attachmentc
+                                                  Attachment
                                                   {/* {
                                                                                               uploadedFiles[quote._id]
                                                                                                 .name
