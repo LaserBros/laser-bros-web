@@ -115,7 +115,8 @@ const SelectDropdowns = ({
     );
   };
   return (
-    <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
+    <div className="quotes-dropdown ">
+    {/* // <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center"> */}
       <SimpleSelect
         options={options}
         value={value}
