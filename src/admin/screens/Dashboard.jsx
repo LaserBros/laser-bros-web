@@ -297,8 +297,7 @@ const Dashboard = () => {
                 ></span>
               </div>
             ) : (
-              <>
-              {dataArr && dataArr.length > 0 ? (
+              dataArr && dataArr.length > 0 ? (
               <BarChart
                 data={dataArr}
                 margin={{
@@ -421,8 +420,8 @@ const Dashboard = () => {
               <div style={{ color: "red", textAlign: "center", marginTop: "20px" }}>
                 No data available for the chart.
               </div>
-            )}
-             </>
+            )
+            //  </>
             )}
           </ResponsiveContainer>
         </CardBody>
