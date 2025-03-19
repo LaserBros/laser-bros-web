@@ -15,6 +15,7 @@ import DimensionsToggle from "../../components/DimensionsToggle";
 import QuotesSidebar from "../../components/Quotessidebar";
 import AddressDetails from "../../admin/components/AddressDetails";
 import { encodeS3Url } from "../../utils/encodeS3Url";
+import axiosInstance from "../../axios/axiosInstance";
 export default function RfqDetail() {
   const { id } = useParams();
   const getStatusColor = (status) => {
@@ -97,37 +98,29 @@ export default function RfqDetail() {
       })
       .catch((error) => console.error("Error downloading the file:", error));
   };
-
+  const [loadRfq,setLoadRfq] = useState(false);
   const handlePDF = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/users/generateRfqPDF`;
     try {
-      const token = localStorage.getItem("authToken");
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Set as JSON
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          id: orderDetails?._id, // Convert to JSON string
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to download PDF");
-      }
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      // Create a link element to trigger the download
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = "WO#" + orderDetails?.search_quote + ".pdf"; // Set the desired file name
+      setLoadRfq(true);
+      const response = await axiosInstance.post(
+        '/users/generateRfqPDF',
+        { id: orderDetails?._id },
+        { responseType: 'blob' } 
+      );
+  
+      const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = blobUrl; 
+      link.download = `WO#${orderDetails?.search_quote}.pdf`;
       document.body.appendChild(link);
       link.click();
+  
       // Cleanup
       link.remove();
       window.URL.revokeObjectURL(blobUrl);
+      setLoadRfq(false);
     } catch (error) {
-      console.error("Error downloading PDF:", error);
+      console.error('Error downloading PDF:', error);
     }
   };
 
@@ -145,10 +138,27 @@ export default function RfqDetail() {
                 <Link
                   to=""
                   onClick={handlePDF}
+                  disabled={loadRfq}
                   className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center ms-3"
                   style={{ marginRight: "4px" }}
                 >
-                  Download RFQ
+                    {loadRfq ? (
+          <>
+            <span
+              role="status"
+              aria-hidden="true"
+              className="spinner-border spinner-border-sm text-center"
+              style={{
+                margin: "0 auto",
+                display: "block",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            ></span>
+          </>
+        ) : (
+                  "Download RFQ"
+        )}
                 </Link>
                 <Link
                   to="/rfqs"
