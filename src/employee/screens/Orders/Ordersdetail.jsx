@@ -907,7 +907,7 @@ const OrdersDetail = () => {
                 <div className="d-flex">
                   {/* {order?.orderedQuote.move_status} ====== */}
                   {order?.serviceCode?.name == "Local Pickup" &&
-                    order?.orderedQuote.status === 3 && (
+                    order?.orderedQuote.status === 3 && order?.orderedQuote.move_status != 3 && (
                       <>
                         <div className="orders-shipping mb-2">
                           <Button
