@@ -45,7 +45,7 @@ const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
             <>
               <div className="tracking-info">
                 <h5>Tracking Number: {data?.tracking_number}</h5>
-                <p>
+                <p  className="mb-0">
                   Status:{" "}
                   {data?.status_description == null
                     ? "In Progress"
