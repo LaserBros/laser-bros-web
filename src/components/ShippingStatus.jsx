@@ -65,18 +65,18 @@ const ShippingStatus = ({ show, handleClose, ordersTrack,shipType }) => {
                 <div className="events-list">
                   {data?.events?.length > 0 ? (
                     data.events.map((event, index) => (
-                      <div key={index} className="event-item mb-3">
-                        <p>
+                      <div key={index} className="event-item mb-3 pb-3" style={{borderBottom:'1px solid #ccc'}}>
+                        <p className="mb-0">
                           <strong>
                             {new Date(event.occurred_at).toLocaleString()}
                           </strong>
                         </p>
-                        <p>{event.description}</p>
-                        <p>
+                        <p  className="mb-0">{event.description}</p>
+                        <p  className="mb-0">
                           {event.city_locality}, {event.state_province}{" "}
                           {event.postal_code}
                         </p>
-                        <p>{event.carrier_status_description}</p>
+                        <p  className="mb-0">{event.carrier_status_description}</p>
                       </div>
                     ))
                   ) : (
