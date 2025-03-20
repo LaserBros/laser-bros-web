@@ -36,6 +36,7 @@ import {
   orderAdminTrackingDetails,
   getSubQuote,
   generateOrderPDFAdmin,
+  moveOrderToLocalPickup,
 } from "../../../api/empApi";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -461,6 +462,23 @@ const OrdersDetail = () => {
   };
 
   // Validate fields and submit the form
+   const handleCompleteShipLocal = async () => {
+      setLoadingWeight(true);
+      try {
+        const new_data = {
+          id: order?.orderedQuote._id,
+          move_status: 3,
+          status: 3,
+          service_code:'local_pickup'
+        }; 
+        await moveOrderToLocalPickup(new_data);
+        setLoadingWeight(false);
+        navigate("/employee/complete-orders");
+      } catch (error) {
+        console.error("Error submitting data:", error);
+        setLoadingWeight(false);
+      }
+    }
   const handleCompleteShip = async (e) => {
     setLoadingWeight(true);
     try {
@@ -1308,12 +1326,16 @@ const OrdersDetail = () => {
                                         <input
                                           type="checkbox"
                                           id="localPickup"
-                                          disabled
                                           checked={
                                             selectedMethod == "local_pickup" || selectedMethod ==
                                             "Local Pickup (FREE)"
                                               ? true
                                               : false
+                                          }
+                                          onChange={() =>
+                                            handleCheckboxChange(
+                                              "local_pickup"
+                                            )
                                           }
                                         />
                                         <label htmlFor="localPickup">
@@ -1369,7 +1391,26 @@ const OrdersDetail = () => {
                                     </>
                                   ) : (
                                     <>
-                                      {order?.serviceCode?.name !=
+                                      {selectedMethod == "local_pickup" ?
+                                                                                 <Button
+                                                                                 variant={null}
+                                                                                 className="PackageCompleteOrder_btn me-2"
+                                                                                 type="submit"
+                                                                                 // className="my-3 ms-3"
+                                                                                 onClick={handleCompleteShipLocal}
+                                                                                 disabled={loadingWeight}
+                                                                               >
+                                                                                 {loadingWeight ? (
+                                                                                   <span
+                                                                                     className="spinner-border spinner-border-sm"
+                                                                                     role="status"
+                                                                                     aria-hidden="true"
+                                                                                   ></span>
+                                                                                 ) : (
+                                                                                   "Move To Complete"
+                                                                                 )}
+                                                                               </Button> 
+                                                                              :order?.serviceCode?.name !=
                                         "Local Pickup" &&
                                         (!box.downloadLabel ? (
                                           <button

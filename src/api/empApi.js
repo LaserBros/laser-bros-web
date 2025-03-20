@@ -461,6 +461,19 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
       throw error;
     }
   };
+
+  export const moveOrderToLocalPickup = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(
+        `/moveOrderToLocalPickup`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
   
   export const moveOrderToComplete = async (data) => {
     try {

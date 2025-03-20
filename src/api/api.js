@@ -1051,6 +1051,19 @@ export const moveOrderToComplete = async (data) => {
   }
 };
 
+export const moveOrderToLocalPickup = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/moveOrderToLocalPickup`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const fetchOrdersInQueue = async (selectedValue) => {
   try {
     const response = await axiosAdminInstance.get(
