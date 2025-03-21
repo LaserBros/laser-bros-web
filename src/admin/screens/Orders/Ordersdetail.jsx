@@ -1346,6 +1346,7 @@ const OrdersDetail = () => {
                                                 ? true
                                                 : false
                                             }
+                                            disabled={true}
                                             onChange={() =>
                                               handleCheckboxChange(
                                                 "local_pickup"
@@ -1623,7 +1624,7 @@ const OrdersDetail = () => {
                               <Icon
                                 icon="material-symbols-light:download-sharp"
                                 onClick={() =>
-                                  handleDownload(wo?.dxf_url, wo.quote_name)
+                                  handleDownload(encodeS3Url(wo?.dxf_url), wo.quote_name)
                                 }
                               />
                             </h2>

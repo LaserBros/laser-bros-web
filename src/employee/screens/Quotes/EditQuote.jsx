@@ -1358,7 +1358,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                           <Icon
                             icon="material-symbols-light:download-sharp"
                             onClick={() =>
-                              handleDownload(quote?.dxf_url, quote.quote_name)
+                              handleDownload(encodeS3Url(quote?.dxf_url), quote.quote_name)
                             }
                           />
                         </h2>
