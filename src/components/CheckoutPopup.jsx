@@ -261,11 +261,14 @@ const CheckoutPopup = ({
     } 
     } catch (error) {
       // setshippingInfo("")
-      setaxPercentage(0);
+      toast.error(error.response.data.error[0]+ " Please select another address.");
+      // setshippingInfo("");
       setaxAmount(0);
-      setrateVal(0);
+      setShippingSelectedAddress(null);
+      setaxPercentage(0);
+      setrateVal("");
       setIsSameAsShipping(false);
-      setSelectedAddress("")
+      // setSelectedAddress("")
     }
    
     setloadingShip(false);

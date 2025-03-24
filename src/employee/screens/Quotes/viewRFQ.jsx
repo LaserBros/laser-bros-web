@@ -742,7 +742,7 @@ const ViewRFQS = () => {
                           {quote.quote_name}{" "}
                           <Icon
                             icon="material-symbols-light:download-sharp"
-                            onClick={() =>
+                            onClick={() => 
                               handleDownload(encodeS3Url(quote?.dxf_url), quote.quote_name)
                             }
                           />

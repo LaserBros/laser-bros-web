@@ -110,7 +110,11 @@ export default function AddAddress() {
     if (!formValues.address_line_1)
       newErrors.address1 = "Address Line 1 is required";
     if (!formValues.city) newErrors.city = "City is required";
-    if (!formValues.pincode) newErrors.zipcode = "Zip Code is required";
+    if (!formValues.pincode) { 
+        newErrors.zipcode = "Zip Code is required"; 
+    } else if (!/^\d{5}$/.test(formValues.pincode)) {
+      newErrors.zipcode = "Zip Code must be a 5-digit number.";
+    }
     if (!formValues.phone_number)
       newErrors.phoneno = "Phone Number is required";
     else if (/[ -]/.test(formValues.phone_number))
