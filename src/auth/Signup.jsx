@@ -59,7 +59,7 @@ export default function SignUp() {
 
   const validate = () => {
     const newErrors = {};
-    if (!formData.full_name) newErrors.fullName = "Full Name is required";
+    if (!formData.full_name.trim()) newErrors.fullName = "Full Name is required";
     if (!formData.email) newErrors.email = "Email Address is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email Address is invalid";
@@ -94,7 +94,7 @@ export default function SignUp() {
       try {
         setLoading(true);
         const response = await axiosInstance.post("/verifyemail", formData);
-        toast.success("Form submitted successfully!");
+     
 
         // Reset form data
         setFormData({

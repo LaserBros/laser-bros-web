@@ -54,7 +54,6 @@ const OTPForm = () => {
       setFbtndisable(true);
       const response = await axiosInstance.post("/resendotp", data);
       token_val = response.data.data.otp_token;
-      // console.log(response.data.data.otp_token, "----====", token_val);
       // localStorage.setItem("authToken", "");
       // localStorage.setItem("authToken", response.data.data.otp_token);
     } catch (error) {
@@ -73,25 +72,24 @@ const OTPForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    setErrors(validationErrors);
+    setErrors(validationErrors); 
 
     if (Object.keys(validationErrors).length === 0) {
       if (type == "forgot") {
-        // console.log(token_val);
+        console.log(type,"Dsdsdsdds-=-=");
         try {
           const data = {
             otp_get: otp,
+            hash : token_val,
+            email :formData.email
           };
           setLoading(true);
 
-          const response = await axiosInstance.post("/verifyotp", data, {
-            headers: {
-              Authorization: `Bearer ${token_val}`,
-            },
-          });
+          const response = await axiosInstance.post("/verifyotp", data);
           toast.success("OTP verified");
+          console.log(" response.data.data.token", response.data.data.otp_token)
           navigate("/reset-password", {
-            state: { token: token_val },
+            state: { token: response.data.data.otp_token },
           });
         } catch (error) {
           setLoading(false);
@@ -109,13 +107,11 @@ const OTPForm = () => {
         try {
           const data = {
             otp_get: otp,
+            hash : token_val,
+            email :formData.email
           };
           setLoading(true);
-          const response = await axiosInstance.post("/verifyotp", data, {
-            headers: {
-              Authorization: `Bearer ${token_val}`,
-            },
-          });
+          const response = await axiosInstance.post("/verifyotp", data);
           try {
             const response = await axiosInstance.post("/signup", formData);
             toast.success("OTP Verified.");
@@ -175,7 +171,7 @@ const OTPForm = () => {
       }
     } else {
       // Show error notification or message
-      toast.error("Please fix the validation errors.");
+      // toast.error("Please fix the validation errors.");
     }
   };
 

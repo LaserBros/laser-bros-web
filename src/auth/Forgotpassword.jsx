@@ -52,7 +52,7 @@ export default function ForgotPassword() {
         const token = response.data.data.token;
         // // console.log(response, response.data.data);
         navigate(`/OTP`, {
-          state: { token: token, formData: formData, type: "forgot" },
+          state: { token: token,email: email,formData: formData, type: "forgot" },
         });
         setLoading(false);
       } catch (error) {

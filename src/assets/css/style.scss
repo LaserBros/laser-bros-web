@@ -1595,6 +1595,9 @@ footer {
                 font-weight: 500;
                 color: #3b3b3b;
             }
+            span {
+                color: $black-color;
+            }
             &.active {
                 button.page-link {
                     background: $primary-color;
@@ -2841,9 +2844,10 @@ textarea.form-control {
         .password-input-group {
             svg {
                 position: absolute;
-                top     : 17px;
-                right   : 20px;
+                top     : 12px;
+                right   : 10px;
                 opacity : 0.30;
+                color: $black-color;
             }
         }
 
