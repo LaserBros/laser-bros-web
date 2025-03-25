@@ -460,6 +460,15 @@ const OrdersDetail = () => {
     updatedInfo[index][field] = value;
     setShippingInfo(updatedInfo);
   };
+  const [submitComplete,setsubmitComplete] = useState(false);
+
+  const submitCompleteAction = () => {
+    setsubmitComplete(true);
+  }
+  
+  const submitCompleteActionClose = () => {
+    setsubmitComplete(false);
+  }
 
   // Validate fields and submit the form
   const handleCompleteShipLocal = async () => {
@@ -1346,7 +1355,7 @@ const OrdersDetail = () => {
                                                 ? true
                                                 : false
                                             }
-                                            disabled={true}
+                                            // disabled={true}
                                             onChange={() =>
                                               handleCheckboxChange(
                                                 "local_pickup"
@@ -1415,18 +1424,10 @@ const OrdersDetail = () => {
                                            className="PackageCompleteOrder_btn me-2"
                                            type="submit"
                                            // className="my-3 ms-3"
-                                           onClick={handleCompleteShipLocal}
+                                           onClick={submitCompleteAction}
                                            disabled={loadingWeight}
                                          >
-                                           {loadingWeight ? (
-                                             <span
-                                               className="spinner-border spinner-border-sm"
-                                               role="status"
-                                               aria-hidden="true"
-                                             ></span>
-                                           ) : (
-                                             "Move To Complete"
-                                           )}
+                                           Move To Complete
                                          </Button> 
                                         :
                                         order?.serviceCode?.name !=
@@ -2047,6 +2048,16 @@ const OrdersDetail = () => {
           handleClose4={handleClose5}
           ShippingInfoData={ShippingInfoData}
         />
+        <ConfirmationModal
+        show={submitComplete}
+        onHide={submitCompleteActionClose}
+        title={"Are you sure?"}
+        desc={"You want to change shipping priority?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={handleCompleteShipLocal}
+        loading={loadingWeight}
+      />
         <AddAddressModalAdmin show={AddressEdit} OrderId = {id}  SetAddressInfo={AddressInfo} setType={TypeInfo} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} />
       </React.Fragment>
     </div>

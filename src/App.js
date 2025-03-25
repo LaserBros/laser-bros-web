@@ -152,6 +152,7 @@ import QuotesDetailPay from "./screens/private/QuotesDetailPay";
 import RfqDetail from "./screens/private/RfqDetail";
 import NotAuthorized from "./employee/screens/NotAuthorized";
 import FallbackPage from "./employee/screens/FallbackPage";
+// import DxfAnalyzer from "./screens/private/dxfFile";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -1006,6 +1007,7 @@ function App() {
                       path="/my-address/edit-address/:id"
                       element={<PrivateRoute element={<EditAddress />} />}
                     />
+                    {/* <Route path="/filePath" element={<DxfAnalyzer />} /> */}
                     <Route
                       path="/payment-cards"
                       element={<PrivateRoute element={<PaymentCards />} />}
@@ -1018,7 +1020,7 @@ function App() {
                       path="/quotes/quotes-detail"
                       element={<PrivateRoute element={<QuotesDetail />} />}
                     />
-                    <Route
+                    <Route 
                       path="/quotes/pay"
                       element={<PrivateRoute element={<QuotesDetailPay />} />}
                     />

@@ -461,6 +461,15 @@ const OrdersDetail = () => {
     setShippingInfo(updatedInfo);
   };
 
+    const [submitComplete,setsubmitComplete] = useState(false);
+  
+    const submitCompleteAction = () => {
+      setsubmitComplete(true);
+    }
+    
+    const submitCompleteActionClose = () => {
+      setsubmitComplete(false);
+    }
   // Validate fields and submit the form
    const handleCompleteShipLocal = async () => {
       setLoadingWeight(true);
@@ -1332,7 +1341,7 @@ const OrdersDetail = () => {
                                               ? true
                                               : false
                                           }
-                                          disabled={true}
+                                          // disabled={true}
                                           onChange={() =>
                                             handleCheckboxChange(
                                               "local_pickup"
@@ -1393,24 +1402,16 @@ const OrdersDetail = () => {
                                   ) : (
                                     <>
                                       {selectedMethod == "local_pickup" ?
-                                                                                 <Button
-                                                                                 variant={null}
-                                                                                 className="PackageCompleteOrder_btn me-2"
-                                                                                 type="submit"
-                                                                                 // className="my-3 ms-3"
-                                                                                 onClick={handleCompleteShipLocal}
-                                                                                 disabled={loadingWeight}
-                                                                               >
-                                                                                 {loadingWeight ? (
-                                                                                   <span
-                                                                                     className="spinner-border spinner-border-sm"
-                                                                                     role="status"
-                                                                                     aria-hidden="true"
-                                                                                   ></span>
-                                                                                 ) : (
-                                                                                   "Move To Complete"
-                                                                                 )}
-                                                                               </Button> 
+                                                                                   <Button
+                                                                                                                           variant={null}
+                                                                                                                           className="PackageCompleteOrder_btn me-2"
+                                                                                                                           type="submit"
+                                                                                                                           // className="my-3 ms-3"
+                                                                                                                           onClick={submitCompleteAction}
+                                                                                                                           disabled={loadingWeight}
+                                                                                                                         >
+                                                                                                                           Move To Complete
+                                                                                                                         </Button> 
                                                                               :order?.serviceCode?.name !=
                                         "Local Pickup" &&
                                         (!box.downloadLabel ? (
@@ -2023,6 +2024,16 @@ const OrdersDetail = () => {
           handleClose4={handleClose5}
           ShippingInfoData={ShippingInfoData}
         />
+          <ConfirmationModal
+        show={submitComplete}
+        onHide={submitCompleteActionClose}
+        title={"Are you sure?"}
+        desc={"You want to change shipping priority?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={handleCompleteShipLocal}
+        loading={loadingWeight}
+      />
       </React.Fragment>
     </div>
   );
