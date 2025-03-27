@@ -1606,7 +1606,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                                 <input
                                                   id={quote._id}
                                                   type="file"
-                                                   accept=".step"
+                                                   accept=".step,.stp"
                                                   onChange={(e) =>
                                                     handleFileChange(
                                                       e,

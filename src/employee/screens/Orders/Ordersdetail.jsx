@@ -874,16 +874,16 @@ const OrdersDetail = () => {
     setSelectedMethod(service_code);
   };
   const downloadFile = (url) => {
-    // Extract file name and extension from URL
-    const fileNameWithParams = url.split("/").pop(); // Get everything after the last "/"
-    const [fileName] = fileNameWithParams.split("?"); // Remove query parameters if present
-    const extension = fileName.split(".").pop(); // Get the file extension
-  
-    // Clean the file name (remove digits and unwanted patterns at the start of the name)
-    const cleanFileName = fileName
-      .replace(/^\d+-/, "") // Remove timestamp or numerical prefix (e.g., "1734240670591-")
-      .replace(/(\s*\(\d+\))?\.[^.]+$/, `.${extension}`); // Clean trailing patterns like "(5)" before the extension
-  
+    // Extract file name and remove URL parameters
+    let fileNameWithParams = url.split("/").pop();
+    let [fileName] = fileNameWithParams.split("?"); // Remove query parameters
+
+    // Decode URL-encoded characters (like %20 for spaces)
+    fileName = decodeURIComponent(fileName);
+
+    // Remove unwanted prefixes (e.g., numerical prefixes like "1734240670591-")
+    fileName = fileName.replace(/^\d+-/, "");
+
     // Fetch and download the file
     fetch(url)
       .then((response) => {
@@ -895,12 +895,12 @@ const OrdersDetail = () => {
       .then((blob) => {
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = cleanFileName; // Set the final cleaned file name
+        link.download = fileName; // Set cleaned file name
         link.click();
-        window.URL.revokeObjectURL(link.href); // Clean up
+        window.URL.revokeObjectURL(link.href); // Cleanup
       })
       .catch((error) => console.error("Error downloading the file:", error));
-  };
+};
   
   return (
     <div id="pdf-content">

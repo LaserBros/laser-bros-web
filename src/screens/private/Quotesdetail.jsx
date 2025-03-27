@@ -1247,7 +1247,7 @@ export default function QuotesDetail() {
                                                   <input
                                                     id={quote._id}
                                                     type="file"
-                                                    accept=".step"
+                                                    accept=".step,.stp"
                                                     onChange={(e) =>
                                                       handleFileChange(
                                                         e,

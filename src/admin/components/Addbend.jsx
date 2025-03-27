@@ -86,7 +86,7 @@ const AddBend = ({
       "image/png",
       "application/octet-stream",
     ];
-    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step",".PDF", ".JPG", ".JPEG", ".PNG", ".STEP" ];
+    const validExtensions = [".pdf", ".jpg", ".jpeg", ".png", ".step",".stp",".PDF", ".JPG", ".JPEG", ".PNG", ".STEP",".STP" ];
 
     if (newFile) {
       const fileType = newFile.type;
@@ -296,7 +296,7 @@ const AddBend = ({
                     id="uploadfileBend"
                     name="uploadfileBend"
                     className="d-none"
-                    accept=".pdf,.jpg,.jpeg,.png,.step"
+                    accept=".pdf,.jpg,.jpeg,.png,.step,.stp"
                     onChange={handleFileChange}
                   />
                   <span> or Drag or Drop</span>
