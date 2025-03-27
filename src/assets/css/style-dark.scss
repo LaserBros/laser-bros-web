@@ -3,6 +3,11 @@
 
 body {
     &.dark {
+        .page_not_found {
+            h1 ,p {
+                color:  $white-color !important;
+            }
+        }
         .btnicons {
             color:  $white-color !important;
         }
