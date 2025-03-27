@@ -35,11 +35,13 @@ export default function OrdersDetail() {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join with space
   };
+  const [loadRfq , setloadRfq] = useState(false);
   const handlePDF = async () => {
      try {
           const data = {
             orderId: orderDetails?._id
           }
+          setloadRfq(true);
           const response = await generateOrderPDFUser(data);
           if (response.data && response.data.pdf_url) {
             const pdfUrl = response.data.pdf_url;
@@ -60,10 +62,12 @@ export default function OrdersDetail() {
             link.click();
         
             // Cleanup
+            setloadRfq(false);
             document.body.removeChild(link);
             window.URL.revokeObjectURL(blobUrl);
           }
         } catch (error) {
+          setloadRfq(false);
           console.error("Error downloading PDF:", error);
         }
   };
@@ -176,7 +180,23 @@ export default function OrdersDetail() {
                     className="btn btn-primary d-inline-flex align-items-center flex-shrink-0 justify-content-center"
                     style={{ marginRight: "4px" }}
                   >
-                    Download Invoice
+                    {loadRfq ? (
+          <>
+            <span
+              role="status"
+              aria-hidden="true"
+              className="spinner-border spinner-border-sm text-center"
+              style={{
+                margin: "0 auto",
+                display: "block",
+                marginTop: "20px",
+                marginBottom: "20px",
+              }}
+            ></span>
+          </>
+        ) : (
+                    "Download Invoice"
+        )}
                   </Link>
                 {orderDetails.status == 3 && (orderDetails.shipping == "Local Pickup" || ordersTrack?.service_code == "custom_rates" || ordersTrack?.length > 0) && ( 
                   <Link

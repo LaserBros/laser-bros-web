@@ -121,6 +121,7 @@ export default function RfqDetail() {
       window.URL.revokeObjectURL(blobUrl);
       setLoadRfq(false);
     } catch (error) {
+      setLoadRfq(false);
       console.error('Error downloading PDF:', error);
     }
   };
