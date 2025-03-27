@@ -5,7 +5,7 @@ const Pagination = ({
   itemsPerPage,
   currentPage,
   onPageChange,
-  maxVisiblePages = 5,
+  maxVisiblePages = 7,  
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   
