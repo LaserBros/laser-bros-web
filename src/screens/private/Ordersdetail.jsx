@@ -71,7 +71,27 @@ export default function OrdersDetail() {
           console.error("Error downloading PDF:", error);
         }
   };
+  const handleDownload = async (url, name) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
 
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", name);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl); // Revoke the blob URL after the download
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   const fetchOrder = async () => {
     const data = {
       id: id,
@@ -292,7 +312,12 @@ export default function OrdersDetail() {
                             </div>
 
                             <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                              <h2>{row.quote_name}</h2>
+                              <h2>{row.quote_name}  <Icon
+                                                                                              icon="material-symbols-light:download-sharp"
+                                                                                              onClick={() =>
+                                                                                                handleDownload(encodeS3Url(row?.dxf_url), row.quote_name)
+                                                                                              }
+                                                                                            /></h2>
                               <p className="num-dim-main">
                                 {row?.subquote_number}
                               </p>
