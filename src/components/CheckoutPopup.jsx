@@ -37,11 +37,35 @@ const CheckoutPopup = ({
   const [selectedShippingAddress, setShippingSelectedAddress] = useState(null);
   const [handleCloseTrigger, sethandleCloseTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
+  const shippingRates = [
+    {
+        service_type: "UPS 2nd Day Air®",
+        carrier_friendly_name: "UPS",
+        service_code: "ups_2nd_day_air",
+        shipping_amount: { currency: "usd", amount: 25.43 },
+        estimated_delivery_date: "2025-04-03T23:00:00Z"
+    },
+    {
+        service_type: "UPS® Ground",
+        service_code: "ups_ground",
+        carrier_friendly_name: "UPS",
+        shipping_amount: { currency: "usd", amount: 11.32 },
+        estimated_delivery_date: "2025-04-02T23:00:00Z"
+    },
+    {
+        service_type: "UPS Next Day Air®",
+        carrier_friendly_name: "UPS",
+        service_code: "ups_next_day_air",
+        shipping_amount: { currency: "usd", amount: 42.42 },
+        estimated_delivery_date: "2025-04-02T10:30:00Z"
+    }
+];
 
   const [rateVal, setrateVal] = useState("");
   const [taxPercentage, setaxPercentage] = useState(0);
   const [taxAmount, setaxAmount] = useState(0);
 
+  const [ByDefaultShipping, setByDefaultShipping] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
   const [shippingInfoData, setshippingInfo] = useState("");
@@ -230,6 +254,7 @@ const CheckoutPopup = ({
       setSelectedAddress(selectedAddress || null);
     }
     // // console.log("Dsdsdsdssddsd");
+    setByDefaultShipping(false);
     setloadingShip(true);
     if(selectedId == "" || selectedId == null) {
       // setshippingInfo("")
@@ -260,6 +285,16 @@ const CheckoutPopup = ({
       setshippingInfo(updatedShippingInfo);
     } 
     } catch (error) {
+      if(error.response.data.error[0] == "Package exceeds the maximum size total constraints.") {
+        setSelectedAddress(selectedAddress || null);
+        setByDefaultShipping(true);
+        setshippingInfo((prevShippingInfo) => ({
+          ...prevShippingInfo,
+          shippingRates: shippingRates
+      }));
+        setloadingShip(false);
+        return
+      }
       // setshippingInfo("")
       toast.error(error.response.data.error[0]+ " Please select another address.");
       // setshippingInfo("");
@@ -433,6 +468,7 @@ const CheckoutPopup = ({
                         shippingInfoData?.requestQuoteDB?.check_status
                       }
                       selectedShippingAddress={selectedShippingAddress}
+                      ByDefaultShipping={ByDefaultShipping}
                     />
                     </>
                   )}

@@ -8,6 +8,7 @@ const ShippingRates = ({
   RequestQuote,
   selectedShippingAddress,
   requestDb,
+  ByDefaultShipping
 }) => {
   const [selectedRate, setSelectedRate] = useState(service_code);
   const serviceOrder = [
