@@ -27,7 +27,7 @@ const Pagination = ({
   }
 
   return (
-    <nav className="pagination-container">
+    <nav className="pagination-container mt-2">
       <ul className="pagination_order">
         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
           <button 
