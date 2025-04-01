@@ -273,6 +273,16 @@ const CheckoutPopup = ({
       };
       
       const res = await getShippingRatesAll(data);
+      if(res.data.shippingRates.length == 0) {
+        setSelectedAddress(selectedAddress || null);
+        setByDefaultShipping(true);
+        setshippingInfo((prevShippingInfo) => ({
+          ...prevShippingInfo,
+          shippingRates: shippingRates
+      }));
+        setloadingShip(false);
+        return
+      }
       setshippingInfo(res.data);
       if(ParamType == "rfq") {
       const updatedShippingInfo = { 
@@ -285,16 +295,7 @@ const CheckoutPopup = ({
       setshippingInfo(updatedShippingInfo);
     } 
     } catch (error) {
-      if(error.response.data.error[0] == "Package exceeds the maximum size total constraints.") {
-        setSelectedAddress(selectedAddress || null);
-        setByDefaultShipping(true);
-        setshippingInfo((prevShippingInfo) => ({
-          ...prevShippingInfo,
-          shippingRates: shippingRates
-      }));
-        setloadingShip(false);
-        return
-      }
+     
       // setshippingInfo("")
       toast.error(error.response.data.error[0]+ " Please select another address.");
       // setshippingInfo("");
