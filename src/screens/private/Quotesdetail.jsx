@@ -1111,21 +1111,21 @@ export default function QuotesDetail() {
                         quote.type_options != null ? (
                           <p className="num-dim-main">
                             <span className="num-dim">
-                              {quote.type_options}-{quote.quantity}-
+                              {quote.type_options}-{quote.quantity}-{quote.finishing_id && quote.binding_option != "no" && quote.bend_count >= 1 ? 'B-' : ''}
                               {currentMonth}-{yearLastTwoDigits}-
                               {quoteList.quote_number}-{" "}
                               {String(index + 1).padStart(3, "0")}
                             </span>
-                          </p>
+                          </p> 
                         ) : (
                           quote.type_option != "" &&
                           quote.type_option != null && (
                             <p className="num-dim-main">
                               <span className="num-dim">
                                 {quote.type_option[0].material_code}-
-                                {quote.quantity}-{currentMonth}-
+                                {quote.quantity}-{quote.finishing_id && quote.binding_option != "no" && quote.bend_count >= 1 ? 'B-' : ''}{currentMonth}-
                                 {yearLastTwoDigits}-{quoteList.quote_number}-
-                                {String(index + 1).padStart(3, "0")}
+                                {String(index + 1).padStart(3, "0")} 
                               </span>
                             </p>
                           )

@@ -18,6 +18,7 @@ import OrderStatus from "../../admin/components/OrderStatus";
 import ShippingStatus from "../../components/ShippingStatus";
 import AddressDetails from "../../admin/components/AddressDetails";
 import { encodeS3Url } from "../../utils/encodeS3Url";
+import { getFormattedSubquote } from "../../utils/AddBendingQuote";
 export default function OrdersDetail() {
   const { id } = useParams();
   const [Shipping, setShipping] = useState(0);
@@ -319,7 +320,7 @@ export default function OrdersDetail() {
                                                                                               }
                                                                                             /></h2>
                               <p className="num-dim-main">
-                                {row?.subquote_number}
+                                {getFormattedSubquote(row,row?.subquote_number)}
                               </p>
                               <p className="num-dim-main">
                                 {/* <span className="num-dim">

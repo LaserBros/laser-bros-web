@@ -16,6 +16,7 @@ import QuotesSidebar from "../../components/Quotessidebar";
 import AddressDetails from "../../admin/components/AddressDetails";
 import { encodeS3Url } from "../../utils/encodeS3Url";
 import axiosInstance from "../../axios/axiosInstance";
+import { getFormattedSubquote } from "../../utils/AddBendingQuote";
 export default function RfqDetail() {
   const { id } = useParams();
   const getStatusColor = (status) => {
@@ -252,7 +253,7 @@ export default function RfqDetail() {
                                                               />
                                   </h2>
                                   <p className="num-dim-main">
-                                    {row?.subquote_number}
+                                    {getFormattedSubquote(row, row?.subquote_number)}
                                     {/* <span className="num-dim">
                               <span>Dimensions</span> 1.00 in x 1.00 in
                             </span> */}

@@ -54,6 +54,7 @@ import ModalOrderData from "../../components/OrderData";
 import getMaterialColor from "../../components/ColorCode";
 import ModalShippingInfo from "../../components/ModalShippingInfo";
 import { encodeS3Url } from "../../../utils/encodeS3Url";
+import { getFormattedSubquote } from "../../../utils/AddBendingQuote";
 
 const OrdersDetail = () => { 
   const pdfRef = useRef();
@@ -1611,7 +1612,7 @@ const OrdersDetail = () => {
                               className="num-dim mb-2"
                               style={{ fontSize: "12px" }}
                             >
-                              {wo?.subquote_number}
+                              {getFormattedSubquote(wo, wo?.subquote_number)}
                             </span>
                             {/* {wo.pierce_count != 0 && (
                               <>

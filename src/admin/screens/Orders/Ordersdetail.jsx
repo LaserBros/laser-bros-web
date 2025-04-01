@@ -57,6 +57,7 @@ import ModalShippingInfo from "../../components/ModalShippingInfo";
 import AddAddressModal from "../../../screens/private/AddaddressModal";
 import AddAddressModalAdmin from "../../components/AddAddressModalAdmin";
 import { encodeS3Url } from "../../../utils/encodeS3Url";
+import { getFormattedSubquote } from "../../../utils/AddBendingQuote";
 
 const OrdersDetail = () => {
   const pdfRef = useRef();
@@ -518,14 +519,14 @@ const OrdersDetail = () => {
       parseFloat(box.width) +
       parseFloat(box.height) +
       parseFloat(box.weight);
-    // // console.log(":Fdfdfdf=-==-=", orderInfo.length + parseInt(index) + 1);
-    // return;
+    
     const data = {
       length: box.length,
       width: box.width,
       height: box.height,
       weight: box.weight,
-      box_id: "box_" + id + "_" + orderInfo?.length + parseInt(index) + 1,
+      box_id: "box_" + id + "_" + (orderInfo?.length || "0") + parseInt(index) + 1,
+      // box_id: "box_" + id + "_" + (orderInfo?.length || "") + parseInt(index) + 1,
       id: id,
       service_code: selectedMethod,
     };
@@ -1633,7 +1634,7 @@ const OrdersDetail = () => {
                               className="num-dim mb-2"
                               style={{ fontSize: "12px" }}
                             >
-                              {wo?.subquote_number}
+                              {getFormattedSubquote(wo, wo?.subquote_number)}
                             </span>
                             {/* {wo.pierce_count != 0 && (
                               <>
