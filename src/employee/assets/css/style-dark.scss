@@ -256,7 +256,16 @@ body {
                     label {
                         color: $white-color;
                     }
-
+                    .otpinput{
+                        background  : transparent;
+                        border-color: rgba($white-color, 0.2);
+                        color       : rgba($white-color, 0.75);
+                      
+                        &::placeholder {
+                            color: rgba($white-color, 0.75);
+                            opacity: 1;
+                        }
+                    }
                     .form-control {
                         background  : transparent;
                         border-color: rgba($white-color, 0.2);

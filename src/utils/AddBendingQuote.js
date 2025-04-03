@@ -8,3 +8,14 @@ export const getFormattedSubquote = (quote, subquoteNumber) => {
 
   return subquoteNumber.replace(/^(\d+-)/, `$1${prefix}`);
   };
+
+
+  export const getFormattedSubquoteNumberFirst = (quote, subquoteNumber) => {
+    const prefix =
+      quote.finishing_id && quote.binding_option !== "no" && quote.bend_count >= 1
+        ? "B-"
+        : "";
+  
+    // Ensure prefix is added only if it's not already there
+    return subquoteNumber.startsWith(prefix) ? subquoteNumber : `${prefix}${subquoteNumber}`;
+  };

@@ -187,6 +187,7 @@ html {
         }
 
         @media only screen and (max-width:767.98px) {
+            padding: 20px;
             .btn-primary {
                 font-size: 16px !important;
             }
@@ -238,7 +239,7 @@ html {
                     opacity: 0.30;
                 }
             }
-
+       
             .password-input-group {
                 svg {
                     position: absolute;
@@ -247,7 +248,24 @@ html {
                     opacity : 0.8;
                 }
             }
-
+            .otpinput{
+                // width:65px!important;
+                flex: 1;
+                height:65px;
+                border: 2px solid rgba($black-color, 0.15);
+                border-radius: 12px;
+                color        : rgba($black-color, 0.70);
+                box-shadow: none;
+                outline: none;
+                &:focus{
+                    border: 2px solid $primary-color!important;
+                }
+                @media only screen and (max-width:500px){
+                    // width:55px!important;
+                    flex: 1;
+                    height:55px;
+                }
+            }
             .form-control {
                 height       : 50px;
                 border-radius: 12px;

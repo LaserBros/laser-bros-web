@@ -635,17 +635,23 @@ const Orders = () => {
                   <>
                     {orders && orders.length > 0 ? (
                       orders.map((row) => {
+                        const hasNotes = row.subData?.some(
+                          (sub) =>
+                            (sub.notes_text && sub.notes_text.trim().length > 0) || 
+                            (sub.notes_admin && sub.notes_admin.length > 0)
+                        );
                         return (
                           <tr>
                             <td>
                               <Link
-                                className="workorders"
+                                className="workorders d-flex gap-2"
                                 to={`/admin/orders-detail/${row._id}`}
                               >
                                 <b>
                                   WO#
-                                  {row.search_quote}
+                                  {row.search_quote}  
                                 </b>
+                                {hasNotes && <span class="expansion_tag_manage">!</span>}
                               </Link>
                             </td>
                             <td>

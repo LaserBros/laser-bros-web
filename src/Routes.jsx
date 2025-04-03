@@ -141,6 +141,7 @@ import {
   Route,
   Outlet,
 } from "react-router-dom";
+import DxfAnalyzer from "./screens/private/dxfFile";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -949,7 +950,7 @@ return (
         path="/my-address/edit-address/:id"
         element={<PrivateRoute element={<EditAddress />} />}
       />
-      {/* <Route path="/filePath" element={<DxfAnalyzer />} /> */}
+      <Route path="/filePath" element={<DxfAnalyzer />} />
       <Route
         path="/payment-cards"
         element={<PrivateRoute element={<PaymentCards />} />}

@@ -58,7 +58,7 @@ import ModalOrderData from "../../components/OrderData";
 import { Tooltip } from "react-tooltip";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { encodeS3Url } from "../../../utils/encodeS3Url";
-import { getFormattedSubquote, getFormattedSubquoteNumber } from "../../../utils/AddBendingQuote";
+import { getFormattedSubquote, getFormattedSubquoteNumber, getFormattedSubquoteNumberFirst } from "../../../utils/AddBendingQuote";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -1168,6 +1168,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
 
             let parts = part_number.split("-");
             parts[0] = selectedOption.selectedValue;
+            parts[1] = quote.quantity;
 
             let total_parts = parts.join("-");
             updatedFields.subquote_number = total_parts;
@@ -1375,7 +1376,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                 ? getFormattedSubquote(quote, quote?.subquote_number)
                                 : quote.subquote_number +
                                   "-" +
-                                  getFormattedSubquoteNumber(quote,quoteList.search_quote) +
+                                  getFormattedSubquoteNumberFirst(quote,quoteList.search_quote) +
                                   "-" +
                                   String(index + 1).padStart(3, "0")
                               : ""}

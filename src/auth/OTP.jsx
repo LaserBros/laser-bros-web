@@ -6,6 +6,7 @@ import bg from "../assets/img/bg.jpg";
 import { toast } from "react-toastify";
 import axiosInstance from "../axios/axiosInstance";
 import { UserContext } from "../localstorage/UserProfileContext";
+import OTPInput from "react-otp-input";
 var token_val = "";
 const OTPForm = () => {
   const navigate = useNavigate();
@@ -45,8 +46,8 @@ const OTPForm = () => {
   const handleResendOTP = async (e) => {
     e.preventDefault();
     const data = {
-      type:type,
-      full_name:formData.full_name,
+      type: type,
+      full_name: formData.full_name,
       email: formData.email,
     };
     try {
@@ -72,22 +73,25 @@ const OTPForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    setErrors(validationErrors); 
+    setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       if (type == "forgot") {
-        console.log(type,"Dsdsdsdds-=-=");
+        console.log(type, "Dsdsdsdds-=-=");
         try {
           const data = {
             otp_get: otp,
-            hash : token_val,
-            email :formData.email
+            hash: token_val,
+            email: formData.email,
           };
           setLoading(true);
 
           const response = await axiosInstance.post("/verifyotp", data);
           toast.success("OTP verified");
-          console.log(" response.data.data.token", response.data.data.otp_token)
+          console.log(
+            " response.data.data.token",
+            response.data.data.otp_token
+          );
           navigate("/reset-password", {
             state: { token: response.data.data.otp_token },
           });
@@ -107,8 +111,8 @@ const OTPForm = () => {
         try {
           const data = {
             otp_get: otp,
-            hash : token_val,
-            email :formData.email
+            hash: token_val,
+            email: formData.email,
           };
           setLoading(true);
           const response = await axiosInstance.post("/verifyotp", data);
@@ -183,7 +187,7 @@ const OTPForm = () => {
         </div>
         <Container>
           <Row className="justify-content-center">
-            <Col lg={7} xl={6}>
+            <Col md={9} lg={7} xl={5}>
               <div className="loginform">
                 <div className="logologin text-center mb-3">
                   <Link to="/">
@@ -200,17 +204,29 @@ const OTPForm = () => {
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-3 form-group">
                     <Form.Label>One-Time Password</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       placeholder="Enter your One-Time Password"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       isInvalid={!!errors.otp}
+                    /> */}
+                    <OTPInput
+                      value={otp}
+                      onChange={setOtp}
+                      numInputs={6}
+                      inputType="tel"
+                      containerStyle="gap-1 justify-content-between"
+                      // renderSeparator={
+                      //   <span className="mx-2 text-gray-500">-</span>
+                      // }
+                      renderInput={(props) => <input {...props} className="otpinput" />}
+                    
                     />
                     {errors.otp && (
-                      <Form.Control.Feedback type="invalid">
+                      <small className="text-danger form-text">
                         {errors.otp}
-                      </Form.Control.Feedback>
+                      </small>
                     )}
                   </Form.Group>
 
