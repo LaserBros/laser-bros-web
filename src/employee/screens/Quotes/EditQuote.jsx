@@ -58,10 +58,10 @@ import ModalOrderData from "../../components/OrderData";
 import { Tooltip } from "react-tooltip";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { encodeS3Url } from "../../../utils/encodeS3Url";
-import { getFormattedSubquote, getFormattedSubquoteNumber } from "../../../utils/AddBendingQuote";
+import { getFormattedSubquote, getFormattedSubquoteNumber, getFormattedSubquoteNumberFirst } from "../../../utils/AddBendingQuote";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]); 
   const [DeletemodalShow, setDeletemodalShow] = useState(false);
   const options = [
     "F0",
@@ -1374,7 +1374,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                                             ? getFormattedSubquote(quote, quote?.subquote_number)
                                                             : quote.subquote_number +
                                                               "-" + 
-                                                              getFormattedSubquoteNumber(quote,quoteList.search_quote) +
+                                                              getFormattedSubquoteNumberFirst(quote,quoteList.search_quote) +
                                                               "-" +
                                                               String(index + 1).padStart(3, "0")
                                                           : ""}
@@ -1839,17 +1839,23 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
 
                         <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
                           <Link
-                            className="btnshare"
-                            onClick={() =>
-                              handleShow3(
-                                quote.notes_text,
-                                quote.notes_admin,
-                                quote._id
-                              )
-                            }
-                          >
-                            Add Note
-                          </Link>
+                                                      className="btnshare custom_expansion"
+                                                      onClick={() =>
+                                                        handleShow3(
+                                                          quote.notes_text,
+                                                          quote.notes_admin,
+                                                          quote._id
+                                                        )
+                                                      }
+                                                    > 
+                                                      Add Note 
+                                                      {((quote.notes_text &&
+                                                          quote.notes_text.trim() !== "") || // checks if notes_text is not an empty string
+                                                          (Array.isArray(quote.notes_admin) &&
+                                                          quote.notes_admin.length > 0)) && (
+                                                          <span className="expansion_tag">!</span>
+                                                        )}
+                                                    </Link>
                           <Link
                             className="btnicon"
                             onClick={() =>

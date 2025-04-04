@@ -1159,6 +1159,38 @@ html {
                     }
                 }
                 .list-main {
+                    .w-40{
+                        width: 40%;
+                        @media only screen and (max-width:1299.98px) {
+                            width: initial;
+                        }
+                    }
+                    .w-20{
+                        width: 20%;
+                        @media only screen and (max-width:1299.98px) {
+                            width: initial;
+                        }
+                    }
+                    .list-qty{
+                        .qty{
+                            height: 25px;
+                            background: rgba($black-color, .03);
+                            border: 1px solid rgba($black-color, .1);
+                            border-radius: 6px;
+                            font-size: 12px;
+                            display: inline-flex;
+                            align-items: center;
+                            padding: 0px 10px;
+                            color:$black-color;
+                            strong{
+                                font-weight: 500;
+                            }
+                        }
+                        .price-total{
+                            font-size: 14px;
+                            color:rgba($black-color, .60)
+                        }
+                    }
                     .list-left{
                         .list-img-outer{
                             text-align: center;
@@ -1196,26 +1228,7 @@ html {
                                 font-size: 26px;
                                }
                             }
-                            .list-qty{
-                                .qty{
-                                    height: 25px;
-                                    background: rgba($black-color, .03);
-                                    border: 1px solid rgba($black-color, .1);
-                                    border-radius: 6px;
-                                    font-size: 12px;
-                                    display: inline-flex;
-                                    align-items: center;
-                                    padding: 0px 10px;
-                                    color:$black-color;
-                                    strong{
-                                        font-weight: 500;
-                                    }
-                                }
-                                .price-total{
-                                    font-size: 14px;
-                                    color:rgba($black-color, .60)
-                                }
-                            }
+                          
                         }
                     }
                     .list-checkboxes{
@@ -2140,5 +2153,17 @@ html {
     }
     p{
         margin-bottom: 0;
+    }
+}
+.w-40{
+    width: 40%;
+    @media only screen and (max-width:1199.98px) {
+        width: initial;
+    }
+}
+.w-10{
+    width: 20%;
+    @media only screen and (max-width:1199.98px) {
+        width: initial;
     }
 }

@@ -251,19 +251,26 @@ const RFQS = () => {
                     const yearLastTwoDigits = String(
                       dateObj.getFullYear()
                     ).slice(-2);
+                    const hasNotes = row.material_details?.some(
+                      (sub) =>
+                        sub && // Ensure sub is not null or undefined
+                        ((sub.notes_text && sub.notes_text.trim().length > 0) ||
+                        (sub.notes_admin && sub.notes_admin.length > 0))
+                    );
                     return (
                       <React.Fragment>
                         <tr>
                           <td className="text-nowrap">
                             <Link
                               // to="/employee/rfqs/rfqs-detail"
-                              className="workorders"
+                              className="workorders d-flex gap-1"
                               onClick={() => getQueue(row._id)}
                             >
                               <b>
                                 WO#
                                 {row.search_quote}
                               </b>
+                              {hasNotes && <span class="expansion_tag_manage">!</span>}
                             </Link>
                           </td>
                           <td>

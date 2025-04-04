@@ -1573,7 +1573,7 @@ const OrdersDetail = () => {
                     .reverse()
                     .map((wo, index) => (
                       <div className="list-main  d-inline-flex justify-content-between w-100">
-                        <div className="list-left d-inline-flex">
+                        <div className="list-left d-inline-flex w-40">
                           <div
                             className="list-img-outer"
                             style={{ width: "110px" }}
@@ -1625,7 +1625,7 @@ const OrdersDetail = () => {
                                 </span>
                               </>
                             )} */}
-                            <div className="datamain">
+                            <div className="datamain mb-3">
                               <Link
                                 className="btndata"
                                 onClick={() => {
@@ -1644,7 +1644,7 @@ const OrdersDetail = () => {
                                 )}
                               </Link>
                             </div>
-                            <div className="list-qty d-flex align-items-center gap-3 mb-3 pt-3">
+                            {/* <div className="list-qty d-flex align-items-center gap-3 mb-3 pt-3">
                               <span className="qty">
                                 <strong>QTY:</strong> {wo.quantity}
                               </span>
@@ -1656,7 +1656,7 @@ const OrdersDetail = () => {
                                 <Amount amount={wo.amount} />
                                 /total
                               </span>
-                            </div>
+                            </div> */}
                             <Link
                               className="btnnote custom_expansion"
                               onClick={() => {
@@ -1671,7 +1671,7 @@ const OrdersDetail = () => {
                                 <span className="expansion_tag">!</span>
                               )}
                             </Link>
-                            {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                            {/* {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
                               <Link
                                 className="btnnote ms-2"
                                 onClick={() => {
@@ -1695,11 +1695,11 @@ const OrdersDetail = () => {
                               <Link className="ms-2 text-success text-decoration-none">
                                 Completed
                               </Link>
-                            )}
+                            )} */}
                           </div>
                         </div>
 
-                        <div className="list-checkboxes  d-inline-flex gap-3">
+                        <div className="list-checkboxes  d-inline-flex gap-3 w-40">
                           <div className="CuttingCheck_div custom-checkbox-container ">
                             <p>
                               {" "}
@@ -1794,6 +1794,49 @@ const OrdersDetail = () => {
                                 </div>
                               </>
                             ))}
+                          </div>
+                          <div className="list-qty flex-column d-flex gap-3 mb-3">
+                            <div className="d-flex align-items-center gap-3">
+                              <span className="qty">
+                                <strong>QTY:</strong> {wo.quantity}
+                              </span>
+                              <span className="price-total">
+                                <Amount amount={wo.amount / wo.quantity} />
+                                /ea.
+                              </span>
+                              <span className="price-total">
+                                <Amount amount={wo.amount} />
+                                /total
+                              </span>
+                            </div>
+
+                            <div className="mark_complete_action">
+                              {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                                <Link
+                                  className="btnnote ms-2"
+                                  onClick={() => {
+                                    setIds(wo._id);
+                                    setModalShow3(true);
+                                    // handleComplete(wo._id);
+                                  }}
+                                >
+                                  {Rowloading == wo._id ? (
+                                    <span
+                                      className="spinner-border spinner-border-sm"
+                                      role="status"
+                                      aria-hidden="true"
+                                    ></span>
+                                  ) : (
+                                    "Mark Complete"
+                                  )}
+                                </Link>
+                              )}
+                              {wo.isCompleted == 1 && (
+                              <Link className="ms-2 text-success text-decoration-none">
+                                Completed
+                              </Link>
+                            )}
+                            </div>
                           </div>
                           {/* {wo.bend_count > 0 && (
                             <div className="custom-checkbox-container text-center">
@@ -1891,7 +1934,7 @@ const OrdersDetail = () => {
                           )} */}
                         </div>
                         {wo.bend_count > 0 ? (
-                          <div>
+                          <div className="w-20 text-end"> 
                              {wo.step_file_bend != null &&
                               wo.step_file_bend != "null" &&
                               wo.step_file_bend != "" && (
@@ -1904,7 +1947,7 @@ const OrdersDetail = () => {
                                     }
                                     style={{ paddingRight: "15px" }}
                                   >
-                                    <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
+                                    <div className="list-attachment text-center d-inline-flex flex-column align-items-center w-20">
                                   <Image
                                     src={attachment}
                                     className="img-fluid"
@@ -1957,7 +2000,7 @@ const OrdersDetail = () => {
                             ))}
                           </div>
                         ) : (
-                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center"></div>
+                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center w-20"></div>
                         )}
                       </div>
                     ))}

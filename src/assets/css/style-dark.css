@@ -3,6 +3,12 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .page_not_found h1, body.dark .page_not_found p {
+  color: #ffffff !important;
+}
+body.dark .btnicons {
+  color: #ffffff !important;
+}
 body.dark .modal_header_blocking .modal-body p {
   color: #ffffff;
 }

@@ -550,6 +550,21 @@ body {
                         border-color: rgba($white-color, 0.2);
 
                         .list-main {
+                            .btnnote {
+                                border-color: rgba($white-color, 0.2);
+                                color       : $white-color;
+                            }
+                            .list-qty {
+                                .qty {
+                                    background  : rgba($white-color, 0.1) !important;
+                                    border-color: rgba($white-color, 0.1) !important;
+                                    color       : $white-color !important;
+                                }
+
+                                .price-total {
+                                    color: rgba($white-color, 0.50) !important;
+                                }
+                            }
                             &:not(:last-child) {
                                 border-color: rgba($white-color, 0.1) !important
                             }
@@ -599,10 +614,7 @@ body {
                             }
 
                             .list-content {
-                                .btnnote {
-                                    border-color: rgba($white-color, 0.2);
-                                    color       : $white-color;
-                                }
+                               
 
                                 h2 {
                                     color: $white-color !important;
@@ -612,17 +624,7 @@ body {
                                 {
                                     color: $light-color;
                                 }
-                                .list-qty {
-                                    .qty {
-                                        background  : rgba($white-color, 0.1) !important;
-                                        border-color: rgba($white-color, 0.1) !important;
-                                        color       : $white-color !important;
-                                    }
-
-                                    .price-total {
-                                        color: rgba($white-color, 0.50) !important;
-                                    }
-                                }
+                             
                             }
                         }
                     }

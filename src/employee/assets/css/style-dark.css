@@ -10,7 +10,7 @@ body.dark .iconinfotext .iconify {
   color: #ffffff;
 }
 body.dark .baseratecustom {
-  background-color: #000000;
+  background-color: rgba(255, 255, 255, 0.12);
   border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 body.dark .baseratecustom input[type=file] {
@@ -34,6 +34,9 @@ body.dark .btncstm {
 body.dark .pagination_order li.page-item button.page-link {
   border: 1px solid #000000;
   background-color: #000000;
+  color: #ffffff;
+}
+body.dark .pagination_order li.page-item span {
   color: #ffffff;
 }
 body.dark .nopermission h1, body.dark .nopermission p {
@@ -177,6 +180,19 @@ body.dark .login-main .loginform .headlogin_div p {
 }
 body.dark .login-main .loginform .form-group label {
   color: #ffffff;
+}
+body.dark .login-main .loginform .form-group .otpinput {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.75);
+}
+body.dark .login-main .loginform .form-group .otpinput::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 1;
+}
+body.dark .login-main .loginform .form-group .otpinput::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 1;
 }
 body.dark .login-main .loginform .form-group .form-control {
   background: transparent;
@@ -370,6 +386,18 @@ body.dark .wrapper .card .card-body .orders-shipping b {
 body.dark .wrapper .card .card-body .orders-detail {
   border-color: rgba(255, 255, 255, 0.2);
 }
+body.dark .wrapper .card .card-body .orders-detail .list-main .btnnote {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-qty .qty {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+body.dark .wrapper .card .card-body .orders-detail .list-main .list-qty .price-total {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
 body.dark .wrapper .card .card-body .orders-detail .list-main:not(:last-child) {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
@@ -399,24 +427,12 @@ body.dark .wrapper .card .card-body .orders-detail .list-main .list-attachment i
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-attachment span {
   color: rgba(255, 255, 255, 0.75) !important;
 }
-body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .btnnote {
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-content h2 {
   color: #ffffff !important;
 }
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-content span.num-dim,
 body.dark .wrapper .card .card-body .orders-detail .list-main .list-content p.num-dim-main {
   color: #bfbfbf;
-}
-body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .list-qty .qty {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-}
-body.dark .wrapper .card .card-body .orders-detail .list-main .list-content .list-qty .price-total {
-  color: rgba(255, 255, 255, 0.5) !important;
 }
 body.dark .wrapper .card .card-body .form-group .form-label {
   color: #ffffff;

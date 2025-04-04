@@ -175,6 +175,9 @@ body {
   }
 }
 @media only screen and (max-width: 767.98px) {
+  .login-main .loginform {
+    padding: 20px;
+  }
   .login-main .loginform .btn-primary {
     font-size: 16px !important;
   }
@@ -219,6 +222,24 @@ body {
   top: 17px;
   right: 20px;
   opacity: 0.8;
+}
+.login-main .loginform .form-group .otpinput {
+  flex: 1;
+  height: 65px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  color: rgba(0, 0, 0, 0.7);
+  box-shadow: none;
+  outline: none;
+}
+.login-main .loginform .form-group .otpinput:focus {
+  border: 2px solid #4F8CCA !important;
+}
+@media only screen and (max-width: 500px) {
+  .login-main .loginform .form-group .otpinput {
+    flex: 1;
+    height: 55px;
+  }
 }
 .login-main .loginform .form-group .form-control {
   height: 50px;
@@ -996,6 +1017,40 @@ body {
   background-color: #000000;
   border-color: #000000;
 }
+.wrapper .maincontent_div .card .card-body .list-main .w-40 {
+  width: 40%;
+}
+@media only screen and (max-width: 1299.98px) {
+  .wrapper .maincontent_div .card .card-body .list-main .w-40 {
+    width: initial;
+  }
+}
+.wrapper .maincontent_div .card .card-body .list-main .w-20 {
+  width: 20%;
+}
+@media only screen and (max-width: 1299.98px) {
+  .wrapper .maincontent_div .card .card-body .list-main .w-20 {
+    width: initial;
+  }
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-qty .qty {
+  height: 25px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0px 10px;
+  color: #000000;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-qty .qty strong {
+  font-weight: 500;
+}
+.wrapper .maincontent_div .card .card-body .list-main .list-qty .price-total {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+}
 .wrapper .maincontent_div .card .card-body .list-main .list-left .list-img-outer {
   text-align: center;
   width: 80px;
@@ -1033,24 +1088,6 @@ body {
 }
 .wrapper .maincontent_div .card .card-body .list-main .list-left .list-content h2 svg {
   font-size: 26px;
-}
-.wrapper .maincontent_div .card .card-body .list-main .list-left .list-content .list-qty .qty {
-  height: 25px;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 6px;
-  font-size: 12px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0px 10px;
-  color: #000000;
-}
-.wrapper .maincontent_div .card .card-body .list-main .list-left .list-content .list-qty .qty strong {
-  font-weight: 500;
-}
-.wrapper .maincontent_div .card .card-body .list-main .list-left .list-content .list-qty .price-total {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
 }
 .wrapper .maincontent_div .card .card-body .list-main .list-checkboxes .CuttingCheck_div p {
   display: flex;
@@ -1882,4 +1919,22 @@ body {
 }
 .nopermission p {
   margin-bottom: 0;
+}
+
+.w-40 {
+  width: 40%;
+}
+@media only screen and (max-width: 1199.98px) {
+  .w-40 {
+    width: initial;
+  }
+}
+
+.w-10 {
+  width: 20%;
+}
+@media only screen and (max-width: 1199.98px) {
+  .w-10 {
+    width: initial;
+  }
 }/*# sourceMappingURL=style.css.map */

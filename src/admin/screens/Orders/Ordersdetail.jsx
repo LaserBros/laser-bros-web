@@ -386,20 +386,21 @@ const OrdersDetail = () => {
     const res = await getShippingRates(data);
     setloadingInfo("");
     const serviceOrder = [
-      'UPS® Ground',
-      'UPS 2nd Day Air®',
-      'UPS Next Day Air®'
+      "UPS® Ground",
+      "UPS 2nd Day Air®",
+      "UPS Next Day Air®",
     ];
-    
+
     // sort the shipping methods based on service_type
     const sortedShippingMethods = Array.isArray(res.data)
       ? [...res.data].sort(
           (a, b) =>
-            serviceOrder.indexOf(a.service_type) - serviceOrder.indexOf(b.service_type)
+            serviceOrder.indexOf(a.service_type) -
+            serviceOrder.indexOf(b.service_type)
         )
       : [];
-      console.log("sortedShippingMethods",sortedShippingMethods)
-    
+    console.log("sortedShippingMethods", sortedShippingMethods);
+
     const updatedBoxes = boxes.map((box, i) =>
       i === index
         ? {
@@ -461,15 +462,15 @@ const OrdersDetail = () => {
     updatedInfo[index][field] = value;
     setShippingInfo(updatedInfo);
   };
-  const [submitComplete,setsubmitComplete] = useState(false);
+  const [submitComplete, setsubmitComplete] = useState(false);
 
   const submitCompleteAction = () => {
     setsubmitComplete(true);
-  }
-  
+  };
+
   const submitCompleteActionClose = () => {
     setsubmitComplete(false);
-  }
+  };
 
   // Validate fields and submit the form
   const handleCompleteShipLocal = async () => {
@@ -479,7 +480,7 @@ const OrdersDetail = () => {
         id: order?.orderedQuote._id,
         move_status: 3,
         status: 3,
-        service_code:'local_pickup'
+        service_code: "local_pickup",
       };
       await moveOrderToLocalPickup(new_data);
       setLoadingWeight(false);
@@ -488,7 +489,7 @@ const OrdersDetail = () => {
       console.error("Error submitting data:", error);
       setLoadingWeight(false);
     }
-  }
+  };
   const handleCompleteShip = async (e) => {
     setLoadingWeight(true);
     try {
@@ -519,13 +520,14 @@ const OrdersDetail = () => {
       parseFloat(box.width) +
       parseFloat(box.height) +
       parseFloat(box.weight);
-    
+
     const data = {
       length: box.length,
       width: box.width,
       height: box.height,
       weight: box.weight,
-      box_id: "box_" + id + "_" + (orderInfo?.length || "0") + parseInt(index) + 1,
+      box_id:
+        "box_" + id + "_" + (orderInfo?.length || "0") + parseInt(index) + 1,
       // box_id: "box_" + id + "_" + (orderInfo?.length || "") + parseInt(index) + 1,
       id: id,
       service_code: selectedMethod,
@@ -663,20 +665,22 @@ const OrdersDetail = () => {
       console.error("Download failed:", error);
     }
   };
-  const [AddressEdit,setAddressEdit] = useState(false);
-  const [AddressInfo,SetAddressInfo] = useState("");
-  const [TypeInfo,SetTypeInfo] = useState("");
-  const handleCloseModal = () => {setAddressEdit(false);}
-  const [SuccessMessage,setSuccessMessage] = useState(""); 
+  const [AddressEdit, setAddressEdit] = useState(false);
+  const [AddressInfo, SetAddressInfo] = useState("");
+  const [TypeInfo, SetTypeInfo] = useState("");
+  const handleCloseModal = () => {
+    setAddressEdit(false);
+  };
+  const [SuccessMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     setLoading(true);
-      fetchOrder();
-      
-      setAddressEdit(false);
-      
-      setSuccessMessage("");
-    },[SuccessMessage])
+    fetchOrder();
+
+    setAddressEdit(false);
+
+    setSuccessMessage("");
+  }, [SuccessMessage]);
 
   const [moveOrder, setMoveOrder] = useState(false);
   const handleMove = async (id) => {
@@ -911,7 +915,7 @@ const OrdersDetail = () => {
         window.URL.revokeObjectURL(link.href); // Cleanup
       })
       .catch((error) => console.error("Error downloading the file:", error));
-};
+  };
 
   return (
     <div id="pdf-content">
@@ -927,7 +931,8 @@ const OrdersDetail = () => {
                 <div className="d-flex">
                   {/* {order?.orderedQuote.move_status} ====== */}
                   {order?.serviceCode?.name == "Local Pickup" &&
-                    order?.orderedQuote.status === 3 && order?.orderedQuote.move_status != 3 && (
+                    order?.orderedQuote.status === 3 &&
+                    order?.orderedQuote.move_status != 3 && (
                       <>
                         <div className="orders-shipping mb-2">
                           <Button
@@ -1098,9 +1103,7 @@ const OrdersDetail = () => {
                   setAddressEdit={setAddressEdit}
                   SetAddressInfo={SetAddressInfo}
                   setType={SetTypeInfo}
-                  
                 />
-
 
                 {order?.orderedQuote.status == 0 ? (
                   <>
@@ -1419,20 +1422,20 @@ const OrdersDetail = () => {
                                       </>
                                     ) : (
                                       <>
-                                        {selectedMethod == "local_pickup" ?
-                                           <Button
-                                           variant={null}
-                                           className="PackageCompleteOrder_btn me-2"
-                                           type="submit"
-                                           // className="my-3 ms-3"
-                                           onClick={submitCompleteAction}
-                                           disabled={loadingWeight}
-                                         >
-                                           Move To Complete
-                                         </Button> 
-                                        :
-                                        order?.serviceCode?.name !=
-                                          "Local Pickup" &&
+                                        {selectedMethod == "local_pickup" ? (
+                                          <Button
+                                            variant={null}
+                                            className="PackageCompleteOrder_btn me-2"
+                                            type="submit"
+                                            // className="my-3 ms-3"
+                                            onClick={submitCompleteAction}
+                                            disabled={loadingWeight}
+                                          >
+                                            Move To Complete
+                                          </Button>
+                                        ) : (
+                                          order?.serviceCode?.name !=
+                                            "Local Pickup" &&
                                           (!box.downloadLabel ? (
                                             <button
                                               className="btn PackagePurchase_btn"
@@ -1461,8 +1464,7 @@ const OrdersDetail = () => {
                                               Download Label
                                             </a>
                                           ))
-                                        
-                                        }
+                                        )}
                                       </>
                                     )}
                                   </div>
@@ -1595,7 +1597,7 @@ const OrdersDetail = () => {
                     .reverse()
                     .map((wo, index) => (
                       <div className="list-main  d-inline-flex justify-content-between w-100">
-                        <div className="list-left d-inline-flex">
+                        <div className="list-left d-inline-flex w-40">
                           <div
                             className="list-img-outer"
                             style={{ width: "110px" }}
@@ -1626,7 +1628,10 @@ const OrdersDetail = () => {
                               <Icon
                                 icon="material-symbols-light:download-sharp"
                                 onClick={() =>
-                                  handleDownload(encodeS3Url(wo?.dxf_url), wo.quote_name)
+                                  handleDownload(
+                                    encodeS3Url(wo?.dxf_url),
+                                    wo.quote_name
+                                  )
                                 }
                               />
                             </h2>
@@ -1647,7 +1652,7 @@ const OrdersDetail = () => {
                                 </span>
                               </>
                             )} */}
-                            <div className="datamain">
+                            <div className="datamain mb-3">
                               <Link
                                 className="btndata"
                                 onClick={() => {
@@ -1666,19 +1671,7 @@ const OrdersDetail = () => {
                                 )}
                               </Link>
                             </div>
-                            <div className="list-qty d-flex align-items-center gap-3 mb-3 pt-3">
-                              <span className="qty">
-                                <strong>QTY:</strong> {wo.quantity}
-                              </span>
-                              <span className="price-total">
-                                <Amount amount={wo.amount / wo.quantity} />
-                                /ea.
-                              </span>
-                              <span className="price-total">
-                                <Amount amount={wo.amount} />
-                                /total
-                              </span>
-                            </div>
+
                             <Link
                               className="btnnote custom_expansion"
                               onClick={() => {
@@ -1693,7 +1686,7 @@ const OrdersDetail = () => {
                                 <span className="expansion_tag">!</span>
                               )}
                             </Link>
-                            {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                            {/* {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
                               <Link
                                 className="btnnote ms-2"
                                 onClick={() => {
@@ -1712,16 +1705,16 @@ const OrdersDetail = () => {
                                   "Mark Complete"
                                 )}
                               </Link>
-                            )}
-                            {wo.isCompleted == 1 && (
+                            )} */}
+                            {/* {wo.isCompleted == 1 && (
                               <Link className="ms-2 text-success text-decoration-none">
                                 Completed
                               </Link>
-                            )}
+                            )} */}
                           </div>
                         </div>
 
-                        <div className="list-checkboxes  d-inline-flex gap-3">
+                        <div className="list-checkboxes  d-inline-flex gap-3 w-40">
                           <div className="CuttingCheck_div custom-checkbox-container ">
                             <p>
                               {" "}
@@ -1819,6 +1812,49 @@ const OrdersDetail = () => {
                               </>
                             ))}
                           </div>
+                          <div className="list-qty flex-column d-flex gap-3 mb-3">
+                            <div className="d-flex align-items-center gap-3">
+                              <span className="qty">
+                                <strong>QTY:</strong> {wo.quantity}
+                              </span>
+                              <span className="price-total">
+                                <Amount amount={wo.amount / wo.quantity} />
+                                /ea.
+                              </span>
+                              <span className="price-total">
+                                <Amount amount={wo.amount} />
+                                /total
+                              </span>
+                            </div>
+
+                            <div className="mark_complete_action">
+                              {wo.isDownloaded == 1 && wo.isCompleted == 0 && (
+                                <Link
+                                  className="btnnote ms-2"
+                                  onClick={() => {
+                                    setIds(wo._id);
+                                    setModalShow3(true);
+                                    // handleComplete(wo._id);
+                                  }}
+                                >
+                                  {Rowloading == wo._id ? (
+                                    <span
+                                      className="spinner-border spinner-border-sm"
+                                      role="status"
+                                      aria-hidden="true"
+                                    ></span>
+                                  ) : (
+                                    "Mark Complete"
+                                  )}
+                                </Link>
+                              )}
+                              {wo.isCompleted == 1 && (
+                              <Link className="ms-2 text-success text-decoration-none">
+                                Completed
+                              </Link>
+                            )}
+                            </div>
+                          </div>
                           {/* {wo.bend_count > 0 && (
                             <div className="custom-checkbox-container text-center">
                               <label
@@ -1915,27 +1951,27 @@ const OrdersDetail = () => {
                           )} */}
                         </div>
                         {wo.bend_count > 0 ? (
-                          <div>
+                          <div className="w-20 text-end">
                             {wo.step_file_bend != null &&
-                              wo.step_file_bend != "null" &&
+                              wo.step_file_bend != "null" && 
                               wo.step_file_bend != "" && (
                                 <>
                                   <Link
                                     // href={`${url}`}
                                     // target="_blank"
-                                    onClick={() => 
+                                    onClick={() =>
                                       downloadFile(wo.step_file_bend)
                                     }
                                     style={{ paddingRight: "15px" }}
                                   >
                                     <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                                  <Image
-                                    src={attachment}
-                                    className="img-fluid"
-                                    alt=""
-                                  />
-                                  <span>Step File</span>
-                                </div>
+                                      <Image
+                                        src={attachment}
+                                        className="img-fluid"
+                                        alt=""
+                                      />
+                                      <span>Step File</span>
+                                    </div>
                                   </Link>
                                 </>
                               )}
@@ -1952,13 +1988,13 @@ const OrdersDetail = () => {
                                     style={{ paddingRight: "5px" }}
                                   >
                                     <div className="list-attachment text-center d-inline-flex flex-column align-items-center">
-                                  <Image
-                                    src={attachment}
-                                    className="img-fluid"
-                                    alt=""
-                                  />
-                                  <span>Drawing File</span>
-                                </div>
+                                      <Image
+                                        src={attachment}
+                                        className="img-fluid"
+                                        alt=""
+                                      />
+                                      <span>Drawing File</span>
+                                    </div>
                                   </Link>
                                 </>
                               )}
@@ -1981,7 +2017,7 @@ const OrdersDetail = () => {
                             ))}
                           </div>
                         ) : (
-                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center"></div>
+                          <div className="list-attachment text-center d-inline-flex flex-column align-items-center w-20"></div>
                         )}
                       </div>
                     ))}
@@ -2050,16 +2086,23 @@ const OrdersDetail = () => {
           ShippingInfoData={ShippingInfoData}
         />
         <ConfirmationModal
-        show={submitComplete}
-        onHide={submitCompleteActionClose}
-        title={"Are you sure?"}
-        desc={"You want to change shipping priority?"}
-        yesBtnText={"Yes"}
-        noBtnText={"No"}
-        onConfirm={handleCompleteShipLocal}
-        loading={loadingWeight}
-      />
-        <AddAddressModalAdmin show={AddressEdit} OrderId = {id}  SetAddressInfo={AddressInfo} setType={TypeInfo} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} />
+          show={submitComplete}
+          onHide={submitCompleteActionClose}
+          title={"Are you sure?"}
+          desc={"You want to change shipping priority?"}
+          yesBtnText={"Yes"}
+          noBtnText={"No"}
+          onConfirm={handleCompleteShipLocal}
+          loading={loadingWeight}
+        />
+        <AddAddressModalAdmin
+          show={AddressEdit}
+          OrderId={id}
+          SetAddressInfo={AddressInfo}
+          setType={TypeInfo}
+          handleClose={handleCloseModal}
+          setSuccessMessage={setSuccessMessage}
+        />
       </React.Fragment>
     </div>
   );

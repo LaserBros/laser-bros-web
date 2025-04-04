@@ -1380,7 +1380,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                   "-" +
                                   String(index + 1).padStart(3, "0")
                               : ""}
-                          </span>
+                          </span> 
                           {/* {quote.pierce_count && (
                             <>
                               <br></br>
@@ -1845,7 +1845,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
 
                         <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
                           <Link
-                            className="btnshare"
+                            className="btnshare custom_expansion"
                             onClick={() =>
                               handleShow3(
                                 quote.notes_text,
@@ -1853,8 +1853,14 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                                 quote._id
                               )
                             }
-                          >
-                            Add Note
+                          > 
+                            Add Note 
+                            {((quote.notes_text &&
+                                quote.notes_text.trim() !== "") || // checks if notes_text is not an empty string
+                                (Array.isArray(quote.notes_admin) &&
+                                quote.notes_admin.length > 0)) && (
+                                <span className="expansion_tag">!</span>
+                              )}
                           </Link>
                           <Link
                             className="btnicon"

@@ -3,6 +3,9 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
+body.dark .btnicons {
+  color: #ffffff !important;
+}
 body.dark .modal .modal-dialog .modal-content {
   background: #212121;
 }
