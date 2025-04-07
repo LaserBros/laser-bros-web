@@ -1194,21 +1194,34 @@ html {
                     .list-left{
                         .list-img-outer{
                             text-align: center;
-                            width: 80px;
-                            min-width: 80px;
+                            width: 160px;
+                            min-width: 160px;
                             .list-img{
-                                width: 80px;
-                                min-width: 80px;
-                                height: 80px;
+                                width: 160px;
+                                min-width: 160px;
+                                height: 160px;
                                 border-radius: 12px;
                                 box-shadow: 0px 0px 10px rgba($black-color, 0.10);
-                                overflow: hidden;
+                                // overflow: hidden;
                                 display: inline-flex;
                                 align-items: center;
                                 justify-content: center;
+                                position: relative;
+                                .bublenumber {
+                                    position: absolute;
+                                    top: -10px;
+                                    left: -10px;
+                                    background: #98c1eb;
+                                    display: inline-block;
+                                    border-radius: 10px;
+                                    font-size: 12px;
+                                    font-weight: 400;
+                                    color: #000;
+                                    padding: 2px 7px;
+                                }
                                 img{
-                                   object-fit: contain;
-                                   height: 65px;
+                                   object-fit: scale-down;
+                                   padding: 10px;
                                 }
                             }
                             span{

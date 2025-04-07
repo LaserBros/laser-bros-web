@@ -1578,14 +1578,17 @@ const OrdersDetail = () => {
                             className="list-img-outer"
                             style={{ width: "110px" }}
                           >
-                            <div className="list-img">
+                            <div className="list-img img-quote mx-auto mx-md-0 position-relative"> 
+                            <span className="bublenumber">
+                                {String(index + 1).padStart(3, "0")}
+                              </span>
                               <Image
                                 src={encodeS3Url(wo.image_url)}
                                 alt={wo.image_url}
                                 className="img-fluid"
                                 style={{
                                   objectFit: "contain", // use camelCase for CSS properties
-                                  height: "65px", // specify values as strings
+                                  height: "160px", // specify values as strings
                                 }}
                               />
                             </div>
