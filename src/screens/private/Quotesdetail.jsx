@@ -210,13 +210,29 @@ export default function QuotesDetail() {
         id: quoteId,
       };
       const response = await fetchSelectedFinishes(data);
-      // console.log("fetchSelectedFinishes", response.data);
+      console.log("fetchSelectedFinishes", response.data);
       const res_status = response.data.data;
       const fetchedOptions = res_status.map((item) => ({
         value: item._id,
         label: item.finishing_desc,
       }));
-      console.log("response.data.check_status",response.data.check_status)
+      if(response.data.bending == "no") {
+        const formData = new FormData();
+        formData.append("id", quoteId);
+        formData.append("bend_count", 0);
+        formData.append("type", "");
+        const res = await uploadBendingFile(formData);
+        setQuoteData((prevQuoteData) =>
+          prevQuoteData.map((quote) =>
+            quote._id === quoteId
+              ? {
+                  ...quote,
+                  bend_count: 0,
+                }
+              : quote
+          )
+        );
+      }
       setQuoteData((prevQuoteData) =>
         prevQuoteData.map((quote) =>
           quote._id === quoteId

@@ -1100,7 +1100,7 @@ const OrdersDetail = () => {
                   onClickTrack={handleShowTrack}
                   isShippingInfo={true}
                   onClickShipping={onClickShipping}
-                  setAddressEdit={setAddressEdit}
+                  setAddressEdit={setAddressEdit} 
                   SetAddressInfo={SetAddressInfo}
                   setType={SetTypeInfo}
                 />

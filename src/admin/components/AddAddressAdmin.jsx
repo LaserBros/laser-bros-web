@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import axiosAdminInstance from "../axios/axiosadminInstanse";
 
 export default function AddAddressAdmin({
+  typeAPI,
   openPop,
   handleClose,
   setSuccessMessage,
@@ -179,10 +180,18 @@ export default function AddAddressAdmin({
       formData.id = Id;
       try {
         setLoading(true);
-        const response = await axiosAdminInstance.put(
-          "/updateOrderAddress",
-          formData
-        );
+        var response = "";
+        if(typeAPI == 'rfq') {
+          response = await axiosAdminInstance.post(
+            "/updateRfqAddress",
+            formData
+          );
+        } else {
+          response = await axiosAdminInstance.put(
+            "/updateOrderAddress",
+            formData
+          );
+      }
         // console.log(response);
         toast.success("Address Updated sucessfully");
         setLoading(false);
