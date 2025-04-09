@@ -639,7 +639,7 @@ const Orders = () => {
                             <td>
                                <Link
                                                               className="workorders d-flex gap-2"
-                                                              to={`/admin/orders-detail/${row._id}`}
+                                                              to={`/employee/orders-detail/${row._id}`}
                                                             >
                                                               <b>
                                                                 WO#
