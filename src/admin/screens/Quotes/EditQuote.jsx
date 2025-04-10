@@ -1430,7 +1430,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
             billAdress={quoteList?.address_details}
             addressDetail={quoteList}
             TaxRatesVal={TaxRatesVal}
-            isShowDownload={true} 
+            isPageRfq={true} 
             onClickShipping={onClickShipping}
             isShippingInfo={true} 
             setAddressEdit={setAddressEdit} 

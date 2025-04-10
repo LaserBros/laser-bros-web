@@ -22,6 +22,7 @@ const AddressDetails = ({
   TaxRatesVal,
   isShippingInfo,
   onClickShipping,
+  isPageRfq,
   setAddressEdit,
   SetAddressInfo,
   setType,
@@ -120,7 +121,7 @@ const AddressDetails = ({
           <div className="QuoteBill_box">
             <h4>
               Ship To:{" "}
-              {isShowDownload && (
+              {(isShowDownload || isPageRfq) && (
               <Link
               className="btnicons" 
                 onClick={() => {
@@ -151,7 +152,7 @@ const AddressDetails = ({
           <div className="QuoteBill_box">
             <h4>
               Bill To:{" "}
-              {isShowDownload && (
+              {(isShowDownload || isPageRfq) && (
                 <Link
                   className="btnicons" 
                   onClick={() => {
