@@ -212,7 +212,7 @@ export default function QuotesDetail() {
       const response = await fetchSelectedFinishes(data);
       console.log("fetchSelectedFinishes", response.data);
       const res_status = response.data.data;
-      const fetchedOptions = res_status.map((item) => ({
+      const fetchedOptions = res_status.map((item) => ({ 
         value: item._id,
         label: item.finishing_desc,
       }));
