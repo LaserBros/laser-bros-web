@@ -31,6 +31,7 @@ import {
   updateDimensionStatusAdmin,
   fileUpload,
   getSpecificSubQuote,
+  getParticularEditQuoteAdmin,
 } from "../../../api/api";
 import QuantitySelector from "../../components/Quantityselector";
 import SelectDropdowns from "../../components/Selectdropdown";
@@ -59,6 +60,8 @@ import { Tooltip } from "react-tooltip";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { encodeS3Url } from "../../../utils/encodeS3Url";
 import { getFormattedSubquote, getFormattedSubquoteNumber, getFormattedSubquoteNumberFirst } from "../../../utils/AddBendingQuote";
+import ModalShippingInfo from "../../components/ModalShippingInfo";
+import AddAddressModalAdmin from "../../components/AddAddressModalAdmin";
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -111,6 +114,62 @@ const EditRFQS = () => {
   ];
   const [idSelect, setidSelect] = useState("");
   const [quotePost, setquotePost] = useState("");
+  const [AddressEdit, setAddressEdit] = useState(false);
+  const [AddressInfo, SetAddressInfo] = useState("");
+  const [TypeInfo, SetTypeInfo] = useState("");
+  const [SuccessMessage, setSuccessMessage] = useState("");
+  
+  useEffect(() => {
+    const EditQuote = async () => {
+      console.log("quoteList?.id",quoteList?._id)
+      if(quoteList?._id) {
+        const data = {
+          id: quoteList?._id,
+        };
+        const res = await getParticularEditQuoteAdmin(data);
+        // console.log(res);
+        localStorage.setItem(
+          "setItempartsDBdataAdmin",
+          JSON.stringify(res.data.partsDBdata)
+        );
+        localStorage.setItem(
+          "setItemelementDataAdmin",
+          JSON.stringify(res.data.requestQuoteDB)
+        );
+        // localStorage.setItem("UserDataAdmin", JSON.stringify(res.data.userDBdata));
+        localStorage.setItem(
+          "shippingRates",
+          JSON.stringify(res.data.shippingRates)
+        );
+        localStorage.setItem(
+          "taxRates",
+          JSON.stringify(res.data.tax)
+        );
+        localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
+        
+        const storedData = localStorage.getItem("setItempartsDBdataAdmin");
+      const quote_list = localStorage.getItem("setItemelementDataAdmin");
+      const userDataVal = JSON.parse(localStorage.getItem("shippingRates"));
+      const TaxRates = JSON.parse(localStorage.getItem("taxRates"));
+      const divideWeight = JSON.parse(localStorage.getItem("divideWeight"));
+  
+      if (storedData) {
+       
+        const parsedData = JSON.parse(storedData);
+        const quote_list_val = JSON.parse(quote_list);
+        setQuoteList(quote_list_val);
+        setdivideWeight(divideWeight);
+        setTaxRates(TaxRates);
+        setUserData(userDataVal);
+        setQuoteData(parsedData);
+        setAddressEdit(false);
+        setSuccessMessage("");
+        setquoteDataCon(true);
+      }
+    }  
+      };
+    EditQuote();
+  },[SuccessMessage])
   const handleOpenModal = (id, post_ops) => {
     setidSelect(id);
     setquotePost("");
@@ -118,6 +177,9 @@ const EditRFQS = () => {
     setShowModal(true);
   };
   const handleCloseModal = () => setShowModal(false);
+  const handleCloseModalAddress = () => {
+    setAddressEdit(false);
+  };
   const handleCloseModalDelete = () => setDeletemodalShow(false);
   const handleSaveSelection = (selected) => {
     setSelectedItems(selected);
@@ -223,11 +285,34 @@ const EditRFQS = () => {
   const [priceBend, setPriceBend] = useState(0);
   const [selectedNote, setSelectedNote] = useState(null);
   const [selectedAdminNote, setSelectedAdminNote] = useState(null);
-
+  const handleClose5 = () => setModalShow5(false);
   const [selectedPartId, setSelectedPartId] = useState(null);
   const [loadingBtn, setloadingBtn] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
+
+  const ShippingInfoData = async (form) => {
+      console.log("Sdsdsdsdsds",form)
+      // var formData = new FormData();
+      // formData.append("file", form.file);
+      // formData.append("freight_carrier_name", form.freight_carrier_name);
+      // formData.append("freight_tracking", form.freight_tracking);
+      // formData.append("id", order?.orderedQuote._id);
+      // formData.append("move_status", 3);
+      // formData.append("status", 3);
+      // try {
+      //   await moveOrderToComplete(formData);
+      //   toast.success("Shipping information added sucessfully!");
+      //   setLoadingWeight(false);
+      //   navigate("/admin/complete-orders");
+      // } catch (error) {
+      //   console.error("Error submitting data:", error);
+      //   setLoadingWeight(false);
+      //   return;
+      // }
+    };
+
+
   const handleShow = (quote, id) => {
     setSelectedQuote(quote);
     setSelectedPartId(id);
@@ -492,6 +577,24 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
       };
       const response = await AdminfetchSelectedFinishes(data); // Your API call function
       const res_status = response.data;
+      console.log("sasasasas",response.data.bending,response.data)
+      if(response.data.bending == "no") {
+        const formData = new FormData();
+        formData.append("id", quoteId);
+        formData.append("bend_count", 0);
+        formData.append("type", "");
+        const res = await AdminbendQuotes(formData);
+        setQuoteData((prevQuoteData) =>
+          prevQuoteData.map((quote) =>
+            quote._id === quoteId
+              ? {
+                  ...quote,
+                  bend_count: 0,
+                }
+              : quote
+          )
+        );
+      }
       const fetchedOptions = res_status.map((item) => ({
         value: item._id,
         label: item.finishing_desc,
@@ -634,7 +737,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
       }
       console.log("Dsdsdssdssdsdsd-=-=-=-=-", total);
       const quoteList = localStorage.getItem("setItemelementDataAdmin");
-
+      console.log("quoteList",quoteList);
       if (quoteList) {
         const parsedQuoteList = JSON.parse(quoteList);
         parsedQuoteList.total_bend_price = total;
@@ -934,6 +1037,10 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     } catch (error) {
       console.error("API call failed:", error);
     }
+  };
+  const [modalShow5, setModalShow5] = useState(false);
+  const onClickShipping = () => {
+    setModalShow5(true);
   };
   const updateQuantityAPI = async (quantity, id) => {
     // console.log("Dssdsdsdsd", quantity);
@@ -1318,11 +1425,17 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
               </Link> */}
             </div>
           </div>
-          <AddressDetails
+          <AddressDetails 
             shipAddress={quoteList?.billing_details}
             billAdress={quoteList?.address_details}
             addressDetail={quoteList}
             TaxRatesVal={TaxRatesVal}
+            isPageRfq={true} 
+            onClickShipping={onClickShipping}
+            isShippingInfo={true} 
+            setAddressEdit={setAddressEdit} 
+            SetAddressInfo={SetAddressInfo}
+            setType={SetTypeInfo}
           />
           <Row>
             <Col lg={8} xl={9}>
@@ -2003,6 +2116,21 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
         modalShow4={modalShow4}
         handleClose4={handleClose4}
       />
+        <ModalShippingInfo
+          QuoteData={subquote_number}
+          modalShow4={modalShow5}
+          handleClose4={handleClose5}
+          ShippingInfoData={ShippingInfoData}
+        />
+        <AddAddressModalAdmin
+                  type ={'rfq'}
+                  show={AddressEdit}
+                  OrderId={quoteList?._id}
+                  SetAddressInfo={AddressInfo}
+                  setType={TypeInfo}
+                  handleClose={handleCloseModalAddress}
+                  setSuccessMessage={setSuccessMessage}
+                />
       <ConfirmationModal
         show={DeletemodalShow}
         onHide={handleCloseModalDelete}
