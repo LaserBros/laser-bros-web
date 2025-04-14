@@ -204,7 +204,7 @@ export default function Home() {
           <div className=" text-center ">
           <Image src={american} className="img-fluid mx-auto" alt=""/>
           <h4 className="mt-3">Our Mission is to Support the American Innovator.</h4>
-          <Button>Learn More About Us</Button>
+          <Button className="mt-3">Learn More About Us</Button>
           </div>
         </Container>
       </section>
