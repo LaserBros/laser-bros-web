@@ -1816,6 +1816,13 @@ footer {
 
 /*About Us Css Ends*/
 /*Services Css Start*/
+.loginUploadInfo_text {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    color: $light-color;
+}
 .banner-services {
     .banner-service-img {
         display : inline-block;
@@ -1864,7 +1871,9 @@ footer {
                 font-size: 36px;
             }
         }
-
+        .bannerservice_btns {
+            text-align: center;
+        }
         .banner-btns {
             display: flex;
             gap    : 25px;
@@ -1930,7 +1939,81 @@ footer {
         }
     }
 }
-
+.maxWidth_680 {
+    max-width: 680px;
+    margin: 0px auto;
+}
+.laserCuttingInfo_sec {
+    padding-bottom: 60px;
+    .laserCuttingInfo_div {
+        h3 {
+            font-size: 20px;
+            font-weight: bold;
+            color: $black-color;
+            margin-bottom: 20px;
+        }
+        h4 {
+            font-size: 16px;
+            font-weight: bold;
+            color: $black-color;
+            margin-bottom: 5px;
+        }
+        ul {
+            list-style: auto;
+            margin: 0px;
+            li {
+                font-size: 16px;
+                font-weight: 400;
+                color: $black-color;
+                ul {
+                    list-style: disc;
+                }
+            }
+        }
+    }
+}
+.HowITWorksmain_div {
+    padding-bottom: 60px;
+    .worksMain_head {
+        font-size: 24px;
+        font-weight: 600;
+        color: $black-color;
+        margin-bottom: 20px;
+    }
+    .worksStep_head {
+        font-size: 24px;
+        font-weight: 600;
+        color: $black-color;
+        margin-bottom: 10px;
+    }
+    .HowITWorksteps_box {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        border: 1px solid #7e7874;
+        padding: 20px;
+        border-radius: 15px;
+        .StepIcon_img {
+            flex-shrink: 0;
+            max-width: 50px;
+        }
+        .Worksteps_cont {
+            flex-grow: 1;
+            h4 {
+                font-size: 16px;
+                font-weight: bold;
+                color: $black-color;
+                margin-bottom: 0px;
+            }
+            p {
+                font-size: 16px;
+                font-weight: 400;
+                color: $black-color;
+                margin-bottom: 0px;
+            }
+        }
+    }
+}
 /*Services Css Ends*/
 /*Resources Css Start*/
 .resources-main {

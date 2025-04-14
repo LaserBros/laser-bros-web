@@ -62,7 +62,7 @@ const Header = () => {
               >
                 <NavDropdown.Item
                   as={NavLink}
-                  to="/laser-cutting"
+                  to="/laser-cutting2"
                   onClick={closeNav}
                 >
                   <img src={lasercutting} className="img-fluid" alt="" /> Laser

@@ -142,6 +142,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import DxfAnalyzer from "./screens/private/dxfFile";
+import Lasercutting2 from "./screens/public/services/Lasercutting2";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -891,6 +892,7 @@ return (
       <Route path="/" element={<Home />} />
       <Route path="/about-us" element={<Aboutus />} />
       <Route path="/laser-cutting" element={<Lasercutting />} />
+      <Route path="/laser-cutting2" element={<Lasercutting2 />} />
       <Route path="/bending" element={<Bending />} />
     </Route>
     <Route
