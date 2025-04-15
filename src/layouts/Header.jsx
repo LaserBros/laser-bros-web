@@ -37,7 +37,7 @@ const Header = () => {
     };
   }, []);
   return (
-    <header className="header">
+    <header className="header m-0 p-0">
       <Navbar expanded={expanded} expand="lg" fixed="top">
         <Container>
           <Navbar.Brand as={Link} to="/">

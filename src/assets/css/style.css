@@ -718,9 +718,9 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 /*Auth Css Ends*/
 /*Home Css Start*/
 .banner-home {
-  padding-top: 75px;
+  padding-top: 60px;
+  padding-bottom: 30px;
   width: 100%;
-  min-height: 900px;
   display: flex;
   align-items: center;
   position: relative;
@@ -734,13 +734,6 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 @media only screen and (max-width: 767.98px) {
   .banner-home.banner-about {
     min-height: 200px;
-  }
-}
-@media only screen and (max-width: 1199.98px) {
-  .banner-home {
-    min-height: 790px;
-    padding-top: 75px;
-    padding-bottom: 75px;
   }
 }
 @media only screen and (max-width: 991.98px) {
@@ -788,9 +781,10 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   margin-right: 10px;
 }
 .banner-home .banner-content h1 {
-  font-size: 72px;
+  font-size: 36px;
   color: #000000;
-  margin-bottom: 45px;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 @media only screen and (max-width: 1199.98px) {
   .banner-home .banner-content h1 {
@@ -815,11 +809,21 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   left: 0px;
   bottom: -15px;
 }
+.banner-home .banner-content h4 {
+  font-weight: 400;
+}
+.banner-home .banner-content h4 b {
+  font-weight: 600;
+}
 .banner-home .banner-content p {
   color: #000000;
   font-size: 22px;
   line-height: 1.75;
   opacity: 0.75;
+}
+.banner-home .banner-content p.bannersubpara {
+  font-size: 16px;
+  color: #c4bdbe;
 }
 @media only screen and (max-width: 1199.98px) {
   .banner-home .banner-content p {
@@ -843,6 +847,165 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   .banner-home .banner-content p.banner-sm-text {
     font-size: 14px;
   }
+}
+
+.homereviews {
+  padding-bottom: 40px;
+}
+.homereviews .reviewslist {
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 14px;
+  padding: 25px;
+}
+.homereviews .reviewslist .reviewsleftcontent .reviewuser {
+  margin-bottom: 10px;
+}
+.homereviews .reviewslist .reviewsleftcontent .reviewuser img {
+  width: 100px;
+  height: 100px;
+}
+.homereviews .reviewslist .reviewsleftcontent .reviewuser h5 {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.homereviews .reviewslist .reviewsleftcontent h3 {
+  font-size: 18px;
+  color: #000000;
+  font-weight: 600;
+}
+.homereviews .reviewslist .reviewsleftcontent p {
+  color: #000000;
+  font-size: 16px;
+  line-height: 1.75;
+  margin-bottom: 0;
+}
+.homereviews .reviewslist .reviewsleftcontent .reviewrate .iconify {
+  color: #ffda3f;
+  font-size: 30px;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge .aluminiumbadge {
+  font-size: 18px;
+  color: #4F8CCA;
+  font-weight: 600;
+  padding: 6px 15px;
+  background: rgba(79, 140, 202, 0.1);
+  border-radius: 20px !important;
+  display: inline-block;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge .brassbadge {
+  font-size: 18px;
+  color: #ffbd59;
+  font-weight: 600;
+  padding: 6px 15px;
+  background: rgba(255, 189, 89, 0.1);
+  border-radius: 20px !important;
+  display: inline-block;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge .steelbadge {
+  font-size: 18px;
+  color: #E11F26;
+  font-weight: 600;
+  padding: 6px 15px;
+  background: rgba(225, 31, 38, 0.1);
+  border-radius: 20px !important;
+  display: inline-block;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge p {
+  line-height: normal;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge p a {
+  font-size: 12px;
+  color: #c4bdbe;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge p a:hover {
+  opacity: 0.75;
+}
+.homereviews .reviewslist .reviewsrightcontent .reviewbadge .lasercuttingbadge {
+  font-size: 18px;
+  display: inline-block;
+  color: #324b74;
+  font-weight: 600;
+  padding: 6px 15px;
+  background: rgba(50, 75, 116, 0.1);
+  border-radius: 20px !important;
+}
+.homereviews .reviewslist .reviewsrightcontent .imgreviewhome {
+  max-width: 350px;
+  margin-top: -20px;
+}
+@media only screen and (max-width: 1199px) {
+  .homereviews .reviewslist .reviewsrightcontent .imgreviewhome {
+    margin-top: 0px;
+  }
+}
+
+.faq-home {
+  padding-bottom: 40px;
+}
+.faq-home .faqsubhead {
+  font-size: 22px;
+  color: #000000;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-transform: capitalize;
+}
+.faq-home .accordion .accordion-item {
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+  border-radius: 12px !important;
+}
+.faq-home .accordion .accordion-item .accordion-header {
+  margin-bottom: 0 !important;
+}
+.faq-home .accordion .accordion-item .accordion-header button.accordion-button {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  border-radius: 12px !important;
+  color: #000000;
+  padding: 15px;
+  background: #ffffff;
+  box-shadow: none;
+}
+.faq-home .accordion .accordion-item .accordion-header button.accordion-button:after {
+  transform: rotate(-90deg);
+  width: 24px;
+  height: 24px;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-size: 13px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23000000%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
+  opacity: 0.4;
+}
+.faq-home .accordion .accordion-item .accordion-header button.accordion-button:not(.collapsed) {
+  color: #000000;
+}
+.faq-home .accordion .accordion-item .accordion-header button.accordion-button:not(.collapsed):after {
+  transform: rotate(-180deg);
+}
+.faq-home .accordion .accordion-item .accordion-body {
+  padding-left: 16px;
+  padding-top: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #6C6A72;
+}
+
+.american-manufacturing {
+  padding-bottom: 70px;
+}
+.american-manufacturing img {
+  max-width: 350px;
+}
+.american-manufacturing h4 {
+  color: #000000;
+  font-weight: 500;
 }
 
 .our-services {

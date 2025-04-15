@@ -810,24 +810,25 @@ footer {
         }
     }
 
-    padding-top           : 75px;
+    padding-top           : 60px;
+    padding-bottom: 30px;
     // padding-bottom        : 75px;
     // background         : url('../img/bg.jpg');
     // background-size    : cover;
     // background-repeat  : no-repeat;
     // background-position: center;
     width                 : 100%;
-    min-height            : 900px;
+    // min-height            : 900px;
     display               : flex;
     align-items           : center;
     position              : relative;
     z-index               : 1;
 
-    @media only screen and (max-width:1199.98px) {
-        min-height    : 790px;
-        padding-top   : 75px;
-        padding-bottom: 75px;
-    }
+    // @media only screen and (max-width:1199.98px) {
+    //     min-height    : 790px;
+    //     padding-top   : 75px;
+    //     padding-bottom: 75px;
+    // }
 
     @media only screen and (max-width:991.98px) {
         padding-top   : 50px;
@@ -886,10 +887,10 @@ footer {
         }
 
         h1 {
-            font-size    : 72px;
+            font-size    : 36px;
             color        : $black-color;
-            margin-bottom: 45px;
-
+            margin-bottom: 10px;
+            font-weight: 600;
             @media only screen and (max-width:1199.98px) {
                 font-size    : 52px;
                 margin-bottom: 30px;
@@ -913,13 +914,21 @@ footer {
                 }
             }
         }
-
+   h4{
+    font-weight: 400;
+    b{
+        font-weight: 600;
+    }
+   }
         p {
             color      : $black-color;
             font-size  : 22px;
             line-height: 1.75;
             opacity    : 0.75;
-
+            &.bannersubpara{
+                font-size: 16px;
+                color:#c4bdbe
+            }
             @media only screen and (max-width:1199.98px) {
                 font-size: 18px;
             }
@@ -943,7 +952,175 @@ footer {
         }
     }
 }
+.homereviews{
+    padding-bottom: 40px;
+    .reviewslist{
+        border: 2px solid rgba(0, 0, 0, 0.30);
+        border-radius: 14px;
+        padding: 25px;
+        .reviewsleftcontent{
+            .reviewuser{
+                margin-bottom: 10px;
+                img{
+                    width: 100px;
+                    height: 100px;
+                }
+                h5{
+                    font-size: 14px;
+                    color: $black-color;
+                    font-weight: 600;
+                    margin-top: 10px;
+                }
+            }
+            h3{
+                font-size: 18px;
+                color: $black-color;
+                font-weight: 600;
+            }
+            p{
+                color:$black-color;
+                font-size: 16px;
+                line-height: 1.75;
+                margin-bottom: 0;
+            }
+          
+            .reviewrate{
+                .iconify{
+                    color:$yellow-color2;
+                    font-size: 30px;
+                }
+            }
+        }
+        .reviewsrightcontent{
+           .reviewbadge{
+            .aluminiumbadge{
+                font-size: 18px;
+                color:$primary-color;
+                font-weight: 600;
+                padding: 6px 15px;
+                background: rgba($primary-color, 0.1);
+                border-radius: 20px!important;
+                display:inline-block ; 
+            }
+            .brassbadge{
+                font-size: 18px;
+                color:#ffbd59;
+                font-weight: 600;
+                padding: 6px 15px;
+                background: rgba(#ffbd59, 0.1);
+                border-radius: 20px!important;
+                display:inline-block ; 
+            }
+             .steelbadge{
+                font-size: 18px;
+                color:$danger-color;
+                font-weight: 600;
+                padding: 6px 15px;
+                background: rgba($danger-color, 0.1);
+                border-radius: 20px!important;
+                display:inline-block ;
+             }p{ 
+                line-height: normal;
+               a{
+                font-size: 12px;
+                color:#c4bdbe;
+                &:hover{
+                    opacity: 0.75;
+                }
+               }
+             }
+             .lasercuttingbadge{
+                font-size: 18px;
+                display:inline-block ;
+                color:$darkblue-color;
+                font-weight: 600;
+                padding: 6px 15px;
+                background: rgba($darkblue-color, 0.1);
+                border-radius: 20px!important;
+             }
+           }
+           .imgreviewhome{
+            max-width: 350px;
+            margin-top: -20px;
+            @media only screen and (max-width:1199px){
+                margin-top: 0px;
+            }
+           }
+        }
+    }
+}
+.faq-home{
+    padding-bottom: 40px;
+    .faqsubhead{
+        font-size: 22px;
+        color: $black-color;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-transform: capitalize;
+    }
+    .accordion {
+        .accordion-item {
+            margin-bottom: 10px;
+            border       : 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+            border-radius: 12px !important;
 
+            .accordion-header {
+                margin-bottom: 0 !important;
+
+                button {
+                    &.accordion-button {
+                        font-size    : 16px !important;
+                        font-weight  : 500 !important;
+                        border-radius: 12px !important;
+                        color:$black-color;
+                        padding: 15px;
+                        background:$white-color;
+                        box-shadow: none;
+                        &:after {
+                            transform: rotate(-90deg);
+                            width              : 24px;
+                            height             : 24px;
+                            border             : 1px solid $black-color;
+                            border-radius      : 50%;
+                            display            : inline-flex;
+                            align-items        : center;
+                            justify-content    : center;
+                            background-position: center;
+                            background-size    : 13px;
+                            background-image   : url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23000000%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
+                            opacity            : 0.40;
+                        }
+                        &:not(.collapsed){
+                            color:$black-color;
+                            &:after {
+                                transform: rotate(-180deg);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .accordion-body {
+                padding-left: 16px;
+                padding-top: 0;
+                font-size   : 14px;
+                line-height : 1.75;
+                color       : $paragraph-color
+            }
+        }
+    }
+}
+.american-manufacturing{
+    padding-bottom: 70px;
+    img{
+        max-width: 350px;
+    }
+    h4{
+        color:$black-color;
+        font-weight: 500;
+    }
+}
 .our-services {
     padding-top   : 165px;
     padding-bottom: 240px;
