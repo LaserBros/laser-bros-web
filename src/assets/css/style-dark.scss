@@ -600,7 +600,7 @@ body {
             }
 
             .banner-content {
-                h1 {
+                h1 , h4 {
                     color: $white-color;
                 }
 
@@ -1566,49 +1566,155 @@ body {
         .custom_tooltip .tooltip-arrow:before {
             border-bottom-color: #212121 !important;
         }
-    }
-
-    .HowITWorksmain_div {
-        .worksMain_head {
-            color: $white-color;
-        }
-
-        .worksStep_head {
-            color: $white-color;
-        }
-
-        .HowITWorksteps_box {
-            border: 1px solid rgba($white-color, .75);
-
-            .StepIcon_img {
-                filter: brightness(0) invert(1);
+        
+        .HowITWorksmain_div {
+            .worksMain_head {
+                color: $white-color;
             }
-
-            .Worksteps_cont {
-                h4 {
-                    color: rgba($white-color, .85);
+    
+            .worksStep_head {
+                color: $white-color;
+            }
+    
+            .HowITWorksteps_box {
+                border: 1px solid rgba($white-color, .75);
+    
+                .StepIcon_img {
+                    filter: brightness(0) invert(1);
                 }
+    
+                .Worksteps_cont {
+                    h4 {
+                        color: rgba($white-color, .85);
+                    }
+    
+                    p {
+                        color: rgba($white-color, .85);
+                    }
+                }
+            }
+        }
+    
+        .laserCuttingInfo_sec {
+            .laserCuttingInfo_div {
+                h3 {
+                    color: $white-color;
+                }
+    
+                h4 {
+                    color: $white-color;
+                }
+    
+                ul {
+                    li {
+                        color: rgba($white-color, .85);
+                    }
+                }
+            }
+        }
+        .homereviews{
+            .reviewslist {
+                border: 2px solid rgba($white-color, 0.30);
+                .reviewsleftcontent {
+                    .reviewuser {
+                        h5{
+                            color: $white-color;
+                        }
+                    }
+                    h3{
+                        color: $white-color;
+                    }
+                    p{
+                        color:$white-color;
+                    }
+                }
+                .reviewsrightcontent {
+                   .reviewbadge {
+                    .aluminiumbadge {
+                        background: rgba($white-color, 0.1);
+                    }
+                     .lasercuttingbadge {
+                        background: rgba($white-color, 0.1);
+                     }
+                   }
+                }
+            }    
+        }
+        .american-manufacturing{
+            h4{
+                color:$white-color;
+            }
+        }
+        .faq-home{
+            .faqsubhead{
+                color: $white-color;
+            }
+            .accordion {
+                .accordion-item {
+                    background: rgba($white-color, 0.1);
 
+                    .accordion-header {
+                        button {
+                            &.accordion-button {
+                                background: transparent;
+                                color: $white-color;
+
+                                .accordion-icon {
+                                    background: rgba($primary-color, 0.06);
+                                    border: 1px solid rgba($primary-color, 0.13);
+
+                                    svg {
+                                        color: $primary-color;
+                                        font-size: 18px;
+                                    }
+                                }
+                                &::after {
+                                    background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
+                                }
+                            }
+                        }
+                    }
+
+                    .accordion-body {
+                        color: $light-color;
+
+                        a {
+                            color: $light-color;
+
+                            &.active,
+                            &:hover {
+                                color: $primary-color;
+
+                            }
+                        }
+                    }
+                }
+            }            
+        }  
+        .metalFinish_banner {
+            .banner-content {
+                h1 {
+                        color: $white-color;
+                    }
+                    p {
+                        color: $white-color;
+                    }
+            }
+        } 
+        .metalfinish_sec {
+            .metalfinish_div {
+                h4 {
+                    color: $white-color;
+                }
                 p {
                     color: rgba($white-color, .85);
                 }
+                ul {
+                    li {
+                        color: rgba($white-color, .85);
+                    }
+                }
             }
-        }
-    }  
-    
-.laserCuttingInfo_sec {
-    .laserCuttingInfo_div {
-        h3 {
-            color: $white-color;
-        }
-        h4 {
-            color: $white-color;
-        }
-        ul {
-            li {
-                color: rgba($white-color, .85);
-            }
-        }
-    }
-}  
+        }                 
+    } 
 }

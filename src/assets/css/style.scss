@@ -796,7 +796,55 @@ footer {
 /*Auth Css Ends*/
 /*Home Css Start*/
 
-
+.metalFinish_banner {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    .banner-content {
+        h1 {
+                font-size: 70px;
+                color: $black-color;
+                margin-bottom: 20px;
+                font-weight: 600;
+        
+                @media only screen and (max-width:1199.98px) {
+                    font-size: 52px;
+                    margin-bottom: 30px;
+                }
+        
+                @media only screen and (max-width:767.98px) {
+                    font-size: 36px;
+                }
+        
+                span {
+                    font-weight: 900;
+                    display: inline-flex;
+                    position: relative;
+                    z-index: 1;
+                    line-height: 1.45;
+        
+                    img {
+                        position: absolute;
+                        left: 0px;
+                        bottom: -15px;
+                    }
+                }
+            }
+            p {
+                color: $black-color;
+                font-size: 22px;
+                line-height: 1.75;
+                // opacity: 0.75;
+                margin-bottom: 0px;
+                @media only screen and (max-width:1199.98px) {
+                    font-size: 18px;
+                }
+        
+                @media only screen and (max-width:767.98px) {
+                    font-size: 16px;
+                }
+            }
+    }
+}
 .banner-home {
     &.banner-about {
         padding-top      : 75px;
@@ -2120,6 +2168,9 @@ footer {
     max-width: 680px;
     margin: 0px auto;
 }
+.pb_70 {
+    padding-bottom: 70px;
+}
 .laserCuttingInfo_sec {
     padding-bottom: 60px;
     .laserCuttingInfo_div {
@@ -2130,7 +2181,7 @@ footer {
             margin-bottom: 20px;
         }
         h4 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: $black-color;
             margin-bottom: 5px;
@@ -2139,11 +2190,77 @@ footer {
             list-style: auto;
             margin: 0px;
             li {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 400;
                 color: $black-color;
                 ul {
                     list-style: disc;
+                }
+            }
+        }
+    }
+}
+.metalfinish_sec {
+    padding-bottom: 60px;
+    .metalfinish_div {
+        margin-bottom: 20px;
+        h4 {
+            font-size: 18px;
+            font-weight: bold;
+            color: $black-color;
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 18px;
+            font-weight: 400;
+            color: $black-color;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: disc;
+            margin: 0px 0px 10px;
+            li {
+                font-size: 18px;
+                font-weight: 400;
+                color: $black-color;
+            }
+        }
+        .metalfinish_box {
+            text-align: center;
+            img {
+                width: 100%;
+                height: 280px;
+                border-radius: 15px;
+                object-fit: cover;
+                margin-bottom: 10px;
+            }
+            h5 {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 0px;
+            }
+            &.steelColor {
+                img {
+                    border: 2px solid #e01f26;
+                }
+                h5 {
+                    color: #e01f26;
+                }
+            }
+            &.stainlessColor {
+                img {
+                    border: 2px solid #00bf63;
+                }
+                h5 {
+                    color: #00bf63;
+                }
+            }
+            &.aluminumColor {
+                img {
+                    border: 2px solid #4e8ac8;
+                }
+                h5 {
+                    color: #4e8ac8;
                 }
             }
         }
@@ -2177,13 +2294,13 @@ footer {
         .Worksteps_cont {
             flex-grow: 1;
             h4 {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: bold;
                 color: $black-color;
                 margin-bottom: 0px;
             }
             p {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 400;
                 color: $black-color;
                 margin-bottom: 0px;

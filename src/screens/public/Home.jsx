@@ -10,6 +10,7 @@ import reviewimg3 from "../../assets/img/reviewimg3.png";
 import reviewimg4 from "../../assets/img/reviewimg-2.webp";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
+import BreakDownSteps from "../../components/BreakDownSteps";
 
 export default function Home() {
   return (
@@ -160,6 +161,7 @@ export default function Home() {
           </div>
         </Container>
       </section>
+      <BreakDownSteps />
       <section className="faq-home">
         <Container>
           <div class="heading mb-3 text-center">
