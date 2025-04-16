@@ -77,6 +77,7 @@ const CheckOutPay = ({
           : "0.00"
       );
     }
+    console.log("shippingInfo ::::::::::",shippingInfo)
   }, [show]);
 
   useEffect(() => {
@@ -537,7 +538,7 @@ const CheckOutPay = ({
                           shippingInfo?.requestQuoteDB?.billing_details
                             ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.billing_details?.city} {shippingInfo?.requestQuoteDB?.address_details?.state_code},{" "}
+                        , {shippingInfo?.requestQuoteDB?.billing_details?.city} {shippingInfo?.requestQuoteDB?.billing_details?.state_code},{" "}
                         {shippingInfo?.requestQuoteDB?.billing_details?.pincode}
                         ,{" "}
                         {shippingInfo?.requestQuoteDB?.billing_details?.country}
