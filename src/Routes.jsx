@@ -143,6 +143,7 @@ import {
 } from "react-router-dom";
 import DxfAnalyzer from "./screens/private/dxfFile";
 import MetalFinishing from "./screens/public/services/MetalFinishing";
+import Products from "./screens/public/products";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -894,6 +895,7 @@ return (
       <Route path="/laser-cutting" element={<Lasercutting />} />
       <Route path="/bending" element={<Bending />} />
       <Route path="/metalfinishing" element={<MetalFinishing />} />
+      <Route path="/products" element={<Products />} />
     </Route>
     <Route
       element={

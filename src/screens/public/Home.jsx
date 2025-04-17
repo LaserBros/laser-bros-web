@@ -60,14 +60,14 @@ export default function Home() {
                   <div className="reviewbadge text-start mt-1">
                     <div className="d-inline-block text-center">
                       <span className="lasercuttingbadge">Laser Cutting</span>
-                      <p className="mb-0"><Link>Learn About Laser Cutting</Link></p>
+                      <p className="mb-0"><Link to='/laser-cutting'>Learn About Laser Cutting</Link></p>
                     </div>
                   </div>
                   <Image src={reviewimg2} className="img-fluid imgreviewhome" alt="" />
                   <div className="reviewbadge text-end mt-1">
                     <div className="d-inline-block text-center">
                       <span className="lasercuttingbadge">Metal Finishing</span>
-                      <p className="mb-0"><Link>Learn About Sheet Metal Finishing</Link></p>
+                      <p className="mb-0"><Link to='/metalfinishing'>Learn About Sheet Metal Finishing</Link></p>
                     </div>
                   </div>
                 </div>
@@ -103,14 +103,14 @@ export default function Home() {
                   <div className="reviewbadge text-start mt-1">
                     <div className="d-inline-block text-center">
                       <span className="lasercuttingbadge">CNC Bending</span>
-                      <p className="mb-0"><Link>Learn About Bending</Link></p>
+                      <p className="mb-0"><Link to='/bending'>Learn About Bending</Link></p>
                     </div>
                   </div>
                   <Image src={reviewimg3} className="img-fluid imgreviewhome" alt="" />
                   <div className="reviewbadge text-end mt-1">
                     <div className="d-inline-block text-center">
                       <span className="lasercuttingbadge">Lase Cutting</span>
-                      <p className="mb-0"><Link>Learn About Laser Cutting</Link></p>
+                      <p className="mb-0"><Link to='/laser-cutting'>Learn About Laser Cutting</Link></p>
                     </div>
                   </div>
                 </div>
@@ -147,7 +147,7 @@ export default function Home() {
                   <Image src={reviewimg4} className="img-fluid imgreviewhome my-4" alt="" />
                   <div className="reviewbadge text-center mt-1">
                     <span className="lasercuttingbadge">Laser Cutting</span>
-                    <p className="mb-0"><Link>Learn About Laser Cutting</Link></p>
+                    <p className="mb-0"><Link to='/laser-cutting'>Learn About Laser Cutting</Link></p>
                   </div>
                 </div>
 

@@ -1715,6 +1715,37 @@ body {
                     }
                 }
             }
-        }                 
+        } 
+        .laserProduct_sec {
+            .Productmain_box {    
+                background: rgba($white-color, 0.1);
+                box-shadow: 0px 0px 20px 0px rgba($white-color, 0.07);
+                h4 {
+                    a {
+                        color: $white-color;
+                    }
+                }
+                p {
+                    color: rgba($white-color, 0.85);
+                }
+            }
+        }  
+        .product_modal {
+            .modal-content {
+                .modal-body {
+                    .main_heading {
+                        color: $white-color;
+                    }
+                    p {
+                        color: rgba($white-color, .85);
+                    }
+                    ul {
+                        li {
+                            color: rgba($white-color, .85);
+                        }
+                    }
+                }
+            }
+        }                              
     } 
 }

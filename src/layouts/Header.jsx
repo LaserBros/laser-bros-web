@@ -123,7 +123,7 @@ const Header = () => {
                 className="btn btn-primary btn-get-quote"
               >
                 {" "}
-                <Icon icon="icon-park-outline:add" /> Get a Quote
+                <Icon icon="icon-park-outline:add" /> Get Started
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

@@ -2308,6 +2308,112 @@ footer {
         }
     }
 }
+.laserProduct_sec {
+    padding: 70px 0px;
+    transition: ease-in-out 0.7s;
+    .Productmain_box {    
+        background: $white-color;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px 0px rgba($black-color, 0.07);
+        padding: 15px;
+        cursor: pointer;
+        height: 100%;
+        &:hover {
+            .Product_img {
+                img {
+                    &.img_default {
+                        opacity: 0;
+                        transition: ease-in-out 0.7s;
+                    }
+                    &.img_hover {
+                        opacity: 1;
+                        transition: ease-in-out 0.7s;
+                    }
+                }
+            }
+        }
+        .Product_img {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 270px;
+            margin-bottom: 10px;
+            @media only screen and (min-width: 1400px) {
+                height: 290px;
+            }
+            @media only screen and (max-width: 575.98px) {
+                height: 290px;
+            }
+            img {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                display: block;
+                &.img_default {
+                    opacity: 1;
+                    transition: ease-in-out 0.7s;
+                }
+                &.img_hover {
+                    opacity: 0;
+                    transition: ease-in-out 0.7s;
+                }
+            }
+        }
+        h4 {
+            margin-bottom: 5px;
+            text-align: center;
+            a {
+                text-decoration: none;
+                display: inline-block;
+                font-size: 18px;
+                font-weight: bold;
+                color: $black-color;
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+        p {
+            font-size: 16px;
+            font-weight: 400;
+            color: $paragraph-color;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+    }
+}
+.product_modal {
+    .modal-content {
+        .modal-body {
+            .main_heading {
+                font-size: 24px;
+                font-weight: bold;
+                color: $black-color;
+                margin-bottom: 15px;
+            }
+            p {
+                font-size: 16px;
+                font-weight: 400;
+                color: $paragraph-color;
+                margin-bottom: 10px;
+            }
+            ul {
+                list-style: disc;
+                margin: 0px 0px 10px;
+                li {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $paragraph-color;
+                }
+            }
+        }
+    }
+}
 /*Services Css Ends*/
 /*Resources Css Start*/
 .resources-main {
