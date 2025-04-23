@@ -91,7 +91,7 @@ const AdminFaq = () => {
             <Icon icon="mynaui:pencil" />
           </Link>
           <Link
-            className="btntrash"
+            className="btntrash faq"
             onClick={(e) => {
               e.stopPropagation();
               setTitle("Are you sure you want to delete this faq?");

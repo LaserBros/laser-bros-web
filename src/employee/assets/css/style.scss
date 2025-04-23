@@ -2081,6 +2081,18 @@ html {
     border-radius: 50%;
     font-size: 14px;
 }
+.btntrash.faq {
+    width: 35px;
+    height: 35px;
+    background: $danger-color;
+    color: $white-color;
+    min-width: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 20px;
+}
 
 .statusactiveData {
     font-size      : 12px;
