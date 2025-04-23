@@ -5,7 +5,9 @@ import { Icon } from "@iconify/react";
 import img1 from "../../../assets/img/service-img-1.jpg";
 import Materials2 from "../../../components/Materials2";
 import BreakDownSteps from "../../../components/BreakDownSteps";
+import { useNavigate } from "react-router-dom";
 export default function Lasercutting() {
+   const navigate = useNavigate();
   return (
     <React.Fragment>
       <section className="banner-services banner-home  pb-0">
@@ -23,9 +25,9 @@ export default function Lasercutting() {
                 <p className="text-start"><b>Why Fiber Laser?</b> Fiber lasers offer a great balance of cutting speed, accuracy, and quality. Compared to other cutting processes, lasers will outperform plasma cutting with accuracy, and water jet with speed. Obviously these other processes have their place, but lasers offer the best of both worlds for a very wide range of metals.</p>
                 <p className="text-start"><b>P.S.</b> With fiber laser cutting we can only process metals (no wood, plastic, or composite materials).</p>
                 <div className="bannerservice_btns mt-4">
-                  <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+                  <Button  onClick={() => navigate('/quotes/quotes-detail')} className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
                   <span className="loginUploadInfo_text">You'll need to login to upload</span>
-                  <Button className="btn btn-outline-primary mt-2" variant={null}>
+                  <Button onClick={() => navigate('/resources/laser-cutting')} className="btn btn-outline-primary mt-2" variant={null}>
                     <Icon icon="ph:books-light" width={24} height={24}/> Laser Cutting Guidelines
                   </Button>
                 </div>

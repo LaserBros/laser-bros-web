@@ -4,7 +4,9 @@ import shape1 from "../../../assets/img/line-shape-1.svg";
 import { Icon } from "@iconify/react";
 import img1 from "../../../assets/img/service-img-2.jpg";
 import MaterialsBending from "../../../components/MaterialsBending";
+import { useNavigate } from "react-router-dom";
 export default function Bending() {
+  const navigate = useNavigate();
   return (
     <React.Fragment>
       <section className="banner-services banner-home pb-0">
@@ -15,9 +17,9 @@ export default function Bending() {
                 <h1 className="text-start"><span>Bending<img src={shape1} className="img-fluid w-100" alt="" /></span> Services.</h1>
                 <p className="text-start"><b className="d-block">What is sheet metal bending?</b> Sheet metal bending is the process of turning a flat piece of metal into a different shape by folding or bending it. It’s a common step in making things like metal boxes, enclosure, and brackets. The bending machines we use are CNC controlled and programmed offline to ensure your parts are manufacturable and made to spec.</p>
                 <div className="bannerservice_btns mt-4">
-                  <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+                  <Button  className="btn btn-primary mb-2" onClick={() => navigate('/quotes/quotes-detail')}>Get Started Now! Upload Your DXF</Button>
                   <span className="loginUploadInfo_text">You'll need to login to upload</span>
-                  <Button className="btn btn-outline-primary mt-2" variant={null}>
+                  <Button className="btn btn-outline-primary mt-2" variant={null} onClick={() => navigate('/resources/laser-cutting')}>
                     <Icon icon="ph:books-light" width={24} height={24} /> Laser Cutting Guidelines
                   </Button>
                 </div>
@@ -67,7 +69,7 @@ export default function Bending() {
                 </ul>
               </div>
               <div className="text-center">
-                <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+                <Button className="btn btn-primary mb-2" onClick={() => navigate('/quotes/quotes-detail')}>Get Started Now! Upload Your DXF</Button>
                 <span className="loginUploadInfo_text">You’ll need to login to upload</span>
               </div>
             </Col>

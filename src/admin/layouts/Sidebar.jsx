@@ -129,6 +129,12 @@ const Sidebar = () => {
       icon: "material-symbols:attach-money-rounded",
     },
     {
+      id: "faw",
+      title: "FAQ's",
+      link: "/admin/faq",
+      icon: "bi:question-circle",
+    },
+    {
       id: "database",
       title: "Database",
       link: "/admin/database",

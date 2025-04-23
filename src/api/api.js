@@ -1088,6 +1088,54 @@ export const getAllTransactions = async (page) => {
   }
 };
 
+export const generalFAQ = async (page) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/generalFAQ`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const generalPostFAQ = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/generalFAQ`,formData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const generalEditFAQ = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/generalFAQ/`,formData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const generalDeleteFAQ = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.delete(
+      `/generalFAQ/`+formData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getParticularTransaction = async (data) => {
   try {
     const response = await axiosAdminInstance.post(

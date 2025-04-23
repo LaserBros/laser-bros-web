@@ -8,7 +8,9 @@ import icon1 from "../assets/img/icon/1.webp";
 import icon2 from "../assets/img/icon/2.webp";
 import icon3 from "../assets/img/icon/3.webp";
 import icon4 from "../assets/img/icon/4.webp";
+import { Link, useNavigate } from "react-router-dom";
 const BreakDownSteps = () => {
+  const navigate = useNavigate();
   return (
     <section className="HowITWorksmain_div">
       <Container>
@@ -56,8 +58,8 @@ const BreakDownSteps = () => {
               <p>Our process involves pulling your files, nesting your parts, cutting and inspection, post ops <i>(like finishing or bending)</i>, and finally packaging and shipping!</p>
             </div>
           </div>
-          <div className="text-center">
-            <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+          <div className="text-center"> 
+            <Button  onClick={() => navigate('/quotes/quotes-detail')} className="btn btn-primary">Get Started Now! Upload Your DXF</Button>
             <span className="loginUploadInfo_text">You’ll need to login to upload</span>
           </div>
         </div>
