@@ -99,7 +99,7 @@ const Header = () => {
               </NavDropdown>
             </Nav>
             <Nav className="ms-auto align-items-lg-center right-menu">
-              <ThemeToggle />
+              {/* <ThemeToggle /> */}
               {/* <Nav.Link
                 as={Link}
                 className="ps-4 pe-2 header-search"
