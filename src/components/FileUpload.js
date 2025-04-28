@@ -82,9 +82,17 @@ const FileUpload = ({
           JSON.stringify(response.data.requestQuoteDB)
         );
 
+        // localStorage.setItem(
+        //   "setItempartsDBdata",
+        //   JSON.stringify(response.data.partsDBdata)
+        // );
+
         localStorage.setItem(
           "setItempartsDBdata",
-          JSON.stringify(response.data.partsDBdata)
+          JSON.stringify([
+            ...(JSON.parse(localStorage.getItem("setItempartsDBdata")) || []),
+            ...response.data.partsDBdata
+          ])
         );
 
         onFileDrop({

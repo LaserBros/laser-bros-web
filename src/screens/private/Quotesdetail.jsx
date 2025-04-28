@@ -772,7 +772,7 @@ export default function QuotesDetail() {
       JSON.stringify(updatedQuoteData)
     );
 
-    const response = await uploadQuote(formData);
+    const response = await uploadQuote(formData); 
 
     if (response && response.data) {
       // console.log(response, "Sdsdsdsdds= response,", response.data);
@@ -990,8 +990,8 @@ export default function QuotesDetail() {
 
       // Since storedData and quote_list should already be objects, no need to parse again
       setQuoteList(quote_list); // Assuming quote_list is already an object/array
-      setQuoteData(storedData); // Assuming storedData is already an object
-      setquoteDataCon(true);
+      setQuoteData(prevData => [...prevData, ...storedData]);
+      // setquoteDataCon(true);
       // Add any additional logic for handling the files
     } else {
       console.error("Data structure is not as expected:", data);
