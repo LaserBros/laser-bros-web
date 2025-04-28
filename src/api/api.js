@@ -1538,6 +1538,47 @@ export const AdmingetThicknessMaterialFinish = async (data, type, params) => {
   }
 };
 
+export const AdminAddProducts = async (data) => {
+  try {
+    var response_api = await axiosAdminInstance.post(
+      `/products`,
+      data
+    ); 
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminEditProducts = async (data) => {
+  try {
+    var response_api = await axiosAdminInstance.put(
+      `/products`,
+      data
+    ); 
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const AdminAllProducts = async (data) => {
+  try {
+    const url = data ? `/products/${data}` : `/products`;
+    const response_api = await axiosAdminInstance.get(url);
+    return response_api.data;
+  } catch (error) {
+    console.error("Something went wrong.", error);
+    throw error;
+  }
+};
+
 export const AdminupdateQuantity = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/updateQuantity`, data);

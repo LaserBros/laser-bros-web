@@ -192,19 +192,25 @@ export default function Products() {
           </Row>
         </Container>
       </section>
-      <Modal centered show={show} onHide={ProductToggle} className="product_modal modal-custom max-width-574">
+      <Modal centered show={show} onHide={ProductToggle} className="product_modal modal-custom" size="lg">
         <Button className="btn-close z-1" variant={null} onClick={ProductToggle}></Button>
         <Modal.Body>
-          <h3 className="main_heading">Scrap Cart</h3>
-          <p>Taken from the "shop-cart" design... The scrap cart allows you to keep a 32-44 gallon trash can & your "skeleton" drops from your plasma or laser in the vertical rack. </p>
-          <p>Free digital download with all the files you'll need, plus URL links for the hardware you'll need (McMaster Carr).</p>
-          <ul>
-            <li>12 Gauge steel constructions (easy to laser cut or plasma cut) </li>
-            <li>Simple bends (Press-brake or Pan-Break... if you're strong)</li>
-            <li>Bolt together (no welding)</li>
-            <li>Up to 1-TON capacity </li>
-            <li>36" deep, 24" wide, & 36" tall</li>
-          </ul>
+          <div className="modal_flex">
+            <Image className="img_default" src={img1} alt=""/>
+            <div className="modal_grow">
+              <h3 className="main_heading">Scrap Cart</h3>
+              <p>Taken from the "shop-cart" design... The scrap cart allows you to keep a 32-44 gallon trash can & your "skeleton" drops from your plasma or laser in the vertical rack. </p>
+              <p>Free digital download with all the files you'll need, plus URL links for the hardware you'll need (McMaster Carr).</p>
+              <ul>
+                <li>12 Gauge steel constructions (easy to laser cut or plasma cut) </li>
+                <li>Simple bends (Press-brake or Pan-Break... if you're strong)</li>
+                <li>Bolt together (no welding)</li>
+                <li>Up to 1-TON capacity </li>
+                <li>36" deep, 24" wide, & 36" tall</li>
+              </ul>
+              <Button>Download</Button>
+            </div>
+          </div>
         </Modal.Body>
       </Modal>    
     </React.Fragment>

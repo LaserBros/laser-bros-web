@@ -146,6 +146,9 @@ import MetalFinishing from "./screens/public/services/MetalFinishing";
 import Products from "./screens/public/products";
 import AdminFaq from "./admin/screens/Faq/faq";
 import AddEditFaq from "./admin/screens/Faq/AddEditFAQ";
+import ProductForm from "./admin/screens/Product";
+import AddEditProduct from "./admin/screens/Product";
+import AllProducts from "./admin/screens/Product/ViewProduct";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -201,6 +204,45 @@ return (
         />
       }
     ></Route>
+    <Route
+      path="/admin/add-product"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Add Product"}>
+              <AddEditProduct /> 
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+
+<Route
+      path="/admin/products"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Product"}>
+              <AllProducts /> 
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+
+<Route
+      path="/admin/edit-product/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Edit Product"}>
+              <AddEditProduct /> 
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+
      <Route
       path="/admin/add-faq"
       element={

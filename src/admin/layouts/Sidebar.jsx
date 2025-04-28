@@ -135,6 +135,12 @@ const Sidebar = () => {
       icon: "bi:question-circle",
     },
     {
+      id: "faw",
+      title: "Products",
+      link: "/admin/products",
+      icon: "bi:question-circle",
+    },
+    {
       id: "database",
       title: "Database",
       link: "/admin/database",
