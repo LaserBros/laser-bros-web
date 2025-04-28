@@ -27,8 +27,8 @@ body {
 
 .btn-outline-primary {
   background: #ffffff !important;
-  border: 1px solid #4F8CCA !important;
-  color: #4F8CCA !important;
+  border: 1px solid #3c5b8a !important;
+  color: #3c5b8a !important;
   padding-left: 20px !important;
   padding-right: 20px !important;
   height: 50px;
@@ -47,12 +47,12 @@ body {
 }
 .btn-outline-primary:hover {
   opacity: 0.75;
-  color: #4F8CCA !important;
+  color: #3c5b8a !important;
 }
 
 .btn-primary {
-  background: #4F8CCA !important;
-  border-color: #4F8CCA !important;
+  background: #3c5b8a !important;
+  border-color: #3c5b8a !important;
   height: 50px;
   font-size: 16px !important;
   font-weight: 500 !important;
@@ -79,15 +79,15 @@ body {
 }
 
 .btn-lt-primary {
-  background: rgba(79, 140, 202, 0.13) !important;
-  border-color: rgba(79, 140, 202, 0.13) !important;
+  background: rgba(60, 91, 138, 0.13) !important;
+  border-color: rgba(60, 91, 138, 0.13) !important;
   height: 50px;
   font-size: 16px !important;
   font-weight: 500 !important;
   border-radius: 50px !important;
   padding-left: 20px !important;
   padding-right: 20px !important;
-  color: #4F8CCA !important;
+  color: #3c5b8a !important;
 }
 .btn-lt-primary svg {
   font-size: 20px;
@@ -103,7 +103,7 @@ body {
 }
 .btn-lt-primary:hover {
   opacity: 0.75;
-  color: #4F8CCA !important;
+  color: #3c5b8a !important;
 }
 
 .badgestatus-more {
@@ -215,7 +215,7 @@ body {
   color: #000000;
 }
 .login-main .loginform .formfooter a {
-  color: #4F8CCA;
+  color: #3c5b8a;
   font-weight: 700;
   text-decoration: none;
 }
@@ -265,7 +265,7 @@ body {
 .modal-custom .modal-dialog .modal-content .btn-close {
   width: 28px;
   height: 28px;
-  background-color: #4F8CCA;
+  background-color: #3c5b8a;
   border-radius: 50%;
   padding: 0 !important;
   background-size: 10px;
@@ -430,13 +430,13 @@ body {
   top: 0px;
   left: -20px;
   height: 100%;
-  background: #4F8CCA;
+  background: #3c5b8a;
   width: 0;
   border-radius: 0px 14px 14px 0px;
 }
 .sidebarouter .navitem.active, .sidebarouter .navitem:hover {
   color: #ffffff;
-  background: #4F8CCA;
+  background: #3c5b8a;
   display: flex;
   border-radius: 6px;
 }
@@ -446,7 +446,7 @@ body {
 
 .inactive.active {
   color: #000000;
-  background-color: #4F8CCA;
+  background-color: #3c5b8a;
 }
 
 @media only screen and (max-width: 767.98px) {
@@ -740,11 +740,11 @@ body {
   margin-right: 5px;
 }
 .wrapper .maincontent_div .card .card-header .btnaccept {
-  color: #4F8CCA;
-  border: 1px solid #4F8CCA;
+  color: #3c5b8a;
+  border: 1px solid #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-header .btnaccept:hover {
-  background: #4F8CCA;
+  background: #3c5b8a;
   color: #ffffff;
 }
 .wrapper .maincontent_div .card .card-header .btnreject {
@@ -820,7 +820,7 @@ body {
   color: rgba(0, 0, 0, 0.7);
 }
 .wrapper .maincontent_div .card .card-body .workorders:hover {
-  color: #4F8CCA;
+  color: #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-body .orders-card {
   background: #ffffff;
@@ -868,11 +868,11 @@ body {
   margin-right: 5px;
 }
 .wrapper .maincontent_div .card .card-body .btnaccept {
-  color: #4F8CCA;
-  border: 1px solid #4F8CCA;
+  color: #3c5b8a;
+  border: 1px solid #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-body .btnaccept:hover {
-  background: #4F8CCA;
+  background: #3c5b8a;
   color: #ffffff;
 }
 .wrapper .maincontent_div .card .card-body .btnreject {
@@ -1148,14 +1148,14 @@ body {
   white-space: nowrap;
 }
 .wrapper .maincontent_div .card .card-body .table.tablecustom tbody tr.expanded-row td {
-  border-top: 1px solid #4F8CCA;
-  border-bottom: 1px solid #4F8CCA;
+  border-top: 1px solid #3c5b8a;
+  border-bottom: 1px solid #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-body .table.tablecustom tbody tr.expanded-row td:first-child {
-  border-left: 1px solid #4F8CCA;
+  border-left: 1px solid #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-body .table.tablecustom tbody tr.expanded-row td:last-child {
-  border-right: 1px solid #4F8CCA;
+  border-right: 1px solid #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-body .form-group .form-label {
   font-size: 14px;
@@ -1288,7 +1288,7 @@ body {
   margin: 0 3px;
   min-width: 35px;
   width: 35px;
-  background: #4F8CCA;
+  background: #3c5b8a;
 }
 .wrapper .maincontent_div .card .card-body .btnview:hover {
   opacity: 0.75;

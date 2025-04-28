@@ -25,7 +25,7 @@ export default function MetalFinishing() {
           <Row>
             <Col lg={12}>
               <div className="banner-content">
-                <h1><span>Metal Finishing<img src={shape1} className="img-fluid w-100" alt="" /></span> Options</h1>
+                <h1><span>Metal Finishing<img src={shape1} className="img-fluid w-100" alt="" /></span> Services</h1>
                 <p>Metal finishing refers to the post-processing steps we take after laser cutting. While we don’t currently offer services like powder coating, zinc plating, or other chemical finishes, our finishing options are great for preparing your parts for whatever comes next.</p>
                 <p>Here are some of the finishes we offer:</p>
               </div>

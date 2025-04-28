@@ -27,62 +27,25 @@ export default function Home() {
             <p className="bannersubpara">You'll need to login to upload</p>
             <h4>Most Orders Ship in as Little as <b>3-days!</b></h4>
             <h4><b>Multiple Shipping Options</b> to Meet Your Deadlines.</h4>
+            <h4><b>Instant Online Quotes</b> through our secure app.</h4>
           </div>
         </Container>
       </section>
       <section className="homereviews">
+        <div class="heading mb-5 text-center">
+          <h2>What Our Customers Have To Say</h2>
+        </div>
         <Container>
           <div className="reviewslist mb-4">
             <Row>
-              <Col md={6}>
+              <Col lg={6} className="my-2">
                 <div className="reviewsleftcontent text-center">
-                  <h3>Customer Since:2022</h3>
+                  {/* <h3>Customer Since:2024</h3> */}
                   <div className="reviewuser">
-                    <Image src={reviewimg1} className="img-fluid rounded-circle" alt="" />
-                    <h5 className="mb-0">Steven Carlin</h5>
-                    <div className="reviewrate">
-                      <Icon icon="material-symbols:star" />
-                      <Icon icon="material-symbols:star" />
-                      <Icon icon="material-symbols:star" />
-                      <Icon icon="material-symbols:star" />
-                      <Icon icon="material-symbols:star" />
+                    <div>
+                      <Image src={reviewuser2} className="img-fluid rounded-circle" alt="" />
+                      <h5 className="mb-0">Jason Gill</h5>
                     </div>
-                  </div>
-                  <p>Quick turnaround and excellent customer service. If you need the right parts made fast, these are the guys to use.</p>
-                </div>
-              </Col>
-              <Col md={6}>
-                <div className="reviewsrightcontent text-center">
-                  <div className="reviewbadge text-center">
-                    <span className="steelbadge">12 gauge (0.100) HRPO Steel <Icon icon="ix:layers" width={22} height={22} /></span>
-                    <p className="mb-0"><Link>See More Materials We Offer</Link></p>
-                  </div>
-                  <div className="reviewbadge text-start mt-1">
-                    <div className="d-inline-block text-center">
-                      <span className="lasercuttingbadge">Laser Cutting</span>
-                      <p className="mb-0"><Link to='/laser-cutting'>Learn About Laser Cutting</Link></p>
-                    </div>
-                  </div>
-                  <Image src={reviewimg2} className="img-fluid imgreviewhome" alt="" />
-                  <div className="reviewbadge text-end mt-1">
-                    <div className="d-inline-block text-center">
-                      <span className="lasercuttingbadge">Metal Finishing</span>
-                      <p className="mb-0"><Link to='/metalfinishing'>Learn About Sheet Metal Finishing</Link></p>
-                    </div>
-                  </div>
-                </div>
-
-              </Col>
-            </Row>
-          </div>
-          <div className="reviewslist mb-4">
-            <Row>
-              <Col md={6}>
-                <div className="reviewsleftcontent text-center">
-                  <h3>Customer Since:2024</h3>
-                  <div className="reviewuser">
-                    <Image src={reviewuser2} className="img-fluid rounded-circle" alt="" />
-                    <h5 className="mb-0">Jason Gill</h5>
                     <div className="reviewrate">
                       <Icon icon="material-symbols:star" />
                       <Icon icon="material-symbols:star" />
@@ -94,25 +57,32 @@ export default function Home() {
                   <p>Lase Bros has been transformative for my small automotive manufacturing business! The parts that I have produced by Cort and the team exceed my expectations every time. They go the extra mile to make sure that my parts look great, even with bends - so I can ship mill finish parts that require  no additional coating or finishing to be customer ready. I can get prototypes turned around in just a couple days, and production runs that are ready to pack and ship - with competitive prices and American-made qualtiy. I culd not be happier with the results from Laser Bros and I recommended them to everyone in my industry!</p>
                 </div>
               </Col>
-              <Col md={6}>
+              <Col lg={6} className="my-2">
                 <div className="reviewsrightcontent text-center">
-                  <div className="reviewbadge text-center">
-                    <span className="aluminiumbadge">0.080 5052 Aluminium <Icon icon="ix:layers" width={22} height={22} /></span>
-                    <p className="mb-0"><Link>See More Materials We Offer</Link></p>
-                  </div>
-                  <div className="reviewbadge text-start mt-1">
-                    <div className="d-inline-block text-center">
-                      <span className="lasercuttingbadge">CNC Bending</span>
-                      <p className="mb-0"><Link to='/bending'>Learn About Bending</Link></p>
+                  <h2>Their Part</h2>
+                  <Image src={reviewimg3} className="img-fluid imgreviewhome" alt="" />
+                  <div className="clearfix"></div>
+                  <div className="d-inline-flex justify-content-center flex-column">
+                    <div className="reviewbadge mb-1">
+                      <h4 className="mb-0">Material:</h4>
+                      <Link className="aluminiumbadge">0.080 5052 Grade Aluminium <Icon icon="ix:layers" width={22} height={22} /></Link>
+                    </div>
+                    <div className="reviewbadge mt-1">
+                      <h4 className="mb-0">Services:</h4>
+                      <Link className="lasercuttingbadge">Laser Cutting</Link>
+                      <Link className="lasercuttingbadge">CNC Bending</Link>
+                      <Link className="lasercuttingbadge">Metal Finishing</Link>
+                      {/* <div className="d-inline-block text-center">
+                     <p className="mb-0"><Link to='/bending'>Learn About Bending</Link></p> 
+                    </div> */}
                     </div>
                   </div>
-                  <Image src={reviewimg3} className="img-fluid imgreviewhome" alt="" />
-                  <div className="reviewbadge text-end mt-1">
+                  {/* <div className="reviewbadge text-end mt-1">
                     <div className="d-inline-block text-center">
                       <span className="lasercuttingbadge">Lase Cutting</span>
                       <p className="mb-0"><Link to='/laser-cutting'>Learn About Laser Cutting</Link></p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
               </Col>
@@ -120,12 +90,14 @@ export default function Home() {
           </div>
           <div className="reviewslist mb-4">
             <Row>
-              <Col md={6}>
+              <Col lg={6} className="my-2">
                 <div className="reviewsleftcontent text-center">
-                  <h3>Customer Since:2022</h3>
+                  {/* <h3>Customer Since:2022</h3> */}
                   <div className="reviewuser">
-                    <Image src={reviewuser1} className="img-fluid rounded-circle" alt="" />
-                    <h5 className="mb-0">Kle Malcolm</h5>
+                    <div>
+                      <Image src={reviewimg1} className="img-fluid rounded-circle" alt="" />
+                      <h5 className="mb-0">Steven Carlin</h5>
+                    </div>
                     <div className="reviewrate">
                       <Icon icon="material-symbols:star" />
                       <Icon icon="material-symbols:star" />
@@ -134,23 +106,68 @@ export default function Home() {
                       <Icon icon="material-symbols:star" />
                     </div>
                   </div>
-                  <p>Lase Bros ia ll around great to work with. They are able to produce my orders in just a few days and their prices are very reasonable even when I'm placing relatively small orders. Cort is always very responsive and willing to work with me to make even the smallest adjustments so I get exactly the produce I am looking for. I would definitrly recommend Laser Bros to anyone who needs laser cutting services.</p>
+                  <p>Quick turnaround and excellent customer service. If you need the right parts made fast, these are the guys to use.</p>
                 </div>
               </Col>
-              <Col md={6}>
+              <Col lg={6} className="my-2">
                 <div className="reviewsrightcontent text-center">
-                  <div className="reviewbadge text-center">
-                    <span className="brassbadge">0.093 Brass-260 <Icon icon="ix:layers" width={22} height={22} /></span>
-                    <p className="mb-0"><Link>See More Materials We Offer</Link></p>
-                  </div>
-
-                  <Image src={reviewimg4} className="img-fluid imgreviewhome my-4" alt="" />
-                  <div className="reviewbadge text-center mt-1">
-                    <span className="lasercuttingbadge">Laser Cutting</span>
-                    <p className="mb-0"><Link to='/laser-cutting'>Learn About Laser Cutting</Link></p>
+                  <h2>Their Part</h2>
+                  <Image src={reviewimg2} className="img-fluid imgreviewhome" alt="" />
+                  <div className="clearfix"></div>
+                  <div className="d-inline-flex justify-content-center flex-column">
+                    <div className="reviewbadge mb-1">
+                      <h4 className="mb-0">Material:</h4>
+                      <Link className="steelbadge">12 gauge (0.100) HRPO Steel <Icon icon="ix:layers" width={22} height={22} /></Link>
+                    </div>
+                    <div className="reviewbadge mt-1">
+                      <h4 className="mb-0">Services:</h4>
+                      <Link className="lasercuttingbadge">Laser Cutting</Link>
+                      <Link className="lasercuttingbadge">Metal Finishing</Link>
+                    </div>
                   </div>
                 </div>
+              </Col>
+            </Row>
+          </div>
 
+          <div className="reviewslist mb-4">
+            <Row>
+              <Col lg={6} className="my-2">
+                <div className="reviewsleftcontent text-center">
+                  {/* <h3>Customer Since:2022</h3> */}
+                  <div className="reviewuser">
+                    <div>
+                      <Image src={reviewuser1} className="img-fluid rounded-circle" alt="" />
+                      <div className="clearfix"></div>
+                      <h5 className="mb-0">Kle Malcolm</h5>
+                    </div>
+                    <div className="reviewrate">
+                      <Icon icon="material-symbols:star" />
+                      <Icon icon="material-symbols:star" />
+                      <Icon icon="material-symbols:star" />
+                      <Icon icon="material-symbols:star" />
+                      <Icon icon="material-symbols:star" />
+                    </div>
+                  </div>
+                  <p>Lase Bros is all around great to work with. They are able to produce my orders in just a few days and their prices are very reasonable even when I'm placing relatively small orders. Cort is always very responsive and willing to work with me to make even the smallest adjustments so I get exactly the produce I am looking for. I would definitrly recommend Laser Bros to anyone who needs laser cutting services.</p>
+                </div>
+              </Col>
+              <Col lg={6} className="my-2">
+                <div className="reviewsrightcontent text-center">
+                  <h2>Their Part</h2>
+                  <Image src={reviewimg4} className="img-fluid imgreviewhome mt-3" alt="" />
+                  <div className="clearfix"></div>
+                  <div className="d-inline-flex justify-content-center flex-column">
+                    <div className="reviewbadge mb-1">
+                      <h4 className="mb-0">Material:</h4>
+                      <Link className="brassbadge">0.093 Brass-260 <Icon icon="ix:layers" width={22} height={22} /></Link>
+                    </div>
+                    <div className="reviewbadge mt-1">
+                      <h4 className="mb-0">Services:</h4>
+                      <Link className="lasercuttingbadge">Laser Cutting</Link>
+                    </div>
+                  </div>
+                </div>
               </Col>
             </Row>
           </div>
@@ -164,7 +181,7 @@ export default function Home() {
       <BreakDownSteps />
       <section className="faq-home">
         <Container>
-          <div class="heading mb-3 text-center">
+          <div class="heading mb-4 text-center">
             <h2>FAQ</h2>
           </div>
           <h3 className="faqsubhead">Most Asked Questions</h3>
@@ -200,13 +217,13 @@ export default function Home() {
       </section>
       <section className="american-manufacturing">
         <Container>
-          <div class="heading mb-3 text-center ">
+          <div class="heading mb-4 text-center">
             <h2>We Believe in American Manufacturing!</h2>
           </div>
           <div className=" text-center ">
-          <Image src={american} className="img-fluid mx-auto" alt=""/>
-          <h4 className="mt-3">Our Mission is to Support the American Innovator.</h4>
-          <Button className="mt-3">Learn More About Us</Button>
+            <Image src={american} className="img-fluid mx-auto" alt="" />
+            <h4 className="mt-3">Our Mission is to Support the American Innovator.</h4>
+            <Button className="mt-3">Learn More About Us</Button>
           </div>
         </Container>
       </section>

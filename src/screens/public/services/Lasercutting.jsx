@@ -8,7 +8,7 @@ import BreakDownSteps from "../../../components/BreakDownSteps";
 export default function Lasercutting() {
   return (
     <React.Fragment>
-      <section className="banner-services banner-home  pb-0">
+      <section className="banner-services banner-home pb-0">
         <Container>
           <Row className="align-items-center">
             <Col lg={6}>
@@ -22,10 +22,12 @@ export default function Lasercutting() {
                 </h1>
                 <p className="text-start"><b>Why Fiber Laser?</b> Fiber lasers offer a great balance of cutting speed, accuracy, and quality. Compared to other cutting processes, lasers will outperform plasma cutting with accuracy, and water jet with speed. Obviously these other processes have their place, but lasers offer the best of both worlds for a very wide range of metals.</p>
                 <p className="text-start"><b>P.S.</b> With fiber laser cutting we can only process metals (no wood, plastic, or composite materials).</p>
-                <div className="bannerservice_btns mt-4">
-                  <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+                <div className="bannerservice_btns mt-4 d-flex flex-wrap gap-2">
+                <div>
+                  <Button className="btn btn-primary my-1">Get Started Now! Upload Your DXF</Button>
                   <span className="loginUploadInfo_text">You'll need to login to upload</span>
-                  <Button className="btn btn-outline-primary mt-2" variant={null}>
+                  </div>
+                  <Button className="btn btn-outline-primary my-1" variant={null}>
                     <Icon icon="ph:books-light" width={24} height={24}/> Laser Cutting Guidelines
                   </Button>
                 </div>
@@ -39,7 +41,7 @@ export default function Lasercutting() {
           </Row>
         </Container>
       </section>
-      <section className="laserCuttingInfo_sec pt-3">
+      <section className="laserCuttingInfo_sec">
         <Container>
           <Row>
             <Col lg={12}>

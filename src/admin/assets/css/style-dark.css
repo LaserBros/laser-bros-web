@@ -141,7 +141,7 @@ body.dark .wrapper header.header .headerright .dropdown .dropdown-menu .dropdown
 }
 body.dark .wrapper header.header .headerright .dropdown .dropdown-menu .dropdown-item:hover {
   background: transparent;
-  color: #4F8CCA;
+  color: #3c5b8a;
 }
 body.dark .wrapper .sidebar {
   background: #212121;
@@ -407,11 +407,11 @@ body.dark .wrapper .card .card-body .table.tablecustom tbody tr td .expanded-top
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td {
-  border-color: #4F8CCA;
+  border-color: #3c5b8a;
 }
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:first-child {
-  border-color: #4F8CCA;
+  border-color: #3c5b8a;
 }
 body.dark .wrapper .card .card-body .table.tablecustom tbody tr.expanded-row td:last-child {
-  border-color: #4F8CCA;
+  border-color: #3c5b8a;
 }/*# sourceMappingURL=style-dark.css.map */
