@@ -11,7 +11,8 @@ import materialimg2 from "../assets/img/material-img-2.jpg";
 import materialimg3 from "../assets/img/material-img-3.jpg";
 const MaterialsBending = () => {
   return (
-    <section className="our-materials pb_70">
+    // <section className="our-materials pb_70">
+    <section className="our-materials">
         <Container>
           <div className="heading mb-5 text-center">
             <h2>Materials We Bend</h2>

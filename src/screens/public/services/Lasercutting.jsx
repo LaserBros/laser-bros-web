@@ -8,7 +8,7 @@ import BreakDownSteps from "../../../components/BreakDownSteps";
 export default function Lasercutting() {
   return (
     <React.Fragment>
-      <section className="banner-services banner-home pb-0">
+      <section className="banner-services banner-home">
         <Container>
           <Row className="align-items-center">
             <Col lg={6}>
@@ -43,9 +43,7 @@ export default function Lasercutting() {
       </section>
       <section className="laserCuttingInfo_sec">
         <Container>
-          <Row>
-            <Col lg={12}>
-              <div className="laserCuttingInfo_div">
+        <div className="laserCuttingInfo_div">
                 <h3>How the laser cutting process works (put simply):</h3>
                 <h4>How the Laser Cuts:</h4>
                 <ul>
@@ -53,36 +51,40 @@ export default function Lasercutting() {
                   <li>This light travels through a fiber optic cable - a thin, flexible glass wire that guides the laser with high precision.</li>
                   <li>The laser beam is then focused into a tiny, powerful spot using special lenses.</li>
                   <li>That concentrated beam becomes hot enough to melt or vaporize metal along its path.</li>
-                  <li>As the laser moves across the metal sheet, it cuts shapes or patterns exactly as programmed. Along with the laser beam, a stream of gas is blown at the cutting area. This is called assist gas, and it helps in several important ways:
-                    <ul>
+                  <li>As the laser moves across the metal sheet, it cuts shapes or patterns exactly as programmed.</li>
+                    </ul>
+                    <p> Along with the laser beam, a stream of gas is blown at the cutting area. This is called assist gas, and it helps in several important ways:</p>
+                    <ul className="listcustom">
                       <li>It blows away molten metal from the cut, preventing it from re-solidifying along the edges.</li>
                       <li>It can speed up the cutting process.</li>
                       <li>It improves cut quality by reducing roughness or oxidation.</li>
                     </ul>
-                    The two most common assist gases are oxygen and nitrogen, and each serves a different purpose:<br/>
-                    Oxygen:
-                    <ul>
+                    <p> The two most common assist gases are oxygen and nitrogen, and each serves a different purpose:</p>
+                    <p><b>Oxygen:</b></p>
+                    <ul className="listcustom">
                       <li>Used mainly for mild steel.</li>
                       <li>Helps the laser cut faster by supporting a chemical reaction (combustion) that adds extra heat.</li>
                       <li>It’s efficient for thicker materials, but can leave oxidized or dark edges.</li>
                     </ul>
-                    Nitrogen:
-                    <ul>
+                    <p><b>Nitrogen:</b></p>
+                    <ul className="listcustom">
                       <li>Used for stainless steel, aluminum, and other non-ferrous metals.</li>
                       <li>It doesn’t react with the metal — it simply blows away melted material.</li>
                       <li>Results in clean, shiny cuts with no oxidation, which is ideal for parts where appearance matters.</li>
                       <li>Requires higher pressure and can be slower, but gives a high-quality finish.</li>
                     </ul>
-                    In summary, fiber laser cutting uses focused light to slice through metal with high precision. The addition of assist gases like oxygen and nitrogen helps make the process faster, cleaner, and more effective - depending on the material and the desired outcome.
-                  </li>
-                </ul>
+                    <p>In summary, fiber laser cutting uses focused light to slice through metal with high precision. The addition of assist gases like oxygen and nitrogen helps make the process faster, cleaner, and more effective - depending on the material and the desired outcome.</p>
+                  
+                
               </div>
-            </Col>
-          </Row>
         </Container>
       </section>
-      <Materials2 />
+      <div className="lasercuttingmaterial">
+         <Materials2/>
+      </div>
+      <div className="lasercuttingbreakdown">
       <BreakDownSteps/>
+        </div>
     </React.Fragment>
   );
 }

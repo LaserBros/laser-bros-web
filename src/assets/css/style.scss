@@ -798,7 +798,7 @@ footer {
 
 .metalFinish_banner {
     padding-top: 60px;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
     .banner-content {
         h1 {
                 font-size: 70px;
@@ -2210,46 +2210,71 @@ footer {
 .pb_70 {
     padding-bottom: 70px;
 }
+.lasercuttingmaterial{
+    padding-top: 80px;
+    padding-bottom: 80px;  
+}
+.lasercuttingbreakdown{
+    background-color: #f7f7f7; 
+}
 .laserCuttingInfo_sec {
-    padding-top: 60px;
-    padding-bottom: 60px;
-    // background-color: #f7f7f7;
+    padding-top: 80px;
+    padding-bottom: 70px;
+    background-color: #f7f7f7;
     .laserCuttingInfo_div {
         h3 {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
             color: $black-color;
             margin-bottom: 20px;
         }
         h4 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: $black-color;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        p{
+            font-size: 18px;
+            font-weight: 400;
+            color: $black-color;
+            margin-bottom: 10px;
+            b{
+                font-weight: 600;
+            }
         }
         ul {
             list-style: auto;
             margin: 0px;
+            padding-left: 20px;
+            &.listcustom{
+                list-style: disc;
+                margin-top: 10px;  
+                margin-bottom: 12px;  
+            }
             li {
                 font-size: 18px;
                 font-weight: 400;
                 color: $black-color;
-                ul {
-                    list-style: disc;
-                }
+                margin-bottom: 6px;
             }
         }
     }
 }
 .metalfinish_sec {
     padding-bottom: 60px;
+    .metalfinish_sec_inner{
+        background-color: #f7f7f7; 
+        padding-top: 80px;
+        padding-bottom: 70px;
+    }
     .metalfinish_div {
         margin-bottom: 20px;
         h4 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: $black-color;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         p {
             font-size: 18px;
@@ -2270,10 +2295,15 @@ footer {
             text-align: center;
             img {
                 width: 100%;
-                height: 280px;
+                height: 350px;
                 border-radius: 15px;
                 object-fit: cover;
                 margin-bottom: 10px;
+                object-position: bottom center;
+                @media only screen and (max-width:767.98px)
+                {
+                    height: auto;
+                }
             }
             h5 {
                 font-size: 18px;
@@ -2346,13 +2376,13 @@ footer {
                 font-size: 18px;
                 font-weight: bold;
                 color: $black-color;
-                margin-bottom: 0px;
+                margin-bottom: 5px;
             }
             p {
                 font-size: 18px;
                 font-weight: 400;
                 color: $black-color;
-                margin-bottom: 0px;
+                margin-bottom: 5px;
             }
         }
     }
@@ -2434,6 +2464,32 @@ footer {
             color: $paragraph-color;
             text-align: center;
             // margin-bottom: 0px;
+            a{ 
+                 color: $paragraph-color;
+                  text-decoration: none;
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+}
+.promotion_modal{
+    .modal-content{
+        .modal-body{
+            text-align: center;
+            padding: 40px 30px;
+            h4{
+                font-size: 26px;
+                color:$black-color;
+                
+            }
+            p{
+                font-size: 16px;
+                color: #bebdbe;
+                margin-bottom: 0;
+                margin-top: 5px;
+            }
         }
     }
 }

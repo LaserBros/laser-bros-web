@@ -46,7 +46,7 @@ export default function Products() {
                   <Image className="img_default" src={img1} alt=""/>
                 </div>
                 <h4><Link>Ultimate Shop Cart</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -57,7 +57,7 @@ export default function Products() {
                   <Image className="img_default" src={img2} alt=""/>
                 </div>
                 <h4><Link>DIY Vibratory Tumbler</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -68,7 +68,7 @@ export default function Products() {
                   <Image className="img_default" src={img3} alt=""/>
                 </div>
                 <h4><Link>Cantilever Sheet Metal Racks</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -79,7 +79,7 @@ export default function Products() {
                   <Image className="img_default" src={img4} alt=""/>
                 </div>
                 <h4><Link>PressBrake Tooling Cart Plans</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -90,7 +90,7 @@ export default function Products() {
                   <Image className="img_default" src={img5} alt=""/>
                 </div>
                 <h4><Link>Shop Cart Drawers</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -101,7 +101,7 @@ export default function Products() {
                   <Image className="img_default" src={img6} alt=""/>
                 </div>
                 <h4><Link>Shop Cart Lock-Bars</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -112,7 +112,7 @@ export default function Products() {
                   <Image className="img_default" src={img7} alt=""/>
                 </div>
                 <h4><Link>Multi-Use Shop Hanger</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -123,7 +123,7 @@ export default function Products() {
                   <Image className="img_default" src={img8} alt=""/>
                 </div>
                 <h4><Link>Multi-Use Shop Hanger</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -134,7 +134,7 @@ export default function Products() {
                   <Image className="img_default" src={img9} alt=""/>
                 </div>
                 <h4><Link>Paper Towel Holder</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button>Learn More</Button>
               </div>
             </Col>
@@ -145,7 +145,7 @@ export default function Products() {
                   <Image className="img_default" src={img10} alt=""/>
                 </div>
                 <h4><Link>Glove Box Holder</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -156,7 +156,7 @@ export default function Products() {
                   <Image className="img_default" src={img11} alt=""/>
                 </div>
                 <h4><Link>Label Holder</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -167,7 +167,7 @@ export default function Products() {
                   <Image className="img_default" src={img12} alt=""/>
                 </div>
                 <h4><Link>Wire-Shelf Caps</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -179,7 +179,7 @@ export default function Products() {
                 </div>
                 <h4><Link>Heavy Duty Tool Cart</Link></h4>
                 {/* <p>$0.00 USD</p> */}
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -190,7 +190,7 @@ export default function Products() {
                   <Image className="img_default" src={img14} alt=""/>
                 </div>
                 <h4><Link>Collapsible Fire Pit</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -201,7 +201,7 @@ export default function Products() {
                   <Image className="img_default" src={img15} alt=""/>
                 </div>
                 <h4><Link>Box Perforator Tool</Link></h4>
-                <p>Download Free Files</p>
+                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
                 <Button onClick={ProductToggle}>Learn More</Button>
               </div>
             </Col>
@@ -221,6 +221,7 @@ export default function Products() {
             <li>Up to 1-TON capacity </li>
             <li>36" deep, 24" wide, & 36" tall</li>
           </ul>
+          <Button className="mt-3">Download Free Files</Button>
         </Modal.Body>
       </Modal>    
     </React.Fragment>

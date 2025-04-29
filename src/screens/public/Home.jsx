@@ -1,5 +1,5 @@
-import React from "react";
-import { Accordion, Row, Col, Container, Image, Button } from "react-bootstrap";
+import React,{useState} from "react";
+import { Accordion, Row, Col, Container, Image, Button, Modal } from "react-bootstrap";
 import bannerimg from "../../assets/img/bannerimg.png";
 import reviewimg1 from "../../assets/img/reviewimg1.jpg";
 import american from "../../assets/img/american.JPG";
@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import BreakDownSteps from "../../components/BreakDownSteps";
 
 export default function Home() {
+  const [show, setShow] = useState(true);
+  const handleClose = () => setShow(false);
   return (
     <React.Fragment>
       <section className="banner-home">
@@ -227,6 +229,17 @@ export default function Home() {
           </div>
         </Container>
       </section>
+      <Modal centered show={show} onHide={handleClose} className="promotion_modal modal-custom">
+        <Button className="btn-close z-1" variant={null} onClick={handleClose}></Button>
+        <Modal.Body>
+       <h4>Save 15% on your first order!</h4>
+       <h4>Use Code: SAVE15</h4>
+       <Button className="mt-3 d-inline-flex align-items-center gap-2">
+              Get Started Now! Upload Your DXF <Icon icon="tabler:upload" width={22} height={22} className="ms-0 me-0" />
+            </Button>
+            <p>You'll need to login to upload</p>
+        </Modal.Body>
+      </Modal>    
     </React.Fragment>
   );
 }
