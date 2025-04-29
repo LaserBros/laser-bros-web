@@ -41,8 +41,8 @@ const FileUpload = ({
     //     return;
     //   }
     // }
-    if (uploadedFiles.length + acceptedFiles.length > 20) {
-      setError("You can only upload a maximum of 20 files.");
+    if (uploadedFiles.length + acceptedFiles.length > 150) {
+      setError("You can only upload a maximum of 150 files.");
       return;
     }
 
