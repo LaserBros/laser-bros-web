@@ -322,8 +322,6 @@ export default function QuotesDetail() {
 
           setQuoteList(parsedQuoteList);
         }
-
-        setquoteDataCon(true);
         setQuoteData(updatedQuoteData);
       } catch (error) {
         // console.log(error);
@@ -681,6 +679,7 @@ export default function QuotesDetail() {
   useEffect(() => {
     setTimeout(async () => {
       if (quoteDataCon) {
+        console.log("quoteDataCon =-=-=-=- quoteDataCon",quoteDataCon)
         if (Array.isArray(quoteData) && quoteData.length > 0) {
           const fetchAllThicknessOptions = async () => {
             for (const quote of quoteData) {
@@ -893,6 +892,7 @@ export default function QuotesDetail() {
         fetchThickness(selectedOption.value, id);
       }
       if (type == "thickness") {
+        console.log("underrrrr-r=-r=-r=-=-=-")
         fetchFinish(selectedOption.value, id);
       }
 
