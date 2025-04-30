@@ -395,12 +395,21 @@ export default function QuotesDetail() {
             bend_count: 1,
           };
         }
-        return quote; // Return unchanged if no match
+        return quote;
       });
-
-      // Update state and localStorage
-      setQuoteData(updatedLocalStorageData);
-      setquoteDataCon(true);
+      
+      // Save back to localStorage
+      localStorage.setItem("setItempartsDBdata", JSON.stringify(updatedLocalStorageData));
+      
+      // Update only the matching item in state
+      setQuoteData((prevData) =>
+        Array.isArray(prevData)
+          ? prevData.map((quote) =>
+              quote._id === id ? { ...quote, bend_count: 1 } : quote
+            )
+          : []
+      );
+      // setquoteDataCon(true);
       localStorage.setItem(
         "setItempartsDBdata",
         JSON.stringify(updatedLocalStorageData)
@@ -1002,62 +1011,133 @@ export default function QuotesDetail() {
   const [uploadedFiles, setUploadedFiles] = useState({}); // Store files for each quote
   const [loadingFiles, setLoadingFiles] = useState({}); // Track loading state for each file
 
-  const handleFileChange = async (event, id,quote_id,type_param) => {
+  const handleFileChange = async (event, id, quote_id, type_param) => {
     const file = event.target.files[0];
     if (!file) return;
     try {
       setLoadingFiles((prev) => ({ ...prev, [id]: true }));
-      console.log("loadingFiles",loadingFiles);
+
       const formData = new FormData();
       formData.append("id", quote_id);
       formData.append("bend_count", 1);
-      formData.append("type",type_param);
-      formData.append("quote_image",file);
-      const res = await uploadBendingFile(formData);
-      localStorage.setItem(
-        "setItempartsDBdata",
-        JSON.stringify(res.data)
-      );
-      setQuoteData(res.data);
-      setquoteDataCon(true);
-      setLoadingFiles((prev) => ({ ...prev, [id]: false })); 
-      // console.log("response uploadBendingFile",res.data);
+      formData.append("type", type_param);
+      formData.append("quote_image", file);
 
+      const res = await uploadBendingFile(formData);
+      console.log("Upload response:", res.data);
+
+      if (res.data) {
+        const updatedQuote = res.data;
+
+        if (updatedQuote) {
+          // Update quoteData state: only update fields step_file_bend and drawing_file_bend
+          setQuoteData((prevData) =>
+            prevData.map((quote) =>
+              quote._id === quote_id
+                ? {
+                    ...quote,
+                    step_file_bend: updatedQuote.step_file_bend,
+                    drawing_file_bend: updatedQuote.drawing_file_bend,
+                  }
+                : quote
+            )
+          );
+
+          // Update localStorage setItempartsDBdata similarly
+          const storedData = localStorage.getItem("setItempartsDBdata");
+          const parsedData = storedData ? JSON.parse(storedData) : [];
+
+          const updatedData = parsedData.map((quote) =>
+            quote._id === quote_id
+              ? {
+                  ...quote,
+                  step_file_bend: updatedQuote.step_file_bend,
+                  drawing_file_bend: updatedQuote.drawing_file_bend,
+                }
+              : quote
+          );
+
+          localStorage.setItem(
+            "setItempartsDBdata",
+            JSON.stringify(updatedData)
+          );
+        } else {
+          // If specific quote not found, fall back to full update
+          localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
+          setQuoteData(res.data);
+        }
+      } else {
+        // Unexpected response, fallback to full update
+        localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
+        setQuoteData(res.data);
+      }
+
+      setLoadingFiles((prev) => ({ ...prev, [id]: false }));
     } catch (error) {
-      
+      console.error("Error uploading file:", error);
+      setLoadingFiles((prev) => ({ ...prev, [id]: false }));
     }
-    
   };
 
-  const removeFile = async (id,type_param) => {
+  const removeFile = async (id, type_param) => {
     try {
-      // if (file) {
-      //   setUploadedFiles((prev) => ({
-      //     ...prev,
-      //     [id]: file, // Store file by quote ID
-      //   }));
-      // }
-      // console.log("id,type_param",id,type_param)
-      // return
       const formData = new FormData();
       formData.append("id", id);
       formData.append("bend_count", 1);
-      formData.append("type",type_param);
-      // formData.append("quote_image","");
-      const res = await uploadBendingFile(formData);
-      localStorage.setItem(
-        "setItempartsDBdata",
-        JSON.stringify(res.data)
-      );
-      setQuoteData(res.data);
-      setquoteDataCon(true);
-      // console.log("response uploadBendingFile",res.data);
+      formData.append("type", type_param);
 
+      const res = await uploadBendingFile(formData);
+
+      // Update only the specific quote that changed instead of triggering a full refresh
+      if (res.data) {
+        const updatedQuote = res.data;
+
+        if (updatedQuote) {
+          // Update quoteData state: only update fields step_file_bend and drawing_file_bend
+          setQuoteData((prevData) =>
+            prevData.map((quote) =>
+              quote._id === id
+                ? {
+                    ...quote,
+                    step_file_bend: updatedQuote.step_file_bend,
+                    drawing_file_bend: updatedQuote.drawing_file_bend,
+                  }
+                : quote
+            )
+          );
+
+          // Update localStorage setItempartsDBdata similarly
+          const storedData = localStorage.getItem("setItempartsDBdata");
+          const parsedData = storedData ? JSON.parse(storedData) : [];
+
+          const updatedData = parsedData.map((quote) =>
+            quote._id === id
+              ? {
+                  ...quote,
+                  step_file_bend: updatedQuote.step_file_bend,
+                  drawing_file_bend: updatedQuote.drawing_file_bend,
+                }
+              : quote
+          );
+
+          localStorage.setItem(
+            "setItempartsDBdata",
+            JSON.stringify(updatedData)
+          );
+        } else {
+          // If specific quote not found, fall back to full update
+          localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
+          setQuoteData(res.data);
+        }
+      } else {
+        // Unexpected response, fallback to full update
+        localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
+        setQuoteData(res.data);
+      }
     } catch (error) {
-      
+      console.error("Error removing file:", error);
     }
   };
-
   const BackQuote = () => {
     localStorage.removeItem("setItemelementData");
 
