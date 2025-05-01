@@ -999,7 +999,12 @@ export default function QuotesDetail() {
 
       // Since storedData and quote_list should already be objects, no need to parse again
       setQuoteList(quote_list); // Assuming quote_list is already an object/array
-      setQuoteData(prevData => [...prevData, ...storedData]);
+      setQuoteData(prevData => {
+        const existing = Array.isArray(prevData) ? prevData : [];
+        const newData = Array.isArray(storedData) ? storedData : [];
+        return [...existing, ...newData];
+      });
+      
       // setquoteDataCon(true);
       // Add any additional logic for handling the files
     } else {
