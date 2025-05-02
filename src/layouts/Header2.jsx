@@ -106,7 +106,7 @@ const Header = () => {
                 </Nav.Link>
               </Nav>
               <Nav className="ms-auto align-items-lg-center right-menu">
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
                 <Nav.Link
                   as={Link}
                   className="px-3"
