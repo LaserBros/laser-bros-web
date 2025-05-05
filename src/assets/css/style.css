@@ -85,6 +85,10 @@ body {
   padding-right: 15px !important;
   color: #ffffff !important;
 }
+.btn-primary.btn-sm {
+  height: 40px;
+  font-size: 14px !important;
+}
 .btn-primary svg {
   font-size: 20px;
   margin-right: 10px;
@@ -112,6 +116,10 @@ body {
   padding-left: 15px !important;
   padding-right: 15px !important;
   color: #3c5b8a !important;
+}
+.btn-lt-primary.btn-sm {
+  height: 40px;
+  font-size: 14px !important;
 }
 .btn-lt-primary svg {
   font-size: 20px;
@@ -719,7 +727,7 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 /*Home Css Start*/
 .metalFinish_banner {
   padding-top: 60px;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
 }
 .metalFinish_banner .banner-content h1 {
   font-size: 70px;
@@ -937,6 +945,7 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   font-size: 16px;
   line-height: 1.75;
   margin-bottom: 0;
+  text-align: start;
 }
 .homereviews .reviewslist .reviewsleftcontent .reviewrate .iconify {
   color: #ffda3f;
@@ -1021,9 +1030,14 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   max-width: 350px;
   margin-bottom: 40px;
 }
-@media only screen and (max-width: 1199px) {
+@media only screen and (max-width: 11997.98px) {
   .homereviews .reviewslist .reviewsrightcontent .imgreviewhome {
     margin-top: 0px;
+  }
+}
+@media only screen and (max-width: 767.98px) {
+  .homereviews .reviewslist .reviewsrightcontent .imgreviewhome {
+    max-width: 100%;
   }
 }
 
@@ -1719,12 +1733,12 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 /*About Us Css Ends*/
 .our-history {
   padding-top: 90px;
-  padding-bottom: 140px;
+  padding-bottom: 30px;
 }
 @media only screen and (max-width: 991.98px) {
   .our-history {
     padding-top: 80px;
-    padding-bottom: 70px;
+    padding-bottom: 20px;
   }
 }
 .our-history .history-grid {
@@ -2023,46 +2037,74 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   padding-bottom: 70px;
 }
 
+.lasercuttingmaterial {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.lasercuttingbreakdown {
+  background-color: #f7f7f7;
+}
+
 .laserCuttingInfo_sec {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 80px;
+  padding-bottom: 70px;
+  background-color: #f7f7f7;
 }
 .laserCuttingInfo_sec .laserCuttingInfo_div h3 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   color: #000000;
   margin-bottom: 20px;
 }
 .laserCuttingInfo_sec .laserCuttingInfo_div h4 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: #000000;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+.laserCuttingInfo_sec .laserCuttingInfo_div p {
+  font-size: 18px;
+  font-weight: 400;
+  color: #000000;
+  margin-bottom: 10px;
+}
+.laserCuttingInfo_sec .laserCuttingInfo_div p b {
+  font-weight: 600;
 }
 .laserCuttingInfo_sec .laserCuttingInfo_div ul {
   list-style: auto;
   margin: 0px;
+  padding-left: 20px;
+}
+.laserCuttingInfo_sec .laserCuttingInfo_div ul.listcustom {
+  list-style: disc;
+  margin-top: 10px;
+  margin-bottom: 12px;
 }
 .laserCuttingInfo_sec .laserCuttingInfo_div ul li {
   font-size: 18px;
   font-weight: 400;
   color: #000000;
-}
-.laserCuttingInfo_sec .laserCuttingInfo_div ul li ul {
-  list-style: disc;
+  margin-bottom: 6px;
 }
 
 .metalfinish_sec {
   padding-bottom: 60px;
 }
+.metalfinish_sec .metalfinish_sec_inner {
+  background-color: #f7f7f7;
+  padding-top: 40px;
+  padding-bottom: 30px;
+}
 .metalfinish_sec .metalfinish_div {
   margin-bottom: 20px;
 }
 .metalfinish_sec .metalfinish_div h4 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: #000000;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .metalfinish_sec .metalfinish_div p {
   font-size: 18px;
@@ -2084,11 +2126,18 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 }
 .metalfinish_sec .metalfinish_div .metalfinish_box img {
   width: 100%;
-  height: 280px;
+  height: 350px;
   border-radius: 15px;
   -o-object-fit: cover;
      object-fit: cover;
   margin-bottom: 10px;
+  -o-object-position: bottom center;
+     object-position: bottom center;
+}
+@media only screen and (max-width: 767.98px) {
+  .metalfinish_sec .metalfinish_div .metalfinish_box img {
+    height: auto;
+  }
 }
 .metalfinish_sec .metalfinish_div .metalfinish_box h5 {
   font-size: 18px;
@@ -2153,13 +2202,13 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   font-size: 18px;
   font-weight: bold;
   color: #000000;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 .HowITWorksmain_div .HowITWorksteps_box .Worksteps_cont p {
   font-size: 18px;
   font-weight: 400;
   color: #000000;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
 }
 
 .laserProduct_sec {
@@ -2221,7 +2270,7 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   transition: ease-in-out 0.7s;
 }
 .laserProduct_sec .Productmain_box h4 {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   text-align: center;
 }
 .laserProduct_sec .Productmain_box h4 a {
@@ -2235,10 +2284,33 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   color: #3c5b8a;
 }
 .laserProduct_sec .Productmain_box p {
+  margin-bottom: 10px;
   font-size: 16px;
   font-weight: 400;
   color: #6C6A72;
   text-align: center;
+}
+.laserProduct_sec .Productmain_box p a {
+  color: #6C6A72;
+  text-decoration: none;
+}
+.laserProduct_sec .Productmain_box p a:hover {
+  color: #3c5b8a;
+}
+
+.promotion_modal .modal-content .modal-body {
+  text-align: center;
+  padding: 40px 30px;
+}
+.promotion_modal .modal-content .modal-body h4 {
+  font-size: 26px;
+  color: #000000;
+}
+.promotion_modal .modal-content .modal-body p {
+  font-size: 16px;
+  color: #bebdbe;
+  margin-bottom: 0;
+  margin-top: 5px;
 }
 
 .product_modal .modal-content .modal-body .main_heading {

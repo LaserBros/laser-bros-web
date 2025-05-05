@@ -79,7 +79,10 @@ html {
     padding-left : 15px !important;
     padding-right: 15px !important;
     color        : $white-color !important;
-
+&.btn-sm{
+    height: 40px;
+    font-size    : 14px !important;
+}
     svg {
         font-size   : 20px;
         margin-right: 10px;
@@ -109,7 +112,10 @@ html {
     padding-left : 15px !important;
     padding-right: 15px !important;
     color        : $primary-color !important;
-
+    &.btn-sm{
+        height: 40px;
+        font-size    : 14px !important;
+    }
     svg {
         font-size   : 20px;
         margin-right: 10px;
@@ -1038,6 +1044,7 @@ footer {
                 font-size: 16px;
                 line-height: 1.75;
                 margin-bottom: 0;
+                text-align: start;
             }
           
             .reviewrate{
@@ -1126,8 +1133,11 @@ footer {
             max-width: 350px;
             margin-bottom: 40px;
             // margin-top: -20px;
-            @media only screen and (max-width:1199px){
+            @media only screen and (max-width:11997.98px){
                 margin-top: 0px;
+            }
+            @media only screen and (max-width:767.98px){
+                max-width: 100%;
             }
            }
         }
@@ -1887,11 +1897,11 @@ footer {
 
 .our-history {
     padding-top   : 90px;
-    padding-bottom: 140px;
+    padding-bottom: 30px;
 
     @media only screen and (max-width:991.98px) {
         padding-top   : 80px;
-        padding-bottom: 70px;
+        padding-bottom: 20px;
     }
 
     .history-grid {
@@ -2265,8 +2275,8 @@ footer {
     padding-bottom: 60px;
     .metalfinish_sec_inner{
         background-color: #f7f7f7; 
-        padding-top: 80px;
-        padding-bottom: 70px;
+        padding-top: 40px;
+        padding-bottom: 30px;
     }
     .metalfinish_div {
         margin-bottom: 20px;
@@ -2445,7 +2455,7 @@ footer {
             }
         }
         h4 {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             text-align: center;
             a {
                 text-decoration: none;
@@ -2458,7 +2468,7 @@ footer {
                 }
             }
         }
-        p {
+        p {  margin-bottom: 10px;
             font-size: 16px;
             font-weight: 400;
             color: $paragraph-color;

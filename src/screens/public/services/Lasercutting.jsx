@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import img1 from "../../../assets/img/service-img-1.jpg";
 import Materials2 from "../../../components/Materials2";
 import BreakDownSteps from "../../../components/BreakDownSteps";
+import { Link } from "react-router-dom";
 export default function Lasercutting() {
   return (
     <React.Fragment>
@@ -24,10 +25,10 @@ export default function Lasercutting() {
                 <p className="text-start"><b>P.S.</b> With fiber laser cutting we can only process metals (no wood, plastic, or composite materials).</p>
                 <div className="bannerservice_btns mt-4 d-flex flex-wrap gap-2">
                 <div>
-                  <Button className="btn btn-primary my-1">Get Started Now! Upload Your DXF</Button>
+                  <Button className="d-inline-flex align-items-center my-1" as={Link}  to="/quotes/quotes-detail">Get Started Now! Upload Your DXF</Button>
                   <span className="loginUploadInfo_text">You'll need to login to upload</span>
                   </div>
-                  <Button className="btn btn-outline-primary my-1" variant={null}>
+                  <Button className="d-inline-flex align-items-center  my-1" variant="outline-primary" as={Link} to="/resources/laser-cutting">
                     <Icon icon="ph:books-light" width={24} height={24}/> Laser Cutting Guidelines
                   </Button>
                 </div>

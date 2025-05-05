@@ -6,10 +6,11 @@ import {
   Row,
   Col
 } from 'react-bootstrap'
-import video1 from "../assets/img/website-upload.mp4";
+import video1 from "../assets/img/website-upload.mp4"; 
 import video2 from "../assets/img/website-configure.mp4";
 import video3 from "../assets/img/website-checkout.mp4";
 import video4 from "../assets/img/done-video.mp4";
+import { Link } from "react-router-dom";
 const BreakDownSteps = () => {
   return (
     <section className="HowITWorksmain_div">
@@ -32,7 +33,7 @@ const BreakDownSteps = () => {
             </Col>
             <Col lg={{ span: 5, offset: 1 }} className="my-2">
             <video
-                src={video4}
+                src={video1}
                 autoPlay
                 muted
                 loop
@@ -117,7 +118,7 @@ const BreakDownSteps = () => {
 
         </div>
         <div className="text-center">
-          <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+          <Button className="mb-2 d-inline-flex align-items-center" as={Link}  to="/quotes/quotes-detail">Get Started Now! Upload Your DXF</Button>
           <span className="loginUploadInfo_text">You’ll need to login to upload</span>
         </div>
         {/* </div> */}

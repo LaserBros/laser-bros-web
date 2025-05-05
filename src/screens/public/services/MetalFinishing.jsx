@@ -17,6 +17,7 @@ import img12 from "../../../assets/img/metalimg12.jpg";
 import img13 from "../../../assets/img/metalimg13.webp";
 import img14 from "../../../assets/img/metalimg14.webp";
 import MaterialsBending from "../../../components/MaterialsBending";
+import { Link } from "react-router-dom";
 export default function MetalFinishing() {
   return (
     <React.Fragment>
@@ -37,7 +38,7 @@ export default function MetalFinishing() {
         <div className="metalfinish_sec_inner">
           <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />No Finish</h4>
+              <h4>No Finish</h4>
               <p>This means raw, laser-cut parts. The edges may have oxidation (oxide) and burrs (rough or sharp bits) from the cutting process.</p>
               <Row className="g-3 mt-2">
                 <Col md={6} lg={4}>
@@ -60,8 +61,12 @@ export default function MetalFinishing() {
                 </Col>
               </Row>
             </div>
+          </Container>
+        </div>
+        <div className="metalfinish_sec_inner bg-white">
+          <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />Orbital Sanding</h4>
+              <h4>Orbital Sanding</h4>
               <p>We use an air-powered random orbital sander with 80-grit sandpaper to remove surface burrs. This creates a scuffed texture, which is excellent for prepping parts for paint or powder coating.</p>
               <Row className="g-3 mt-2">
                 <Col  md={6} lg={4}>
@@ -86,10 +91,10 @@ export default function MetalFinishing() {
             </div>
           </Container>
         </div>
-        <div className="metalfinish_sec_inner bg-white">
+        <div className="metalfinish_sec_inner">
           <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />Linear Sanding</h4>
+              <h4>Linear Sanding</h4>
               <p>This finish is done using our wide belt sander, which creates a clean, linear grain across the surface of the part.</p>
               <ul>
                 <li>Note: Edges may still have slight burrs or sharpness.</li>
@@ -109,9 +114,13 @@ export default function MetalFinishing() {
                   </div>
                 </Col>
               </Row>
-            </div>
+            </div>            
+          </Container>
+        </div>
+        <div className="metalfinish_sec_inner bg-white">
+          <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />Tumble Finish</h4>
+              <h4>Tumble Finish</h4>
               <p>Tumbling uses ceramic or resin media in a vibrating tub to smooth sharp edges and remove burrs. It’s a slower process but leaves a consistent, soft finish.</p>
               <ul>
                 <li>Size limits: Max part size is 3" x 24" or 72 square inches total.</li>
@@ -142,7 +151,7 @@ export default function MetalFinishing() {
         <div className="metalfinish_sec_inner">
           <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />Pristine Finish</h4>
+              <h4>Pristine Finish</h4>
               <p>This finish is ideal for automotive applications where the raw, mill finish of aluminum needs to look clean and presentable — perfect for surge tanks, radiator caps, and other visible components. <br />We take extra care to select the best-quality sheets before cutting, making sure the top surface stays as flawless as possible.</p>
               <ul>
                 <li>Note: The underside of the sheet may still show some blemishes from the laser process, but we do everything we can to keep the face looking pristine.</li>
@@ -156,8 +165,12 @@ export default function MetalFinishing() {
                 </Col>
               </Row>
             </div>
+          </Container>
+        </div>
+        <div className="metalfinish_sec_inner bg-white">
+          <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />#4 Stainless Steel</h4>
+              <h4>#4 Stainless Steel</h4>
               <p>#4 Stainless Steel is typically used in sanitary environments. The surface finish is sanded to a very fine “grain”. This surface finish is protected with a PVC/Laser guard film from the metal supplier. We leave this film in place to protect the finish of the parts.</p>
               <Row className="g-3 mt-2">
                 <Col md={6} lg={4}>
@@ -174,17 +187,20 @@ export default function MetalFinishing() {
                 </Col>
               </Row>
             </div>
+          </Container>
+        </div>
+        <div className="metalfinish_sec_inner">
+          <Container>
             <div className="metalfinish_div">
-              <h4><Icon icon="oui:dot" width="10" height="10" className="me-1" />Custom Finishes</h4>
+              <h4>Custom Finishes</h4>
               <p>Need something different? We can often accommodate custom requests like manual edge deburring services, polished surfaces, or any other unique finishing ideas you may have.</p>
             </div>
             <div className="text-center mt-5">
-              <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+              <Button className="d-inline-flex align-items-center mb-2" as={Link} to="/quotes/quotes-detail">Get Started Now! Upload Your DXF</Button>
               <span className="loginUploadInfo_text">You’ll need to login to upload</span>
             </div>
           </Container>
         </div>
-
       </section>
     </React.Fragment>
   );
