@@ -144,6 +144,9 @@ import {
 import DxfAnalyzer from "./screens/private/dxfFile";
 import MetalFinishing from "./screens/public/services/MetalFinishing";
 import Products from "./screens/public/products";
+import FAQForm from "./admin/screens/FAQ/AddEdit";
+import FaqList from "./admin/screens/FAQ";
+import ProductForm from "./admin/screens/Product/AddEdit";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -194,6 +197,54 @@ return (
           element={
             <AdminLayout title={"Edit Profile"}>
               <AdminEditProfile />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+     <Route
+      path="/admin/add-faq"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Add FAQ"}>
+              <FAQForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+     <Route
+      path="/admin/edit-faq/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Edit FAQ"}>
+              <FAQForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+      <Route
+      path="/admin/add-product"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Add Product"}>
+              <ProductForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+       <Route
+      path="/admin/faq"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"FAQ"}>
+              <FaqList />
             </AdminLayout>
           }
         />
