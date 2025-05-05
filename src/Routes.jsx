@@ -147,6 +147,7 @@ import Products from "./screens/public/products";
 import FAQForm from "./admin/screens/FAQ/AddEdit";
 import FaqList from "./admin/screens/FAQ";
 import ProductForm from "./admin/screens/Product/AddEdit";
+import ProductList from "./admin/screens/Product";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -233,6 +234,30 @@ return (
           element={
             <AdminLayout title={"Add Product"}>
               <ProductForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+      <Route
+      path="/admin/products"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Products"}>
+              <ProductList />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+       <Route
+      path="/admin/edit-product/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Edit Product"}>
+              <ProductForm isEditMode={true}  />
             </AdminLayout>
           }
         />

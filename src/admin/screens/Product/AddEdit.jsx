@@ -1,19 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Col, Row, Image, CloseButton } from "react-bootstrap";
-import { generalproductsAdmin } from "../../../api/api";
+import { generalproductsAdmin, GetproductsAdmin, PostproductsAdmin } from "../../../api/api";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
 
-const ProductForm = ({ product, onSubmit, isEditMode }) => {
-  const [form, setForm] = useState({
-    product_title: "",
-    product_description: "",
-    product_price: "",
-    product_dxf_url: "",
-    product_image_url: null,
-    product_image_hover_url: null,
-    product_image_url_preview: "",
-    product_image_hover_url_preview: "",
-  });
+const ProductForm = ({isEditMode }) => {
+    const { id } = useParams();
+    const [form, setForm] = useState({
+        product_title: "",
+        product_description: "",
+        product_price: "",
+        product_dxf_url: "",
+        product_image_url: null,
+        product_image_hover_url: null,
+        product_image_url_preview: "",
+        product_image_hover_url_preview: "",
+      });
+      useEffect(() => {
+        if (isEditMode && id) {
+          const fetchProduct = async () => {
+            try {
+              const response = await GetproductsAdmin(id);
+              setForm({
+                product_title: response.data.product_title || "",
+                product_description: response.data.product_description || "",
+                product_price: response.data.product_price || "",
+                product_dxf_url: response.data.product_dxf_url || "",
+                product_image_url: response.data.product_image_url || "",
+                product_image_hover_url: response.data.product_image_hover_url || "",
+                product_image_url_preview: response.data.product_image_url || "",
+                product_image_hover_url_preview: response.data.product_image_hover_url || "",
+              });
+              setImagePreview({
+                product_image_url_preview: response.data.product_image_url || "",
+                product_image_hover_url_preview: response.data.product_image_hover_url || "",
+              });
+              setDxfFile(response.data.product_dxf_url || null);
+            } catch (err) {
+              console.error("Error fetching product:", err);
+            } finally {
+            
+            }
+          };
+          fetchProduct();
+        }
+      }, [id, isEditMode]);
+
 
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState({
@@ -23,26 +57,6 @@ const ProductForm = ({ product, onSubmit, isEditMode }) => {
 
   // Track the DXF file
   const [dxfFile, setDxfFile] = useState(null);
-
-  useEffect(() => {
-    if (isEditMode && product) {
-      setForm({
-        product_title: product.product_title || "",
-        product_description: product.product_description || "",
-        product_price: product.product_price || "",
-        product_dxf_url: product.product_dxf_url || "",
-        product_image_url: product.product_image_url || "",
-        product_image_hover_url: product.product_image_hover_url || "",
-        product_image_url_preview: product.product_image_url || "",
-        product_image_hover_url_preview: product.product_image_hover_url || "",
-      });
-      setImagePreview({
-        product_image_url_preview: product.product_image_url || "",
-        product_image_hover_url_preview: product.product_image_hover_url || "",
-      });
-      setDxfFile(product.product_dxf_url || null); // Assuming `product_dxf_url` is a file URL or file name
-    }
-  }, [isEditMode, product]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +83,7 @@ const ProductForm = ({ product, onSubmit, isEditMode }) => {
       setDxfFile(file); // Save the DXF file
     }
   };
+  
 
   const handleRemoveImage = (field) => {
     const previewField = `${field}_preview`;
@@ -80,11 +95,17 @@ const ProductForm = ({ product, onSubmit, isEditMode }) => {
     setDxfFile(null);
     setForm({ ...form, product_dxf_url: "" });
   };
+  const handleQuillChange = (value) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      product_description: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
-
+    console.log(form,"2345678")
     if (!form.product_title) {
       validationErrors.product_title = "Product title is required";
     }
@@ -120,7 +141,13 @@ const ProductForm = ({ product, onSubmit, isEditMode }) => {
         if(form.product_image_hover_url) {
             formData.append("product_image_hover_url",form.product_image_hover_url);
         }
-      const res = await generalproductsAdmin(formData);
+        if(isEditMode) {
+            formData.append("id",id);
+            const data = await PostproductsAdmin(formData);
+        } else {
+            const res = await generalproductsAdmin(formData);
+        }
+      
       toast.success("Product added successfully")
     }
   };
@@ -142,20 +169,19 @@ const ProductForm = ({ product, onSubmit, isEditMode }) => {
         </Form.Control.Feedback>
       </Form.Group>
 
-      {/* Product Description */}
       <Form.Group className="mb-3" controlId="product_description">
-        <Form.Label>Product Description</Form.Label>
-        <Form.Control
-          as="textarea"
-          name="product_description"
-          value={form.product_description}
-          onChange={handleChange}
-          isInvalid={!!errors.product_description}
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.product_description}
-        </Form.Control.Feedback>
-      </Form.Group>
+  <Form.Label>Product Description</Form.Label>
+  <ReactQuill
+    theme="snow"
+    value={form.product_description}
+    onChange={handleQuillChange}
+  />
+  {errors.product_description && (
+    <div className="invalid-feedback d-block">
+      {errors.product_description}
+    </div>
+  )}
+</Form.Group>
 
       {/* Product Price */}
       <Form.Group className="mb-3" controlId="product_price">
@@ -187,7 +213,7 @@ const ProductForm = ({ product, onSubmit, isEditMode }) => {
         </Form.Control.Feedback>
         {dxfFile && (
           <div className="d-flex align-items-center mt-2">
-            <span>{dxfFile.name}</span>
+            <span>{dxfFile.name || "DXF File.dxf"}</span>
             <CloseButton onClick={handleRemoveDxfFile} style={{ marginLeft: "10px" }} />
           </div>
         )}
