@@ -46,7 +46,7 @@ export default function Home() {
                   <div className="reviewuser">
                     <div>
                       <Image src={reviewuser2} className="img-fluid rounded-circle" alt="" />
-                      <h5 className="mb-0">Jason Gill</h5>
+                      <h5 className="mb-0" style={{textAlign:'left'}}>Jason Gill</h5>
                     </div>
                     <div className="reviewrate">
                       <Icon icon="material-symbols:star" />
