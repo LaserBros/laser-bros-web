@@ -141,15 +141,21 @@ const Sidebar = () => {
       icon: "basil:user-outline",
     },
     {
-      id: "edit-profile",
+      id: "faq",
       title: "FAQ's",
       link: "/admin/faq",
       icon: "basil:user-outline",
     },
     {
-      id: "edit-profile",
+      id: "products",
       title: "Product's",
       link: "/admin/products",
+      icon: "basil:user-outline",
+    },
+    {
+      id: "offers",
+      title: "Banner",
+      link: "/admin/banner/6811bf514569f2bcd19568e6",
       icon: "basil:user-outline",
     },
     {

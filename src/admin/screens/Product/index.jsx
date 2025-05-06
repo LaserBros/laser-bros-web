@@ -49,7 +49,11 @@ const ProductList = () => {
     };
   if (loading) return <Spinner animation="border" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
-
+  const stripHtmlTags = (htmlString) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
   return (
     <div className="container mt-4">
       <h2>All Products</h2>
@@ -69,7 +73,7 @@ const ProductList = () => {
           {products.map((product) => (
             <tr key={product.id || product._id}>
               <td>{product.product_title}</td>
-              <td>{product.product_description}</td>
+              <td>{stripHtmlTags(product.product_description)}</td>
               <td>${product.product_price}</td>
               <td>
                 {product.product_dxf_url ? (

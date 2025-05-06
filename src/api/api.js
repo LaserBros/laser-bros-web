@@ -159,6 +159,30 @@ export const FetchproductsAdmin = async (data) => {
   }
 };
 
+export const OfferAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/offer-data/`+data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const UpdateOfferAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/offer-data/`,data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const GetproductsAdmin = async (id) => {
   try {
     const response = await axiosAdminInstance.get(

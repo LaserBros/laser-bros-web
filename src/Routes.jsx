@@ -148,6 +148,7 @@ import FAQForm from "./admin/screens/FAQ/AddEdit";
 import FaqList from "./admin/screens/FAQ";
 import ProductForm from "./admin/screens/Product/AddEdit";
 import ProductList from "./admin/screens/Product";
+import Offer from "./admin/screens/Offer";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -246,6 +247,18 @@ return (
           element={
             <AdminLayout title={"Products"}>
               <ProductList />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+       <Route
+      path="/admin/banner/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Banner"}>
+              <Offer />
             </AdminLayout>
           }
         />
