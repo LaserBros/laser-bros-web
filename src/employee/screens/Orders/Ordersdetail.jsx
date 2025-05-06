@@ -553,7 +553,7 @@ const OrdersDetail = () => {
       width: box.width,
       height: box.height,
       weight: box.weight,
-      box_id: "box_" + id + "_" + orderInfo?.length + parseInt(index) + 1,
+      box_id: "box_" + id + "_" + orderInfo?.length + parseInt(index) + 1+ "_" + Date.now(),
       id: id,
       service_code:selectedMethod
 
