@@ -73,6 +73,19 @@ export const updateBendPrice = async (data) => {
   };
 
 
+  export const refundLabelData = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(
+        `/refundLabel`, data
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+
+
   ////// Admin API START ////////////
 
 export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {

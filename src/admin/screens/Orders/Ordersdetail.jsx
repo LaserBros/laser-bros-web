@@ -70,6 +70,7 @@ const OrdersDetail = () => {
   const [errors, setErrors] = useState({});
   const [loadingWeight, setLoadingWeight] = useState(false);
   const [loadingBtn, setLoadingBtn] = useState(false);
+  const [loadingBtn6, setLoadingBtn6] = useState(false);
   const [title, setTitle] = useState("");
   const [Ids, setIds] = useState("");
   const [typeId, setType] = useState("");
@@ -224,6 +225,7 @@ const OrdersDetail = () => {
   const [modalShow3, setModalShow3] = useState(false);
   const [modalShow4, setModalShow4] = useState(false);
   const [modalShow5, setModalShow5] = useState(false);
+  const [modalShow6, setModalShow6] = useState(false);
   const [customer_note, setcustomer_note] = useState(false);
   const [admin_note, setadmin_note] = useState(false);
   const navigate = useNavigate();
@@ -256,6 +258,7 @@ const OrdersDetail = () => {
   const handleClose = () => setModalShow(false);
   const handleClose2 = () => setModalShow2(false);
   const handleClose3 = () => setModalShow3(false);
+  const handleClose6 = () => setModalShow6(false);
   const [subquote_number, setsubquote_number] = useState("");
   const [loadingOrderQuote, setLoadingOrderQuote] = useState(false);
   const handleShow4 = async (id) => {
@@ -364,16 +367,26 @@ const OrdersDetail = () => {
     setBoxes(updatedBoxesVal);
   };
   const [LoadRefund,setLoadRefund] = useState("");
-  const handleRefundLabel = async (e, id, label_id) => {
+  const [LabelId,setLabelId] = useState("");
+  const [RefundId,setRefundId] = useState("");
+  const AddRefund = (e, id, label_id) => {
+    setModalShow6(true);
+    setLabelId(label_id);
+    setRefundId(id);
+  }
+  const handleRefundLabel = async () => {
     setLoadRefund(id);
     const data = {
-      id:id,
-      label_id:label_id
+      id:RefundId,
+      label_id:LabelId
     }
+    setLoadingBtn6(true);
     await refundLabelData(data);
     shipping();
     loadEmp();
     setLoadRefund("");
+    setLoadingBtn6(false);
+    setModalShow6(false);
     
   };
   const calculateRate = async (index) => {
@@ -1199,7 +1212,7 @@ const OrdersDetail = () => {
                               <Link className="RefundLabel_btn" 
                               // to={"/"}
                               onClick={(e) =>
-                                handleRefundLabel(
+                                AddRefund(
                                   e,
                                   Info?._id,
                                   Info?.label_id
@@ -2138,6 +2151,16 @@ const OrdersDetail = () => {
           handleClose={handleCloseModal}
           setSuccessMessage={setSuccessMessage}
         />
+          <ConfirmationModal
+        show={modalShow6}
+        onHide={handleClose6}
+        title={"Are you sure?"}
+        desc={"Do you want to refund this label?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={handleRefundLabel}
+        loading={loadingBtn6}
+      />
       </React.Fragment>
     </div>
   );

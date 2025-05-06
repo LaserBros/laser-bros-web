@@ -37,6 +37,7 @@ import {
   getSubQuote,
   generateOrderPDFAdmin,
   moveOrderToLocalPickup,
+  refundLabelData,
 } from "../../../api/empApi";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -68,8 +69,11 @@ const OrdersDetail = () => {
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [title, setTitle] = useState("");
   const [Ids, setIds] = useState("");
+  const [loadingBtn6, setLoadingBtn6] = useState(false);
   const [typeId, setType] = useState("");
-  const [subPostId, setsubPostId] = useState("");
+  const [subPostId, setsubPostId] = useState("")
+  const [modalShow6, setModalShow6] = useState(false);
+  const handleClose6 = () => setModalShow6(false);
   const [eventId, setevent] = useState({});
   const [loadingInfo, setloadingInfo] = useState("");
   const [loadingOrder, setLoadingOrder] = useState(false);
@@ -102,7 +106,29 @@ const OrdersDetail = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
+  const [LoadRefund,setLoadRefund] = useState("");
+  const [LabelId,setLabelId] = useState("");
+  const [RefundId,setRefundId] = useState("");
+    const AddRefund = (e, id, label_id) => {
+      setModalShow6(true);
+      setLabelId(label_id);
+      setRefundId(id);
+    }
+    const handleRefundLabel = async () => {
+      setLoadRefund(id);
+      const data = {
+        id:RefundId,
+        label_id:LabelId
+      }
+      setLoadingBtn6(true);
+      await refundLabelData(data);
+      shipping();
+      loadEmp();
+      setLoadRefund("");
+      setLoadingBtn6(false);
+      setModalShow6(false); 
+      
+    };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   if (validateFields()) {
@@ -1164,9 +1190,27 @@ const OrdersDetail = () => {
                             >
                               Download Label
                             </a>
-                            <Link className="RefundLabel_btn" to={"/"}>
-                              Refund Label
-                            </Link>
+                            <Link className="RefundLabel_btn" 
+                                                         // to={"/"}
+                                                         onClick={(e) =>
+                                                           AddRefund(
+                                                             e,
+                                                             Info?._id,
+                                                             Info?.label_id
+                                                           )
+                                                         }
+                                                         >
+                                                              {LoadRefund == Info?._id ? (
+                                                         <span
+                                                           className="spinner-border spinner-border-sm"
+                                                           role="status"
+                                                           aria-hidden="true"
+                                                         ></span>
+                                                       ) : (
+                                                         "Refund Label"
+                                                       )}
+                                                          
+                                                         </Link>
                           </div>
                         </div>
                       ))}
@@ -2080,6 +2124,16 @@ const OrdersDetail = () => {
         noBtnText={"No"}
         onConfirm={handleCompleteShipLocal}
         loading={loadingWeight}
+      />
+           <ConfirmationModal
+        show={modalShow6}
+        onHide={handleClose6}
+        title={"Are you sure?"}
+        desc={"Do you want to refund this label?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={handleRefundLabel}
+        loading={loadingBtn6}
       />
       </React.Fragment>
     </div>
