@@ -37,6 +37,7 @@ import {
   getSubQuote,
   generateOrderPDFAdmin,
   moveOrderToLocalPickup,
+  refundLabelData,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import { ReactBarcode } from "react-jsbarcode";
@@ -362,6 +363,19 @@ const OrdersDetail = () => {
     );
     setBoxes(updatedBoxesVal);
   };
+  const [LoadRefund,setLoadRefund] = useState("");
+  const handleRefundLabel = async (e, id, label_id) => {
+    setLoadRefund(id);
+    const data = {
+      id:id,
+      label_id:label_id
+    }
+    await refundLabelData(data);
+    shipping();
+    loadEmp();
+    setLoadRefund("");
+    
+  };
   const calculateRate = async (index) => {
     const box = boxes[index];
     if (!box.length || !box.width || !box.height || !box.weight) {
@@ -527,7 +541,7 @@ const OrdersDetail = () => {
       height: box.height,
       weight: box.weight,
       box_id:
-        "box_" + id + "_" + (orderInfo?.length || "0") + parseInt(index) + 1,
+        "box_" + id + "_" + (orderInfo?.length || "0") + parseInt(index) + 1+ "_" + Date.now(),
       // box_id: "box_" + id + "_" + (orderInfo?.length || "") + parseInt(index) + 1,
       id: id,
       service_code: selectedMethod,
@@ -1182,8 +1196,26 @@ const OrdersDetail = () => {
                               >
                                 Download Label
                               </a>
-                              <Link className="RefundLabel_btn" to={"/"}>
-                                Refund Label
+                              <Link className="RefundLabel_btn" 
+                              // to={"/"}
+                              onClick={(e) =>
+                                handleRefundLabel(
+                                  e,
+                                  Info?._id,
+                                  Info?.label_id
+                                )
+                              }
+                              >
+                                   {LoadRefund == Info?._id ? (
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            ) : (
+                              "Refund Label"
+                            )}
+                               
                               </Link>
                             </div>
                           </div>

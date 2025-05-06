@@ -1005,6 +1005,16 @@ export const getShippingRates = async (data) => {
   }
 };
 
+export const refundLabelData = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/refundLabel`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getSubQuote = async (data) => {
   try {
     const response = await axiosAdminInstance.get(`/getSubQuote/` + data);
