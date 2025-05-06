@@ -159,6 +159,12 @@ const Sidebar = () => {
       icon: "basil:user-outline",
     },
     {
+      id: "material",
+      title: "Material",
+      link: "/admin/view-material",
+      icon: "basil:user-outline",
+    },
+    {
       id: "logout",
       title: "Logout",
       link: "/admin/logout",

@@ -1035,6 +1035,68 @@ export const getParticularProfile = async (data) => {
   }
 };
 
+
+export const BendingDataAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/bending-data`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+export const ViewMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/bending-data`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const editMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/bending-data/`+data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/bending-data`,data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const deleteMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.delete(
+      `/bending-data/`+data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 export const getParticularUserQuotes = async (data) => {
   try {
     const response = await axiosAdminInstance.post(
