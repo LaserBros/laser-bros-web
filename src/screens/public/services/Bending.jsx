@@ -4,6 +4,7 @@ import shape1 from "../../../assets/img/line-shape-1.svg";
 import { Icon } from "@iconify/react";
 import img1 from "../../../assets/img/service-img-2.jpg";
 import MaterialsBending from "../../../components/MaterialsBending";
+import { Link } from "react-router-dom";
 export default function Bending() {
   return (
     <React.Fragment>
@@ -16,11 +17,11 @@ export default function Bending() {
                 <p className="text-start"><b className="d-block">What is sheet metal bending?</b> Sheet metal bending is the process of turning a flat piece of metal into a different shape by folding or bending it. It’s a common step in making things like metal boxes, enclosure, and brackets. The bending machines we use are CNC controlled and programmed offline to ensure your parts are manufacturable and made to spec.</p>
                 <div className="bannerservice_btns mt-4 d-flex flex-wrap gap-2">
                   <div>
-                    <Button className="btn btn-primary my-1">Get Started Now! Upload Your DXF</Button>
+                    <Button className="d-inline-flex align-items-center my-1" as={Link}  to="/quotes/quotes-detail">Get Started Now! Upload Your DXF</Button>
                     <span className="loginUploadInfo_text">You'll need to login to upload</span>
                   </div>
-                  <Button className="btn btn-outline-primary my-1" variant={null}>
-                    <Icon icon="ph:books-light" width={24} height={24} /> Laser Cutting Guidelines
+                  <Button className="d-inline-flex align-items-center my-1" variant="outline-primary" as={Link} to="/resources/bending">
+                    <Icon icon="ph:books-light" width={24} height={24} /> Bending Guidelines
                   </Button>
                 </div>
               </div>
@@ -81,7 +82,7 @@ export default function Bending() {
                 </Row>
               </div>
               <div className="text-center">
-                <Button className="btn btn-primary mb-2">Get Started Now! Upload Your DXF</Button>
+                <Button className="d-inline-flex align-items-center mb-2" as={Link} to="/quotes/quotes-detail">Get Started Now! Upload Your DXF</Button>
                 <span className="loginUploadInfo_text">You’ll need to login to upload</span>
               </div>
             </Col>

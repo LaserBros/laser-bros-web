@@ -23,7 +23,7 @@ export default function Home() {
             <h1>Laser Cut Parts Delivered To Your Door.</h1>
             <p>Upload. Configure. Checkout. Done.</p>
             <Image src={bannerimg} className="img-fluid" alt="" />
-            <Button className="mt-3 d-inline-flex align-items-center gap-2">
+            <Button className="mt-3 d-inline-flex align-items-center gap-2" as={Link}  to="/quotes/quotes-detail">
               Get Started Now! Upload Your DXF <Icon icon="tabler:upload" width={22} height={22} className="ms-0 me-0" />
             </Button>
             <p className="bannersubpara">You'll need to login to upload</p>
@@ -46,7 +46,7 @@ export default function Home() {
                   <div className="reviewuser">
                     <div>
                       <Image src={reviewuser2} className="img-fluid rounded-circle" alt="" />
-                      <h5 className="mb-0">Jason Gill</h5>
+                      <h5 className="mb-0" style={{textAlign:'left'}}>Jason Gill</h5>
                     </div>
                     <div className="reviewrate">
                       <Icon icon="material-symbols:star" />
@@ -67,13 +67,13 @@ export default function Home() {
                   <div className="d-inline-flex justify-content-center flex-column">
                     <div className="reviewbadge mb-1">
                       <h4 className="mb-0">Material:</h4>
-                      <Link className="aluminiumbadge">0.080 5052 Grade Aluminium <Icon icon="ix:layers" width={22} height={22} /></Link>
+                      <Link className="aluminiumbadge" to="/resources/aluminum">0.080 5052 Grade Aluminium <Icon icon="ix:layers" width={22} height={22} /></Link>
                     </div>
                     <div className="reviewbadge mt-1">
                       <h4 className="mb-0">Services:</h4>
-                      <Link className="lasercuttingbadge">Laser Cutting</Link>
-                      <Link className="lasercuttingbadge">CNC Bending</Link>
-                      <Link className="lasercuttingbadge">Metal Finishing</Link>
+                      <Link className="lasercuttingbadge" to="/laser-cutting">Laser Cutting</Link>
+                      <Link className="lasercuttingbadge" to="/bending">CNC Bending</Link>
+                      <Link className="lasercuttingbadge" to="/metalfinishing">Metal Finishing</Link>
                       {/* <div className="d-inline-block text-center">
                      <p className="mb-0"><Link to='/bending'>Learn About Bending</Link></p> 
                     </div> */}
@@ -119,12 +119,12 @@ export default function Home() {
                   <div className="d-inline-flex justify-content-center flex-column">
                     <div className="reviewbadge mb-1">
                       <h4 className="mb-0">Material:</h4>
-                      <Link className="steelbadge">12 gauge (0.100) HRPO Steel <Icon icon="ix:layers" width={22} height={22} /></Link>
+                      <Link className="steelbadge" to="/resources/steel">12 gauge (0.100) HRPO Steel <Icon icon="ix:layers" width={22} height={22} /></Link>
                     </div>
                     <div className="reviewbadge mt-1">
                       <h4 className="mb-0">Services:</h4>
-                      <Link className="lasercuttingbadge">Laser Cutting</Link>
-                      <Link className="lasercuttingbadge">Metal Finishing</Link>
+                      <Link className="lasercuttingbadge" to="/laser-cutting">Laser Cutting</Link>
+                      <Link className="lasercuttingbadge" to="/metalfinishing">Metal Finishing</Link>
                     </div>
                   </div>
                 </div>
@@ -141,7 +141,7 @@ export default function Home() {
                     <div>
                       <Image src={reviewuser1} className="img-fluid rounded-circle" alt="" />
                       <div className="clearfix"></div>
-                      <h5 className="mb-0">Kle Malcolm</h5>
+                      <h5 className="mb-0">Kyle Malcolm</h5>
                     </div>
                     <div className="reviewrate">
                       <Icon icon="material-symbols:star" />
@@ -162,11 +162,11 @@ export default function Home() {
                   <div className="d-inline-flex justify-content-center flex-column">
                     <div className="reviewbadge mb-1">
                       <h4 className="mb-0">Material:</h4>
-                      <Link className="brassbadge">0.093 Brass-260 <Icon icon="ix:layers" width={22} height={22} /></Link>
+                      <Link className="brassbadge" to="/resources/brass">0.093 Brass-260 <Icon icon="ix:layers" width={22} height={22} /></Link>
                     </div>
                     <div className="reviewbadge mt-1">
                       <h4 className="mb-0">Services:</h4>
-                      <Link className="lasercuttingbadge">Laser Cutting</Link>
+                      <Link className="lasercuttingbadge" to="/laser-cutting">Laser Cutting</Link>
                     </div>
                   </div>
                 </div>
@@ -225,7 +225,7 @@ export default function Home() {
           <div className=" text-center ">
             <Image src={american} className="img-fluid mx-auto" alt="" />
             <h4 className="mt-3">Our Mission is to Support the American Innovator.</h4>
-            <Button className="mt-3">Learn More About Us</Button>
+            <Button className="mt-3 d-inline-flex align-items-center" as={Link}  to="/about-us">Learn More About Us</Button>
           </div>
         </Container>
       </section>
@@ -234,7 +234,7 @@ export default function Home() {
         <Modal.Body>
        <h4>Save 15% on your first order!</h4>
        <h4>Use Code: SAVE15</h4>
-       <Button className="mt-3 d-inline-flex align-items-center gap-2">
+       <Button className="mt-3 d-inline-flex align-items-center gap-2" as={Link}  to="/quotes/quotes-detail">
               Get Started Now! Upload Your DXF <Icon icon="tabler:upload" width={22} height={22} className="ms-0 me-0" />
             </Button>
             <p>You'll need to login to upload</p>

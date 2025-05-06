@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Image, Button, Modal } from "react-bootstrap";
 import img1 from "../../../assets/img/products/1.webp";
 import img1_1 from "../../../assets/img/products/1-1.webp";
@@ -42,167 +42,167 @@ export default function Products() {
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img1_1} alt=""/>
-                  <Image className="img_default" src={img1} alt=""/>
+                  <Image className="img_hover" src={img1_1} alt="" />
+                  <Image className="img_default" src={img1} alt="" />
                 </div>
                 <h4><Link>Ultimate Shop Cart</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img2_2} alt=""/>
-                  <Image className="img_default" src={img2} alt=""/>
+                  <Image className="img_hover" src={img2_2} alt="" />
+                  <Image className="img_default" src={img2} alt="" />
                 </div>
                 <h4><Link>DIY Vibratory Tumbler</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img3_3} alt=""/>
-                  <Image className="img_default" src={img3} alt=""/>
+                  <Image className="img_hover" src={img3_3} alt="" />
+                  <Image className="img_default" src={img3} alt="" />
                 </div>
                 <h4><Link>Cantilever Sheet Metal Racks</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img4_4} alt=""/>
-                  <Image className="img_default" src={img4} alt=""/>
+                  <Image className="img_hover" src={img4_4} alt="" />
+                  <Image className="img_default" src={img4} alt="" />
                 </div>
                 <h4><Link>PressBrake Tooling Cart Plans</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img5_5} alt=""/>
-                  <Image className="img_default" src={img5} alt=""/>
+                  <Image className="img_hover" src={img5_5} alt="" />
+                  <Image className="img_default" src={img5} alt="" />
                 </div>
                 <h4><Link>Shop Cart Drawers</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img6_6} alt=""/>
-                  <Image className="img_default" src={img6} alt=""/>
+                  <Image className="img_hover" src={img6_6} alt="" />
+                  <Image className="img_default" src={img6} alt="" />
                 </div>
                 <h4><Link>Shop Cart Lock-Bars</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img7_7} alt=""/>
-                  <Image className="img_default" src={img7} alt=""/>
+                  <Image className="img_hover" src={img7_7} alt="" />
+                  <Image className="img_default" src={img7} alt="" />
                 </div>
                 <h4><Link>Multi-Use Shop Hanger</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img8_8} alt=""/>
-                  <Image className="img_default" src={img8} alt=""/>
+                  <Image className="img_hover" src={img8_8} alt="" />
+                  <Image className="img_default" src={img8} alt="" />
                 </div>
                 <h4><Link>Multi-Use Shop Hanger</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img9_9} alt=""/>
-                  <Image className="img_default" src={img9} alt=""/>
+                  <Image className="img_hover" src={img9_9} alt="" />
+                  <Image className="img_default" src={img9} alt="" />
                 </div>
                 <h4><Link>Paper Towel Holder</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img10_10} alt=""/>
-                  <Image className="img_default" src={img10} alt=""/>
+                  <Image className="img_hover" src={img10_10} alt="" />
+                  <Image className="img_default" src={img10} alt="" />
                 </div>
                 <h4><Link>Glove Box Holder</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img11_11} alt=""/>
-                  <Image className="img_default" src={img11} alt=""/>
+                  <Image className="img_hover" src={img11_11} alt="" />
+                  <Image className="img_default" src={img11} alt="" />
                 </div>
                 <h4><Link>Label Holder</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img12_12} alt=""/>
-                  <Image className="img_default" src={img12} alt=""/>
+                  <Image className="img_hover" src={img12_12} alt="" />
+                  <Image className="img_default" src={img12} alt="" />
                 </div>
                 <h4><Link>Wire-Shelf Caps</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img13_13} alt=""/>
-                  <Image className="img_default" src={img13} alt=""/>
+                  <Image className="img_hover" src={img13_13} alt="" />
+                  <Image className="img_default" src={img13} alt="" />
                 </div>
                 <h4><Link>Heavy Duty Tool Cart</Link></h4>
                 {/* <p>$0.00 USD</p> */}
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img14_14} alt=""/>
-                  <Image className="img_default" src={img14} alt=""/>
+                  <Image className="img_hover" src={img14_14} alt="" />
+                  <Image className="img_default" src={img14} alt="" />
                 </div>
                 <h4><Link>Collapsible Fire Pit</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
             <Col xl={3} lg={4} md={6} sm={6}>
               <div className="Productmain_box">
                 <div className="Product_img">
-                  <Image className="img_hover" src={img15_15} alt=""/>
-                  <Image className="img_default" src={img15} alt=""/>
+                  <Image className="img_hover" src={img15_15} alt="" />
+                  <Image className="img_default" src={img15} alt="" />
                 </div>
                 <h4><Link>Box Perforator Tool</Link></h4>
-                <p><Link onClick={ProductToggle}>Download Free Files</Link></p>
-                <Button onClick={ProductToggle}>Learn More</Button>
+                <p><Button onClick={ProductToggle}>Download Free Files</Button></p>
+                <Button variant="lt-primary" onClick={ProductToggle} className="btn-sm">Learn More</Button>
               </div>
             </Col>
           </Row>
@@ -223,7 +223,7 @@ export default function Products() {
           </ul>
           <Button className="mt-3">Download Free Files</Button>
         </Modal.Body>
-      </Modal>    
+      </Modal>
     </React.Fragment>
   );
 }
