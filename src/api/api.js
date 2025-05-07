@@ -567,6 +567,17 @@ export const updateQuantity = async (data) => {
   }
 };
 
+export const OfferData = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/offer-data/`+data);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 export const getMaterials = async (data) => {
   try {
     const response = await axiosInstance.get(`/users/getMaterials`, data);

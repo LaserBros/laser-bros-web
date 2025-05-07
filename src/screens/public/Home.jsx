@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { Accordion, Row, Col, Container, Image, Button, Modal } from "react-bootstrap";
 import bannerimg from "../../assets/img/bannerimg.png";
 import reviewimg1 from "../../assets/img/reviewimg1.jpg";
@@ -11,10 +11,21 @@ import reviewimg4 from "../../assets/img/reviewimg-2.webp";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import BreakDownSteps from "../../components/BreakDownSteps";
+import { OfferData } from "../../api/api";
 
 export default function Home() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
+  const [modalData , setModalData] = useState();
+  const getBanner = async () => {
+    const res = await OfferData("6811bf514569f2bcd19568e6");
+    console.log("234567890",res)
+  }
+  const getFAQ = () => {}
+  useEffect (() => {
+    setShow(true);
+    // getBanner();
+  },[])
   return (
     <React.Fragment>
       <section className="banner-home">
@@ -34,7 +45,7 @@ export default function Home() {
         </Container>
       </section>
       <section className="homereviews">
-        <div class="heading mb-5 text-center">
+        <div className="heading mb-5 text-center">
           <h2>What Our Customers Have To Say</h2>
         </div>
         <Container>
@@ -183,7 +194,7 @@ export default function Home() {
       <BreakDownSteps />
       <section className="faq-home">
         <Container>
-          <div class="heading mb-4 text-center">
+          <div className="heading mb-4 text-center">
             <h2>FAQ</h2>
           </div>
           <h3 className="faqsubhead">Most Asked Questions</h3>
