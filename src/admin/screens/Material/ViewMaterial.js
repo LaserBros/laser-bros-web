@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Spinner, Alert } from "react-bootstrap";
+import { Table, Button, Spinner, Alert, Card, CardHeader, CardBody } from "react-bootstrap";
 import axios from "axios";
 import { deleteMaterialAdmin, ViewMaterialAdmin } from "../../../api/api";
 import { Link, useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { toast } from "react-toastify";
+import DataTable from "react-data-table-component";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const ViewMaterialPage = () => {
   const [materials, setMaterials] = useState([]);
@@ -50,69 +52,70 @@ const ViewMaterialPage = () => {
   useEffect(() => {
     fetchMaterials();
   }, []);
-
-  if (loading) return <Spinner animation="border" />;
-  if (error) return <Alert variant="danger">{error}</Alert>;
+  const columns = [
+      {
+        name: "Material Grade",
+        selector: (row) => row.material_grade,
+        sortable: true,
+      },
+      {
+        name: "Thickness",
+        selector: (row) => row.material_thickness,
+        width: "700px",
+        sortable: true,
+      },
+  
+      {
+        name: "Actions",
+        cell: (row) => (
+          <>
+            <Link className="btnview" to={`/admin/view-material/`+row._id}>
+              <Icon icon="tabler:eye"></Icon>
+            </Link>
+            <Link className="btnview" onClick={() => handleDelete(row._id)}>
+              <Icon icon="tabler:trash"></Icon>
+            </Link>
+          </>
+        ),
+      },
+    ];
 
   return (
     <div className="container mt-4">
-      <h2>Material List</h2>
-      <Table striped bordered hover responsive className="mt-3">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Material Grade</th>
-            {/* <th>Background Color</th> */}
-            <th>Thickness</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {materials.length === 0 ? (
-            <tr>
-              <td colSpan="5" className="text-center">
-                No materials found.
-              </td>
-            </tr>
+      <Card>
+        <CardHeader className="py-4 ">
+          <h5>Material List</h5>
+            <Button className="mb-3" onClick={() => navigate("/admin/material-form")}>Add Material</Button>
+        </CardHeader>
+        <CardBody>
+          {!loading ? (
+            <>
+              <DataTable
+                columns={columns}
+                data={materials}
+                responsive
+                pagination={false}
+                className="custom-table"
+              />
+            </>
           ) : (
-            materials.map((material, index) => (
-              <tr key={material._id}>
-                <td>{index + 1}</td>
-                <td>{material.material_grade}</td>
-                {/* <td>
-                  <div
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      backgroundColor: material.background_color,
-                      border: "1px solid #ccc",
-                      borderRadius: "4px",
-                    }}
-                  ></div>
-                </td> */}
-                <td>{material.material_thickness}</td>
-                <td>
-                  <Link
-                    variant="info"
-                    size="sm"
-                    className="me-2"
-                    to={`/admin/view-material/`+material._id}
-                  >
-                    View
-                  </Link>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(material._id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))
+            <>
+              <span
+                role="status"
+                aria-hidden="true"
+                className="spinner-border spinner-border-sm text-center"
+                style={{
+                  margin: "0 auto",
+                  display: "block",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              ></span>
+            </>
           )}
-        </tbody>
-      </Table>
+        </CardBody>
+      </Card>
+
       <ConfirmationModal
         show={modalShow}
         onHide={handleClose}

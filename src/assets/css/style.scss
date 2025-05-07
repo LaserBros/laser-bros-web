@@ -2527,6 +2527,14 @@ footer {
                     color: $paragraph-color;
                 }
             }
+            ol {
+                margin: 0px 0px 10px;
+                li {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $paragraph-color;
+                }
+            }
         }
     }
 }
@@ -5250,4 +5258,22 @@ textarea.form-control {
         background: transparent;
         right: 7px;
     }
+}
+.badgestatus.badgeadded-Aluminium {
+    display: none;
+}
+.badgestatus.badgeadded-Steel {
+    display: none;
+}
+.badgestatus.badgeadded-Stainless {
+    display: none;
+}
+.custom-table .rdt_TableRow.highlight-aluminium:first-child .badgestatus.badgeadded-Aluminium {
+    display: block !important;
+}
+.custom-table .highlight-aluminium + .highlight-steel .badgestatus.badgeadded-Steel {
+    display: block !important;
+}
+.custom-table .highlight-steel + .highlight-stainless .badgestatus.badgeadded-Stainless {
+    display: block !important;
 }

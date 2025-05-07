@@ -53,8 +53,17 @@ const FaqForm = () => {
 
   const validate = () => {
     const newErrors = {};
-    if (!form.question.trim()) newErrors.question = "Question is required";
-    if (!form.answer.trim()) newErrors.answer = "Answer is required";
+    if (!String(form.question || '').trim()) {
+      newErrors.question = "Question is required";
+    }
+    
+    if (!String(form.answer || '').trim()) {
+      newErrors.answer = "Answer is required";
+    }
+    
+    if (form.category === undefined || form.category === null || form.category === '') {
+      newErrors.category = "Category is required";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -131,6 +140,7 @@ const FaqForm = () => {
           as="select"
           name="category"
           value={form.category || ''}
+          isInvalid={!!errors.category}
           onChange={handleCategoryChange}
         >
           <option value="">Select a Category</option>
@@ -139,6 +149,9 @@ const FaqForm = () => {
           <option value="2">Bending</option>
           <option value="3">Shipping</option>
         </Form.Control>
+        <Form.Control.Feedback type="invalid">
+          {errors.category}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Button variant="primary" type="submit">

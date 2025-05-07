@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Container, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import {
+  Table,
+  Button,
+  Container,
+  Modal,
+  Card,
+  CardHeader,
+  CardBody,
+} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { DeleteFAQAdmin, FetchFAQAdmin } from "../../../api/api";
-
-// Mock store (simulate API store)
+import DataTable from "react-data-table-component";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 
 const FaqList = () => {
-  const [faqs, setFaqs] = useState({});
+  const [faqs, setFaqs] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setloading] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const navigate = useNavigate();
   const fetchFaq = async () => {
+    setloading(true);
     const res = await FetchFAQAdmin();
-    setFaqs(res.data)
-  }
-  useEffect ( () => {
+    setFaqs(res.data);
+    setloading(false);
+  };
+  useEffect(() => {
     fetchFaq();
-  },[])
+  }, []);
   const handleDelete = (id) => {
     setDeleteId(id);
     setShowModal(true);
@@ -30,56 +41,76 @@ const FaqList = () => {
     delete updatedFaqs[deleteId];
     setFaqs(updatedFaqs);
     setShowModal(false);
-  };
+  }; 
 
-  const faqArray = Object.entries(faqs); // convert object to array of [id, data]
+  const columns = [
+    {
+      name: "Question",
+      selector: (row) => row.question,
+      sortable: true,
+    },
+    {
+      name: "Answer",
+      selector: (row) => {
+        const answer = typeof row.answer === "string" ? row.answer : "";
+        return answer.length > 100 ? answer.slice(0, 100) + "..." : answer;
+      },
+      width: "700px",
+      sortable: true,
+    },
+
+    {
+      name: "Actions",
+      cell: (row) => (
+        <>
+          <Link className="btnview" to={`/admin/edit-faq/${row._id}`}>
+            <Icon icon="tabler:eye"></Icon>
+          </Link>
+          <Link className="btnview" onClick={() => handleDelete(row._id)}>
+            <Icon icon="tabler:trash"></Icon>
+          </Link>
+        </>
+      ),
+    },
+  ];
 
   return (
     <Container className="mt-4">
-      <h3>FAQ List</h3>
-      <Button className="mb-3" onClick={() => navigate("/faq/add")}>
+      <Card>
+        <CardHeader className="py-4 ">
+          <h5>FAQ List</h5>
+          <Button className="mb-3" onClick={() => navigate("/admin/add-faq")}>
         Add New FAQ
       </Button>
-      {faqArray.length === 0 ? (
-        <p>No FAQs available.</p>
-      ) : (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Question</th>
-              <th>Answer</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {faqArray.map(([id, faq], index) => (
-              <tr key={faq._id}>
-                <td>{index + 1}</td>
-                <td>{faq.question}</td>
-                <td>{faq.answer}</td>
-                <td>
-                  <Button
-                    variant="warning"
-                    size="sm"
-                    className="me-2"
-                    onClick={() => navigate(`/admin/edit-faq/${faq._id}`)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(faq._id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+        </CardHeader>
+        <CardBody>
+          {!loading ? (
+            <>
+              <DataTable
+                columns={columns}
+                data={faqs}
+                responsive
+                pagination={false}
+                className="custom-table"
+              />
+            </>
+          ) : (
+            <>
+              <span
+                role="status"
+                aria-hidden="true"
+                className="spinner-border spinner-border-sm text-center"
+                style={{
+                  margin: "0 auto",
+                  display: "block",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              ></span>
+            </>
+          )}
+        </CardBody>
+      </Card>
 
       {/* Delete confirmation modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>

@@ -11,6 +11,7 @@ const Offer = () => {
     offer_text: "",
     offer_percentage: 0,
     button_text: "",
+    button_link: "",
     button_description: "",
     offer_code: "",
     is_active: false,
@@ -100,6 +101,15 @@ const Offer = () => {
             type="text"
             name="button_text"
             value={banner.button_text}
+            onChange={handleChange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Button Link</Form.Label>
+          <Form.Control
+            type="text"
+            name="button_link"
+            value={banner.button_link}
             onChange={handleChange}
           />
         </Form.Group>

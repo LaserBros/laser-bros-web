@@ -578,6 +578,41 @@ export const OfferData = async (data) => {
   }
 };
 
+export const generalFAQ = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/generalFAQ/`);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const Fetchproducts = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/products`);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const getBendingData = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/bending-data`);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 export const getMaterials = async (data) => {
   try {
     const response = await axiosInstance.get(`/users/getMaterials`, data);

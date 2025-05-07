@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Table, Image, Spinner, Alert, Button } from "react-bootstrap";
+import { Table, Image, Spinner, Alert, Button, Card, CardHeader, CardBody } from "react-bootstrap";
 import { DeleteproductsAdmin, FetchproductsAdmin, PostproductsAdmin } from "../../../api/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { toast } from "react-toastify";
+import DataTable from "react-data-table-component";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -22,7 +24,7 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const res = await FetchproductsAdmin();
-      setProducts(res.data.products);
+      setProducts(res.data);
       setLoading(false);
     } catch (err) {
       setError("Failed to load products.");
@@ -54,71 +56,120 @@ const ProductList = () => {
     tempDiv.innerHTML = htmlString;
     return tempDiv.textContent || tempDiv.innerText || "";
   };
+
+   const columns = [
+        {
+          name: "Title",
+          selector: (row) => row.product_title,
+          sortable: true,
+        },
+        {
+          name: "Description",
+          selector: (row) => {
+            const desc = typeof row.product_description === "string" ? stripHtmlTags(row.product_description) : "";
+            return desc.length > 100 ? desc.slice(0, 100) + "..." : desc;
+          },
+         
+          sortable: true,
+        },
+        {
+          name: "Price",
+          selector: (row) => '$'+row.product_price,
+          
+          sortable: true,
+        },
+        {
+          name: "DXF File",
+          selector: (row) => { 
+            return row.product_dxf_url ? (
+              <a href={row.product_dxf_url} target="_blank" rel="noopener noreferrer">
+                Download
+              </a>
+            ) : (
+              "N/A"
+            )
+           },
+          sortable: true,
+        },
+        {
+          name: "Main File",
+          selector: (row) => { 
+            return row.product_image_url ? (
+              <Image src={row.product_image_url} width="80" thumbnail />
+            ) : (
+              "No Image"
+            )
+           },
+         
+          sortable: true,
+        },
+        {
+          name: "Hover Image",
+          selector: (row) => { 
+            return row.product_image_hover_url ? (
+              <Image src={row.product_image_hover_url} width="80" thumbnail />
+            ) : (
+              "No Hover Image"
+            )
+           },
+         
+          sortable: true,
+        },
+    
+        {
+          name: "Actions",
+          cell: (row) => (
+            <>
+              <Link className="btnview" to={`/admin/edit-product/${row._id}`}>
+                <Icon icon="tabler:eye"></Icon>
+              </Link>
+              <Link className="btnview"  onClick={() => handleDelete(row._id)}>
+                <Icon icon="tabler:trash"></Icon>
+              </Link>
+            </>
+          ),
+        },
+      ];
   return (
     <div className="container mt-4">
-      <h2>All Products</h2>
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>DXF File</th>
-            <th>Main Image</th>
-            <th>Hover Image</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id || product._id}>
-              <td>{product.product_title}</td>
-              <td>{stripHtmlTags(product.product_description)}</td>
-              <td>${product.product_price}</td>
-              <td>
-                {product.product_dxf_url ? (
-                  <a href={product.product_dxf_url} target="_blank" rel="noopener noreferrer">
-                    Download
-                  </a>
-                ) : (
-                  "N/A"
-                )}
-              </td>
-              <td>
-                {product.product_image_url ? (
-                  <Image src={product.product_image_url} width="80" thumbnail />
-                ) : (
-                  "No Image"
-                )}
-              </td>
-              <td>
-                {product.product_image_hover_url ? (
-                  <Image src={product.product_image_hover_url} width="80" thumbnail />
-                ) : (
-                  "No Hover Image"
-                )}
-              </td>
-              <td>
-              <Button
-                    variant="warning"
-                    size="sm"
-                    className="me-2"
-                    onClick={() => navigate(`/admin/edit-product/${product._id}`)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(product._id)}
-                  >
-                    Delete
-                  </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+         <Card>
+        <CardHeader className="py-4 ">
+          <h5>Products</h5>
+          <Button className="mb-3" onClick={() => navigate("/admin/add-product")}>
+        Add New Product
+      </Button>
+        </CardHeader>
+        <CardBody>
+          {!loading ? (
+            <>
+              <DataTable
+                columns={columns}
+                data={products}
+                responsive
+                pagination={false}
+                className="custom-table"
+              />
+            </>
+          ) : (
+            <>
+              <span
+                role="status"
+                aria-hidden="true"
+                className="spinner-border spinner-border-sm text-center"
+                style={{
+                  margin: "0 auto",
+                  display: "block",
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                }}
+              ></span>
+            </>
+          )}
+        </CardBody>
+      </Card>
+
+
+     
       <ConfirmationModal
         show={modalShow}
         onHide={handleClose}

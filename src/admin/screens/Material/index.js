@@ -31,8 +31,13 @@ const MaterialForm = () => {
     }
   }, [id]);
   const dataAdmin = async () => {
-    const res = await editMaterialAdmin(id);
-    setFormData(res.data)
+    try {
+      const res = await editMaterialAdmin(id);
+    setFormData(res.data)  
+    } catch (error) {
+      
+    }
+    
   }
   const validate = () => {
     const newErrors = {};
