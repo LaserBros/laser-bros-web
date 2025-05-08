@@ -71,12 +71,12 @@ const ProductList = () => {
          
           sortable: true,
         },
-        {
-          name: "Price",
-          selector: (row) => '$'+row.product_price,
+        // {
+        //   name: "Price",
+        //   selector: (row) => '$'+row.product_price,
           
-          sortable: true,
-        },
+        //   sortable: true,
+        // },
         {
           name: "DXF File",
           selector: (row) => { 

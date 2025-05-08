@@ -26,7 +26,7 @@ const ProductForm = ({ isEditMode }) => {
   const [form, setForm] = useState({
     product_title: "",
     product_description: "",
-    product_price: "",
+    product_price: "0",
     product_dxf_url: "",
     product_image_url: null,
     product_image_hover_url: null,
@@ -126,9 +126,9 @@ const ProductForm = ({ isEditMode }) => {
     if (!form.product_description) {
       validationErrors.product_description = "Product description is required";
     }
-    if (!form.product_price) {
-      validationErrors.product_price = "Product price is required";
-    }
+    // if (!form.product_price) {
+    //   validationErrors.product_price = "Product price is required";
+    // }
     if (!form.product_dxf_url || form.product_dxf_url === "") {
       validationErrors.product_dxf_url = "DXF file is required";
     }
@@ -149,7 +149,7 @@ const ProductForm = ({ isEditMode }) => {
       const formData = new FormData();
       formData.append("product_title", form.product_title);
       formData.append("product_description", form.product_description);
-      formData.append("product_price", form.product_price);
+      formData.append("product_price", 0);
       if (form.product_dxf_url) {
         formData.append("product_dxf_url", form.product_dxf_url);
       }
@@ -222,7 +222,7 @@ const ProductForm = ({ isEditMode }) => {
             </Form.Group>
 
             {/* Product Price */}
-            <Form.Group className="form-group mb-3" controlId="product_price">
+            {/* <Form.Group className="form-group mb-3" controlId="product_price">
               <Form.Label>Product Price</Form.Label>
               <Form.Control
                 type="number"
@@ -234,7 +234,7 @@ const ProductForm = ({ isEditMode }) => {
               <Form.Control.Feedback type="invalid">
                 {errors.product_price}
               </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Group> */}
 
             {/* Product DXF File */}
             <Form.Group className="form-group mb-3" controlId="product_dxf_url">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Image, Button, Modal, Spinner } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import { Fetchproducts } from "../../../api/api";
@@ -12,17 +12,22 @@ export default function Products() {
     setShow(true);
   };
   const [loadingbtn , setloadingbtn] = useState("");
+  const [loading , setloading] = useState(false);
   const [products,setProducts] = useState([]);
   const fetchProducts = async () => {
+    setloading(true);
     try {
       const res = await Fetchproducts();
       if(res.status == 'failure') {
         setProducts([])  
+        setloading(false)
       } else{
+        
         setProducts(res.data)  
+        setloading(false)
       }
     } catch (error) {
-      
+      setloading(false)
     }
     
   }
@@ -60,6 +65,12 @@ export default function Products() {
       <section className="laserProduct_sec">
         <Container>
           <Row className="g-3">
+          {loading ?
+          <div className="text-center">
+        <Spinner animation="border" /> 
+        </div> 
+          :
+          <>
             {products?.length === 0 ? (
   <div className="text-center p-3">
     <b className="text-center">No Products available.</b>
@@ -94,6 +105,8 @@ export default function Products() {
     ))}
   </>
 )}
+</>
+}
 
 
           </Row>
