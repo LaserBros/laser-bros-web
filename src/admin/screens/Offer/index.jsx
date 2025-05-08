@@ -95,7 +95,7 @@ const Offer = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3 form-group">
+        {/* <Form.Group className="mb-3 form-group">
           <Form.Label>Offer Percentage</Form.Label>
           <Form.Control
             type="number"
@@ -103,7 +103,7 @@ const Offer = () => {
             value={banner.offer_percentage}
             onChange={handleChange}
           />
-        </Form.Group>
+        </Form.Group> */}
 
         <Form.Group className="mb-3 form-group">
           <Form.Label>Button Text</Form.Label>
