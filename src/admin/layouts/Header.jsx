@@ -44,7 +44,7 @@ const Header = ({ title }) => {
             className="headerright"
             style={{ display: "inline-flex", alignItems: "center" }}
           >
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             <NavDropdown
              className="ms-2"
               title={
