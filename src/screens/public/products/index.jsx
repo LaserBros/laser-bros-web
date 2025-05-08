@@ -3,6 +3,7 @@ import { Container, Row, Col, Image, Button, Modal } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import { Fetchproducts } from "../../../api/api";
+import { toast } from "react-toastify";
 export default function Products() {
   const [show, setShow] = useState(false);
   const [modal, setModalData] = useState("");
@@ -10,12 +11,24 @@ export default function Products() {
     setModalData(product);
     setShow(true);
   };
-  const [products,setProducts] = useState({});
+  const [loadingbtn , setloadingbtn] = useState("");
+  const [products,setProducts] = useState([]);
   const fetchProducts = async () => {
-    const res = await Fetchproducts();
-    setProducts(res.data)
+    try {
+      const res = await Fetchproducts();
+      if(res.status == 'failure') {
+        setProducts([])  
+      } else{
+        setProducts(res.data)  
+      }
+    } catch (error) {
+      
+    }
+    
   }
-  const DownloadDxf = async (fileName, fileUrl) => {
+  const DownloadDxf = async (fileName, fileUrl,id) => {
+    console.log("234567876543212345678",id)
+    setloadingbtn(id);
     try {
       const response = await fetch(fileUrl, {
         mode: 'cors', // Ensure CORS is allowed by the server
@@ -32,8 +45,10 @@ export default function Products() {
   
       // Clean up the object URL
       window.URL.revokeObjectURL(blobUrl);
+      setloadingbtn("");
     } catch (error) {
-      console.error("Download failed:", error);
+      setloadingbtn("");
+      toast.error("Download failed");
     }
   };
   
@@ -45,20 +60,42 @@ export default function Products() {
       <section className="laserProduct_sec">
         <Container>
           <Row className="g-3">
-            {products.length > 0 && products.map((product,index) => (
-            <Col xl={3} lg={4} md={6} sm={6}>
-              <div className="Productmain_box">
-                <div className="Product_img">
-                  <Image className="img_hover" src={product.product_image_hover_url} alt="" />
-                  <Image className="img_default" src={product.product_image_url} alt="" />
-                </div>
-                <h4><Link>{product.product_title}</Link></h4>
-                <p> <Button onClick={() => DownloadDxf(product.product_title, product.product_dxf_url)}>
-                Download Free Files</Button></p>
-                <Button variant="lt-primary" onClick={ () => ProductToggle(product)} className="btn-sm">Learn More</Button>
-              </div>
-            </Col>
-            ))}
+            {products?.length === 0 ? (
+  <div className="text-center p-3">
+    <b className="text-center">No Products available.</b>
+  </div>
+) : (
+  <>
+    {products?.map((product, index) => (
+      <Col key={index} xl={3} lg={4} md={6} sm={6}>
+        <div className="Productmain_box">
+          <div className="Product_img">
+            <Image className="img_hover" src={product.product_image_hover_url} alt="" />
+            <Image className="img_default" src={product.product_image_url} alt="" />
+          </div>
+          <h4><Link to="#">{product.product_title}</Link></h4>
+          <p>
+            <Button onClick={() => DownloadDxf(product.product_title, product.product_dxf_url,product._id)}>
+              {loadingbtn == product._id ?
+               <span
+               className="spinner-border spinner-border-sm"
+               role="status"
+               aria-hidden="true"
+             ></span>
+             :
+              "Download Free Files" }
+            </Button>
+          </p>
+          <Button variant="lt-primary" onClick={() => ProductToggle(product)} className="btn-sm">
+            Learn More
+          </Button>
+        </div>
+      </Col>
+    ))}
+  </>
+)}
+
+
           </Row>
         </Container>
       </section>
@@ -68,7 +105,16 @@ export default function Products() {
           <h3 className="main_heading">{modal.product_title}</h3>
           <div dangerouslySetInnerHTML={{ __html: modal.product_description }} />
           
-          <Button className="mt-3" onClick={() => DownloadDxf(modal.product_title, modal.product_dxf_url)}>Download Free Files</Button>
+          <Button className="mt-3" onClick={() => DownloadDxf(modal.product_title, modal.product_dxf_url,modal._id)}>
+          {loadingbtn == modal._id ?
+               <span
+               className="spinner-border spinner-border-sm"
+               role="status"
+               aria-hidden="true"
+             ></span>
+             :
+            "Download Free Files" }
+            </Button>
         </Modal.Body>
       </Modal>
     </React.Fragment>

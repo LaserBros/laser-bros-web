@@ -21,6 +21,7 @@ const MaterialForm = () => {
   const { id } = useParams(); // for edit
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initialForm);
+  
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
 
@@ -60,12 +61,13 @@ const MaterialForm = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const [loading,setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     try {
+      setLoading(true);
       if (id) {
         const updatedData = {
             ...formData,
@@ -73,15 +75,18 @@ const MaterialForm = () => {
           };
         await updateMaterialAdmin(updatedData)
         toast.success("Material updated successfully.");
+        setLoading(false);
       } else {
         console.log(formData);
         const res = await BendingDataAdmin(formData);
         toast.success("Material created successfully.");
         setFormData(initialForm);
+        setLoading(false);
       }
       setErrors({});
     } catch (err) {
-      setMessage("Something went wrong.");
+      toast.error("Something went wrong.");
+      setLoading(false);
     }
   };
 
@@ -148,8 +153,17 @@ const MaterialForm = () => {
           </Form.Group>
         ))}
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" disabled={loading}>
+        {loading ? (
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              ) : (
+                <>
           {id ? "Update" : "Create"}
+          </>)}
         </Button>
       </Form>
           </CardBody>

@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DeleteFAQAdmin, FetchFAQAdmin } from "../../../api/api";
 import DataTable from "react-data-table-component";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 
 
 const FaqList = () => {
@@ -33,11 +34,14 @@ const FaqList = () => {
     setDeleteId(id);
     setShowModal(true);
   };
+  const [loadingBtn,setloadingBtn] = useState(false);
 
   const confirmDelete = async () => {
     const updatedFaqs = { ...faqs };
+    setloadingBtn(true);
     const deleteData = await DeleteFAQAdmin(deleteId);
     fetchFaq();
+    setloadingBtn(false);
     delete updatedFaqs[deleteId];
     setFaqs(updatedFaqs);
     setShowModal(false);
@@ -113,7 +117,18 @@ const FaqList = () => {
       </Card>
 
       {/* Delete confirmation modal */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <ConfirmationModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title={"Are you sure?"}
+        desc={"Do you want to delete this FAQ?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={confirmDelete}
+        loading={loadingBtn}
+      />
+
+      {/* <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
@@ -126,7 +141,7 @@ const FaqList = () => {
             Delete
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
       </React.Fragment>
   );
 };

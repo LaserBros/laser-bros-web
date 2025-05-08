@@ -49,7 +49,6 @@ const ProductList = () => {
         fetchProducts();
       }
     };
-  if (loading) return <Spinner animation="border" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
   const stripHtmlTags = (htmlString) => {
     const tempDiv = document.createElement("div");

@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Container, Alert, Card,  CardHeader, CardBody } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { generalFAQAdmin, GetFAQAdmin, PostFAQAdmin } from "../../../api/api";
+import { toast } from "react-toastify";
 
-// Mock API data store
-const mockFaqStore = {
-  1: { question: "What is React?", answer: "React is a JS library." },
-  2: { question: "What is Bootstrap?", answer: "A CSS framework." },
-};
 
 const FaqForm = () => {
   const { id } = useParams(); 
@@ -71,22 +67,36 @@ const FaqForm = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+  const [loading,setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-
+    setLoading(true);
     if (isEditMode) {
+      try {
         const res = await PostFAQAdmin(form);
+        toast.success("FAQ added successfully!")
+        setLoading(false);
+        navigate("/admin/faq")
+      } catch (error) {
+        toast.error("Something wents wrong!")
+        setLoading(false);
+      }
+        
     } else {
       // Create logic - normally you'd POST to an API
-      const newId = Date.now().toString();
-      mockFaqStore[newId] = { ...form };
+      // const newId = Date.now().toString();
+      // mockFaqStore[newId] = { ...form };
+      try {
       const res = await generalFAQAdmin(form);
+      toast.success("FAQ added successfully!")
+      setLoading(false);
+      navigate("/admin/faq")
+    } catch (error) {
+      toast.error("Something wents wrong!")
+      setLoading(false);
     }
-
-    setShowSuccess(true);
-    setTimeout(() => navigate("/admin/faq"), 1000); // redirect after success
+    }
   };
 
   return (
@@ -123,6 +133,7 @@ const FaqForm = () => {
                     name="answer"
                     value={form.answer}
                     onChange={handleChange}
+                    style={{height:'120px'}}
                     isInvalid={!!errors.answer}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -160,8 +171,17 @@ const FaqForm = () => {
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  <Button variant="primary" type="submit">
+                  <Button variant="primary" type="submit" disabled={loading}>
+                  {loading ? (
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                      ) : (
+                        <>
                     {isEditMode ? "Update" : "Add"} FAQ
+                    </> )}
                   </Button>
                   </Form>
           </CardBody>

@@ -58,12 +58,18 @@ const Offer = () => {
     fetchBanner();
   }, []);
 
-  if (loading) return <Spinner animation="border" />;
+
   if (error) return <Alert variant="danger">{error}</Alert>;
 
   return (
     <React.Fragment>
        <Card>
+        {loading ?
+        <div className="text-center" style={{padding:'30px'}}>
+          <Spinner animation="border" />  
+          </div>
+      :
+      <>
           <CardHeader className="py-3">
               <h5>Edit Banner</h5>
           </CardHeader>
@@ -154,6 +160,9 @@ const Offer = () => {
         </Button>
       </Form>
             </CardBody>
+            </>
+            
+        }
             </Card>
       
       </React.Fragment>
