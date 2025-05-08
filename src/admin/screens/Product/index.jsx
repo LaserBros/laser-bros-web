@@ -120,10 +120,10 @@ const ProductList = () => {
           name: "Actions",
           cell: (row) => (
             <>
-              <Link className="btnview" to={`/admin/edit-product/${row._id}`}>
-                <Icon icon="tabler:eye"></Icon>
+              <Link className="btnview" to={`/admin/products/edit-product/${row._id}`}>
+                <Icon icon="tabler:edit"></Icon>
               </Link>
-              <Link className="btnview"  onClick={() => handleDelete(row._id)}>
+              <Link className="btndelete"  onClick={() => handleDelete(row._id)}>
                 <Icon icon="tabler:trash"></Icon>
               </Link>
             </>
@@ -131,13 +131,13 @@ const ProductList = () => {
         },
       ];
   return (
-    <div className="container mt-4">
+<React.Fragment>
          <Card>
-        <CardHeader className="py-4 ">
+         <CardHeader className="d-flex align-items-center justify-content-between">
           <h5>Products</h5>
-          <Button className="mb-3" onClick={() => navigate("/admin/add-product")}>
-        Add New Product
-      </Button>
+          <Button onClick={() => navigate("/admin/products/add-product")}>
+            Add New Product
+         </Button>
         </CardHeader>
         <CardBody>
           {!loading ? (
@@ -167,9 +167,6 @@ const ProductList = () => {
           )}
         </CardBody>
       </Card>
-
-
-     
       <ConfirmationModal
         show={modalShow}
         onHide={handleClose}
@@ -180,7 +177,7 @@ const ProductList = () => {
         onConfirm={changeStatus}
         loading={loadingBtn}
       />
-    </div>
+   </React.Fragment>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container, Alert, Card,  CardHeader, CardBody } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { generalFAQAdmin, GetFAQAdmin, PostFAQAdmin } from "../../../api/api";
 
@@ -90,75 +90,84 @@ const FaqForm = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <h3>{isEditMode ? "Edit FAQ" : "Add FAQ"}</h3>
-      {showSuccess && <Alert variant="success">FAQ saved successfully!</Alert>}
-      <Form onSubmit={handleSubmit} noValidate>
-      <Form.Group className="mb-3" controlId="question">
-        <Form.Label>Question</Form.Label>
-        <Form.Control
-          type="text"
-          name="question"
-          value={form.question}
-          onChange={handleChange}
-          isInvalid={!!errors.question}
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.question}
-        </Form.Control.Feedback>
-      </Form.Group>
+    <React.Fragment>
+      <Card>
+      <CardHeader className="d-flex align-items-center justify-content-between">
+          <h5>{isEditMode ? "Edit FAQ" : "Add FAQ"}</h5>
+          <Button onClick={() => navigate("/admin/faq")}>
+            Back To FAQ
+         </Button>
+        </CardHeader>
+        {showSuccess && <Alert variant="success">FAQ saved successfully!</Alert>}
+        <CardBody>
+        <Form onSubmit={handleSubmit} noValidate>
+                <Form.Group className="mb-3 form-group" controlId="question">
+                  <Form.Label>Question</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="question"
+                    value={form.question}
+                    onChange={handleChange}
+                    isInvalid={!!errors.question}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.question}
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-      {/* Answer Input */}
-      <Form.Group className="mb-3" controlId="answer">
-        <Form.Label>Answer</Form.Label>
-        <Form.Control
-          as="textarea"
-          name="answer"
-          value={form.answer}
-          onChange={handleChange}
-          isInvalid={!!errors.answer}
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.answer}
-        </Form.Control.Feedback>
-      </Form.Group>
+                {/* Answer Input */}
+                <Form.Group className="mb-3 form-group" controlId="answer">
+                  <Form.Label>Answer</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="answer"
+                    value={form.answer}
+                    onChange={handleChange}
+                    isInvalid={!!errors.answer}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.answer}
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-      {/* Show on Home Page Checkbox */}
-      <Form.Group className="mb-3" controlId="show_check">
-        <Form.Check
-          type="checkbox"
-          label="Show on Home Page"
-          checked={form.show_check === 1}
-          onChange={handleCheckboxChange}
-        />
-      </Form.Group>
+                {/* Show on Home Page Checkbox */}
+                <Form.Group className="mb-3 form-group" controlId="show_check">
+                  <Form.Check
+                    type="checkbox"
+                    label="Show on Home Page"
+                    checked={form.show_check === 1}
+                    onChange={handleCheckboxChange}
+                  />
+                </Form.Group>
 
-      {/* Category Select */}
-      <Form.Group className="mb-3" controlId="category">
-        <Form.Label>Category</Form.Label>
-        <Form.Control
-          as="select"
-          name="category"
-          value={form.category || ''}
-          isInvalid={!!errors.category}
-          onChange={handleCategoryChange}
-        >
-          <option value="">Select a Category</option>
-          <option value="0">Most Asked Questions</option>
-          <option value="1">Laser Cutting</option>
-          <option value="2">Bending</option>
-          <option value="3">Shipping</option>
-        </Form.Control>
-        <Form.Control.Feedback type="invalid">
-          {errors.category}
-        </Form.Control.Feedback>
-      </Form.Group>
+                {/* Category Select */}
+                  <Form.Group className="mb-3 form-group" controlId="category">
+                    <Form.Label>Category</Form.Label>
+                    <Form.Select
+                      name="category"
+                      value={form.category || ''}
+                      isInvalid={!!errors.category}
+                      onChange={handleCategoryChange}
+                    >
+                      <option value="">Select a Category</option>
+                      <option value="0">Most Asked Questions</option>
+                      <option value="1">Laser Cutting</option>
+                      <option value="2">Bending</option>
+                      <option value="3">Shipping</option>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.category}
+                    </Form.Control.Feedback>
+                  </Form.Group>
 
-      <Button variant="primary" type="submit">
-        {isEditMode ? "Update" : "Add"} FAQ
-      </Button>
-      </Form>
-    </Container>
+                  <Button variant="primary" type="submit">
+                    {isEditMode ? "Update" : "Add"} FAQ
+                  </Button>
+                  </Form>
+          </CardBody>
+        </Card>   
+      
+      </React.Fragment>
   );
 };
 

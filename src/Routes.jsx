@@ -207,11 +207,11 @@ return (
       }
     ></Route>
      <Route
-      path="/admin/add-faq"
+      path="/admin/faq/add-faq"
       element={
         <AdminRoute
           element={
-            <AdminLayout title={"Add FAQ"}>
+            <AdminLayout title={"FAQ"}>
               <FAQForm />
             </AdminLayout>
           }
@@ -219,11 +219,11 @@ return (
       }
     ></Route>
      <Route
-      path="/admin/edit-faq/:id"
+      path="/admin/faq/edit-faq/:id"
       element={
         <AdminRoute
           element={
-            <AdminLayout title={"Edit FAQ"}>
+            <AdminLayout title={"FAQ"}>
               <FAQForm />
             </AdminLayout>
           }
@@ -231,11 +231,11 @@ return (
       }
     ></Route>
       <Route
-      path="/admin/add-product"
+      path="/admin/products/add-product"
       element={
         <AdminRoute
           element={
-            <AdminLayout title={"Add Product"}>
+            <AdminLayout title={"Product"}>
               <ProductForm />
             </AdminLayout>
           }
@@ -267,7 +267,7 @@ return (
       }
     ></Route>
       <Route
-      path="/admin/material-form"
+      path="/admin/view-material/material-form"
       element={
         <AdminRoute
           element={
@@ -295,7 +295,7 @@ return (
       element={
         <AdminRoute
           element={
-            <AdminLayout title={"View Material"}>
+            <AdminLayout title={"Material"}>
               <ViewMaterialPage />
             </AdminLayout>
           }
@@ -303,7 +303,7 @@ return (
       }
     ></Route>
        <Route
-      path="/admin/edit-product/:id"
+      path="/admin/products/edit-product/:id"
       element={
         <AdminRoute
           element={

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Col, Row, Image, CloseButton } from "react-bootstrap";
+import { Form, Button, Col, Row, Image, CloseButton,Card,CardHeader,CardBody } from "react-bootstrap";
 import { generalproductsAdmin, GetproductsAdmin, PostproductsAdmin } from "../../../api/api";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from "react-quill";
 
 const ProductForm = ({isEditMode }) => {
+  const navigate = useNavigate();
     const { id } = useParams();
     const [form, setForm] = useState({
         product_title: "",
@@ -153,9 +154,18 @@ const ProductForm = ({isEditMode }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} noValidate>
+    <React.Fragment>
+      <Card>
+          <CardHeader className="d-flex align-items-center justify-content-between">
+              <h5>{isEditMode ? "Edit Product" : "Add Product"}</h5>
+              <Button onClick={() => navigate("/admin/products")}>
+                Back To Products
+              </Button>
+          </CardHeader>
+          <CardBody>
+          <Form onSubmit={handleSubmit} noValidate>
       {/* Product Title */}
-      <Form.Group className="mb-3" controlId="product_title">
+      <Form.Group className="form-group mb-3" controlId="product_title">
         <Form.Label>Product Title</Form.Label>
         <Form.Control
           type="text"
@@ -169,7 +179,7 @@ const ProductForm = ({isEditMode }) => {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="product_description">
+  <Form.Group className="form-group mb-3" controlId="product_description">
   <Form.Label>Product Description</Form.Label>
   <ReactQuill
     theme="snow"
@@ -184,7 +194,7 @@ const ProductForm = ({isEditMode }) => {
 </Form.Group>
 
       {/* Product Price */}
-      <Form.Group className="mb-3" controlId="product_price">
+      <Form.Group className="form-group mb-3" controlId="product_price">
         <Form.Label>Product Price</Form.Label>
         <Form.Control
           type="number"
@@ -199,20 +209,21 @@ const ProductForm = ({isEditMode }) => {
       </Form.Group>
 
       {/* Product DXF File */}
-      <Form.Group className="mb-3" controlId="product_dxf_url">
+      <Form.Group className="form-group mb-3" controlId="product_dxf_url">
         <Form.Label>Product DXF File</Form.Label>
         <Form.Control
           type="file"
           name="product_dxf_url"
           accept=".dxf"
           onChange={handleDxfFileChange}
+           className="py-85rem px-4"
           isInvalid={!!errors.product_dxf_url}
         />
         <Form.Control.Feedback type="invalid">
           {errors.product_dxf_url}
         </Form.Control.Feedback>
         {dxfFile && (
-          <div className="d-flex align-items-center mt-2">
+          <div className="filegrid mt-2">
             <span>{dxfFile.name || "DXF File.dxf"}</span>
             <CloseButton onClick={handleRemoveDxfFile} style={{ marginLeft: "10px" }} />
           </div>
@@ -220,12 +231,13 @@ const ProductForm = ({isEditMode }) => {
       </Form.Group>
 
       {/* Product Image URL */}
-      <Form.Group className="mb-3" controlId="product_image_url">
+      <Form.Group className="form-group mb-3" controlId="product_image_url">
         <Form.Label>Product Image</Form.Label>
         <Form.Control
           type="file"
           name="product_image_url"
           accept="image/*"
+           className="py-85rem px-4"
           onChange={(e) => handleImageChange(e, "product_image_url")}
           isInvalid={!!errors.product_image_url}
         />
@@ -233,7 +245,7 @@ const ProductForm = ({isEditMode }) => {
           {errors.product_image_url}
         </Form.Control.Feedback>
         {imagePreview.product_image_url_preview && (
-          <div className="d-flex align-items-center mt-2">
+          <div className="fileuploadedgrid mt-2">
             <Image src={imagePreview.product_image_url_preview} alt="Product Image Preview" fluid style={{ maxHeight: "200px", marginRight: "10px" }} />
             <CloseButton onClick={() => handleRemoveImage("product_image_url")} />
           </div>
@@ -241,20 +253,21 @@ const ProductForm = ({isEditMode }) => {
       </Form.Group>
 
       {/* Product Hover Image URL */}
-      <Form.Group className="mb-3" controlId="product_image_hover_url">
+      <Form.Group className="form-group mb-3" controlId="product_image_hover_url">
         <Form.Label>Product Hover Image</Form.Label>
         <Form.Control
           type="file"
           name="product_image_hover_url"
           accept="image/*"
           onChange={(e) => handleImageChange(e, "product_image_hover_url")}
+          className="py-85rem px-4"
           isInvalid={!!errors.product_image_hover_url}
         />
         <Form.Control.Feedback type="invalid">
           {errors.product_image_hover_url}
         </Form.Control.Feedback>
         {imagePreview.product_image_hover_url_preview && (
-          <div className="d-flex align-items-center mt-2">
+          <div className="fileuploadedgrid mt-2">
             <Image src={imagePreview.product_image_hover_url_preview} alt="Product Hover Image Preview" fluid style={{ maxHeight: "200px", marginRight: "10px" }} />
             <CloseButton onClick={() => handleRemoveImage("product_image_hover_url")} />
           </div>
@@ -265,6 +278,10 @@ const ProductForm = ({isEditMode }) => {
         {isEditMode ? "Update Product" : "Add Product"}
       </Button>
     </Form>
+           </CardBody>
+        </Card>
+  
+    </React.Fragment>
   );
 };
 

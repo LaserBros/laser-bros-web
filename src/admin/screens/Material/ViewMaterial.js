@@ -70,9 +70,9 @@ const ViewMaterialPage = () => {
         cell: (row) => (
           <>
             <Link className="btnview" to={`/admin/view-material/`+row._id}>
-              <Icon icon="tabler:eye"></Icon>
+              <Icon icon="tabler:edit"></Icon>
             </Link>
-            <Link className="btnview" onClick={() => handleDelete(row._id)}>
+            <Link className="btndelete" onClick={() => handleDelete(row._id)}>
               <Icon icon="tabler:trash"></Icon>
             </Link>
           </>
@@ -81,11 +81,11 @@ const ViewMaterialPage = () => {
     ];
 
   return (
-    <div className="container mt-4">
+<React.Fragment>
       <Card>
-        <CardHeader className="py-4 ">
+      <CardHeader className="d-flex align-items-center justify-content-between">
           <h5>Material List</h5>
-            <Button className="mb-3" onClick={() => navigate("/admin/material-form")}>Add Material</Button>
+            <Button onClick={() => navigate("/admin/view-material/material-form")}>Add Material</Button>
         </CardHeader>
         <CardBody>
           {!loading ? (
@@ -126,7 +126,7 @@ const ViewMaterialPage = () => {
         onConfirm={changeStatus}
         loading={loadingBtn}
       />
-    </div>
+   </React.Fragment>
   );
 };
 

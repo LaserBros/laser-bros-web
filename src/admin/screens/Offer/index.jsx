@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Spinner, Alert } from "react-bootstrap";
+import { Form, Button, Spinner, Alert,Card,CardHeader,CardBody } from "react-bootstrap";
 import { OfferAdmin, UpdateOfferAdmin } from "../../../api/api";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -62,10 +62,14 @@ const Offer = () => {
   if (error) return <Alert variant="danger">{error}</Alert>;
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Banner</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
+    <React.Fragment>
+       <Card>
+          <CardHeader className="py-3">
+              <h5>Edit Banner</h5>
+          </CardHeader>
+          <CardBody>
+          <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Offer Description</Form.Label>
           <Form.Control
             type="text"
@@ -75,7 +79,7 @@ const Offer = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Offer Text</Form.Label>
           <Form.Control
             type="text"
@@ -85,7 +89,7 @@ const Offer = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Offer Percentage</Form.Label>
           <Form.Control
             type="number"
@@ -95,7 +99,7 @@ const Offer = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Button Text</Form.Label>
           <Form.Control
             type="text"
@@ -104,7 +108,7 @@ const Offer = () => {
             onChange={handleChange}
           />
         </Form.Group>
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Button Link</Form.Label>
           <Form.Control
             type="text"
@@ -114,7 +118,7 @@ const Offer = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Button Description</Form.Label>
           <Form.Control
             type="text"
@@ -134,7 +138,7 @@ const Offer = () => {
           />
         </Form.Group> */}
 
-        <Form.Group className="mb-4">
+        <Form.Group className="mb-4 form-group">
           <Form.Check
             type="switch"
             id="check"
@@ -149,7 +153,10 @@ const Offer = () => {
           {saving ? "Saving..." : "Save Changes"}
         </Button>
       </Form>
-    </div>
+            </CardBody>
+            </Card>
+      
+      </React.Fragment>
   );
 };
 

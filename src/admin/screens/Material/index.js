@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container, Alert,Card,CardHeader,CardBody  } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BendingDataAdmin, editMaterialAdmin, updateMaterialAdmin } from "../../../api/api";
@@ -86,11 +86,18 @@ const MaterialForm = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <h2>{id ? "Edit Material" : "Create Material"}</h2>
-      {message && <Alert variant="info">{message}</Alert>}
-      <Form onSubmit={handleSubmit} noValidate>
-        <Form.Group className="mb-3">
+    <React.Fragment>
+        <Card>
+      <CardHeader className="d-flex align-items-center justify-content-between">
+          <h5>{id ? "Edit Material" : "Create Material"}</h5>
+          <Button onClick={() => navigate("/admin/view-material")}>
+            Back To Materials
+         </Button>
+        </CardHeader>
+        {message && <Alert variant="info">{message}</Alert>}
+        <CardBody>
+        <Form onSubmit={handleSubmit} noValidate>
+        <Form.Group className="mb-3 form-group">
           <Form.Label>Material Grade</Form.Label>
           <Form.Select
             name="material_grade"
@@ -128,7 +135,7 @@ const MaterialForm = () => {
           "k_factor",
           "max_length_part",
         ].map((field) => (
-          <Form.Group key={field} className="mb-3">
+          <Form.Group key={field} className="mb-3 form-group">
             <Form.Label>{field.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}</Form.Label>
             <Form.Control
               type="text"
@@ -145,7 +152,11 @@ const MaterialForm = () => {
           {id ? "Update" : "Create"}
         </Button>
       </Form>
-    </Container>
+          </CardBody>
+          </Card>
+
+     
+      </React.Fragment>
   );
 };
 

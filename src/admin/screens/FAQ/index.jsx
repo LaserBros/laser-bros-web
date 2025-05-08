@@ -63,10 +63,10 @@ const FaqList = () => {
       name: "Actions",
       cell: (row) => (
         <>
-          <Link className="btnview" to={`/admin/edit-faq/${row._id}`}>
-            <Icon icon="tabler:eye"></Icon>
+          <Link className="btnview" to={`/admin/faq/edit-faq/${row._id}`}>
+            <Icon icon="tabler:edit"></Icon>
           </Link>
-          <Link className="btnview" onClick={() => handleDelete(row._id)}>
+          <Link className="btndelete" onClick={() => handleDelete(row._id)}>
             <Icon icon="tabler:trash"></Icon>
           </Link>
         </>
@@ -75,12 +75,12 @@ const FaqList = () => {
   ];
 
   return (
-    <Container className="mt-4">
+    <React.Fragment>
       <Card>
-        <CardHeader className="py-4 ">
+        <CardHeader className="d-flex align-items-center justify-content-between">
           <h5>FAQ List</h5>
-          <Button className="mb-3" onClick={() => navigate("/admin/add-faq")}>
-        Add New FAQ
+          <Button onClick={() => navigate("/admin/faq/add-faq")}>
+           Add New FAQ
       </Button>
         </CardHeader>
         <CardBody>
@@ -127,7 +127,7 @@ const FaqList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+      </React.Fragment>
   );
 };
 
