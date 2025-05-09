@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.5788a7fe.css",
-    "main.js": "/static/js/main.7e7cb8f0.js",
+    "main.css": "/static/css/main.af8297f8.css",
+    "main.js": "/static/js/main.30321ae6.js",
     "static/js/82.b33bad66.chunk.js": "/static/js/82.b33bad66.chunk.js",
     "static/js/239.c1540e6e.chunk.js": "/static/js/239.c1540e6e.chunk.js",
     "static/js/206.393ac9e0.chunk.js": "/static/js/206.393ac9e0.chunk.js",
@@ -22,7 +22,6 @@
     "static/media/website-configure.mp4": "/static/media/website-configure.b4c1abf79e394b107ba7.mp4",
     "static/media/2017.jpg": "/static/media/2017.17a112315d9d8cde872b.jpg",
     "static/media/website-checkout.mp4": "/static/media/website-checkout.a7682ae0e4e0bf61a2a6.mp4",
-    "static/media/dan.png": "/static/media/dan.face176d30e8f8ac0d80.png",
     "static/media/map.jpg": "/static/media/map.e4d1863ee83785d748a1.jpg",
     "static/media/Early2022.JPEG": "/static/media/Early2022.79bf6dd299c8a1e805d9.JPEG",
     "static/media/service-img-1.jpg": "/static/media/service-img-1.b85e632f1bc1e0cb62f7.jpg",
@@ -67,12 +66,12 @@
     "static/media/metalimg4.webp": "/static/media/metalimg4.cf6816a79cfc2a0750e9.webp",
     "static/media/metalimg1.webp": "/static/media/metalimg1.3a68fcf8c9ea6b3e23d8.webp",
     "static/media/tim.png": "/static/media/tim.71af32dab973dd68bf37.png",
-    "static/media/kyle_mac_dan.png": "/static/media/kyle_mac_dan.5d6e27974bd09e890808.png",
     "static/media/material-img-4.jpg": "/static/media/material-img-4.24858c498f7b9652a567.jpg",
     "static/media/reviewimg1.jpg": "/static/media/reviewimg1.e6beb7fd3424f946b0c7.jpg",
     "static/media/material-img-2.jpg": "/static/media/material-img-2.d6cd9de298f41f77c907.jpg",
-    "static/media/bake.png": "/static/media/bake.8e0c3f9754465b1c6e97.png",
     "static/media/paul.png": "/static/media/paul.9008b39fc11f36767541.png",
+    "static/media/services-img-1.webp": "/static/media/services-img-1.646e01e00044c5b0b952.webp",
+    "static/media/services-img-2.webp": "/static/media/services-img-2.b05485db076b69c6621d.webp",
     "static/media/metalimg14.webp": "/static/media/metalimg14.5650aab302ecdf561ce6.webp",
     "static/media/kyle.png": "/static/media/kyle.f97a1b44b31a703c03d9.png",
     "static/media/kristi.png": "/static/media/kristi.0759c1f2ec62687df783.png",
@@ -113,10 +112,11 @@
     "index.html": "/index.html",
     "static/media/line-shape-1.svg": "/static/media/line-shape-1.00abdb960bb0c32880810bf3176f8ebe.svg",
     "static/media/sidebar-icon-1-1.svg": "/static/media/sidebar-icon-1-1.2a2f48ae2a39a84cee96a2a69784ecf0.svg",
-    "static/media/sidebar-icon-1.svg": "/static/media/sidebar-icon-1.481be375c5076e5f739b55a75920fcc2.svg"
+    "static/media/sidebar-icon-1.svg": "/static/media/sidebar-icon-1.481be375c5076e5f739b55a75920fcc2.svg",
+    "static/media/quote.svg": "/static/media/quote.869b275324bf0bf89d526bba9d0962b1.svg"
   },
   "entrypoints": [
-    "static/css/main.5788a7fe.css",
-    "static/js/main.7e7cb8f0.js"
+    "static/css/main.af8297f8.css",
+    "static/js/main.30321ae6.js"
   ]
 }
