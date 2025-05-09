@@ -130,17 +130,20 @@ const ProductForm = ({ isEditMode }) => {
     //   validationErrors.product_price = "Product price is required";
     // }
     if (!form.product_dxf_url || form.product_dxf_url === "") {
-      validationErrors.product_dxf_url = "DXF file is required";
+      validationErrors.product_dxf_url = "ZIP file is required";
+    } else if (form.product_dxf_url.size > 100 * 1024 * 1024) {
+      validationErrors.product_dxf_url = "ZIP file must be less than 100MB";
     }
     if (!form.product_image_url || form.product_image_url === null) {
       validationErrors.product_image_url = "Product image is required";
+    } else if (form.product_image_url.size > 5 * 1024 * 1024) {
+      validationErrors.product_image_url = "Product image must be less than 5MB";
     }
-    if (
-      !form.product_image_hover_url ||
-      form.product_image_hover_url === null
-    ) {
-      validationErrors.product_image_hover_url =
-        "Product hover image is required";
+    
+    if (!form.product_image_hover_url || form.product_image_hover_url === null) {
+      validationErrors.product_image_hover_url = "Product hover image is required";
+    } else if (form.product_image_hover_url.size > 5 * 1024 * 1024) {
+      validationErrors.product_image_hover_url = "Hover image must be less than 5MB";
     }
     setErrors(validationErrors);
 
@@ -238,11 +241,11 @@ const ProductForm = ({ isEditMode }) => {
 
             {/* Product DXF File */}
             <Form.Group className="form-group mb-3" controlId="product_dxf_url">
-              <Form.Label>Product DXF File</Form.Label>
+              <Form.Label>Product ZIP File</Form.Label>
               <Form.Control
                 type="file"
                 name="product_dxf_url"
-                accept=".dxf"
+                accept=".zip"
                 onChange={handleDxfFileChange}
                 className="py-85rem px-4"
                 isInvalid={!!errors.product_dxf_url}
@@ -252,7 +255,7 @@ const ProductForm = ({ isEditMode }) => {
               </Form.Control.Feedback>
               {dxfFile && (
                 <div className="filegrid mt-2">
-                  <span>{dxfFile.name || "DXF File.dxf"}</span>
+                  <span>{dxfFile.name || "ZIP File.zip"}</span>
                   <CloseButton
                     onClick={handleRemoveDxfFile}
                     style={{ marginLeft: "10px" }}

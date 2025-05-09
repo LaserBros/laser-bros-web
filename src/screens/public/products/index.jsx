@@ -43,7 +43,7 @@ export default function Products() {
   
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = `${fileName}.dxf`;
+      link.download = `${fileName}.zip`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
