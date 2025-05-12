@@ -131,8 +131,8 @@ const ProductForm = ({ isEditMode }) => {
     // }
     if (!form.product_dxf_url || form.product_dxf_url === "") {
       validationErrors.product_dxf_url = "ZIP file is required";
-    } else if (form.product_dxf_url.size > 100 * 1024 * 1024) {
-      validationErrors.product_dxf_url = "ZIP file must be less than 100MB";
+    } else if (form.product_dxf_url.size > 500 * 1024 * 1024) {
+      validationErrors.product_dxf_url = "ZIP file must be less than 500MB";
     }
     if (!form.product_image_url || form.product_image_url === null) {
       validationErrors.product_image_url = "Product image is required";
