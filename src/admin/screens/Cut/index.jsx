@@ -169,7 +169,7 @@ const Cut = () => {
     const zip = new JSZip();
 
     try {
-      console.log("urksssssssss",urls);
+      console.log("urksssssssss", urls);
       const filePromises = urls.map(async (url, index) => {
         const response = await fetch(url.dxf_url);
         const blob = await response.blob();
@@ -295,7 +295,13 @@ const Cut = () => {
                               />
                             </td>
                             <td className="text-nowrap">
-                              {row.subquote_number}
+                              {(() => {
+                                const parts = row.subquote_number.split("-");
+                                if (parts.length >= 2 && row.bend_count >= 1) {
+                                  parts.splice(2, 0, "B");
+                                }
+                                return parts.join("-");
+                              })()}
                             </td>
 
                             <td className="text-nowrap">
