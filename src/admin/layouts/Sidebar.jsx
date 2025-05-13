@@ -185,7 +185,7 @@ const Sidebar = () => {
           sidebarOpen ? "btnclose sidebarbg-open" : "btnclose sidebarbg-closed"
         }
         style={{ display: "none" }}
-        onClick={toggleSidebar}
+        onClick={toggleSidebar} 
       ></button>
 
       <div
