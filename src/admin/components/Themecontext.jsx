@@ -10,14 +10,14 @@ export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useState(savedTheme);
 
     const togglenewTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
+        const newTheme = theme === 'light' ? 'light' : 'light';
         setTheme(newTheme);
         localStorage.setItem('theme', newTheme);
     };
 
     useEffect(() => {
         // Update body class based on theme state
-        document.body.className = theme === 'light' ? 'light' : 'dark';
+        document.body.className = theme === 'light' ? 'light' : 'light';
     }, [theme]);
 
   return (
