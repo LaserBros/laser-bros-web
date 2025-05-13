@@ -3,7 +3,8 @@ body.dark {
   background-color: #000000 !important;
   min-height: 100vh;
 }
-body.dark .page_not_found h1, body.dark .page_not_found p {
+body.dark .page_not_found h1,
+body.dark .page_not_found p {
   color: #ffffff !important;
 }
 body.dark .btnicons {
@@ -40,7 +41,8 @@ body.dark .quote_div_main_sect .main_service_clr {
   background-color: #000000;
   padding: 8px;
 }
-body.dark .shipping_info b, body.dark .shipping_info i {
+body.dark .shipping_info b,
+body.dark .shipping_info i {
   color: #ffffff;
 }
 body.dark .gpwTNyClass {
@@ -142,7 +144,7 @@ body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .card
   padding: 10px 20px;
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .nav-tabs li.nav-item .nav-link.active {
-  background: #4F8CCA;
+  background: #3c5b8a;
   color: #ffffff;
 }
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .cards_sect.paymentTab_div .tab-content .netTerms_flex label {
@@ -179,7 +181,8 @@ body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main
 body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesitem {
   color: rgba(255, 255, 255, 0.75);
 }
-body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotessubtotal, body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesprice {
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotessubtotal,
+body.dark .proceedCheckout_modal .modal-content .modal-body .shipping_info .main_price .quotesprice {
   color: #ffffff;
 }
 body.dark .QuoteBillMain_div {
@@ -338,7 +341,7 @@ body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link {
   color: #ffffff;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link:hover, body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link.active {
-  color: #4F8CCA;
+  color: #3c5b8a;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .nav-link.header-search .form-control {
   border-color: rgba(255, 255, 255, 0.2);
@@ -368,7 +371,7 @@ body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu 
   opacity: 0.7;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu .dropdown-item:hover {
-  color: #4F8CCA;
+  color: #3c5b8a;
 }
 body.dark .header .navbar .navbar-collapse .navbar-nav .dropdown .dropdown-menu .dropdown-item:hover img {
   filter: brightness(1) invert(0);
@@ -390,7 +393,7 @@ body.dark .banner-upload-file small {
 body.dark .banner-home .banner-service-img:after {
   border-color: rgba(255, 255, 255, 0.2);
 }
-body.dark .banner-home .banner-content h1 {
+body.dark .banner-home .banner-content h1, body.dark .banner-home .banner-content h4 {
   color: #ffffff;
 }
 body.dark .banner-home .banner-content p {
@@ -413,7 +416,7 @@ body.dark .our-services .services-grid p {
   color: #bfbfbf;
 }
 body.dark .our-services .services-grid:hover {
-  background: #4F8CCA;
+  background: #3c5b8a;
 }
 body.dark .our-services .services-grid:hover p {
   color: #ffffff;
@@ -546,11 +549,11 @@ body.dark .resources-main .accordion .accordion-item .accordion-header button.ac
   color: #ffffff;
 }
 body.dark .resources-main .accordion .accordion-item .accordion-header button.accordion-button .accordion-icon {
-  background: rgba(79, 140, 202, 0.06);
-  border: 1px solid rgba(79, 140, 202, 0.13);
+  background: rgba(60, 91, 138, 0.06);
+  border: 1px solid rgba(60, 91, 138, 0.13);
 }
 body.dark .resources-main .accordion .accordion-item .accordion-header button.accordion-button .accordion-icon svg {
-  color: #4F8CCA;
+  color: #3c5b8a;
   font-size: 18px;
 }
 body.dark .resources-main .accordion .accordion-item .accordion-header button.accordion-button::after {
@@ -563,7 +566,7 @@ body.dark .resources-main .accordion .accordion-item .accordion-body a {
   color: #bfbfbf;
 }
 body.dark .resources-main .accordion .accordion-item .accordion-body a.active, body.dark .resources-main .accordion .accordion-item .accordion-body a:hover {
-  color: #4F8CCA;
+  color: #3c5b8a;
 }
 body.dark .resources-main .resources-body hr {
   border-color: #ffffff;
@@ -574,7 +577,8 @@ body.dark .resources-main .resources-body .resources-pagination {
 body.dark .resources-main .resources-body .resources-heading h1 {
   color: #ffffff;
 }
-body.dark .resources-main .resources-body .resources-heading p, body.dark .resources-main .resources-body .resources-heading b {
+body.dark .resources-main .resources-body .resources-heading p,
+body.dark .resources-main .resources-body .resources-heading b {
   color: #ffffff;
 }
 body.dark .resources-main .resources-body .searchfield svg,
@@ -597,7 +601,9 @@ body.dark .resources-main .resources-body .searchfaq .form-control::placeholder 
 body.dark .resources-main .resources-body .resources-content h5 {
   color: #ffffff;
 }
-body.dark .resources-main .resources-body .resources-content h6, body.dark .resources-main .resources-body .resources-content strong, body.dark .resources-main .resources-body .resources-content b {
+body.dark .resources-main .resources-body .resources-content h6,
+body.dark .resources-main .resources-body .resources-content strong,
+body.dark .resources-main .resources-body .resources-content b {
   color: #ffffff;
 }
 body.dark .resources-main .resources-body .resources-content table td {
@@ -765,7 +771,7 @@ body.dark .quotes-sidebar .customtabs li.nav-item button.nav-link {
   color: #ffffff;
 }
 body.dark .quotes-sidebar .customtabs li.nav-item button.nav-link.active {
-  background: #4F8CCA;
+  background: #3c5b8a;
 }
 body.dark .quotes-sidebar .quotes-inner {
   background: rgba(255, 255, 255, 0.1);
@@ -841,7 +847,7 @@ body.dark .quotes-sidebar .quotes-inner .accountform .react-tel-input .flag-drop
   background: transparent;
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .form-check .form-check-input {
-  --bs-form-check-bg:transparent;
+  --bs-form-check-bg: transparent;
   border-color: rgba(255, 255, 255, 0.2);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform .form-check label {
@@ -850,7 +856,8 @@ body.dark .quotes-sidebar .quotes-inner .accountform .form-check label {
 body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-label {
   color: #ffffff;
 }
-body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control, body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select {
+body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control,
+body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select {
   background: transparent;
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.75);
@@ -858,7 +865,8 @@ body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control, 
 body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control::-moz-placeholder, body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select::-moz-placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
-body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control::placeholder, body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select::placeholder {
+body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-control::placeholder,
+body.dark .quotes-sidebar .quotes-inner .accountform .form-group .form-select::placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .quotes-sidebar .quotes-inner .accountform small {
@@ -897,18 +905,21 @@ body.dark .accountform .form-group .form-label {
 body.dark .accountform .form-group .paymentCard_border {
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
-body.dark .accountform .form-group .form-control, body.dark .accountform .form-group .form-select {
+body.dark .accountform .form-group .form-control,
+body.dark .accountform .form-group .form-select {
   background: transparent;
   border-color: rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.75);
 }
-body.dark .accountform .form-group .form-control option, body.dark .accountform .form-group .form-select option {
+body.dark .accountform .form-group .form-control option,
+body.dark .accountform .form-group .form-select option {
   color: rgba(0, 0, 0, 0.75);
 }
 body.dark .accountform .form-group .form-control::-moz-placeholder, body.dark .accountform .form-group .form-select::-moz-placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
-body.dark .accountform .form-group .form-control::placeholder, body.dark .accountform .form-group .form-select::placeholder {
+body.dark .accountform .form-group .form-control::placeholder,
+body.dark .accountform .form-group .form-select::placeholder {
   color: rgba(255, 255, 255, 0.75);
 }
 body.dark .accountform .form-group .form-select {
@@ -951,11 +962,13 @@ body.dark .card .card-body .addresses-grid .statusdefault {
 body.dark .card .card-body .addresses-grid p {
   color: rgba(255, 255, 255, 0.7);
 }
-body.dark .card .card-body .addresses-grid .btn-bottom .btn-address, body.dark .card .card-body .addresses-grid .btn-bottom .btn-set-default {
+body.dark .card .card-body .addresses-grid .btn-bottom .btn-address,
+body.dark .card .card-body .addresses-grid .btn-bottom .btn-set-default {
   border-color: rgba(255, 255, 255, 0.2);
   color: #ffffff;
 }
-body.dark .card .card-body .addresses-grid .btn-bottom .btn-address:hover, body.dark .card .card-body .addresses-grid .btn-bottom .btn-set-default:hover {
+body.dark .card .card-body .addresses-grid .btn-bottom .btn-address:hover,
+body.dark .card .card-body .addresses-grid .btn-bottom .btn-set-default:hover {
   border-color: #ffffff;
   background: #ffffff;
   color: #000000;
@@ -1019,4 +1032,116 @@ body.dark .custom_tooltip .tooltip-arrow {
 }
 body.dark .custom_tooltip .tooltip-arrow:before {
   border-bottom-color: #212121 !important;
+}
+body.dark .HowITWorksmain_div .worksMain_head {
+  color: #ffffff;
+}
+body.dark .HowITWorksmain_div .worksStep_head {
+  color: #ffffff;
+}
+body.dark .HowITWorksmain_div .HowITWorksteps_box {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+body.dark .HowITWorksmain_div .HowITWorksteps_box .StepIcon_img {
+  filter: brightness(0) invert(1);
+}
+body.dark .HowITWorksmain_div .HowITWorksteps_box .Worksteps_cont h4 {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .HowITWorksmain_div .HowITWorksteps_box .Worksteps_cont p {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .laserCuttingInfo_sec .laserCuttingInfo_div h3 {
+  color: #ffffff;
+}
+body.dark .laserCuttingInfo_sec .laserCuttingInfo_div h4 {
+  color: #ffffff;
+}
+body.dark .laserCuttingInfo_sec .laserCuttingInfo_div ul li {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .homereviews .reviewslist {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+body.dark .homereviews .reviewslist .reviewsleftcontent .reviewuser h5 {
+  color: #ffffff;
+}
+body.dark .homereviews .reviewslist .reviewsleftcontent h3 {
+  color: #ffffff;
+}
+body.dark .homereviews .reviewslist .reviewsleftcontent p {
+  color: #ffffff;
+}
+body.dark .homereviews .reviewslist .reviewsrightcontent .reviewbadge .aluminiumbadge {
+  background: rgba(255, 255, 255, 0.1);
+}
+body.dark .homereviews .reviewslist .reviewsrightcontent .reviewbadge .lasercuttingbadge {
+  background: rgba(255, 255, 255, 0.1);
+}
+body.dark .american-manufacturing h4 {
+  color: #ffffff;
+}
+body.dark .faq-home .faqsubhead {
+  color: #ffffff;
+}
+body.dark .faq-home .accordion .accordion-item {
+  background: rgba(255, 255, 255, 0.1);
+}
+body.dark .faq-home .accordion .accordion-item .accordion-header button.accordion-button {
+  background: transparent;
+  color: #ffffff;
+}
+body.dark .faq-home .accordion .accordion-item .accordion-header button.accordion-button .accordion-icon {
+  background: rgba(60, 91, 138, 0.06);
+  border: 1px solid rgba(60, 91, 138, 0.13);
+}
+body.dark .faq-home .accordion .accordion-item .accordion-header button.accordion-button .accordion-icon svg {
+  color: #3c5b8a;
+  font-size: 18px;
+}
+body.dark .faq-home .accordion .accordion-item .accordion-header button.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
+}
+body.dark .faq-home .accordion .accordion-item .accordion-body {
+  color: #bfbfbf;
+}
+body.dark .faq-home .accordion .accordion-item .accordion-body a {
+  color: #bfbfbf;
+}
+body.dark .faq-home .accordion .accordion-item .accordion-body a.active, body.dark .faq-home .accordion .accordion-item .accordion-body a:hover {
+  color: #3c5b8a;
+}
+body.dark .metalFinish_banner .banner-content h1 {
+  color: #ffffff;
+}
+body.dark .metalFinish_banner .banner-content p {
+  color: #ffffff;
+}
+body.dark .metalfinish_sec .metalfinish_div h4 {
+  color: #ffffff;
+}
+body.dark .metalfinish_sec .metalfinish_div p {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .metalfinish_sec .metalfinish_div ul li {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .laserProduct_sec .Productmain_box {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 0px 20px 0px rgba(255, 255, 255, 0.07);
+}
+body.dark .laserProduct_sec .Productmain_box h4 a {
+  color: #ffffff;
+}
+body.dark .laserProduct_sec .Productmain_box p {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .product_modal .modal-content .modal-body .main_heading {
+  color: #ffffff;
+}
+body.dark .product_modal .modal-content .modal-body p {
+  color: rgba(255, 255, 255, 0.85);
+}
+body.dark .product_modal .modal-content .modal-body ul li {
+  color: rgba(255, 255, 255, 0.85);
 }/*# sourceMappingURL=style-dark.css.map */

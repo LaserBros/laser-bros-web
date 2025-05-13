@@ -64,6 +64,12 @@ const Footer = () => {
                   <li>
                     <Link to="/bending">Bending</Link>
                   </li>
+                  <li>
+                    <Link to="/products">Free Files</Link>
+                  </li>
+                  <li>
+                    <Link to="/metalfinishing">Material Finishes</Link>
+                  </li>
                 </ul>
               </div>
             </Col>
@@ -83,6 +89,7 @@ const Footer = () => {
                   <li>
                     <Link to="/resources/brass">Brass</Link>
                   </li>
+                 
                 </ul>
               </div>
             </Col>

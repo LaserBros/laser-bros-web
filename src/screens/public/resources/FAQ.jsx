@@ -362,185 +362,77 @@
 //   );
 // }
 //
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Accordion } from "react-bootstrap";
 import { Icon } from "@iconify/react";
+import { generalFAQ } from "../../../api/api";
 
 export default function FAQ() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [faqData, setFaqData] = useState([]);
 
-  // Array of FAQs
-  const faqData = [
-    {
-      category: "Most Asked Questions",
-      items: [
-        {
-          question: "What is your lead time?",
-          answer:
-            "Our typical lead time on laser cut parts is 2-5 business days. If you add services like bending, this typically adds 1-3 business days to the lead time. Other factors like the number of parts will also impact the lead time of your parts.",
-        },
-        {
-          question: "Where are you located?",
-          answer: "We are located in Graham, North Carolina!",
-        },
-        {
-          question: "How do I add bending to my order?",
-          answer:
-            "Bending is added by checking the bending services box. The pop-up will prompt you for the number of bends (this is the total number of bends on one part). You will need to upload a STEP file for the bent part too (this is for us to validate the bends). Alternatively, you can upload a PDF drawing, but this method will take longer to validate, and we cannot guarantee the accuracy of your part(s).",
-        },
-        {
-          question: "Can I expedite my order?",
-          answer:
-            "Yes! But this is dependent on the material type, quantity of parts, and what our schedule is already like. Give us a call or email if you need your order expedited! Don’t forget you can select Next Day Air for next-day delivery too.",
-        },
-      ],
-    },
-    {
-      category: "Laser Cutting",
-      items: [
-        {
-          question: "What is your lead time?",
-          answer:
-            "Our typical lead time on laser cut parts is 2-5 business days. If you add services like bending, this typically adds 1-3 business days to the lead time. Other factors like the number of parts will also impact the lead time of your parts.",
-        },
-        {
-          question: "What thickness of sheet metal can be laser cut?",
-          answer:
-            "This varies based on the material type and grade. We have a full list of the metals we stock and cut on our resource page.",
-        },
-        {
-          question: "What material can be laser cut?",
-          answer:
-            "We can laser cut almost any metallic material (no plastics, composites, or coated metals).",
-        },
-        {
-          question: "What’s the largest sheet size you can cut?",
-          answer:
-            "Our machines can handle sheets up to 60” x 120”. The cut area is typically 0.50” under those dimensions. However, the material we stock is typically 48” x 96” in size.",
-        },
-        {
-          question: "What are your tolerances?",
-          answer:
-            "+/-0.005” or better. Thicker material will have some edge taper from the laser cutting process. We perform a QC part check on every order to make sure our settings are within tolerance (+/-0.003” is our QC tolerance).",
-        },
-        {
-          question: "What are tabs or micro-joints?",
-          answer:
-            "“Tabs” or “micro-joints” are used to keep your parts in place while cutting. This keeps the part from falling out of the sheet or flipping up, causing a collision with the laser head. We try to keep these as small as possible. If you have a specific location you’d like these “tabs” to be placed, please let us know in the comment section of your order or email us.",
-        },
-        {
-          question: "What is the cut like? Will it have burrs?",
-          answer:
-            "The cut edge varies based on material. Thicker steel will have an oxide edge from oxygen cutting. Stainless and thin steel will have a silver, oxide-free edge since it’s cut with nitrogen. Aluminum will have a similar cut edge to stainless but is cut on high-pressure air. All unfinished parts will have a burr; it’s often minimal and easy to remove.",
-        },
-        {
-          question: "What’s the smallest detail you can cut?",
-          answer:
-            "A good rule of thumb is to keep the smallest detail to 50% of the material thickness. For example, 0.125” thickness should have 0.063” details or larger. We have more details in our laser cutting resource area.",
-        },
-        {
-          question: "What’s the smallest part you can cut?",
-          answer:
-            "This depends on the material and thickness. Check out our laser cutting resource page for details.",
-        },
-      ],
-    },
+  const getFaq = async () => {
+    const res = await generalFAQ();
+    const categoryMap = {
+      0: "Most Asked Questions",
+      1: "Laser Cutting",
+      2: "Bending",
+      3: "Shipping",
+    };
+  
+    const categoryOrder = [
+      "Most Asked Questions",
+      "Laser Cutting",
+      "Bending",
+      "Shipping",
+    ];
+  
+    const filteredFaqs = res.data;
+  
+    const groupedFaqs = filteredFaqs.reduce((acc, item) => {
+      const categoryName = categoryMap[item.category] || "Other";
+  
+      if (!acc[categoryName]) {
+        acc[categoryName] = [];
+      }
+  
+      acc[categoryName].push({
+        question: item.question,
+        answer: item.answer,
+      });
+  
+      return acc;
+    }, {});
+  
+    const formattedData = Object.entries(groupedFaqs)
+      .map(([category, items]) => ({
+        category,
+        items,
+      }))
+      .sort((a, b) => {
+        const indexA = categoryOrder.indexOf(a.category);
+        const indexB = categoryOrder.indexOf(b.category);
+        return indexA - indexB;
+      });
+  
+    setFaqData(formattedData);
+  };
 
-    {
-      category: "Bending",
-      items: [
-        {
-          question: "What types of bending processes do you offer?",
-          answer:
-            "We offer CNC press brake services. Our current machine is a 4-axis hydraulic machine with 110 TONS of force over a 120-inch bed.",
-        },
-        {
-          question: "How do I order mirrored parts?",
-          answer:
-            "If a part is mirrored please upload them separately with their own STEP file and or PDF drawing.",
-        },
-        {
-          question:
-            "What is the maximum thickness and length of sheet metal that can be bent?",
-          answer:
-            "With our current tooling we can offer 0.25” of steel @ 48” wide.",
-        },
-        {
-          question: "What are your bending tolerances?",
-          answer:
-            "Standard tolerances are +/-0.030” per bend. We can achieve tighter tolerances when needed, but it will often cost more to achieve this. With bending many factors come into play like material thickness and even grain direction of the parts. If you have a specific tolerance please let us know when you upload your bending docs on your order.",
-        },
-        {
-          question: "What parameters do I use for bends?",
-          answer:
-            "Check out our bending resource page! We have a chart of materials and bend parameters to help you get your parts designs dialed in. Using the correct design parameters is key to getting accurate sheet metal parts! If you need any help please reach out to us!",
-        },
-        {
-          question: "What is the minimum flange length?",
-          answer:
-            "Minimum flange length is the smallest flange that's allowed for a certain material and thickness. Anything smaller than this dimension will not be supported by the tooling die. The minimum flange is taken from the flat part, measured from the bend centerline to the edge of the part, this is the flange length you measure.",
-        },
-        {
-          question: "What is the distortion zone?",
-          answer:
-            "The distortion zone is an unsupported area of the part that may pull or deform during the bending process. This is measured from the bend centerline to the hole or part detail in question.",
-        },
-        {
-          question: "How deep of a box can you bend?",
-          answer:
-            "This will vary based on material selected. But 2.50” deep for standard tooling and 5.00” deep with our gooseneck tooling. This applies to boxes only. Channels can be bent deeper.",
-        },
-        {
-          question: "How deep of a channel can you bend?",
-          answer:
-            "A good rule of thumb is to not have side flanges taller than the base of the channel. So a 2” wide channel shouldn’t have sides taller than 2”. There is some variance to this. We’re happy to help you if you have a specific part you're interested in making with deep bends.",
-        },
-      ],
-    },
-
-    {
-      category: "Shipping",
-      items: [
-        {
-          question: "How is shipping calculated?",
-          answer:
-            "Shipping is based on the size and weight of your parts. We will break your shipment up into multiple boxes if needed to keep the weight per box below 50 pounds. If a part is over a certain size or weight your order will switch to an RFQ; we will reach out to you about shipping options like LTL freight on parts like this.",
-        },
-        {
-          question: "How do you ship LTL?",
-          answer:
-            "We use Old Dominion Freight for our LTL freight. They have a great reputation and use their own trucks for liftgate deliveries too! They also have really quick shipping times along the east coast as well as the midwest and west coast.",
-        },
-        {
-          question: "Why is shipping not FREE?",
-          answer:
-            "We decided to keep shipping costs transparent. This also gives you the option to select other shipping methods like Overnight Air shipping.",
-        },
-        {
-          question: "What is your shipping lead time?",
-          answer:
-            "We have a shipping map in our resource page section. East coast orders should expect 1-2 days, midwest 2-3, and west coast 3-5 for standard shipping.",
-        },
-        {
-          question: "What if my parts are damaged from shipping?",
-          answer:
-            "This is unfortunate, but it happens. If your parts are damaged please shoot us an email @ info@LaserBros.com with pictures of the damage. We’ll work to replace the damaged parts and get them back to you as soon as possible!",
-        },
-      ],
-    },
-  ];
+useEffect(() => {
+  getFaq();
+}, []);
 
   // Filtered FAQs based on search query
   const filteredFAQs = faqData
-    .map((category) => ({
-      ...category,
-      items: category.items.filter(
-        (item) =>
-          item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.answer.toLowerCase().includes(searchQuery.toLowerCase())
-      ),
-    }))
-    .filter((category) => category.items.length > 0);
+  .map((category) => ({
+    ...category,
+    items: category.items.filter(
+      (item) =>
+        item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+  }))
+  .filter((category) => category.items.length > 0);
 
   return (
     <React.Fragment>

@@ -27,6 +27,7 @@
     "react-jsbarcode": "^1.0.1",
     "react-otp-input": "^3.1.1",
     "react-phone-input-2": "^2.15.1",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.24.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",

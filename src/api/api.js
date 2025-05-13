@@ -69,6 +69,158 @@ export const updateDimensionStatusAdmin = async (data) => {
 };
 
 
+export const generalFAQAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/generalFAQ`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const FetchFAQAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/generalFAQ`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const GetFAQAdmin = async (id) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/generalFAQ/`+id
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const PostFAQAdmin = async (form) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/generalFAQ/`,form
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const DeleteFAQAdmin = async (id) => {
+  try {
+    const response = await axiosAdminInstance.delete(
+      `/generalFAQ/`+id
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+
+
+export const generalproductsAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/products`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const FetchproductsAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/products`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const OfferAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/offer-data/`+data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const UpdateOfferAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/offer-data/`,data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const GetproductsAdmin = async (id) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/products/`+id
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const PostproductsAdmin = async (form) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/products/`,form
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const DeleteproductsAdmin = async (id) => {
+  try {
+    const response = await axiosAdminInstance.delete(
+      `/products/`+id
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 export const fileUpload = async (data) => {
   try {
     const response = await axiosAdminInstance.post(
@@ -414,6 +566,52 @@ export const updateQuantity = async (data) => {
     throw error;
   }
 };
+
+export const OfferData = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/offer-data/`+data);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const generalFAQ = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/generalFAQ/`);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const Fetchproducts = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/products`);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const getBendingData = async (data) => {
+  try {
+    const response = await axiosInstance.get(`/users/bending-data`);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 
 export const getMaterials = async (data) => {
   try {
@@ -882,6 +1080,68 @@ export const getParticularProfile = async (data) => {
     throw error;
   }
 };
+
+
+export const BendingDataAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/bending-data`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+export const ViewMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/bending-data`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const editMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(
+      `/bending-data/`+data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const updateMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.put(
+      `/bending-data`,data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const deleteMaterialAdmin = async (data) => {
+  try {
+    const response = await axiosAdminInstance.delete(
+      `/bending-data/`+data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 
 export const getParticularUserQuotes = async (data) => {
   try {

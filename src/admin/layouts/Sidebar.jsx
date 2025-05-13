@@ -108,7 +108,7 @@ const Sidebar = () => {
       id: "shipping",
       title: "Shipping Orders",
       link: "/admin/shipping-orders",
-      icon: "gridicons:shipping",
+      icon: "la:shipping-fast",
     },
     {
       id: "complete-orders",
@@ -120,7 +120,7 @@ const Sidebar = () => {
       id: "customers",
       title: "Customers",
       link: "/admin/customers",
-      icon: "raphael:customer",
+      icon: "lucide:users-round",
     },
     {
       id: "payment-history",
@@ -132,13 +132,37 @@ const Sidebar = () => {
       id: "database",
       title: "Database",
       link: "/admin/database",
-      icon: "material-symbols:database",
+      icon: "solar:database-broken",
     },
     {
       id: "edit-profile",
       title: "Profile Settings",
       link: "/admin/edit-profile",
       icon: "basil:user-outline",
+    },
+    {
+      id: "faq",
+      title: "FAQ's",
+      link: "/admin/faq",
+      icon: "ph:question",
+    },
+    {
+      id: "products",
+      title: "Product's",
+      link: "/admin/products",
+      icon: "fluent-mdl2:product",
+    },
+    {
+      id: "banner",
+      title: "Banner",
+      link: "/admin/banner/682321988ef3e240f79c8ea2",
+      icon: "material-symbols:planner-banner-ad-pt-outline-rounded",
+    },
+    {
+      id: "material",
+      title: "Material",
+      link: "/admin/view-material",
+      icon: "hugeicons:material-and-texture",
     },
     {
       id: "logout",

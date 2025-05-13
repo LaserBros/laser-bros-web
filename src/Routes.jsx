@@ -142,6 +142,15 @@ import {
   Outlet,
 } from "react-router-dom";
 import DxfAnalyzer from "./screens/private/dxfFile";
+import MetalFinishing from "./screens/public/services/MetalFinishing";
+import Products from "./screens/public/products";
+import FAQForm from "./admin/screens/FAQ/AddEdit";
+import FaqList from "./admin/screens/FAQ";
+import ProductForm from "./admin/screens/Product/AddEdit";
+import ProductList from "./admin/screens/Product";
+import Offer from "./admin/screens/Offer";
+import MaterialForm from "./admin/screens/Material";
+import ViewMaterialPage from "./admin/screens/Material/ViewMaterial";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -192,6 +201,126 @@ return (
           element={
             <AdminLayout title={"Edit Profile"}>
               <AdminEditProfile />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+     <Route
+      path="/admin/faq/add-faq"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"FAQ"}>
+              <FAQForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+     <Route
+      path="/admin/faq/edit-faq/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"FAQ"}>
+              <FAQForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+      <Route
+      path="/admin/products/add-product"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Product"}>
+              <ProductForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+      <Route
+      path="/admin/products"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Products"}>
+              <ProductList />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+       <Route
+      path="/admin/banner/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Banner"}>
+              <Offer />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+      <Route
+      path="/admin/view-material/material-form"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Material Form"}>
+              <MaterialForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+        <Route
+      path="/admin/view-material/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Edit Material"}>
+              <MaterialForm />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+      <Route
+      path="/admin/view-material"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Material"}>
+              <ViewMaterialPage />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+       <Route
+      path="/admin/products/edit-product/:id"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Edit Product"}>
+              <ProductForm isEditMode={true}  />
+            </AdminLayout>
+          }
+        />
+      }
+    ></Route>
+       <Route
+      path="/admin/faq"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"FAQ"}>
+              <FaqList />
             </AdminLayout>
           }
         />
@@ -892,6 +1021,8 @@ return (
       <Route path="/about-us" element={<Aboutus />} />
       <Route path="/laser-cutting" element={<Lasercutting />} />
       <Route path="/bending" element={<Bending />} />
+      <Route path="/metalfinishing" element={<MetalFinishing />} />
+      <Route path="/products" element={<Products />} />
     </Route>
     <Route
       element={

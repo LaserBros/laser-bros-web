@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import logo from "../assets/img/logo.svg";
 import bending from "../assets/img/bending.svg";
 import lasercutting from "../assets/img/lasercutting.svg";
+import metalfinishing from "../assets/img/metalfinishing.svg";
 import { Link, NavLink } from "react-router-dom";
 import ThemeToggle from "../components/Themetoggle";
 const Header = () => {
@@ -37,7 +38,7 @@ const Header = () => {
     };
   }, []);
   return (
-    <header className="header">
+    <header className="header m-0 p-0">
       <Navbar expanded={expanded} expand="lg" fixed="top">
         <Container>
           <Navbar.Brand as={Link} to="/">
@@ -71,6 +72,9 @@ const Header = () => {
                 <NavDropdown.Item as={NavLink} to="/bending" onClick={closeNav}>
                   <img src={bending} className="img-fluid" alt="" /> Bending
                 </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/metalfinishing" onClick={closeNav}>
+                  <img src={metalfinishing} className="img-fluid" alt="" /> Metal Finishing
+                </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
                 title={
@@ -97,9 +101,12 @@ const Header = () => {
                   Shipping
                 </NavDropdown.Item>
               </NavDropdown>
+              <Nav.Link as={NavLink} to="/products" onClick={closeNav}>
+               Free Files
+              </Nav.Link>
             </Nav>
             <Nav className="ms-auto align-items-lg-center right-menu">
-              <ThemeToggle />
+              {/* <ThemeToggle /> */}
               {/* <Nav.Link
                 as={Link}
                 className="ps-4 pe-2 header-search"
@@ -123,7 +130,7 @@ const Header = () => {
                 className="btn btn-primary btn-get-quote"
               >
                 {" "}
-                <Icon icon="icon-park-outline:add" /> Get a Quote
+                <Icon icon="icon-park-outline:add" /> Get Started
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

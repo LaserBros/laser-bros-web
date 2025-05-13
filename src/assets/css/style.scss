@@ -79,7 +79,10 @@ html {
     padding-left : 15px !important;
     padding-right: 15px !important;
     color        : $white-color !important;
-
+&.btn-sm{
+    height: 40px;
+    font-size    : 14px !important;
+}
     svg {
         font-size   : 20px;
         margin-right: 10px;
@@ -109,7 +112,10 @@ html {
     padding-left : 15px !important;
     padding-right: 15px !important;
     color        : $primary-color !important;
-
+    &.btn-sm{
+        height: 40px;
+        font-size    : 14px !important;
+    }
     svg {
         font-size   : 20px;
         margin-right: 10px;
@@ -796,7 +802,55 @@ footer {
 /*Auth Css Ends*/
 /*Home Css Start*/
 
-
+.metalFinish_banner {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    .banner-content {
+        h1 {
+                font-size: 70px;
+                color: $black-color;
+                margin-bottom: 20px;
+                font-weight: 600;
+        
+                @media only screen and (max-width:1199.98px) {
+                    font-size: 52px;
+                    margin-bottom: 30px;
+                }
+        
+                @media only screen and (max-width:767.98px) {
+                    font-size: 36px;
+                }
+        
+                span {
+                    font-weight: 900;
+                    display: inline-flex;
+                    position: relative;
+                    z-index: 1;
+                    line-height: 1.45;
+        
+                    img {
+                        position: absolute;
+                        left: 0px;
+                        bottom: -22px;
+                    }
+                }
+            }
+            p {
+                color: $black-color;
+                font-size: 22px;
+                line-height: 1.75;
+                // opacity: 0.75;
+                margin-bottom: 0px;
+                @media only screen and (max-width:1199.98px) {
+                    font-size: 18px;
+                }
+        
+                @media only screen and (max-width:767.98px) {
+                    font-size: 16px;
+                }
+            }
+    }
+}
 .banner-home {
     &.banner-about {
         padding-top      : 75px;
@@ -810,24 +864,25 @@ footer {
         }
     }
 
-    padding-top           : 75px;
+    padding-top           : 60px;
+    padding-bottom: 60px;
     // padding-bottom        : 75px;
     // background         : url('../img/bg.jpg');
     // background-size    : cover;
     // background-repeat  : no-repeat;
     // background-position: center;
     width                 : 100%;
-    min-height            : 900px;
+    // min-height            : 900px;
     display               : flex;
     align-items           : center;
     position              : relative;
     z-index               : 1;
 
-    @media only screen and (max-width:1199.98px) {
-        min-height    : 790px;
-        padding-top   : 75px;
-        padding-bottom: 75px;
-    }
+    // @media only screen and (max-width:1199.98px) {
+    //     min-height    : 790px;
+    //     padding-top   : 75px;
+    //     padding-bottom: 75px;
+    // }
 
     @media only screen and (max-width:991.98px) {
         padding-top   : 50px;
@@ -886,17 +941,17 @@ footer {
         }
 
         h1 {
-            font-size    : 72px;
+            font-size    : 40px;
             color        : $black-color;
-            margin-bottom: 45px;
-
+            margin-bottom: 10px;
+            font-weight: 700;
             @media only screen and (max-width:1199.98px) {
-                font-size    : 52px;
-                margin-bottom: 30px;
+                font-size    : 36px;
+                margin-bottom: 20px;
             }
 
             @media only screen and (max-width:767.98px) {
-                font-size: 36px;
+                font-size: 30px;
             }
 
             span {
@@ -913,13 +968,22 @@ footer {
                 }
             }
         }
-
+   h4{
+    font-weight: 400;
+    color:$black-color;
+    b{
+        font-weight: 700;
+    }
+   }
         p {
             color      : $black-color;
             font-size  : 22px;
             line-height: 1.75;
-            opacity    : 0.75;
-
+            // opacity    : 0.75;
+            &.bannersubpara{
+                font-size: 16px;
+                color:#bebdbe
+            }
             @media only screen and (max-width:1199.98px) {
                 font-size: 18px;
             }
@@ -943,7 +1007,217 @@ footer {
         }
     }
 }
+.homereviews{
+    background-color: #f7f7f7;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    .reviewslist{
+        border: 1px solid #ebebeb;
+        background-color: $white-color;
+        box-shadow: 0 5px 10px 0 rgba($black-color, .07);
+        border-radius: 12px;
+        padding: 25px;
+        .reviewsleftcontent{
+            .reviewuser{
+                margin-bottom: 10px;
+                display: flex;
+                    align-items: center;
+                    gap: 14px;
+                img{
+                    width: 100px;
+                    height: 100px;
+                }
+                h5{
+                    font-size: 16px;
+                    color: $black-color;
+                    font-weight: 700;
+                    margin-top: 10px;
+                }
+            }
+            h3{
+                font-size: 18px;
+                color: $black-color;
+                font-weight: 600;
+            }
+            p{
+                color:$black-color;
+                font-size: 16px;
+                line-height: 1.75;
+                margin-bottom: 0;
+                text-align: start;
+            }
+          
+            .reviewrate{
+                .iconify{
+                    color:$yellow-color2;
+                    font-size: 40px;
+                }
+            }
+        }
+        .reviewsrightcontent{
+            h2{
+                font-size: 24px;
+                color:$black-color;
+                font-weight: 700;
+            }
+           .reviewbadge{
+               display: flex;
+               align-items: center;
+               flex-wrap: wrap;
+               gap: 7px;
+               h4{
+                font-size: 18px;
+                color:$black-color;
+                font-weight: 400;
+               }
+            .aluminiumbadge{
+                font-size: 16px;
+                color:$black-color;
+                font-weight: 600;
+                padding: 3px 10px;
+                background: rgba(#4F8CCA, 0.2);
+                border-radius: 20px!important;
+                text-decoration: none;
+                display:inline-block ; 
+                .iconify{
+                    color:#4F8CCA
+                }
+            }
+            .brassbadge{
+                font-size: 16px;
+                color:$black-color;
+                font-weight: 600;
+                padding: 3px 10px;
+                background: rgba(#ef9000, 0.2);
+                border-radius: 20px!important;
+                display:inline-block ; 
+                text-decoration: none;
+                .iconify{
+                    color:#ef9000
+                }
+            }
+             .steelbadge{
+                font-size: 16px;
+                color:$black-color;
+                font-weight: 600;
+                padding: 3px 10px;
+                background: rgba($danger-color, 0.2);
+                border-radius: 20px!important;
+                text-decoration: none;
+                display:inline-block ;
+                .iconify{
+                    color: $danger-color;
+                }
+             }p{ 
+                line-height: normal;
+               a{
+                font-size: 12px;
+                color:#c4bdbe;
+                &:hover{
+                    opacity: 0.75;
+                }
+               }
+             }
+             .lasercuttingbadge{
+                font-size: 14px;
+                display:inline-block ;
+                color:$black-color;
+                font-weight: 600;
+                padding:3px 8px;
+                text-decoration: none;
+                background: rgba(#4F8CCA, 0.2);
+                border-radius: 20px!important;
+             }
+           }
+           .imgreviewhome{
+            max-width: 350px;
+            margin-bottom: 40px;
+            // margin-top: -20px;
+            @media only screen and (max-width:11997.98px){
+                margin-top: 0px;
+            }
+            @media only screen and (max-width:767.98px){
+                max-width: 100%;
+            }
+           }
+        }
+    }
+}
+.faq-home{
+    background-color: #f7f7f7;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    .faqsubhead{
+        font-size: 22px;
+        color: $black-color;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-transform: capitalize;
+    }
+    .accordion {
+        .accordion-item {
+            margin-bottom: 10px;
+            border       : 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
+            border-radius: 12px !important;
 
+            .accordion-header {
+                margin-bottom: 0 !important;
+
+                button {
+                    &.accordion-button {
+                        font-size    : 16px !important;
+                        font-weight  : 500 !important;
+                        border-radius: 12px !important;
+                        color:$black-color;
+                        padding: 15px;
+                        background:$white-color;
+                        box-shadow: none;
+                        &:after {
+                            transform: rotate(-90deg);
+                            width              : 24px;
+                            height             : 24px;
+                            border             : 1px solid $black-color;
+                            border-radius      : 50%;
+                            display            : inline-flex;
+                            align-items        : center;
+                            justify-content    : center;
+                            background-position: center;
+                            background-size    : 13px;
+                            background-image   : url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27none%27 stroke=%27%23000000%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27%3e%3cpath d=%27M2 5L8 11L14 5%27/%3e%3c/svg%3e");
+                            opacity            : 0.40;
+                        }
+                        &:not(.collapsed){
+                            color:$black-color;
+                            &:after {
+                                transform: rotate(-180deg);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .accordion-body {
+                padding-left: 16px;
+                padding-top: 0;
+                font-size   : 14px;
+                line-height : 1.75;
+                color       : $paragraph-color
+            }
+        }
+    }
+}
+.american-manufacturing{
+    padding-top: 70px;
+    padding-bottom: 80px;
+    img{
+        max-width: 350px;
+    }
+    h4{
+        color:$black-color;
+        font-weight: 500;
+    }
+}
 .our-services {
     padding-top   : 165px;
     padding-bottom: 240px;
@@ -1623,11 +1897,11 @@ footer {
 
 .our-history {
     padding-top   : 90px;
-    padding-bottom: 140px;
+    padding-bottom: 30px;
 
     @media only screen and (max-width:991.98px) {
         padding-top   : 80px;
-        padding-bottom: 70px;
+        padding-bottom: 20px;
     }
 
     .history-grid {
@@ -1816,6 +2090,13 @@ footer {
 
 /*About Us Css Ends*/
 /*Services Css Start*/
+.loginUploadInfo_text {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    color: $light-color;
+}
 .banner-services {
     .banner-service-img {
         display : inline-block;
@@ -1864,7 +2145,9 @@ footer {
                 font-size: 36px;
             }
         }
-
+        .bannerservice_btns {
+            text-align: center;
+        }
         .banner-btns {
             display: flex;
             gap    : 25px;
@@ -1930,7 +2213,331 @@ footer {
         }
     }
 }
-
+.maxWidth_680 {
+    max-width: 680px;
+    margin: 0px auto;
+}
+.pb_70 {
+    padding-bottom: 70px;
+}
+.lasercuttingmaterial{
+    padding-top: 80px;
+    padding-bottom: 80px;  
+}
+.lasercuttingbreakdown{
+    background-color: #f7f7f7; 
+}
+.laserCuttingInfo_sec {
+    padding-top: 80px;
+    padding-bottom: 70px;
+    background-color: #f7f7f7;
+    .laserCuttingInfo_div {
+        h3 {
+            font-size: 24px;
+            font-weight: bold;
+            color: $black-color;
+            margin-bottom: 20px;
+        }
+        h4 {
+            font-size: 20px;
+            font-weight: bold;
+            color: $black-color;
+            margin-bottom: 10px;
+        }
+        p{
+            font-size: 18px;
+            font-weight: 400;
+            color: $black-color;
+            margin-bottom: 10px;
+            b{
+                font-weight: 600;
+            }
+        }
+        ul {
+            list-style: auto;
+            margin: 0px;
+            padding-left: 20px;
+            &.listcustom{
+                list-style: disc;
+                margin-top: 10px;  
+                margin-bottom: 12px;  
+            }
+            li {
+                font-size: 18px;
+                font-weight: 400;
+                color: $black-color;
+                margin-bottom: 6px;
+            }
+        }
+    }
+}
+.metalfinish_sec {
+    padding-bottom: 60px;
+    .metalfinish_sec_inner{
+        background-color: #f7f7f7; 
+        padding-top: 40px;
+        padding-bottom: 30px;
+    }
+    .metalfinish_div {
+        margin-bottom: 20px;
+        h4 {
+            font-size: 20px;
+            font-weight: bold;
+            color: $black-color;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 18px;
+            font-weight: 400;
+            color: $black-color;
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: disc;
+            margin: 0px 0px 10px;
+            li {
+                font-size: 18px;
+                font-weight: 400;
+                color: $black-color;
+            }
+        }
+        .metalfinish_box {
+            text-align: center;
+            img {
+                width: 100%;
+                height: 350px;
+                border-radius: 15px;
+                object-fit: cover;
+                margin-bottom: 10px;
+                object-position: bottom center;
+                @media only screen and (max-width:767.98px)
+                {
+                    height: auto;
+                }
+            }
+            h5 {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 0px;
+            }
+            &.steelColor {
+                img {
+                    border: 2px solid #e01f26;
+                }
+                h5 {
+                    color: #e01f26;
+                }
+            }
+            &.stainlessColor {
+                img {
+                    border: 2px solid #00bf63;
+                }
+                h5 {
+                    color: #00bf63;
+                }
+            }
+            &.aluminumColor {
+                img {
+                    border: 2px solid #4e8ac8;
+                }
+                h5 {
+                    color: #4e8ac8;
+                }
+            }
+        }
+    }
+}
+.HowITWorksmain_div {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    .worksMain_head {
+        font-size: 24px;
+        font-weight: 600;
+        color: $black-color;
+        margin-bottom: 20px;
+    }
+    .worksStep_head {
+        font-size: 24px;
+        font-weight: 700;
+        color: $black-color;
+        margin-bottom: 15px;
+    }
+    .HowITWorksteps_box {
+        // display: flex;
+        // align-items: flex-start;
+        // gap: 10px;
+        border: 1px solid #ebebeb;
+        background-color: $white-color;
+        box-shadow: 0 5px 10px 0 rgba($black-color, 0.07);
+        border-radius: 12px;
+        padding: 25px;
+        video{
+            border-radius:12px;
+             width: 100%; 
+             height: auto
+        }
+        .StepIcon_img {
+            flex-shrink: 0;
+            max-width: 50px;
+        }
+        .Worksteps_cont {
+            flex-grow: 1;
+            h4 {
+                font-size: 18px;
+                font-weight: bold;
+                color: $black-color;
+                margin-bottom: 5px;
+            }
+            p {
+                font-size: 18px;
+                font-weight: 400;
+                color: $black-color;
+                margin-bottom: 5px;
+            }
+        }
+    }
+}
+.laserProduct_sec {
+    padding: 70px 0px;
+    transition: ease-in-out 0.7s;
+    .Productmain_box {    
+        background: $white-color;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px 0px rgba($black-color, 0.07);
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        height: 100%;
+        &:hover {
+            .Product_img {
+                img {
+                    &.img_default {
+                        opacity: 0;
+                        transition: ease-in-out 0.7s;
+                    }
+                    &.img_hover {
+                        opacity: 1;
+                        transition: ease-in-out 0.7s;
+                    }
+                }
+            }
+        }
+        .Product_img {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 270px;
+            margin-bottom: 10px;
+            @media only screen and (min-width: 1400px) {
+                height: 290px;
+            }
+            @media only screen and (max-width: 575.98px) {
+                height: 290px;
+            }
+            img {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                display: block;
+                &.img_default {
+                    opacity: 1;
+                    transition: ease-in-out 0.7s;
+                }
+                &.img_hover {
+                    opacity: 0;
+                    transition: ease-in-out 0.7s;
+                }
+            }
+        }
+        h4 {
+            margin-bottom: 10px;
+            text-align: center;
+            a {
+                text-decoration: none;
+                display: inline-block;
+                font-size: 18px;
+                font-weight: bold;
+                color: $black-color;
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+        p {  margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: $paragraph-color;
+            text-align: center;
+            // margin-bottom: 0px;
+            a{ 
+                 color: $paragraph-color;
+                  text-decoration: none;
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+}
+.promotion_modal{
+    .modal-content{
+        .modal-body{
+            text-align: center;
+            padding: 40px 30px;
+            h4{
+                font-size: 26px;
+                color:$black-color;
+                
+            }
+            p{
+                font-size: 16px;
+                color: #bebdbe;
+                margin-bottom: 0;
+                margin-top: 5px;
+            }
+        }
+    }
+}
+.product_modal {
+    .modal-content {
+        .modal-body {
+            .main_heading {
+                font-size: 24px;
+                font-weight: bold;
+                color: $black-color;
+                margin-bottom: 15px;
+            }
+            p {
+                font-size: 16px;
+                font-weight: 400;
+                color: $paragraph-color;
+                margin-bottom: 10px;
+            }
+            ul {
+                list-style: disc;
+                margin: 0px 0px 10px;
+                li {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $paragraph-color;
+                }
+            }
+            ol {
+                margin: 0px 0px 10px;
+                li {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: $paragraph-color;
+                }
+            }
+        }
+    }
+}
 /*Services Css Ends*/
 /*Resources Css Start*/
 .resources-main {
@@ -4111,7 +4718,7 @@ textarea.form-control {
  .toggle-switch-container .inner:after {
     content: "mm";
     padding-right: 6px;
-    background-color: #4F8CCA;
+    background-color: $primary-color;
    
     color: #fff;
     text-align: right;
@@ -4651,4 +5258,22 @@ textarea.form-control {
         background: transparent;
         right: 7px;
     }
+}
+.badgestatus.badgeadded-Aluminium {
+    display: none;
+}
+.badgestatus.badgeadded-Steel {
+    display: none;
+}
+.badgestatus.badgeadded-Stainless {
+    display: none;
+}
+.custom-table .rdt_TableRow.highlight-aluminium:first-child .badgestatus.badgeadded-Aluminium {
+    display: block !important;
+}
+.custom-table .highlight-aluminium + .highlight-steel .badgestatus.badgeadded-Steel {
+    display: block !important;
+}
+.custom-table .highlight-steel + .highlight-stainless .badgestatus.badgeadded-Stainless {
+    display: block !important;
 }

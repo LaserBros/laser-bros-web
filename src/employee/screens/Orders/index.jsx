@@ -645,7 +645,7 @@ const Orders = () => {
                                                                 WO#
                                                                 {row.search_quote}  
                                                               </b>
-                                                              {hasNotes && <span class="expansion_tag_manage">!</span>}
+                                                              {hasNotes && <span className="expansion_tag_manage">!</span>}
                                                             </Link>
                             </td>
                             <td>

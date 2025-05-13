@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Row,
     Col,
@@ -8,8 +8,29 @@ import { Icon } from '@iconify/react';
 import BendingImg from "../../../assets/img/bending-img.png";
 import DataTable from "react-data-table-component";
 import { Link } from 'react-router-dom';
+import { getBendingData } from "../../../api/api";
 export default function Bending() {
     const [searchText, setSearchText] = useState('');
+    const [Material, setMaterial] = useState({});
+    const getBending = async () => {
+        const res = await getBendingData();
+        const bendingData = res.data;
+
+            const materialPriority = {
+            'Aluminium': 1,
+            'Steel': 2,
+            'Stainless Steel': 3
+            };
+
+            const sortedData = bendingData.sort((a, b) => {
+            return (materialPriority[a.material_grade] || 99) - (materialPriority[b.material_grade] || 99);
+            });
+            setMaterial(sortedData);
+            console.log("Sorted bending data:", sortedData);
+    }
+    useEffect (() => {
+        getBending();
+    },[])
     const [visibleColumns, setVisibleColumns] = useState({
         Grade: true,
         'Thickness': true,
@@ -27,16 +48,29 @@ export default function Bending() {
             [column]: !visibleColumns[column],
         });
     };
-
+    const conditionalRowStyles = [
+        {
+          when: row => row.material_grade === 'Aluminium',
+          classNames: ['highlight-aluminium'],
+        },
+        {
+          when: row => row.material_grade === 'Steel',
+          classNames: ['highlight-steel'],
+        },
+        {
+          when: row => row.material_grade === 'Stainless Steel',
+          classNames: ['highlight-stainless'],
+        },
+      ];
     const columns = [
-        { name: 'Grade', selector: row => <div className="badgestatus" style={getGradeColor(row.grade)}>{row.grade}</div>, sortable: false, omit: !visibleColumns.Grade,},
-        { name: 'Thickness', selector: row => row.thickness, sortable: false, omit: !visibleColumns['Thickness'], },
-        { name: 'Min Flange Length', selector: row => row.minflangelength, sortable: false, omit: !visibleColumns['Min Flange Length'], },
-        { name: 'Distortion Zone', selector: row => row.distortionzone, sortable: false, omit: !visibleColumns['Distortion Zone'], },
-        { name: 'Bend Radius', selector: row => row.bendradius, sortable: false, omit: !visibleColumns['Bend Radius'],},
-        { name: 'Bend Deduction', selector: row => row.benddeduction, sortable: false, omit: !visibleColumns['Bend Deduction'], },
-        { name: 'K-Factor', selector: row => row.kfactor, sortable: false, omit: !visibleColumns['K-Factor'], },
-        { name: 'Max Length Of Part', selector: row => row.maxlength, sortable: false, omit: !visibleColumns['Max Length Of Part'],},
+        { name: 'Grade', selector: row => <div className={`badgestatus badgeadded-${row.material_grade}`} style={getGradeColor(row.material_grade)}>{row.material_grade}</div>, sortable: false, omit: !visibleColumns.Grade,},
+        { name: 'Thickness', selector: row => row.material_thickness, sortable: false, omit: !visibleColumns['Thickness'], },
+        { name: 'Min Flange Length', selector: row => row.min_flange_length+'"', sortable: false, omit: !visibleColumns['Min Flange Length'], },
+        { name: 'Distortion Zone', selector: row => row.distortion_zone+'"', sortable: false, omit: !visibleColumns['Distortion Zone'], },
+        { name: 'Bend Radius', selector: row => row.bend_radius, sortable: false, omit: !visibleColumns['Bend Radius'],},
+        { name: 'Bend Deduction', selector: row => row.bend_deduction+'"', sortable: false, omit: !visibleColumns['Bend Deduction'], },
+        { name: 'K-Factor', selector: row => row.k_factor, sortable: false, omit: !visibleColumns['K-Factor'], },
+        { name: 'Max Length Of Part', selector: row => row.max_length_part, sortable: false, omit: !visibleColumns['Max Length Of Part'],},
     ].filter(column => !column.omit);
 
     // const data = [
@@ -53,43 +87,7 @@ export default function Bending() {
     //     { id: 11, grade: '', thickness: '0.036(20 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '-', kfactor: '-', maxlength: '72'  },
     //     { id: 12, grade: '', thickness: '0.036(20 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '-', kfactor: '-', maxlength: '72'  },
     // ];
-    const data = [
-        { id: 1, grade: 'Aluminium', thickness: '0.032', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '0.055"', kfactor: '0.45', maxlength: '72' },
-    { id: 2, grade: '', thickness: '0.04', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '0.069"', kfactor: '0.39', maxlength: '72' },
-    { id: 3, grade: '', thickness: '0.063', minflangelength: '0.40"', distortionzone: '0.40"', bendradius: '0.032', benddeduction: '0.111"', kfactor: '0.3', maxlength: '72' },
-    { id: 4, grade: '', thickness: '0.08', minflangelength: '0.50"', distortionzone: '0.50"', bendradius: '0.032', benddeduction: '0.131"', kfactor: '0.34', maxlength: '72' },
-    { id: 5, grade: '', thickness: '0.09', minflangelength: '0.50"', distortionzone: '0.50"', bendradius: '0.032', benddeduction: '0.145"', kfactor: '0.34', maxlength: '72' },
-    { id: 6, grade: '', thickness: '0.1', minflangelength: '0.50"', distortionzone: '0.50"', bendradius: '0.032', benddeduction: '0.164"', kfactor: '0.315', maxlength: '72' },
-    { id: 7, grade: '', thickness: '0.125', minflangelength: '0.60"', distortionzone: '0.60"', bendradius: '0.032', benddeduction: '0.207"', kfactor: '0.29', maxlength: '72' },
-    { id: 8, grade: '', thickness: '0.19', minflangelength: '1.00"', distortionzone: '1.00"', bendradius: '0.125', benddeduction: '0.307"', kfactor: '0.4', maxlength: '44.5"' },
-    { id: 9, grade: '', thickness: '0.25', minflangelength: '1.00"', distortionzone: '1.00"', bendradius: '0.125', benddeduction: '0.394"', kfactor: '0.41', maxlength: '36' },
-    { id: 10, grade: 'Steel', thickness: '0.036 (20 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '0.08', kfactor: '0', maxlength: '72' },
-    { id: 11, grade: '', thickness: '0.048 (18 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.06', benddeduction: '0.089"', kfactor: '0.43', maxlength: '72' },
-    { id: 12, grade: '', thickness: '0.063 (16 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.08', benddeduction: '0.133"', kfactor: '0.28', maxlength: '72' },
-    { id: 13, grade: '', thickness: '0.074 (14 gauge)', minflangelength: '0.40"', distortionzone: '0.40"', bendradius: '0.08', benddeduction: '0.136"', kfactor: '0.4', maxlength: '72' },
-    { id: 14, grade: '', thickness: '0.100 (12 gauge)', minflangelength: '0.50"', distortionzone: '0.50"', bendradius: '0.1', benddeduction: '0.190"', kfactor: '0.34', maxlength: '72' },
-    { id: 15, grade: '', thickness: '0.120 (11 gauge)', minflangelength: '0.60"', distortionzone: '0.60"', bendradius: '0.1', benddeduction: '0.207"', kfactor: '0.405', maxlength: '60' },
-    { id: 16, grade: '', thickness: '0.135 (10 gauge)', minflangelength: '0.60"', distortionzone: '0.60"', bendradius: '0.14', benddeduction: '0.235"', kfactor: '0.45', maxlength: '48' },
-    { id: 17, grade: '', thickness: '0.188 (3/16)', minflangelength: '1.00"', distortionzone: '1.00"', bendradius: '0.14', benddeduction: '0.315"', kfactor: '0.41', maxlength: '30' },
-    { id: 18, grade: '', thickness: '0.25 (1/4)', minflangelength: '1.00"', distortionzone: '1.00"', bendradius: '0.25', benddeduction: '0.437"', kfactor: '0.44', maxlength: '20' },
-    { id: 19, grade: 'Stainless Steel', thickness: '0.036 (20 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '0.092"', kfactor: '0', maxlength: '72' },
-    { id: 20, grade: '', thickness: '0.048 (18 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.032', benddeduction: '0.101"', kfactor: '0.3', maxlength: '72' },
-    { id: 21, grade: '', thickness: '0.063 (16 gauge)', minflangelength: '0.32"', distortionzone: '0.32"', bendradius: '0.075', benddeduction: '0.151"', kfactor: '0.1', maxlength: '72' },
-    { id: 22, grade: '', thickness: '0.074 (14 gauge)', minflangelength: '0.40"', distortionzone: '0.40"', bendradius: '0.078', benddeduction: '0.149"', kfactor: '0.28', maxlength: '72' },
-    { id: 23, grade: '', thickness: '0.100 (12 gauge)', minflangelength: '0.50"', distortionzone: '0.50"', bendradius: '0.109', benddeduction: '0.197"', kfactor: '0.32', maxlength: '60' },
-    { id: 24, grade: '', thickness: '0.120 (11 gauge)', minflangelength: '0.60"', distortionzone: '0.60"', bendradius: '0.12', benddeduction: '0.229"', kfactor: '0.33', maxlength: '40' },
-    { id: 25, grade: '', thickness: '0.135 (10 gauge)', minflangelength: '0.60"', distortionzone: '0.60"', bendradius: '0.14', benddeduction: '0.265"', kfactor: '0.3', maxlength: '40' },
-    { id: 26, grade: '', thickness: '0.188 (3/16)', minflangelength: '1.00"', distortionzone: '1.00"', bendradius: '0.312', benddeduction: '0.414"', kfactor: '0.32', maxlength: '20' },
-    { id: 27, grade: '', thickness: '0.25 (1/4)', minflangelength: '1.00"', distortionzone: '1.00"', bendradius: '0.282', benddeduction: '0.487"', kfactor: '0.34', maxlength: '20' }
-    ];
-
-    const filteredData = data.filter(
-        item =>
-            JSON.stringify(item)
-                .toLowerCase()
-                .indexOf(searchText.toLowerCase()) !== -1
-    );
-
+    
     const getGradeColor = (grade) => {
         switch (grade) {
             case 'Aluminium':
@@ -138,7 +136,7 @@ export default function Bending() {
                             <h2>Materials</h2>
                             <p>Here's a list of common materials and their appropriate bending parameters</p>
                             <div className="d-flex align-items-center justify-content-between flex-wrap">
-                                <div className="mb-2 searchfield position-relative">
+                                {/* <div className="mb-2 searchfield position-relative">
                                     <Icon icon="icon-park-twotone:filter" />
                                     <input
                                         type="text"
@@ -147,7 +145,7 @@ export default function Bending() {
                                         value={searchText}
                                         onChange={e => setSearchText(e.target.value)}
                                     />
-                                </div>
+                                </div> */}
                                 {/* <Dropdown className="mb-2">
                                     <Dropdown.Toggle id="dropdown-basic"  variant={null}>
                                         Columns <Icon icon="ion:chevron-down"/>
@@ -165,12 +163,15 @@ export default function Bending() {
                                     </Dropdown.Menu>
                                 </Dropdown> */}
                             </div>
+                            {Material.length > 0 &&
                             <DataTable
                                 columns={columns}
-                                data={filteredData}
+                                data={Material}
                                 responsive
+                                conditionalRowStyles={conditionalRowStyles}
                                 className="custom-table"
                             />
+}
                         </div>
                         <div className="resources-content mb-4" id="bending4">
                             <h2>Here’s how to use this chart to design your parts…</h2>
