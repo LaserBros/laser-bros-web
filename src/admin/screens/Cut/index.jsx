@@ -169,11 +169,15 @@ const Cut = () => {
     const zip = new JSZip();
 
     try {
-      console.log("urksssssssss", urls);
       const filePromises = urls.map(async (url, index) => {
         const response = await fetch(url.dxf_url);
         const blob = await response.blob();
-        const fileName = url.subquote_number + ".dxf";
+        const parts = url.subquote_number.split("-");
+        if (parts.length >= 2 && url.bend_count >= 1) {
+          parts.splice(2, 0, "B");
+        }
+        const fileName = parts.join("-")+ ".dxf";
+        // const fileName = url.subquote_number + ".dxf";
         zip.file(fileName, blob);
       });
 

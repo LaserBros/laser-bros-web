@@ -204,7 +204,7 @@ const ViewRFQS = () => {
   };
   const updateQuoteNote = (partId, newNote) => {
     if (!newNote || newNote.trim() === "") {
-      console.warn("New note is empty. No update performed.");
+      console.log("New note is empty. No update performed.");
       return; // Exit the function if newNote is empty
     }
 

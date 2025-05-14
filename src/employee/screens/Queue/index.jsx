@@ -199,7 +199,12 @@ const Queue = () => {
       const filePromises = urls.map(async (url, index) => {
         const response = await fetch(url.dxf_url);
         const blob = await response.blob();
-        const fileName = url.subquote_number + ".dxf";
+        const parts = url.subquote_number.split("-");
+        if (parts.length >= 2 && url.bend_count >= 1) {
+          parts.splice(2, 0, "B");
+        }
+        const fileName = parts.join("-")+ ".dxf";
+        // const fileName = url.subquote_number + ".dxf";
         zip.file(fileName, blob);
       });
 
@@ -212,7 +217,7 @@ const Queue = () => {
       }, 1000);
       setCheckedItems({});
     } catch (error) {
-      console.error("Error downloading or zipping files:", error);
+      console.log("Error downloading or zipping files:", error);
     }
   };
 
@@ -334,7 +339,13 @@ const Queue = () => {
                               />
                             </td>
                             <td className="text-nowrap">
-                              {row.subquote_number}
+                            {(() => {
+                                const parts = row.subquote_number.split("-");
+                                if (parts.length >= 2 && row.bend_count >= 1) {
+                                  parts.splice(2, 0, "B");
+                                }
+                                return parts.join("-");
+                              })()}
                             </td>
 
                             <td className="text-nowrap">
