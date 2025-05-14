@@ -2444,6 +2444,9 @@ footer {
                 width: 100%;
                 height: 100%;
                 display: block;
+                @media only screen and (max-width: 575.98px) {
+                    object-fit: contain;
+                }
                 &.img_default {
                     opacity: 1;
                     transition: ease-in-out 0.7s;

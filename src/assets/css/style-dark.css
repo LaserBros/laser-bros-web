@@ -1144,4 +1144,7 @@ body.dark .product_modal .modal-content .modal-body p {
 }
 body.dark .product_modal .modal-content .modal-body ul li {
   color: rgba(255, 255, 255, 0.85);
+}
+body.dark .product_modal .modal-content .modal-body ol li {
+  color: rgba(255, 255, 255, 0.85);
 }/*# sourceMappingURL=style-dark.css.map */

@@ -909,8 +909,8 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
 
 .homereviews {
   background-color: #f7f7f7;
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 .homereviews .reviewslist {
   border: 1px solid #ebebeb;
@@ -2261,6 +2261,12 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   height: 100%;
   display: block;
 }
+@media only screen and (max-width: 575.98px) {
+  .laserProduct_sec .Productmain_box .Product_img img {
+    -o-object-fit: contain;
+       object-fit: contain;
+  }
+}
 .laserProduct_sec .Productmain_box .Product_img img.img_default {
   opacity: 1;
   transition: ease-in-out 0.7s;
@@ -2330,6 +2336,14 @@ footer .footer-top-area .footer-top-one-wrapper .right-area .social-area a:first
   margin: 0px 0px 10px;
 }
 .product_modal .modal-content .modal-body ul li {
+  font-size: 16px;
+  font-weight: 400;
+  color: #6C6A72;
+}
+.product_modal .modal-content .modal-body ol {
+  margin: 0px 0px 10px;
+}
+.product_modal .modal-content .modal-body ol li {
   font-size: 16px;
   font-weight: 400;
   color: #6C6A72;
@@ -4684,4 +4698,28 @@ textarea.form-control {
   top: 3px;
   background: transparent;
   right: 7px;
+}
+
+.badgestatus.badgeadded-Aluminium {
+  display: none;
+}
+
+.badgestatus.badgeadded-Steel {
+  display: none;
+}
+
+.badgestatus.badgeadded-Stainless {
+  display: none;
+}
+
+.custom-table .rdt_TableRow.highlight-aluminium:first-child .badgestatus.badgeadded-Aluminium {
+  display: block !important;
+}
+
+.custom-table .highlight-aluminium + .highlight-steel .badgestatus.badgeadded-Steel {
+  display: block !important;
+}
+
+.custom-table .highlight-steel + .highlight-stainless .badgestatus.badgeadded-Stainless {
+  display: block !important;
 }/*# sourceMappingURL=style.css.map */
