@@ -399,7 +399,7 @@ const CheckOutPay = ({
                             <br/>
                             {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && (
                                     <b>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days + 1} Business days
+                                     Time in Transit would be {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} Business days
                                     </b>
                             )}
                             </div>
@@ -433,7 +433,7 @@ const CheckOutPay = ({
                             <br/>
                             {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_2nd_day_air")?.delivery_days && (
                                     <b>
-                                      Time in transit :  {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days + 1} Business days
+                                      Time in Transit would be {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days} Business days
                                     </b>
                             )}
                             </div>
@@ -470,7 +470,7 @@ const CheckOutPay = ({
                             <br/>
                             {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_next_day_air")?.delivery_days && (
                                     <b>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days + 1} Business days
+                                      Time in Transit would be {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days} Business days
                                     </b>
                             )}
                           </div>

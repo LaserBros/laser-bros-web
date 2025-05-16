@@ -151,6 +151,7 @@ import ProductList from "./admin/screens/Product";
 import Offer from "./admin/screens/Offer";
 import MaterialForm from "./admin/screens/Material";
 import ViewMaterialPage from "./admin/screens/Material/ViewMaterial";
+import AdminCustomerRFQ from "./admin/screens/Customers/rfq";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -164,6 +165,19 @@ return (
           element={
             <AdminLayout title={"Dashboard"}>
               <AdminDashboard />
+            </AdminLayout>
+          }
+        />
+      }
+    />
+
+<Route
+      path="/admin/create-rfq"
+      element={
+        <AdminRoute
+          element={
+            <AdminLayout title={"Create RFQ"}>
+              <AdminCustomerRFQ />
             </AdminLayout>
           }
         />

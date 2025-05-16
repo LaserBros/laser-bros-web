@@ -111,7 +111,7 @@ const ShippingRates = ({
                         ).toFixed(2) +
                         ")"}
                         <br/>
-                        <b>Time in transit : {rate.delivery_days} - {rate.delivery_days + 1} Business Days</b>
+                        <b>Time in Transit would be {rate.delivery_days} Business Days</b>
                         </div>
                   </label>
                 
