@@ -93,6 +93,11 @@ const CheckOutPay = ({
     setActiveTab(key);
   };
 
+  const matchedRate = shippingInfo.shippingRates?.find(
+    (rate) => rate.service_code === selectedRate
+  );
+  
+  const deliveryDays = matchedRate?.delivery_days;
   useEffect(() => {
     if (handleCloseTrigger) {
       const timer = setTimeout(() => {
@@ -367,8 +372,9 @@ const CheckOutPay = ({
                         </div>
                       )}
                       {selectedRate === "ups_ground" && (
+                        <div className="shippingbg_box">
                         <div className="rate-option">
-                          <label>
+                          <label className="d-flex align-items-start gap-2">
                             <input
                               type="checkbox"
                               value="ups_ground"
@@ -381,7 +387,8 @@ const CheckOutPay = ({
                                 )
                               }
                             />
-                            &nbsp;&nbsp;UPS® Ground (
+                            <div className="flex-grow-1">
+                            UPS® Ground (
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
@@ -389,12 +396,22 @@ const CheckOutPay = ({
                               }
                             />
                             )
+                            <br/>
+                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && (
+                                    <b>
+                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days + 1} Business days
+                                    </b>
+                            )}
+                            </div>
                           </label>
+
+                        </div>
                         </div>
                       )}
                        {selectedRate === "ups_2nd_day_air" && (
+                        <div className="shippingbg_box">
                         <div className="rate-option">
-                          <label>
+                          <label className="d-flex align-items-start gap-2">
                             <input
                               type="checkbox"
                               value="ups_2nd_day_air"
@@ -404,7 +421,8 @@ const CheckOutPay = ({
                                   ?.shipping_ups_2nd_day_air_price)
                               }
                             />
-                            &nbsp;&nbsp; &nbsp;&nbsp;UPS - UPS 2nd Day Air® (
+                            <div className="flex-grow-1">
+                           UPS - UPS 2nd Day Air® (
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
@@ -412,12 +430,22 @@ const CheckOutPay = ({
                               }
                               />
                             )
+                            <br/>
+                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_2nd_day_air")?.delivery_days && (
+                                    <b>
+                                      Time in transit :  {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days + 1} Business days
+                                    </b>
+                            )}
+                            </div>
                           </label>
+ 
+                        </div>
                         </div>
                       )}
                       {selectedRate === "ups_next_day_air" && (
+                        <div className="shippingbg_box">
                         <div className="rate-option">
-                          <label>
+                          <label className="d-flex align-items-start gap-2">
                             <input
                               type="checkbox"
                               value="ups_next_day_air"
@@ -430,7 +458,8 @@ const CheckOutPay = ({
                                 )
                               }
                             />
-                            &nbsp;&nbsp;UPS Next Day Air® (
+                            <div className="flex-grow-1">
+                            UPS Next Day Air® (
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
@@ -438,7 +467,15 @@ const CheckOutPay = ({
                               }
                             />
                             )
+                            <br/>
+                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_next_day_air")?.delivery_days && (
+                                    <b>
+                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days + 1} Business days
+                                    </b>
+                            )}
+                          </div>
                           </label>
+                        </div>
                         </div>
                       )}
                       

@@ -4722,4 +4722,23 @@ textarea.form-control {
 
 .custom-table .highlight-steel + .highlight-stainless .badgestatus.badgeadded-Stainless {
   display: block !important;
+}
+
+.shippingbg_box {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 15px;
+  border-radius: 15px;
+}
+.shippingbg_box .rate-option {
+  padding-bottom: 15px;
+}
+.shippingbg_box .rate-option:last-child {
+  padding-bottom: 0px;
+}
+.shippingbg_box .rate-option input[type=checkbox] {
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.shippingbg_box .rate-option label b {
+  font-weight: 600;
 }/*# sourceMappingURL=style.css.map */

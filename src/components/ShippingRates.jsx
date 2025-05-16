@@ -26,11 +26,26 @@ const ShippingRates = ({
         )
       : [];
   // Handle checkbox selection (only one at a time)
+  // const handleCheckboxChange = (carrierId, rate, price) => {
+  //   console.log("checked",carrierId)
+  //   const newSelectedRate = selectedRate === carrierId ? null : carrierId;
+  //   setSelectedRate(newSelectedRate);
+  //   if (newSelectedRate) {
+  //     onRateSelected(rate, price); 
+  //   }
+  // };
+ 
   const handleCheckboxChange = (carrierId, rate, price) => {
-    const newSelectedRate = selectedRate === carrierId ? null : carrierId;
+    const isUnchecking = selectedRate === carrierId;
+    const newSelectedRate = isUnchecking ? null : carrierId;
     setSelectedRate(newSelectedRate);
-    if (newSelectedRate) {
-      onRateSelected(rate, price); 
+  
+    if (isUnchecking) {
+      console.log("Checkbox unchecked for:", carrierId);
+      onRateSelected("", "");
+    } else {
+      console.log("Checkbox checked for:", carrierId);
+      onRateSelected(rate, price);
     }
   };
 
@@ -67,9 +82,11 @@ const ShippingRates = ({
           }
           {shippingRates && shippingRates.length > 0 && selectedShippingAddress?.permanent == 0 ? (
             <>
+            <div className="shippingbg_box">
               {sortedShippingRates.map((rate, index) => (
+                <>
                 <div key={index} className="rate-option">
-                  <label>
+                  <label className="d-flex align-items-start gap-2">
                     <input
                       type="checkbox"
                       value={rate.service_code}
@@ -84,7 +101,8 @@ const ShippingRates = ({
                         )
                       }
                     />
-                    &nbsp;&nbsp;{rate.carrier_friendly_name} -{" "}
+                    <div className="flex-grow-1">
+                    {rate.carrier_friendly_name} -{" "}
                     {rate.service_type}
                     {RequestQuote == 0 &&
                       " ($" +
@@ -92,16 +110,23 @@ const ShippingRates = ({
                           divideWeight * rate.shipping_amount.amount
                         ).toFixed(2) +
                         ")"}
+                        <br/>
+                        <b>Time in transit : {rate.delivery_days} - {rate.delivery_days + 1} Business Days</b>
+                        </div>
                   </label>
+                
                 </div>
+                  </>
+
               ))}
+              </div>
             </>
           ) : (
             <p> </p>
           )}
         </>
       ) : (
-        <p className="text-center">Please select shipping address</p>
+        <p className="text-center">Please select shipping address</p> 
       )}
     </div>
   );

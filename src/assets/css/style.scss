@@ -5280,3 +5280,23 @@ textarea.form-control {
 .custom-table .highlight-steel + .highlight-stainless .badgestatus.badgeadded-Stainless {
     display: block !important;
 }
+.shippingbg_box {
+    background: rgba($black-color, .04);
+    padding: 15px;
+    border-radius: 15px;
+    .rate-option {
+        padding-bottom: 15px;
+        &:last-child {
+            padding-bottom: 0px;
+        }
+        input[type="checkbox"] {
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        label {
+            b {
+                font-weight: 600;
+            }
+        }
+    }
+}

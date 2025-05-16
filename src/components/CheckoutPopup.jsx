@@ -162,7 +162,7 @@ const CheckoutPopup = ({
       if (rateVal === "") {
         toast.error("Please select a shipping method.");
         return;
-      }
+      } 
       if (shippingInfoData?.requestQuoteDB?.check_status == 0) {
         if (!selectedCard) {
           toast.error("Please select a payment card.");
@@ -215,6 +215,7 @@ const CheckoutPopup = ({
             id: loadingPayId?._id,
             billing_id: billingAddressId,
             address_id: selectedShippingAddressId,
+            card_token:'card_1RCDl1RvbSZ9KLdE9segF4Ik'
           };
           const res = await payment(data);
 
