@@ -102,16 +102,15 @@ const ShippingRates = ({
                       }
                     />
                     <div className="flex-grow-1">
-                    {rate.carrier_friendly_name} -{" "}
                     {rate.service_type}
                     {RequestQuote == 0 &&
-                      " ($" +
+                      " - $" +
                         parseFloat(
                           divideWeight * rate.shipping_amount.amount
                         ).toFixed(2) +
-                        ")"}
+                        ""}
                         <br/>
-                        <b>Time in transit : {rate.delivery_days} - {rate.delivery_days + 1} Business Days</b>
+                        <b>Time in transit : {rate.delivery_days} Business Day{rate.delivery_days > 1 ? 's' : '' }</b>
                         </div>
                   </label>
                 

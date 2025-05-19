@@ -388,18 +388,18 @@ const CheckOutPay = ({
                               }
                             />
                             <div className="flex-grow-1">
-                            UPS® Ground (
+                            UPS® Ground -&nbsp;
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
                                   ?.shipping_upsground_price
                               }
                             />
-                            )
+                            
                             <br/>
                             {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && (
                                     <b>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days + 1} Business days
+                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days > 1 ? 's' : ""}
                                     </b>
                             )}
                             </div>
@@ -422,18 +422,18 @@ const CheckOutPay = ({
                               }
                             />
                             <div className="flex-grow-1">
-                           UPS - UPS 2nd Day Air® (
+                           UPS 2nd Day Air® -&nbsp;
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
                                   ?.shipping_ups_2nd_day_air_price
                               }
                               />
-                            )
+                            
                             <br/>
                             {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_2nd_day_air")?.delivery_days && (
                                     <b>
-                                      Time in transit :  {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days + 1} Business days
+                                      Time in transit :  {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days > 1 ? 's' : ''}
                                     </b>
                             )}
                             </div>
@@ -459,18 +459,18 @@ const CheckOutPay = ({
                               }
                             />
                             <div className="flex-grow-1">
-                            UPS Next Day Air® (
+                            UPS Next Day Air® -&nbsp;
                             <Amount
                               amount={
                                 shippingInfo?.requestQuoteDB
                                   ?.shipping_upsair_price
                               }
                             />
-                            )
+                            
                             <br/>
                             {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_next_day_air")?.delivery_days && (
                                     <b>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days} - {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days + 1} Business days
+                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days > 1 ? 's' : ''} 
                                     </b>
                             )}
                           </div>

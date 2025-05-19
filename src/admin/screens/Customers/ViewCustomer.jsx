@@ -247,6 +247,7 @@ const ViewCustomer = () => {
                 </Col>
               </Row>
             </div>
+            <Link to="/admin/create-rfq" state={{name : customer.full_name,email:customer.email}}>Create RFQ</Link>
             <Tabs
               // defaultActiveKey="quotes"
               onSelect={handleTabSelect}
