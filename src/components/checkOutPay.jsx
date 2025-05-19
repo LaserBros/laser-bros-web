@@ -505,7 +505,7 @@ const CheckOutPay = ({
                           </div>
                         )}
                     </>
-                  ) : (
+                  ) : ( 
                     <ShippingRates
                       shippingRates={shippingInfo.shippingRates}
                       divideWeight={shippingInfo.divideWeight}
