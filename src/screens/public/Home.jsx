@@ -722,7 +722,7 @@ On top of being a really top-notch vendor to work with, they are an inspiration 
         </Container>
       </section>
       }
-      <section className="american-manufacturing">
+      <section className="american-manufacturing vinay_dev">
         <Container>
           <div className="heading mb-4 text-center">
             <h2>We Believe in American Manufacturing!</h2>
