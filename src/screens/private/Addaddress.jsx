@@ -3,8 +3,9 @@ import { Card, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
+import axiosAdminInstance from "../../admin/axios/axiosadminInstanse";
 
-export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
+export default function AddAddress({openPop,handleClose,setSuccessMessage,userId}) {
   const [formData, setFormData] = useState({ 
     full_name: "",
     nickname: "",
@@ -17,6 +18,7 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
     state: "",
     pincode: "",
     phone_number: "",
+    user_id:userId
   });
   const usStates = [
     "Alabama",
@@ -150,12 +152,22 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage}) {
     
     e.preventDefault();
     if (validateForm()) {
+      var response;
+      console.log("234567898765432346789876543456789098765434567890 ",userId)
       try {
         setLoading(true);
-        const response = await axiosInstance.post(
-          "/users/addAddress",
-          formData
-        );
+        if(userId) {
+          response = await axiosAdminInstance.post(
+            "/addUserAddressDetails",
+            formData
+          );
+        } else {
+          response = await axiosInstance.post(
+            "/users/addAddress",
+            formData
+          );
+        }
+        
         // console.log(response);
         toast.success("Address added sucessfully");
         setLoading(false);

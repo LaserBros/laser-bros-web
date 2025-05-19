@@ -4,7 +4,6 @@ import {
   Col,
   Container,
   Tab,
-  Nav,
   Tabs,
   Table,
   Form,
@@ -14,7 +13,6 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   AdmingetEditQuote,
-  getAllCustomers,
   getParticularProfile,
   getParticularUserQuotes,
   updateCustomerTaxExempt,
@@ -30,7 +28,6 @@ import OrderStatus from "../../components/OrderStatus";
 import { toast } from "react-toastify";
 const ViewCustomer = () => {
   const navigate = useNavigate();
-  const [checkedItems, setCheckedItems] = useState({});
 
   const { id } = useParams();
   const [customer, setCustomer] = useState([]);
@@ -47,7 +44,7 @@ const ViewCustomer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, settotalPage] = useState(10);
   const [itemsPerPage] = useState(10);
-
+ 
   function formatPhoneNumber(input) {
     const cleanInput = input.replace(/\D/g, "");
 
@@ -88,7 +85,7 @@ const ViewCustomer = () => {
         id: id,
         tax_exempt: value,
       };
-      const res = await updateCustomerTaxExempt(data);
+      await updateCustomerTaxExempt(data);
       setIsTaxExempt(value);
       toast.success("Customer tax settings updated");
     } catch (error) {
@@ -126,11 +123,11 @@ const ViewCustomer = () => {
     }));
     try {
       setLoadingBtn(true);
-      const res = await updateQuoteState(id, status);
-      if (status == 2) {
+      await updateQuoteState(id, status);
+      if (status === 2) {
         toast.success("RFQ accepted successfully");
       }
-      if (status == 3) {
+      if (status === 3) {
         toast.success("RFQ rejected successfully");
       }
     } catch (error) {
@@ -230,7 +227,7 @@ const ViewCustomer = () => {
                     <Form>
                       <Form.Check
                         type="checkbox"
-                        id="taxExempt"
+                        id="taxExempt" 
                         label="Yes"
                         checked={isTaxExempt == 1 ? true : false}
                         onChange={() => handleCheckboxChange(1)}
@@ -247,7 +244,8 @@ const ViewCustomer = () => {
                 </Col>
               </Row>
             </div>
-            <Tabs
+            <Link to="/admin/create-rfq" state={{name : customer.full_name,email:customer.email,user_id:id,passData:true}}>Create RFQ</Link>
+            <Tabs 
               // defaultActiveKey="quotes"
               onSelect={handleTabSelect}
               // activeKey={currentTab}

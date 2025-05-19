@@ -46,7 +46,7 @@ export const updateDimensionStatus = async (data) => {
   try {
     const response = await axiosInstance.post(
       `/users/updateDimensionStatus`,
-      data
+      data 
     );
     return response.data;
   } catch (error) {
@@ -2173,6 +2173,35 @@ export const uploadQuoteAdmin = async (formData) => {
     return response.data;
   } catch (error) {
     console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const uploadQuoteCustomer = async (formData) => {
+  try {
+    const response = await axiosAdminInstance.post(`/uploadCustomerDxfAdmin`, formData);
+    // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
+    // console.log("responseeee ------", response.data);
+    // return;
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerAddress = async (user_id) => {
+  return axiosAdminInstance.get("/getUserAddressDetails?user_id="+user_id);
+};
+
+
+export const getCustomerCard = async () => {
+  try {
+    const response = await axiosInstance.get(`/getUserCards`);
+    return response.data;
+  } catch (error) {
+    console.error("Error setting address as default:");
     throw error;
   }
 };

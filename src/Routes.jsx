@@ -23,7 +23,6 @@ import DataBase from "./admin/screens/Database";
 import EditFinishing from "./admin/screens/Database/EditFinishing";
 import EditQty from "./admin/screens/Database/EditQty";
 import EditMaterial from "./admin/screens/Database/EditMaterial";
-import AddQty from "./admin/components/AddQty";
 import AddQtyDatabase from "./admin/screens/Database/AddQty";
 import AddFinish from "./admin/screens/Database/AddFinish";
 import AddMaterial from "./admin/screens/Database/AddMaterial";
@@ -47,8 +46,7 @@ import EmpRfqsDetail from "./employee/screens/RFQS/Rfqsdetail";
 import EmpEditRFQS from "./employee/screens/Quotes/EditQuote";
 import EmpViewRFQS from "./employee/screens/Quotes/viewRFQ";
 import EmpCompleteOrders from "./employee/screens/Orders/complete";
-import EmpEmploye from "./employee/screens/Employe";
-import EmpAddEmp from "./employee/screens/Employe/AddEmp";
+
 import EmpShippingAddress from "./employee/screens/Orders/Shipping";
 import EmpCustomers from "./employee/screens/Customers";
 import EmpViewCustomer from "./employee/screens/Customers/ViewCustomer";
@@ -56,12 +54,12 @@ import EmpDataBase from "./employee/screens/Database";
 import EmpEditFinishing from "./employee/screens/Database/EditFinishing";
 import EmpEditQty from "./employee/screens/Database/EditQty";
 import EmpEditMaterial from "./employee/screens/Database/EditMaterial";
-import EmpAddQty from "./employee/components/AddQty";
+
 import EmpAddQtyDatabase from "./employee/screens/Database/AddQty";
 import EmpAddFinish from "./employee/screens/Database/AddFinish";
 import EmpAddMaterial from "./employee/screens/Database/AddMaterial";
 import EmpAddThickness from "./employee/screens/Database/AddThickness";
-import EmpAdminLayout from "./employee/Layout";
+// import EmpAdminLayout from "./employee/Layout";
 
 // import EmpDashboard from "./employee/screens/Dashboard";
 // import EmpPaymentHistory from "./employee/screens/Payments";
