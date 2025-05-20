@@ -206,6 +206,7 @@ const CheckOutPay = ({
           formData.append("po_number", poNumberText);
           formData.append("po_upload", fileUpload);
           formData.append("type", activeTab);
+          formData.append("card_token", "card_1RCDl1RvbSZ9KLdE9segF4Ik");
           const res = await payment(formData);
 
           try {
