@@ -210,7 +210,7 @@ const CustomerCheckoutPopup = ({
           localStorage.setItem("CustomersetItempartsDBdata", "");
           toast.success("Request quote sent successfully");
           setLoading(false);
-          navigate("/admin/quotes");
+          navigate("/admin/rfqs");
         
       } catch (error) {
         setLoading(false);
