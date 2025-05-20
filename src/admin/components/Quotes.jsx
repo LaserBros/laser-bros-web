@@ -21,6 +21,7 @@ const QuoteRow = ({ row, EditQuote }) => {
       <td className="text-nowrap">
         <MaterialBadge materialDetails={row?.material_details} />
       </td>
+   
       <td>
         <Amount
           amount={
@@ -30,11 +31,22 @@ const QuoteRow = ({ row, EditQuote }) => {
         />
       </td>
       <td>{row.customer_name}</td>
+      <td>
+      {row.status === 5 ?
+        'Draft' : ''
+      }  
+      </td>
       <td className="text-end">
         <div className="d-inline-flex align-items-center gap-3">
+        {row.status === 5 ?
+          <Link className="btnedit" onClick={() => EditQuote(row._id,row.status)}>
+          <Icon icon="teenyicons:eye-outline" /> Edit
+        </Link>
+        :
           <Link className="btnedit" onClick={() => EditQuote(row._id)}>
             <Icon icon="teenyicons:eye-outline" />
           </Link>
+        }
         </div>
       </td>
     </tr>

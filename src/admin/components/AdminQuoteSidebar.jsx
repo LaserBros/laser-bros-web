@@ -22,7 +22,7 @@ import ShippingRates from "../../components/ShippingRates";
 import CheckOutPay from "../../components/checkOutPay";
 import AddCard from "../../components/Addcard";
 import { Tooltip } from "react-tooltip";
-import CustomerCheckoutPopup from "./checkoutPopup";
+import CustomerCheckoutPopup from "./CustomercheckoutPopup";
 const AdminQuotesSidebar = ({
   amount,
   showDiv,
@@ -443,38 +443,12 @@ const AdminQuotesSidebar = ({
                         role="status"
                         aria-hidden="true"
                       ></span>
-                    ) : buttonText == 1 ? (
-                      "Request a Quote" 
-                    ) : (
-                      "Proceed to checkout"
-                    )}
+                    ) : "Add Pay Information" }
                   </Button>
               </>
             ) : (
               <>
-                <div className="text-center">
-                  <p className="order-cont-btm mb-0 mt-3 text-center">
-                    Price is for cutting only.
-                  </p>
-                  <p className="order-cont-btm mb-0 mt-1 text-center">
-                    Please login or sign up to see shipping rates.
-                  </p>
-                </div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <Button
-                    variant={null}
-                    className="w-100 me-2 btn-outline-primary mt-3"
-                    onClick={() => navigate("/login")}
-                  >
-                    Sign In
-                  </Button>
-                  <Button
-                    className="w-100 mt-3"
-                    onClick={() => navigate("/SignUp")}
-                  >
-                    Sign Up
-                  </Button>
-                </div>
+              
               </>
             )}
             {/* <hr className="quotes-separator" /> */}
@@ -772,6 +746,7 @@ const AdminQuotesSidebar = ({
           setSuccessMessage={setSuccessMessage}
           show={modalShowPay}
           successMessage={successMessage}
+          totalAmount = {parseFloat(amount) + parseFloat(bendAmount)}
           handleShow={handleShow}
           showPopup={showModal}
           handleCloseModal={handleCloseModal}

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Container,
-  Tab,
-  Tabs,
-  Table,
-  Form,
-} from "react-bootstrap";
+import { Row, Col, Container, Tab, Tabs, Table, Form } from "react-bootstrap";
 // import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -29,7 +21,7 @@ import { toast } from "react-toastify";
 const ViewCustomer = () => {
   const navigate = useNavigate();
 
-  const { id } = useParams();
+  const { userid } = useParams();
   const [customer, setCustomer] = useState([]);
   const [Quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,9 +36,9 @@ const ViewCustomer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, settotalPage] = useState(10);
   const [itemsPerPage] = useState(10);
- 
+
   function formatPhoneNumber(input) {
-    const cleanInput = input.replace(/\D/g, "");
+    const cleanInput = input?.replace(/\D/g, "");
 
     // Dynamically add "-" based on input length
     if (cleanInput.length <= 3) {
@@ -61,12 +53,30 @@ const ViewCustomer = () => {
     }
   }
 
-  const EditQuote = async (id) => {
+  const EditQuote = async (id,status) => {
+
     const data = {
       id: id,
     };
     const res = await AdmingetEditQuote(data);
-    // console.log(res);
+    if(status === 5) {
+    localStorage.setItem(
+      "CustomersetItemelementData", 
+      JSON.stringify(res.data.requestQuoteDB)
+    );
+
+    localStorage.setItem(
+      "CustomersetItempartsDBdata",
+      JSON.stringify(res.data.partsDBdata)
+    );
+    navigate("/admin/customers/rfq-detail" , {state : {
+      name: customer.full_name,
+      email: customer.email,
+      user_id: userid,
+      passData: false,
+    } });
+  } else {
+
     localStorage.setItem(
       "setItempartsDBdataAdmin",
       JSON.stringify(res.data.partsDBdata)
@@ -77,12 +87,13 @@ const ViewCustomer = () => {
     );
     localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
     navigate("/admin/quotes/view-quote");
+  }
   };
   const [isTaxExempt, setIsTaxExempt] = useState("");
   const handleCheckboxChange = async (value) => {
     try {
       const data = {
-        id: id,
+        id: userid,
         tax_exempt: value,
       };
       await updateCustomerTaxExempt(data);
@@ -96,7 +107,7 @@ const ViewCustomer = () => {
   const loadCustomer = async (page) => {
     try {
       const data = {
-        id: id,
+        id: userid,
       };
       setLoading(true);
       setCustomer([]);
@@ -119,7 +130,7 @@ const ViewCustomer = () => {
     const status = type;
     setLoadingRows((prevState) => ({
       ...prevState,
-      [id]: true,
+      [userid]: true,
     }));
     try {
       setLoadingBtn(true);
@@ -136,7 +147,7 @@ const ViewCustomer = () => {
       // Reset loading state for the specific row
       setLoadingRows((prevState) => ({
         ...prevState,
-        [id]: false,
+        [userid]: false,
       }));
       setLoadingBtn(false);
       setModalShow(false);
@@ -147,7 +158,7 @@ const ViewCustomer = () => {
   const getParticularUser = async (page = 1, type = currentTab) => {
     try {
       const data = {
-        id: id,
+        id: userid,
         type: type,
         page: page,
       };
@@ -227,7 +238,7 @@ const ViewCustomer = () => {
                     <Form>
                       <Form.Check
                         type="checkbox"
-                        id="taxExempt" 
+                        id="taxExempt"
                         label="Yes"
                         checked={isTaxExempt == 1 ? true : false}
                         onChange={() => handleCheckboxChange(1)}
@@ -244,8 +255,18 @@ const ViewCustomer = () => {
                 </Col>
               </Row>
             </div>
-            <Link to="/admin/create-rfq" state={{name : customer.full_name,email:customer.email,user_id:id,passData:true}}>Create RFQ</Link>
-            <Tabs 
+            <Link
+              to="/admin/customers/rfq-detail"
+              state={{
+                name: customer.full_name,
+                email: customer.email,
+                user_id: userid,
+                passData: true,
+              }}
+            >
+              Create RFQ
+            </Link>
+            <Tabs
               // defaultActiveKey="quotes"
               onSelect={handleTabSelect}
               // activeKey={currentTab}
@@ -290,15 +311,15 @@ const ViewCustomer = () => {
                             )}
                           </tbody>
                         </table>
+                        {totalPage > 10 && (
+                          <Pagination
+                            totalItems={totalPage}
+                            itemsPerPage={itemsPerPage}
+                            currentPage={currentPage}
+                            onPageChange={onPageChange}
+                          />
+                        )}
                       </div>
-                      {totalPage > 10 && (
-                        <Pagination
-                          totalItems={totalPage}
-                          itemsPerPage={itemsPerPage}
-                          currentPage={currentPage}
-                          onPageChange={onPageChange}
-                        />
-                      )}
                     </div>
                   </div>
                 </div>

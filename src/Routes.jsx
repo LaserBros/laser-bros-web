@@ -170,7 +170,7 @@ return (
     />
 
 <Route
-      path="/admin/create-rfq"
+      path="/admin/customers/rfq-detail"
       element={
         <AdminRoute
           element={
@@ -435,7 +435,7 @@ return (
       }
     ></Route>
     <Route
-      path="/admin/customers/:id"
+      path="/admin/customers/:userid"
       element={
         <AdminRoute
           element={

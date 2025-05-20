@@ -622,7 +622,7 @@ export default function AdminCustomerRFQ() {
 
   useEffect(() => {
     const storedData = localStorage.getItem("CustomersetItempartsDBdata");
-    const quote_list = localStorage.getItem("CustomersetItempartsDBdata");
+    const quote_list = localStorage.getItem("CustomersetItemelementData");
 
     if (storedData) {
       const parsedData = JSON.parse(storedData);
@@ -1156,7 +1156,7 @@ export default function AdminCustomerRFQ() {
 
     localStorage.removeItem("CustomersetItempartsDBdata");
     // console.log("SDdsd");
-    navigate("/quotes");
+    navigate(-1);
   };
   return (
     <React.Fragment>
@@ -1176,19 +1176,17 @@ export default function AdminCustomerRFQ() {
             )}
             <div className="d-inline-flex gap-2">
               {/* <Link className="btnshare">Share Quote</Link> */}
-              <Link
-                className="btn btn-primary d-inline-flex align-items-center  justify-content-center min-width-250"
-                onClick={BackQuote}
-                to={"/quotes"}
-              >
-                Back To Quotes
-              </Link>
+              <button
+  className="btn btn-primary d-inline-flex align-items-center justify-content-center min-width-250"
+  onClick={BackQuote}
+>
+                Back To Customer
+              </button>
               {/* <Link className="btnicon">
                 <Icon icon="bytesize:upload" />
               </Link> */}
             </div>
           </div>
-          {name},{email},{user_id}
           <Row>
             <Col lg={8} xl={9}>
               <AdminFileUpload
