@@ -165,12 +165,12 @@ const CustomerCheckoutPopup = ({
         toast.error("Please select a shipping method.");
         return;
       } 
-      if (shippingInfoData?.requestQuoteDB?.check_status == 0) {
-        if (!selectedCard) {
-          toast.error("Please select a payment card.");
-          return;
-        }
-      }
+      // if (shippingInfoData?.requestQuoteDB?.check_status == 0) {
+      //   if (!selectedCard) {
+      //     toast.error("Please select a payment card.");
+      //     return;
+      //   }
+      // }
       const billingAddressId = isSameAsShipping
         ? selectedShippingAddress._id
         : selectedAddress?._id;
