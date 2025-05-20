@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Tab, Tabs, Table, Form } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Tab,
+  Tabs,
+  Table,
+  Form,
+  Button,
+} from "react-bootstrap";
 // import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -20,7 +29,7 @@ import OrderStatus from "../../components/OrderStatus";
 import { toast } from "react-toastify";
 const ViewCustomer = () => {
   const navigate = useNavigate();
-
+  const [key, setKey] = useState("Quotes");
   const { userid } = useParams();
   const [customer, setCustomer] = useState([]);
   const [Quotes, setQuotes] = useState([]);
@@ -53,41 +62,44 @@ const ViewCustomer = () => {
     }
   }
 
-  const EditQuote = async (id,status) => {
-
+  const EditQuote = async (id, status) => {
     const data = {
       id: id,
     };
     const res = await AdmingetEditQuote(data);
-    if(status === 5) {
-    localStorage.setItem(
-      "CustomersetItemelementData", 
-      JSON.stringify(res.data.requestQuoteDB)
-    );
+    if (status === 5) {
+      localStorage.setItem(
+        "CustomersetItemelementData",
+        JSON.stringify(res.data.requestQuoteDB)
+      );
 
-    localStorage.setItem(
-      "CustomersetItempartsDBdata",
-      JSON.stringify(res.data.partsDBdata)
-    );
-    navigate("/admin/customers/rfq-detail" , {state : {
-      name: customer.full_name,
-      email: customer.email,
-      user_id: userid,
-      passData: false,
-    } });
-  } else {
-
-    localStorage.setItem(
-      "setItempartsDBdataAdmin",
-      JSON.stringify(res.data.partsDBdata)
-    );
-    localStorage.setItem(
-      "setItemelementDataAdmin",
-      JSON.stringify(res.data.requestQuoteDB)
-    );
-    localStorage.setItem("UserDataAdmin", JSON.stringify(res.data?.userDBdata));
-    navigate("/admin/quotes/view-quote");
-  }
+      localStorage.setItem(
+        "CustomersetItempartsDBdata",
+        JSON.stringify(res.data.partsDBdata)
+      );
+      navigate("/admin/customers/rfq-detail", {
+        state: {
+          name: customer.full_name,
+          email: customer.email,
+          user_id: userid,
+          passData: false,
+        },
+      });
+    } else {
+      localStorage.setItem(
+        "setItempartsDBdataAdmin",
+        JSON.stringify(res.data.partsDBdata)
+      );
+      localStorage.setItem(
+        "setItemelementDataAdmin",
+        JSON.stringify(res.data.requestQuoteDB)
+      );
+      localStorage.setItem(
+        "UserDataAdmin",
+        JSON.stringify(res.data?.userDBdata)
+      );
+      navigate("/admin/quotes/view-quote");
+    }
   };
   const [isTaxExempt, setIsTaxExempt] = useState("");
   const handleCheckboxChange = async (value) => {
@@ -181,6 +193,7 @@ const ViewCustomer = () => {
     settotalPage(1);
     setCurrentPage(1);
     setCurrentTab(tabKey);
+    setKey(tabKey);
     getParticularUser(1, tabKey);
   };
   const onPageChange = (pageNumber) => {
@@ -191,6 +204,7 @@ const ViewCustomer = () => {
     loadCustomer(currentPage);
     setCurrentTab("quotes");
     getParticularUser(1, "quotes");
+    setKey("quotes");
   }, []);
 
   return (
@@ -255,30 +269,265 @@ const ViewCustomer = () => {
                 </Col>
               </Row>
             </div>
-            <Link
-              to="/admin/customers/rfq-detail"
-              state={{
-                name: customer.full_name,
-                email: customer.email,
-                user_id: userid,
-                passData: true,
-              }}
-            >
-              Create RFQ
-            </Link>
-            <Tabs
-              // defaultActiveKey="quotes"
-              onSelect={handleTabSelect}
-              // activeKey={currentTab}
-              id="uncontrolled-tab-example"
-              className="viewCustomerTabs_div"
-            >
-              <Tab eventKey="quotes" title="Quotes">
-                <div className="wrapper">
-                  <div className="maincontent_diva">
-                    <div className="card ">
-                      <div className="card-body">
-                        <table className="tablecustom table">
+            <div className="d-flex align-items-center justify-content-between flex-wrap g-3">
+              <Tabs
+                activeKey={key}
+                onSelect={(k) => handleTabSelect(k)}
+                id="uncontrolled-tab-example"
+                className="viewCustomerTabs_div"
+              >
+                <Tab eventKey="quotes" title="Quotes" />
+                <Tab eventKey="rfq" title="RFQ's" />
+                <Tab eventKey="orders" title="Orders" />
+              </Tabs>
+
+              <Button
+                as={Link}
+                to="/admin/customers/rfq-detail"
+                className="flex-shrink-0 d-inline-flex align-items-center"
+                state={{
+                  name: customer.full_name,
+                  email: customer.email,
+                  user_id: userid,
+                  passData: true,
+                }}
+              >
+                Create RFQ
+              </Button>
+            </div>
+            {key === "quotes" && (
+              <div className="wrapper">
+                <div className="maincontent_diva">
+                  <div className="card ">
+                    <div className="card-body">
+                      <table className="tablecustom table">
+                        <tbody>
+                          {loadingData ? (
+                            <>
+                              <span
+                                role="status"
+                                aria-hidden="true"
+                                className="spinner-border spinner-border-sm text-center"
+                                style={{
+                                  margin: "0 auto",
+                                  display: "block",
+                                  marginTop: "20px",
+                                  marginBottom: "20px",
+                                }}
+                              ></span>
+                            </>
+                          ) : Quotes && Quotes.length === 0 ? (
+                            <Col>
+                              <p className="text-center gpwTNyClass">
+                                <i>No Quote's to Display</i>
+                              </p>
+                            </Col>
+                          ) : (
+                            Quotes.map((row) => (
+                              <QuoteRow
+                                key={row._id}
+                                row={row}
+                                EditQuote={EditQuote}
+                              />
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                      {totalPage > 10 && (
+                        <Pagination
+                          totalItems={totalPage}
+                          itemsPerPage={itemsPerPage}
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {key === "rfq" && (
+              <div className="wrapper">
+                <div className="maincontent_diva">
+                  <div className="card pb-4">
+                    <div className="card-body">
+                      <div className="table-responsive">
+                        <Table className="tablecustom pt-0">
+                          <tbody>
+                            {loadingData ? (
+                              <Col>
+                                <span
+                                  role="status"
+                                  aria-hidden="true"
+                                  className="spinner-border spinner-border-sm text-center"
+                                  style={{
+                                    margin: "0 auto",
+                                    display: "block",
+                                    marginTop: "20px",
+                                    marginBottom: "20px",
+                                  }}
+                                ></span>
+                              </Col>
+                            ) : Quotes.length === 0 ? (
+                              <Col>
+                                <p className="text-center gpwTNyClass">
+                                  <i>No RFQ’s to Display</i>
+                                </p>
+                              </Col>
+                            ) : (
+                              Quotes.map((row) => {
+                                return (
+                                  <React.Fragment>
+                                    <tr>
+                                      <td className="text-nowrap">
+                                        <Link
+                                          // to="/admin/rfqs/rfqs-detail"
+                                          className="workorders"
+                                          // onClick={() => getQueue(row._id)}
+                                        >
+                                          <b>
+                                            WO#
+                                            {row.search_quote}
+                                          </b>
+                                        </Link>
+                                      </td>
+                                      <td>
+                                        <DateFormat
+                                          dateString={row.createdAt}
+                                        />
+                                      </td>
+
+                                      <td className="text-nowrap">
+                                        <MaterialBadge
+                                          materialDetails={row.material_details}
+                                        />
+                                      </td>
+
+                                      <td className="text-nowrap">
+                                        <div className="d-inline-flex align-items-center gap-3">
+                                          {row.status == 1 ? (
+                                            <>
+                                              <Link
+                                                className="btnaccept"
+                                                // onClick={() => changeStatus(2, row._id)}
+                                                onClick={() => {
+                                                  setModalShow(true);
+                                                  setTitle(
+                                                    "Are you sure you want to accept this quote?"
+                                                  );
+                                                  setIds(row._id);
+                                                  setType(2);
+                                                }}
+                                              >
+                                                {loadingRows[row._id] ? (
+                                                  <span
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                    className="spinner-border spinner-border-sm"
+                                                  ></span>
+                                                ) : (
+                                                  <>
+                                                    <Icon icon="icon-park-outline:check-one" />
+                                                    Accept
+                                                  </>
+                                                )}
+                                              </Link>
+                                              <Link
+                                                className="btnreject"
+                                                // onClick={() => changeStatus(3, row._id)}
+                                                onClick={() => {
+                                                  setModalShow(true);
+                                                  setTitle(
+                                                    "Are you sure you want to reject this quote?"
+                                                  );
+                                                  setIds(row._id);
+                                                  setType(3);
+                                                }}
+                                              >
+                                                {loadingRows[row._id] ? (
+                                                  <span
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                    className="spinner-border spinner-border-sm"
+                                                  ></span>
+                                                ) : (
+                                                  <>
+                                                    <Icon icon="ion:close-circle-outline" />
+                                                    Reject
+                                                  </>
+                                                )}
+                                              </Link>
+                                            </>
+                                          ) : row.status == 2 ? (
+                                            <>
+                                              <p className="text-success mb-0">
+                                                RFQ Accepted. Waiting for
+                                                payment
+                                              </p>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <p className="text-danger mb-0">
+                                                RFQ Rejected. Waiting for
+                                                payment
+                                              </p>
+                                            </>
+                                          )}
+                                        </div>
+                                      </td>
+                                      <td>
+                                        {(row.status == 1 ||
+                                          row.status == 2) && (
+                                          <Link
+                                            className="btnaccept"
+                                            onClick={() => EditQuote(row._id)}
+                                          >
+                                            <Icon icon="tabler:edit" />
+                                            Edit Quote
+                                          </Link>
+                                        )}
+                                      </td>
+                                      <td className="text-nowrap">
+                                        {new Intl.NumberFormat("en-US", {
+                                          style: "currency",
+                                          currency: "USD", // Change to your desired currency
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        }).format(
+                                          row.total_amount +
+                                            row.total_bend_price
+                                        )}
+                                      </td>
+                                    </tr>
+                                  </React.Fragment>
+                                );
+                              })
+                            )}
+                          </tbody>
+                        </Table>
+                      </div>
+                      {!loadingData && totalPage > 10 && (
+                        <Pagination
+                          totalItems={totalPage}
+                          itemsPerPage={itemsPerPage}
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {key == "orders" && (
+              <div className="wrapper">
+                <div className="maincontent_diva">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="table-responsive">
+                        <Table className="tablecustom pt-0">
                           <tbody>
                             {loadingData ? (
                               <>
@@ -294,74 +543,16 @@ const ViewCustomer = () => {
                                   }}
                                 ></span>
                               </>
-                            ) : Quotes && Quotes.length === 0 ? (
-                              <Col>
-                                <p className="text-center gpwTNyClass">
-                                  <i>No Quote's to Display</i>
-                                </p>
-                              </Col>
                             ) : (
-                              Quotes.map((row) => (
-                                <QuoteRow
-                                  key={row._id}
-                                  row={row}
-                                  EditQuote={EditQuote}
-                                />
-                              ))
-                            )}
-                          </tbody>
-                        </table>
-                        {totalPage > 10 && (
-                          <Pagination
-                            totalItems={totalPage}
-                            itemsPerPage={itemsPerPage}
-                            currentPage={currentPage}
-                            onPageChange={onPageChange}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Tab>
-              <Tab eventKey="rfq" title="RFQ's">
-                <div className="wrapper">
-                  <div className="maincontent_diva">
-                    <div className="card pb-4">
-                      <div className="card-body">
-                        <div className="table-responsive">
-                          <Table className="tablecustom pt-0">
-                            <tbody>
-                              {loadingData ? (
-                                <Col>
-                                  <span
-                                    role="status"
-                                    aria-hidden="true"
-                                    className="spinner-border spinner-border-sm text-center"
-                                    style={{
-                                      margin: "0 auto",
-                                      display: "block",
-                                      marginTop: "20px",
-                                      marginBottom: "20px",
-                                    }}
-                                  ></span>
-                                </Col>
-                              ) : Quotes.length === 0 ? (
-                                <Col>
-                                  <p className="text-center gpwTNyClass">
-                                    <i>No RFQ’s to Display</i>
-                                  </p>
-                                </Col>
-                              ) : (
-                                Quotes.map((row) => {
-                                  return (
-                                    <React.Fragment>
+                              <>
+                                {Quotes && Quotes.length > 0 ? (
+                                  Quotes.map((row) => {
+                                    return (
                                       <tr>
-                                        <td className="text-nowrap">
+                                        <td>
                                           <Link
-                                            // to="/admin/rfqs/rfqs-detail"
                                             className="workorders"
-                                            // onClick={() => getQueue(row._id)}
+                                            to={`/admin/orders-detail/${row._id}`}
                                           >
                                             <b>
                                               WO#
@@ -374,7 +565,6 @@ const ViewCustomer = () => {
                                             dateString={row.createdAt}
                                           />
                                         </td>
-
                                         <td className="text-nowrap">
                                           <MaterialBadge
                                             materialDetails={
@@ -382,201 +572,31 @@ const ViewCustomer = () => {
                                             }
                                           />
                                         </td>
-
                                         <td className="text-nowrap">
-                                          <div className="d-inline-flex align-items-center gap-3">
-                                            {row.status == 1 ? (
-                                              <>
-                                                <Link
-                                                  className="btnaccept"
-                                                  // onClick={() => changeStatus(2, row._id)}
-                                                  onClick={() => {
-                                                    setModalShow(true);
-                                                    setTitle(
-                                                      "Are you sure you want to accept this quote?"
-                                                    );
-                                                    setIds(row._id);
-                                                    setType(2);
-                                                  }}
-                                                >
-                                                  {loadingRows[row._id] ? (
-                                                    <span
-                                                      role="status"
-                                                      aria-hidden="true"
-                                                      className="spinner-border spinner-border-sm"
-                                                    ></span>
-                                                  ) : (
-                                                    <>
-                                                      <Icon icon="icon-park-outline:check-one" />
-                                                      Accept
-                                                    </>
-                                                  )}
-                                                </Link>
-                                                <Link
-                                                  className="btnreject"
-                                                  // onClick={() => changeStatus(3, row._id)}
-                                                  onClick={() => {
-                                                    setModalShow(true);
-                                                    setTitle(
-                                                      "Are you sure you want to reject this quote?"
-                                                    );
-                                                    setIds(row._id);
-                                                    setType(3);
-                                                  }}
-                                                >
-                                                  {loadingRows[row._id] ? (
-                                                    <span
-                                                      role="status"
-                                                      aria-hidden="true"
-                                                      className="spinner-border spinner-border-sm"
-                                                    ></span>
-                                                  ) : (
-                                                    <>
-                                                      <Icon icon="ion:close-circle-outline" />
-                                                      Reject
-                                                    </>
-                                                  )}
-                                                </Link>
-                                              </>
-                                            ) : row.status == 2 ? (
-                                              <>
-                                                <p className="text-success mb-0">
-                                                  RFQ Accepted. Waiting for
-                                                  payment
-                                                </p>
-                                              </>
-                                            ) : (
-                                              <>
-                                                <p className="text-danger mb-0">
-                                                  RFQ Rejected. Waiting for
-                                                  payment
-                                                </p>
-                                              </>
-                                            )}
-                                          </div>
-                                        </td>
-                                        <td>
-                                          {(row.status == 1 ||
-                                            row.status == 2) && (
-                                            <Link
-                                              className="btnaccept"
-                                              onClick={() => EditQuote(row._id)}
-                                            >
-                                              <Icon icon="tabler:edit" />
-                                              Edit Quote
-                                            </Link>
-                                          )}
+                                          <span className="statusnew">
+                                            <OrderStatus status={row.status} />
+                                          </span>
                                         </td>
                                         <td className="text-nowrap">
+                                          {" "}
                                           {new Intl.NumberFormat("en-US", {
                                             style: "currency",
                                             currency: "USD", // Change to your desired currency
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2,
-                                          }).format(
-                                            row.total_amount +
-                                              row.total_bend_price
-                                          )}
+                                          }).format(row.total_amount)}
                                         </td>
-                                      </tr>
-                                    </React.Fragment>
-                                  );
-                                })
-                              )}
-                            </tbody>
-                          </Table>
-                        </div>
-                        {!loadingData && totalPage > 10 && (
-                          <Pagination
-                            totalItems={totalPage}
-                            itemsPerPage={itemsPerPage}
-                            currentPage={currentPage}
-                            onPageChange={onPageChange}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Tab>
-              <Tab eventKey="orders" title="Orders">
-                <div className="wrapper">
-                  <div className="maincontent_diva">
-                    <div className="card">
-                      <div className="card-body">
-                        <div className="table-responsive">
-                          <Table className="tablecustom pt-0">
-                            <tbody>
-                              {loadingData ? (
-                                <>
-                                  <span
-                                    role="status"
-                                    aria-hidden="true"
-                                    className="spinner-border spinner-border-sm text-center"
-                                    style={{
-                                      margin: "0 auto",
-                                      display: "block",
-                                      marginTop: "20px",
-                                      marginBottom: "20px",
-                                    }}
-                                  ></span>
-                                </>
-                              ) : (
-                                <>
-                                  {Quotes && Quotes.length > 0 ? (
-                                    Quotes.map((row) => {
-                                      return (
-                                        <tr>
-                                          <td>
-                                            <Link
-                                              className="workorders"
-                                              to={`/admin/orders-detail/${row._id}`}
-                                            >
-                                              <b>
-                                                WO#
-                                                {row.search_quote}
-                                              </b>
-                                            </Link>
-                                          </td>
-                                          <td>
-                                            <DateFormat
-                                              dateString={row.createdAt}
-                                            />
-                                          </td>
-                                          <td className="text-nowrap">
-                                            <MaterialBadge
-                                              materialDetails={
-                                                row.material_details
-                                              }
-                                            />
-                                          </td>
-                                          <td className="text-nowrap">
-                                            <span className="statusnew">
-                                              <OrderStatus
-                                                status={row.status}
-                                              />
-                                            </span>
-                                          </td>
-                                          <td className="text-nowrap">
-                                            {" "}
-                                            {new Intl.NumberFormat("en-US", {
-                                              style: "currency",
-                                              currency: "USD", // Change to your desired currency
-                                              minimumFractionDigits: 2,
-                                              maximumFractionDigits: 2,
-                                            }).format(row.total_amount)}
-                                          </td>
-                                          {/* <td className="text-nowrap">
+                                        {/* <td className="text-nowrap">
                           <b>Due:</b>
                           {row.due}
                         </td> */}
-                                          <td className="text-end">
-                                            {row.move_status == 0 && (
-                                              <div className="d-inline-flex align-items-center gap-3">
-                                                {/* <Link className="btnedit">
+                                        <td className="text-end">
+                                          {row.move_status == 0 && (
+                                            <div className="d-inline-flex align-items-center gap-3">
+                                              {/* <Link className="btnedit">
                               <Icon icon="teenyicons:edit-outline" />
                             </Link> */}
-                                                {/* <Form.Check
+                                              {/* <Form.Check
                                                 type="checkbox"
                                                 checked={
                                                   checkedItems[row._id] || false
@@ -585,39 +605,38 @@ const ViewCustomer = () => {
                                                   handleCheckboxChange(row._id)
                                                 }
                                               /> */}
-                                              </div>
-                                            )}
-                                          </td>
-                                        </tr>
-                                      );
-                                    })
-                                  ) : (
-                                    <p className="text-center mt-2 gpwTNyClass">
-                                      <i className="gpwTNyClass">
-                                        {" "}
-                                        No Orders to Display{" "}
-                                      </i>
-                                    </p>
-                                  )}
-                                </>
-                              )}
-                            </tbody>
-                          </Table>
-                        </div>
-                        {!loadingData && totalPage > 10 && (
-                          <Pagination
-                            totalItems={totalPage}
-                            itemsPerPage={itemsPerPage}
-                            currentPage={currentPage}
-                            onPageChange={onPageChange}
-                          />
-                        )}
+                                            </div>
+                                          )}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })
+                                ) : (
+                                  <p className="text-center mt-2 gpwTNyClass">
+                                    <i className="gpwTNyClass">
+                                      {" "}
+                                      No Orders to Display{" "}
+                                    </i>
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </tbody>
+                        </Table>
                       </div>
+                      {!loadingData && totalPage > 10 && (
+                        <Pagination
+                          totalItems={totalPage}
+                          itemsPerPage={itemsPerPage}
+                          currentPage={currentPage}
+                          onPageChange={onPageChange}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
-              </Tab>
-            </Tabs>
+              </div>
+            )}
           </Container>
         )}
       </section>

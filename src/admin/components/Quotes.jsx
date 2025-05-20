@@ -33,14 +33,17 @@ const QuoteRow = ({ row, EditQuote }) => {
       <td>{row.customer_name}</td>
       <td>
       {row.status === 5 ?
-        'Draft' : ''
+      <>
+        <p className="draft_default">Draft</p>
+        </>
+         : ''
       }  
       </td>
       <td className="text-end">
         <div className="d-inline-flex align-items-center gap-3">
         {row.status === 5 ?
           <Link className="btnedit" onClick={() => EditQuote(row._id,row.status)}>
-          <Icon icon="teenyicons:eye-outline" /> Edit
+          <Icon icon="iconamoon:edit" />
         </Link>
         :
           <Link className="btnedit" onClick={() => EditQuote(row._id)}>

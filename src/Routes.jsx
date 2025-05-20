@@ -174,7 +174,7 @@ return (
       element={
         <AdminRoute
           element={
-            <AdminLayout title={"Create RFQ"}>
+            <AdminLayout title={"Request For Quote"}>
               <AdminCustomerRFQ />
             </AdminLayout>
           }

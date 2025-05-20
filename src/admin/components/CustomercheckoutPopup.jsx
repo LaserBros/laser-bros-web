@@ -443,7 +443,7 @@ const CustomerCheckoutPopup = ({
                       divideWeight={shippingInfoData.divideWeight}
                       onRateSelected={handleRateSelected}
                       RequestQuote={
-                        shippingInfoData?.requestQuoteDB?.check_status
+                        1
                       }
                       selectedShippingAddress={selectedShippingAddress}
                       ByDefaultShipping={ByDefaultShipping}
@@ -553,46 +553,18 @@ const CustomerCheckoutPopup = ({
                   />{" "}
                 </span>
               </div> */}
-              {rateVal != "" ? (
-                <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Shipping</span>
-                  <span className="quotesitem quotesright">
-                    <Amount amount={rateVal || 0} />{" "}
-                  </span>
-                </div>
-              ) : (
-                ""
-              )}
 
-              {taxAmount != "" ? (
-                <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">
-                    Tax
-                    <b>
-                      {" "}
-                      <small>({taxPercentage}%)</small>
-                    </b>
-                  </span>
-                  <span className="quotesitem quotesright">
-                    <Amount amount={taxAmount || 0} />{" "}
-                  </span>
-                </div>
-              ) : (
-                ""
-              )}
               <div className="d-flex align-items-center justify-content-between">
                 <span className="quotessubtotal">Total</span>
                 <span className="quotesprice">
                   <Amount
                     amount={
                       parseFloat(
-                        shippingInfoData?.requestQuoteDB?.total_amount || 0
+                        shippingInfoData?.requestQuoteDB?.total_amount || (totalAmount - bendAmountPrice)
                       ) +
                       parseFloat(
                         bendAmountPrice || 0
-                      ) +
-                      parseFloat(rateVal == "" ? 0 : rateVal || 0) +
-                      parseFloat(taxAmount || 0)
+                      ) 
                     }
                   />
                 </span>

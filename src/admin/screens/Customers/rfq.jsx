@@ -376,146 +376,147 @@ export default function AdminCustomerRFQ() {
   const [bendupload_url, setbendupload_url] = useState(null);
   const [id_quote, setid_quote] = useState(null);
   const [bendApply, setbendApply] = useState(false);
-  const handleShow2 = async ( 
-    image_url,
-    quote_name,
-    bend_count,
-    bendupload_url,
-    id,
-    checked
-  ) => { 
-    const token = localStorage.getItem("adminToken"); 
-    if (token == "" || token == undefined || token == null) {
-      setModalShow4(true);
-      return;
-    }
-    if (checked) {
-      setbendApply(true);
-      setimage_url(image_url);
-      setquote_name(quote_name);
-      setbend_count(bend_count);
-      setbendupload_url(bendupload_url);
-      setid_quote(id);
-      const updatedQuoteData = quoteData.map((quote) =>
-        quote._id === id ? { ...quote, bend_count: 1 } : quote
-      );
-      localStorage.setItem("CustomerparsedQuoteList", JSON.stringify(updatedQuoteData));
-      setQuoteData(updatedQuoteData);
-      
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("bend_count", 1);
-      const storedData = localStorage.getItem("CustomersetItempartsDBdata");
-      const parsedData = storedData ? JSON.parse(storedData) : [];
-      const updatedLocalStorageData = parsedData.map((quote) => {
-        if (quote._id === id) {
-          return {
-            ...quote,
-            bend_count: 1,
-          };
-        }
-        return quote;
-      });
-      
-      // Save back to localStorage
-      localStorage.setItem("CustomersetItempartsDBdata", JSON.stringify(updatedLocalStorageData));
-      
-      // Update only the matching item in state
-      setQuoteData((prevData) =>
-        Array.isArray(prevData)
-          ? prevData.map((quote) =>
-              quote._id === id ? { ...quote, bend_count: 1 } : quote
-            )
-          : []
-      );
-      // setquoteDataCon(true);
-      localStorage.setItem(
-        "CustomersetItempartsDBdata",
-        JSON.stringify(updatedLocalStorageData)
-      );
-      try { 
-        // const response = bendQuotes(formData);
-        const response = CustomeruploadBendingFile(formData);
-      } catch {}
-      // setModalShow2(true);
-    } else {
-      const isConfirmed = window.confirm(
-        "Are you sure you want to remove bending?"
-      );
-      // console.log(isConfirmed, "isConfirmed");
-      if (isConfirmed) {
-        const formData = new FormData();
-        formData.append("id", id);
-        formData.append("bend_count", 0);
-        formData.append("type", "");
-        try {
-          const response = CustomeruploadBendingFile(formData);
 
-          const setItemelementData = quoteList;
-          const parsedQuoteList = quoteData;
-
-          const updatedSetItemElementData = parsedQuoteList.map((item) => {
-            if (item && item._id === id) {
-              // console.log("Dsdssdsdssdsdsdsdsdsddssdsd");
-              return {
-                ...item,
-                bend_count: 0,
-                bendupload_url: "",
-                step_file_bend:"",
-                drawing_file_bend:"",
-                check_status: 0,
-              };
-            }
-            return item;
-          });
-          localStorage.setItem(
-            "CustomersetItempartsDBdata",
-            JSON.stringify(updatedSetItemElementData)
-          );
-          // Save the updated data back to localStorage
-          localStorage.setItem(
-            "CustomerparsedQuoteList",
-            JSON.stringify(updatedSetItemElementData)
-          );
-          const quoteDataVal = JSON.parse(
-            localStorage.getItem("CustomerparsedQuoteList")
-          );
-
-          let total = 0;
-          for (const quote of quoteDataVal) {
-            total += quote.bend_count;
-          }
-          const quoteListValues = localStorage.getItem("CustomersetItempartsDBdata");
-          // console.log("quoteList ---==--=", quoteListValues);
-          if (quoteListValues) {
-            // Parse the stored JSON data
-            const parsedQuoteList = JSON.parse(quoteListValues);
-
-            // console.log("CustomerparsedQuoteList", parsedQuoteList);
-            parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
-            if (total == 0) {
-              parsedQuoteList.check_status = 0;
-            }
-            // console.log(
-            //   "quoteList ---==--=",
-            //   JSON.stringify(parsedQuoteList),
-            //   "0-0-0-0"
-            // );
-            localStorage.setItem(
-              "CustomersetItempartsDBdata",
-              JSON.stringify(parsedQuoteList)
-            );
-            setQuoteList(parsedQuoteList);
-          }
-          setbendApply(false); 
-          setQuoteData(updatedSetItemElementData);
-          setquoteDataCon(true);
-        } catch (err) {
-          // console.log("eroroorororor", err);
-        }
-      }
-    }
-  };
+   const handleShow2 = async (
+     image_url,
+     quote_name,
+     bend_count,
+     bendupload_url,
+     id,
+     checked
+   ) => {
+     const token = localStorage.getItem("adminToken");
+     if (token == "" || token == undefined || token == null) {
+       setModalShow4(true);
+       return;
+     }
+     if (checked) {
+       setbendApply(true);
+       setimage_url(image_url);
+       setquote_name(quote_name);
+       setbend_count(bend_count);
+       setbendupload_url(bendupload_url);
+       setid_quote(id);
+       const updatedQuoteData = quoteData.map((quote) =>
+         quote._id === id ? { ...quote, bend_count: 1 } : quote
+       );
+       localStorage.setItem("CustomerparsedQuoteList", JSON.stringify(updatedQuoteData));
+       setQuoteData(updatedQuoteData);
+       
+       const formData = new FormData();
+       formData.append("id", id);
+       formData.append("bend_count", 1);
+       const storedData = localStorage.getItem("CustomersetItempartsDBdata");
+       const parsedData = storedData ? JSON.parse(storedData) : [];
+       const updatedLocalStorageData = parsedData.map((quote) => {
+         if (quote._id === id) {
+           return {
+             ...quote,
+             bend_count: 1,
+           };
+         }
+         return quote;
+       });
+       
+       // Save back to localStorage
+       localStorage.setItem("CustomersetItempartsDBdata", JSON.stringify(updatedLocalStorageData));
+       
+       // Update only the matching item in state
+       setQuoteData((prevData) =>
+         Array.isArray(prevData)
+           ? prevData.map((quote) =>
+               quote._id === id ? { ...quote, bend_count: 1 } : quote
+             )
+           : []
+       );
+       // setquoteDataCon(true);
+       localStorage.setItem(
+         "CustomersetItempartsDBdata",
+         JSON.stringify(updatedLocalStorageData)
+       );
+       try { 
+         // const response = bendQuotes(formData);
+         const response = CustomeruploadBendingFile(formData);
+       } catch {}
+       // setModalShow2(true);
+     } else {
+       const isConfirmed = window.confirm(
+         "Are you sure you want to remove bending?"
+       );
+       // console.log(isConfirmed, "isConfirmed");
+       if (isConfirmed) {
+         const formData = new FormData();
+         formData.append("id", id);
+         formData.append("bend_count", 0);
+         formData.append("type", "");
+         try {
+           const response = CustomeruploadBendingFile(formData);
+ 
+           const setItemelementData = quoteList;
+           const parsedQuoteList = quoteData;
+ 
+           const updatedSetItemElementData = parsedQuoteList.map((item) => {
+             if (item && item._id === id) {
+               // console.log("Dsdssdsdssdsdsdsdsdsddssdsd");
+               return {
+                 ...item,
+                 bend_count: 0,
+                 bendupload_url: "",
+                 step_file_bend:"",
+                 drawing_file_bend:"",
+                 check_status: 0,
+               };
+             }
+             return item;
+           });
+           localStorage.setItem(
+             "CustomersetItempartsDBdata",
+             JSON.stringify(updatedSetItemElementData)
+           );
+           // Save the updated data back to localStorage
+           localStorage.setItem(
+             "CustomerparsedQuoteList",
+             JSON.stringify(updatedSetItemElementData)
+           );
+           const quoteDataVal = JSON.parse(
+             localStorage.getItem("CustomerparsedQuoteList")
+           );
+ 
+           let total = 0;
+           for (const quote of quoteDataVal) {
+             total += quote.bend_count;
+           }
+           const quoteListValues = localStorage.getItem("CustomersetItemelementData");
+           // console.log("quoteList ---==--=", quoteListValues);
+           if (quoteListValues) {
+             // Parse the stored JSON data
+             const parsedQuoteList = JSON.parse(quoteListValues);
+ 
+             // console.log("parsedQuoteList", parsedQuoteList);
+             parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+             if (total == 0) {
+               parsedQuoteList.check_status = 0;
+             }
+             // console.log(
+             //   "quoteList ---==--=",
+             //   JSON.stringify(parsedQuoteList),
+             //   "0-0-0-0"
+             // );
+             localStorage.setItem(
+               "CustomersetItemelementData",
+               JSON.stringify(parsedQuoteList)
+             );
+             setQuoteList(parsedQuoteList);
+           }
+           setbendApply(false);
+           setQuoteData(updatedSetItemElementData);
+           setquoteDataCon(true);
+         } catch (err) {
+           // console.log("eroroorororor", err);
+         }
+       }
+     }
+   };
   const handleClose2 = () => setModalShow2(false);
 
   const handleClose3 = () => setModalShow3(false);
@@ -827,56 +828,56 @@ export default function AdminCustomerRFQ() {
   };
 
   const handleDuplicateQuote = async (quote, id) => {
-    try {
-      const data = {
-        id: id,
-      };
-
-      const response = await CustomercopySubQuote(data);
-
-      const duplicatedQuote = {
-        ...quote,
-        _id: response.data._id, // Assuming the API returns the new ID
-      };
-
-      // Update the quoteData state to include the duplicated quote
-      setQuoteData((prevQuoteData) => {
-        const updatedQuoteData = [...prevQuoteData, duplicatedQuote];
-
-        // Update localStorage
-        localStorage.setItem(
-          "CustomersetItempartsDBdata",
-          JSON.stringify(updatedQuoteData)
-        );
-
-        const quoteDataVal = JSON.parse(
-          localStorage.getItem("CustomersetItempartsDBdata")
-        );
-        let total = 0;
-        for (const quote of quoteDataVal) {
-          total += quote.bend_count;
-        }
-
-        const quoteList = localStorage.getItem("CustomersetItempartsDBdata");
-        // // console.log("quoteDataVal =-=-=- quoteList", quoteList);
-        if (quoteList) {
-          // Parse the stored JSON data
-          const parsedQuoteList = JSON.parse(quoteList);
-
-          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
-          if (total == 0) {
-            parsedQuoteList.check_status = 0;
-          }
-          // console.log("CustomerparsedQuoteList", parsedQuoteList);
-
-          setQuoteList(parsedQuoteList);
-          return updatedQuoteData;
-        }
-      });
-    } catch (error) {
-      // console.log("Error duplicating quote:", error);
-    }
-  };
+     try {
+       const data = {
+         id: id,
+       };
+ 
+       const response = await CustomercopySubQuote(data);
+ 
+       const duplicatedQuote = {
+         ...quote,
+         _id: response.data._id, // Assuming the API returns the new ID
+       };
+ 
+       // Update the quoteData state to include the duplicated quote
+       setQuoteData((prevQuoteData) => {
+         const updatedQuoteData = [...prevQuoteData, duplicatedQuote];
+ 
+         // Update localStorage
+         localStorage.setItem(
+           "CustomersetItempartsDBdata",
+           JSON.stringify(updatedQuoteData)
+         );
+ 
+         const quoteDataVal = JSON.parse(
+           localStorage.getItem("CustomersetItempartsDBdata")
+         );
+         let total = 0;
+         for (const quote of quoteDataVal) {
+           total += quote.bend_count;
+         }
+ 
+         const quoteList = localStorage.getItem("CustomersetItemelementData");
+         // // console.log("quoteDataVal =-=-=- quoteList", quoteList);
+         if (quoteList) {
+           // Parse the stored JSON data
+           const parsedQuoteList = JSON.parse(quoteList);
+ 
+           parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
+           if (total == 0) {
+             parsedQuoteList.check_status = 0;
+           }
+           // console.log("parsedQuoteList", parsedQuoteList);
+ 
+           setQuoteList(parsedQuoteList);
+           return updatedQuoteData;
+         }
+       });
+     } catch (error) {
+       // console.log("Error duplicating quote:", error);
+     }
+   };
 
   const handleOptionSelect = async (selectedOption, type, id) => {
     try {
@@ -1161,6 +1162,23 @@ export default function AdminCustomerRFQ() {
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
+        <div className="QuoteBillMain_div">
+                      <Row>
+                        <Col lg={6} md={6}>
+                          <div className="QuoteBill_box">
+                            <h4>Customer Details:</h4>
+                            <p>
+                              <b>Name :</b> {name}
+                            </p>
+                            <p>
+                              <b>Email :</b> {email}
+                            </p>
+                           
+                          </div>
+                        </Col>
+                    
+                      </Row>
+                    </div>
         <Container>
           <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
             {Array.isArray(quoteData) && quoteData && quoteData.length > 0 ? (
