@@ -637,10 +637,6 @@ export const getThickness = async (data) => {
 
 export const fetchSelectedFinishes = async (data) => {
   try {
-    // const response = await axiosInstance.post(
-    //   `/users/fetchSelectedFinishes`,
-    //   data
-    // );
     const response = await axiosInstance.post(
       `/users/fetchFinishesAndCheck`,
       data
@@ -2195,13 +2191,186 @@ export const CustomerAddress = async (user_id) => {
   return axiosAdminInstance.get("/getUserAddressDetails?user_id="+user_id);
 };
 
-
-export const getCustomerCard = async () => {
+export const CustomeraddNotes = async (id, text) => {
   try {
-    const response = await axiosInstance.get(`/getUserCards`);
+    const data = {
+      id: id,
+      notes_text: text,
+    };
+    const response = await axiosAdminInstance.post(`/addNotes`, data);
     return response.data;
   } catch (error) {
-    console.error("Error setting address as default:");
+    console.error("Error setting address as default:", error);
+    throw error;
+  }
+};
+
+export const CustomercopySubQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/copySubQuote`, data);
+    // console.log("responseeee----", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerdeleteSubQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/deleteSubQuote`, data);
+    // // console.log("delete result", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    // throw error;
+  }
+};
+
+export const CustomerfetchSelectedFinishes = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/fetchFinishesAndCheck`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerbendQuotes = async (data) => {
+  try {
+    var response_api = await axiosAdminInstance.post(`/bendQuotes`, data);
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetMaterials = async (data) => {
+  try {
+    const response = await axiosAdminInstance.get(`/getMaterials`, data);
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetThickness = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/getThickness`, data);
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetThicknessMaterialFinish = async (data, type, params) => {
+  try {
+    var response_api = await axiosAdminInstance.post(
+      `/updateSubQuoteDetailsId`,
+      params
+    );
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerupdateQuantity = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/updateQuantity`, data);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerupdateSubQuoteDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateSubQuoteDetails`,
+      data
+    );
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerupdateDimensionStatus = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/updateDimensionStatus`,
+      data 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerdeleteBendQuoteImage = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/deleteBendQuoteImage`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomeruploadBendingFile = async (data) => {
+  try {
+    var response_api = await axiosAdminInstance.post(`/uploadBendingFile`, data);
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetShippingRatesAll = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(
+      `/getShippingRatesAll`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomershippingCost = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/shippingCost`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
     throw error;
   }
 };

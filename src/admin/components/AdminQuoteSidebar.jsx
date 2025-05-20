@@ -344,7 +344,7 @@ const AdminQuotesSidebar = ({
   const [cardsData, setCards] = useState([]);
   const loadData = async () => {
     setLoading(true);
-    try {
+    try { 
       var user_id = userId;  
       const [response] = await Promise.all([CustomerAddress(user_id)]);
       // console.log(response.data.data);

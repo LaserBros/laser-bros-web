@@ -6,14 +6,15 @@ import ShippingRates from "../../components/ShippingRates";
 import Amount from "../../components/Amount";
 import {
   getEditQuotePay,
-  getShippingRatesAll,
+  CustomergetShippingRatesAll,
   payment,
-  shippingCost,
+  CustomershippingCost,
 } from "../../api/api";
 import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
 import PaymentDone from "../../components/Paymentdone";
 import AddAddressModal from "../../screens/private/AddaddressModal";
+import axiosAdminInstance from "../axios/axiosadminInstanse";
 const CustomerCheckoutPopup = ({
   loadingPayId,
   show,
@@ -121,7 +122,7 @@ const CustomerCheckoutPopup = ({
   }, [handleCloseTrigger]);
   const PaymentSubmit = async () => {
     const updatedQuoteData = JSON.parse(
-      localStorage.getItem("setItempartsDBdata")
+      localStorage.getItem("CustomersetItempartsDBdata")
     );
     // console.log("updatedQuoteData =-=-=-=-", updatedQuoteData);
     let isValid = true;
@@ -181,7 +182,7 @@ const CustomerCheckoutPopup = ({
       //   selectedShippingAddressId
       // );
       // return;
-      const elementId = localStorage.getItem("setItemelementData");
+      const elementId = localStorage.getItem("CustomersetItemelementData");
       // let getId = "";
 
       // if (elementId) {
@@ -198,43 +199,18 @@ const CustomerCheckoutPopup = ({
 
       try {
         setLoading(true);
-        const response_local = await axiosInstance.post(
-          "/users/updateRequestQuote",
+        const response_local = await axiosAdminInstance.post(
+          "/updateRequestQuote",
           data_id
         );
 
-        if (response_local.data.data.check_status == 1) {
-          localStorage.setItem("setItemelementData", "");
-          localStorage.setItem("setItempartsDBdata", "");
+       
+          localStorage.setItem("CustomersetItemelementData", "");
+          localStorage.setItem("CustomersetItempartsDBdata", "");
           toast.success("Request quote sent successfully");
           setLoading(false);
-          navigate("/rfqs");
-        }
-        if (response_local.data.data.check_status == 0) {
-          const data = {
-            id: loadingPayId?._id,
-            billing_id: billingAddressId,
-            address_id: selectedShippingAddressId,
-          };
-          const res = await payment(data);
-
-          try {
-            if (res.status == "success") {
-              setModalShow(true);
-              setLoading(false);
-              sethandleCloseTrigger(true);
-              localStorage.removeItem("setItemelementData");
-              localStorage.removeItem("setItempartsDBdata");
-            } else {
-              toast.error(res.message);
-              setLoading(false);
-            }
-          } catch (error) {
-            // console.log(error);
-            setLoading(false);
-            toast.error("Something went wrong.");
-          }
-        }
+          navigate("/admin/quotes");
+        
       } catch (error) {
         setLoading(false);
         // console.log(error);
@@ -272,7 +248,7 @@ const CustomerCheckoutPopup = ({
         address_id: selectedId,
       };
       
-      const res = await getShippingRatesAll(data);
+      const res = await CustomergetShippingRatesAll(data);
       if(res.data.shippingRates.length == 0) {
         setSelectedAddress(selectedAddress || null);
         setByDefaultShipping(true);
@@ -336,7 +312,7 @@ const CustomerCheckoutPopup = ({
       setrateVal(0);
       // return;
     }
-    const elementId = localStorage.getItem("setItemelementData");
+    const elementId = localStorage.getItem("CustomersetItemelementData");
     var getId = "";
     if (elementId) {
       getId = JSON.parse(elementId);
@@ -350,7 +326,7 @@ const CustomerCheckoutPopup = ({
       type :  shippingInfoData?.requestQuoteDB?.check_status == 1 ? 'request' : ''
     };
     try {
-      const res = await shippingCost(data);
+      const res = await CustomershippingCost(data);
       // console.log(
       //   "shippingInfo?.userDBdata?.tax_exempt",
       //   shippingInfo?.requestQuoteDB?.check_status
@@ -397,7 +373,7 @@ const CustomerCheckoutPopup = ({
                     className="mb-3"
                   >
                     <option value="">Select Address</option>
-                    {address.map((addr) => (
+                    {address?.map((addr) => (
                       <option key={addr?._id} value={addr?._id}>
                         {addr?.full_name} - {addr?.nickname}
                       </option>
@@ -498,7 +474,7 @@ const CustomerCheckoutPopup = ({
                       className="mb-3"
                     >
                       <option value="">Select Address</option>
-                      {address.map((addr) => (
+                      {address?.map((addr) => (
                         addr?.permanent == 0 &&
                         <option key={addr?._id} value={addr?._id}>
                           {addr?.full_name} - {addr?.nickname}
@@ -544,59 +520,17 @@ const CustomerCheckoutPopup = ({
                 <div className="cards_sect">
                   <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
                   <h2 className="shipping_head mb-0">Payment Method </h2>
-                   <Button onClick={handleShowCard} variant={null} className="btncstm p-0">
-                                <Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add New
-                                </Button>
+                
                   </div>  
-                  {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
-                    <>
+                  
                       <div className="text-center mt-2">
                         <b>
                           Once your RFQ has been approved you can proceed with
                           your payment.
                         </b>
                       </div>
-                    </>
-                  ) : cardsData.length === 0 ? (
-                    <Col>
-                      <p>No cards found</p>
-                    </Col>
-                  ) : (
-                    cardsData.map(
-                      (card) =>
-                        card.is_default === 1 && (
-                          <Col
-                            xl={12}
-                            lg={12}
-                            md={12}
-                            className="mb-4"
-                            key={card.id}
-                          >
-                            <div className="addresses-grids payment-grids">
-                              {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
-                              {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                              {/* </div> */}
-                              <p
-                                className="mb-2 card-no"
-                                style={{ fontSize: "13px" }}
-                              >
-                                **** **** **** {card.last4}
-                              </p>
-                              <div className="card-actions">
-                                <div className="card-info">
-                                  <strong>Expiry Date</strong> {card.exp_month}/
-                                  {card.exp_year}
-                                </div>
-                                <div className="card-info">
-                                  <strong>Name</strong>{" "}
-                                  {card.full_name.toUpperCase()}
-                                </div>
-                              </div>
-                            </div>
-                          </Col>
-                        )
-                    )
-                  )}
+                  
+                  
                 </div>
               </Col>
             </Row>
@@ -663,8 +597,7 @@ const CustomerCheckoutPopup = ({
               </div>
             </div>
             <div className="footer_btn">
-              {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
-                <>
+             
                   <Button
                     className="mt-3"
                     onClick={PaymentSubmit}
@@ -680,44 +613,8 @@ const CustomerCheckoutPopup = ({
                       <>Request a Quote</>
                     )}
                   </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    className="mt-3"
-                    onClick={PaymentSubmit}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <>
-                        Proceed To Pay&nbsp;
-                        <b>
-                          <Amount
-                            amount={
-                              parseFloat(
-                                shippingInfoData?.requestQuoteDB
-                                  ?.total_amount || 0
-                              ) +
-                              parseFloat(
-                                bendAmountPrice || 0
-                              ) +
-                              parseFloat(rateVal == "" ? 0 : rateVal || 0)
-                            }
-                          />
-                        </b>
-                      </>
-                    )}
-                    {/* </> */}
-                    {/* )} */}
-                  </Button>
-                </>
-              )}
+               
+              
               <Button
                 className="mt-3"
                 variant="lt-primary ms-2"

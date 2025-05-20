@@ -11,20 +11,20 @@ import AddBend from "../../../components/Addbend";
 import AddNote from "../../../components/Addnote";
 import FileUpload from "../../../components/FileUpload";
 import {
-  addNotes,
-  copySubQuote,
-  deleteSubQuote,
-  fetchSelectedFinishes,
+  CustomeraddNotes,
+  CustomercopySubQuote,
+  CustomerdeleteSubQuote,
+  CustomerfetchSelectedFinishes,
 
-  bendQuotes,
-  getMaterials,
-  getThickness,
-  getThicknessMaterialFinish,
-  updateQuantity,
-  updateSubQuoteDetails,
-  updateDimensionStatus,
-  deleteBendQuoteImage,
-  uploadBendingFile,
+  CustomerbendQuotes,
+  CustomergetMaterials,
+  CustomergetThickness,
+  CustomergetThicknessMaterialFinish,
+  CustomerupdateQuantity,
+  CustomerupdateSubQuoteDetails,
+  CustomerupdateDimensionStatus,
+  CustomerdeleteBendQuoteImage,
+  CustomeruploadBendingFile,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import DimensionsToggle from "../../../components/DimensionsToggle";
@@ -118,7 +118,7 @@ export default function AdminCustomerRFQ() {
     formData.append("bend_count", quantities);
     try {
       setaddLoading(true);
-      const response = await bendQuotes(formData);
+      const response = await CustomerbendQuotes(formData);
       setquoteDataCon(true);
       localStorage.setItem(
         "CustomersetItempartsDBdata",
@@ -177,7 +177,7 @@ export default function AdminCustomerRFQ() {
   useEffect(() => {
     const fetchOptions_val = async () => {
       try {
-        const response = await getMaterials();
+        const response = await CustomergetMaterials();
         const fetchedOptions = response.data.map((item) => ({
           value: item._id,
           label: item.material_name + " " + item.material_grade,
@@ -201,7 +201,7 @@ export default function AdminCustomerRFQ() {
       const data = {
         id: materialId,
       };
-      const response = await getThickness(data);
+      const response = await CustomergetThickness(data);
 
       const fetchedOptions = response.data.map((item) => ({
         value: item._id,
@@ -210,11 +210,13 @@ export default function AdminCustomerRFQ() {
       }));
 
       setQuoteData((prevQuoteData) =>
-        prevQuoteData.map((quote) =>
-          quote._id === quoteId
-            ? { ...quote, thicknessOptions: fetchedOptions }
-            : quote
-        )
+        Array.isArray(prevQuoteData)
+          ? prevQuoteData.map((quote) =>
+              quote._id === quoteId
+                ? { ...quote, thicknessOptions: fetchedOptions }
+                : quote
+            )
+          : []
       );
     } catch (error) {
       console.error("Error fetching options:", error);
@@ -226,7 +228,7 @@ export default function AdminCustomerRFQ() {
         thickness_id: materialId,
         id: quoteId,
       };
-      const response = await fetchSelectedFinishes(data);
+      const response = await CustomerfetchSelectedFinishes(data);
       console.log("fetchSelectedFinishes", response.data);
       const res_status = response.data.data;
       const fetchedOptions = res_status.map((item) => ({ 
@@ -238,7 +240,7 @@ export default function AdminCustomerRFQ() {
         formData.append("id", quoteId);
         formData.append("bend_count", 0);
         formData.append("type", ""); 
-        const res = await uploadBendingFile(formData);
+        const res = await CustomeruploadBendingFile(formData);
         setQuoteData((prevQuoteData) =>
           prevQuoteData.map((quote) =>
             quote._id === quoteId
@@ -294,7 +296,7 @@ export default function AdminCustomerRFQ() {
       quote._id === partId ? { ...quote, notes_text: newNote } : quote
     );
     try {
-      await addNotes(partId, newNote);
+      await CustomeraddNotes(partId, newNote);
     } catch (error) {}
     localStorage.setItem(
       "CustomersetItempartsDBdata",
@@ -310,7 +312,7 @@ export default function AdminCustomerRFQ() {
         id: quoteId,
       };
       try {
-        deleteSubQuote(data);
+        CustomerdeleteSubQuote(data);
         // Update localStorage with the new data
         localStorage.setItem(
           "CustomersetItempartsDBdata",
@@ -357,7 +359,7 @@ export default function AdminCustomerRFQ() {
       id: Id,
       quote_name: newName,
     };
-    updateSubQuoteDetails(data);
+    CustomerupdateSubQuoteDetails(data);
     const updatedQuoteData = quoteData.map((quote) =>
       quote._id === Id ? { ...quote, quote_name: newName } : quote
     );
@@ -433,7 +435,7 @@ export default function AdminCustomerRFQ() {
       );
       try { 
         // const response = bendQuotes(formData);
-        const response = uploadBendingFile(formData);
+        const response = CustomeruploadBendingFile(formData);
       } catch {}
       // setModalShow2(true);
     } else {
@@ -447,7 +449,7 @@ export default function AdminCustomerRFQ() {
         formData.append("bend_count", 0);
         formData.append("type", "");
         try {
-          const response = uploadBendingFile(formData);
+          const response = CustomeruploadBendingFile(formData);
 
           const setItemelementData = quoteList;
           const parsedQuoteList = quoteData;
@@ -588,7 +590,7 @@ export default function AdminCustomerRFQ() {
 
     try {
       // Await the deletion request
-      await deleteBendQuoteImage(data);
+      await CustomerdeleteBendQuoteImage(data);
 
       // Retrieve stored quotes and ensure it's parsed correctly
       const storedData = localStorage.getItem("CustomersetItempartsDBdata");
@@ -660,7 +662,7 @@ export default function AdminCustomerRFQ() {
       "CustomersetItempartsDBdata",
       JSON.stringify(updatedQuoteData)
     );
-    const res = await updateDimensionStatus(data);
+    const res = await CustomerupdateDimensionStatus(data);
     const response = res.data;
     const storedData = localStorage.getItem("CustomersetItempartsDBdata");
     const parsedData = storedData ? JSON.parse(storedData) : [];
@@ -720,7 +722,7 @@ export default function AdminCustomerRFQ() {
   }, [quoteData]);
   const uploadQuote = async (formData) => {
     try {
-      return await updateQuantity(formData);
+      return await CustomerupdateQuantity(formData);
     } catch (error) {
       console.error("API call failed:", error);
     }
@@ -830,7 +832,7 @@ export default function AdminCustomerRFQ() {
         id: id,
       };
 
-      const response = await copySubQuote(data);
+      const response = await CustomercopySubQuote(data);
 
       const duplicatedQuote = {
         ...quote,
@@ -904,7 +906,7 @@ export default function AdminCustomerRFQ() {
                 : quote.finishing_id,
           };
 
-          response = await getThicknessMaterialFinish(data, type, params);
+          response = await CustomergetThicknessMaterialFinish(data, type, params);
           break;
         }
       }
@@ -1034,7 +1036,7 @@ export default function AdminCustomerRFQ() {
       formData.append("type", type_param);
       formData.append("quote_image", file);
 
-      const res = await uploadBendingFile(formData);
+      const res = await CustomeruploadBendingFile(formData);
       console.log("Upload response:", res.data);
 
       if (res.data) {
@@ -1097,7 +1099,7 @@ export default function AdminCustomerRFQ() {
       formData.append("bend_count", 1);
       formData.append("type", type_param);
 
-      const res = await uploadBendingFile(formData);
+      const res = await CustomeruploadBendingFile(formData);
 
       // Update only the specific quote that changed instead of triggering a full refresh
       if (res.data) {
@@ -1650,7 +1652,7 @@ export default function AdminCustomerRFQ() {
                   buttonText={btnText}
                   quoteData={quoteList}
                   // loadId={}
-                  userId={user_id} 
+                  userId={user_id}  
                 />
               </Col>
             )}
