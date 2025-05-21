@@ -46,7 +46,7 @@ const CheckoutPopup = ({
         estimated_delivery_date: "2025-04-03T23:00:00Z"
     },
     {
-        service_type: "UPS® Ground",
+        service_type: "UPS Ground®",
         service_code: "ups_ground",
         carrier_friendly_name: "UPS",
         shipping_amount: { currency: "usd", amount: 11.32 },

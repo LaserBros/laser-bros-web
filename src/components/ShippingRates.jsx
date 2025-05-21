@@ -12,7 +12,7 @@ const ShippingRates = ({
 }) => {
   const [selectedRate, setSelectedRate] = useState(service_code);
   const serviceOrder = [
-    'UPS® Ground',
+    'UPS Ground®',
     'UPS 2nd Day Air®',
     'UPS Next Day Air®'
   ];
@@ -102,7 +102,7 @@ const ShippingRates = ({
                       }
                     />
                     <div className="flex-grow-1">
-                    {rate.service_type}
+                    <b>{rate.service_type == 'UPS® Ground' ? 'UPS Ground®' : rate.service_type}</b>
                     {RequestQuote == 0 &&
                       " - $" +
                         parseFloat(
@@ -110,7 +110,7 @@ const ShippingRates = ({
                         ).toFixed(2) +
                         ""}
                         <br/>
-                        <b>Time in transit : {rate.delivery_days} Business Day{rate.delivery_days > 1 ? 's' : '' }</b>
+                        <span>Time in transit : {rate.delivery_days} Business Day{rate.delivery_days > 1 ? 's' : '' }</span>
                         </div>
                   </label>
                 

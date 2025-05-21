@@ -413,7 +413,7 @@ const OrdersDetail = () => {
     const res = await getShippingRates(data);
     setloadingInfo("");
     const serviceOrder = [
-      "UPS® Ground",
+      "UPS Ground®",
       "UPS 2nd Day Air®",
       "UPS Next Day Air®",
     ];
@@ -1437,7 +1437,7 @@ const OrdersDetail = () => {
                                             <label
                                               htmlFor={method.service_code}
                                             >
-                                              {method.service_type} (
+                                              {method.service_type == 'UPS® Ground' ? 'UPS Ground®' : method.service_type} (
                                               <Amount
                                                 amount={method.shipping_amount}
                                               />
