@@ -102,13 +102,13 @@ const ShippingRates = ({
                       }
                     />
                     <div className="flex-grow-1">
-                    <b>{rate.service_type == 'UPS® Ground' ? 'UPS Ground®' : rate.service_type}</b>
+                    <b>{rate.service_type == 'UPS® Ground' ? 'UPS Ground®' : rate.service_type}
                     {RequestQuote == 0 &&
                       " - $" +
                         parseFloat(
                           divideWeight * rate.shipping_amount.amount
                         ).toFixed(2) +
-                        ""}
+                        ""}</b>
                         <br/>
                         <span>Time in transit : {rate.delivery_days} Business Day{rate.delivery_days > 1 ? 's' : '' }</span>
                         </div>
