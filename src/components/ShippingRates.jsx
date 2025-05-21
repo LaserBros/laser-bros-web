@@ -76,7 +76,7 @@ const ShippingRates = ({
                   handleCheckboxChange("local_pickup", "local_pickup", 0.0)
                 }
               />
-              &nbsp;&nbsp;Local Pickup (FREE)
+              <b>&nbsp;&nbsp;Local Pickup (FREE)</b>
             </label>
           </div>
           }
