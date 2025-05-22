@@ -397,10 +397,11 @@ const CheckOutPay = ({
                             /></b>
                             
                             <br/>
+                            {/* {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && ( */}
                                     <span>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days > 1 ? 's' : ""}
+                                      Time in transit : {shippingInfo.shippingRates[0].service_code} {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days > 1 ? 's' : ""}
                                     </span>
-                         
+                            {/* )} */}
                             </div>
                           </label>
 
