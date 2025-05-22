@@ -412,7 +412,7 @@ const CheckOutPay = ({
         </>
       );
     } else {
-      return "Delivery time not available ---"+rate.delivery_days+"!233"+rate.estimated_delivery_date+"@--"+rate.service_code;
+      return "Delivery time not available ---"+JSON.stringify(rate);
     }
   })()}
                                     </span>
