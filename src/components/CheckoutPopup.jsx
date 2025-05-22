@@ -563,40 +563,31 @@ const CheckoutPopup = ({
                       <p>No cards found</p>
                     </Col>
                   ) : (
-                    cardsData.map(
-                      (card) =>
-                        card.is_default === 1 && (
-                          <Col
-                            xl={12}
-                            lg={12}
-                            md={12}
-                            className="mb-4"
-                            key={card.id}
-                          >
-                            <div className="addresses-grids payment-grids">
-                              {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
-                              {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                              {/* </div> */}
-                              <p
-                                className="mb-2 card-no"
-                                style={{ fontSize: "13px" }}
-                              >
-                                **** **** **** {card.last4}
-                              </p>
-                              <div className="card-actions">
-                                <div className="card-info">
-                                  <strong>Expiry Date</strong> {card.exp_month}/
-                                  {card.exp_year}
-                                </div>
-                                <div className="card-info">
-                                  <strong>Name</strong>{" "}
-                                  {card.full_name.toUpperCase()}
-                                </div>
-                              </div>
+                    cardsData.map((card, index) => (
+                      <label key={card.id || index} className="addresses-grids payment-grids" style={{ cursor: "pointer" }}>
+                        <input
+                          type="radio"
+                          name="selectedCard"
+                          value={card.id}
+                          style={{ marginRight: "10px" }}
+                          onChange={() => setSelectedCard(card.id)} // Assume setSelectedCard is in your component
+                        />
+                        <div>
+                          <p className="mb-2 card-no" style={{ fontSize: "13px" }}>
+                            **** **** **** {card.last4}
+                          </p>
+                          <div className="card-actions">
+                            <div className="card-info">
+                              <strong>Expiry Date</strong> {card.exp_month}/{card.exp_year}
                             </div>
-                          </Col>
-                        )
-                    )
+                            <div className="card-info">
+                              <strong>Name</strong> {card.full_name.toUpperCase()}
+                            </div>
+                          </div>
+                        </div>
+                      </label>
+                    ))
+                    
                   )}
                 </div>
               </Col>
