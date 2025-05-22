@@ -215,7 +215,6 @@ const CheckoutPopup = ({
             id: loadingPayId?._id,
             billing_id: billingAddressId,
             address_id: selectedShippingAddressId,
-            // card_token:'card_1RRAXyRvbSZ9KLdEsjVFW7KK'
           };
           const res = await payment(data);
 
