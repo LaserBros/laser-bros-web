@@ -1369,4 +1369,18 @@ body {
     margin-left: 0 !important;
   }
 }
+.draft_default {
+  font-size: 12px;
+  border-radius: 30px;
+  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+  padding-bottom: 0px;
+}
+
 /*After Login Css Ends*//*# sourceMappingURL=style.css.map */

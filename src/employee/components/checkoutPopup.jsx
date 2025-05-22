@@ -54,7 +54,7 @@ const CheckoutPopup = ({
     }, 
     {
       id: "ups_ground",
-      name: "UPS® Ground",
+      name: "UPS Ground®",
       price:  UpsGround != 0 ? UpsGround : addressDetail.shipping_price_update == 1 ? addressDetail.shipping_upsground_price : UserData[1]?.service_code == 'ups_ground' ? UserData[1]?.shipping_amount?.amount : UpsGround,
       isChecked: false,
       isEditing: false,

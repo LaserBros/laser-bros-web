@@ -197,7 +197,7 @@ const AddressDetails = ({
               <p>
                 <b className="minWidth_110">Shipping Type:</b>{" "}
                 {formatString(
-                  addressDetail?.service_code || addressDetail?.shipping
+                  (addressDetail?.service_code == "UPS® Ground" ? 'UPS Ground®' : addressDetail?.service_code) || (addressDetail?.shipping == "UPS® Ground" ? 'UPS Ground®' : addressDetail?.shipping)
                 )}
               </p>
             )}
