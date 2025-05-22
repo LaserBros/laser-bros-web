@@ -397,26 +397,11 @@ const CheckOutPay = ({
                             /></b>
                             
                             <br/>
-                            {/* {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && ( */}
+                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && (
                                     <span>
-                                    {(() => {
-    const rate = shippingInfo.shippingRates.find(
-      (rate) => rate.service_code === "ups_ground"
-    );
-
-    if (rate && rate.delivery_days !== null && rate.delivery_days !== undefined) {
-      return (
-        <>
-          Time in transit: {rate.delivery_days} Business day
-          {rate.delivery_days > 1 ? "s" : ""}
-        </>
-      );
-    } else {
-      return "Delivery time not available ---"+JSON.stringify(rate);
-    }
-  })()}
+                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days > 1 ? 's' : ""}
                                     </span>
-                            {/* )} */}
+                            )}
                             </div>
                           </label>
 
