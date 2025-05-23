@@ -476,7 +476,13 @@ const QuotesSidebar = ({
                   </span>
                 </div> */}
                 <div className="text-color-shipping">
-                  {buttonText == 1 ? (
+                  {quoteData.status == 3 ? 
+                  <>
+                   <hr />
+                  <p>RFQ Rejected.</p>
+                  </>
+                  : 
+                  buttonText == 1 ? (
                     <>
                       <hr />
                       {isPayble ? (
@@ -510,7 +516,9 @@ const QuotesSidebar = ({
                     </>
                   )}
                 </div>
-                {isPayble ? (
+                {quoteData.status == 3 ? 
+                <></> :
+                isPayble ? (
                   <>
                     {buttonText == 1 ? (
                       <></>
@@ -639,7 +647,7 @@ const QuotesSidebar = ({
                 <h2 className="mb-0">Checkout</h2>
                 {/* <Link className="btnicon" onClick={() => toggleDiv(2)}>
                   <Icon icon="ion:chevron-back" />
-                </Link> */}
+                </Link> */} 
               </div>
               <Form className="accountform">
                 <div className="d-flex align-items-center justify-content-between mb-2">
