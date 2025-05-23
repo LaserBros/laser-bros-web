@@ -927,7 +927,7 @@ const QuotesSidebar = ({
       <AddCard 
         show={modalShowCard}
         handleClose={handleCloseCard}
-        onCardAdded={loadCards} 
+        onCardAdded={loadCards}  
         title="Add Card"
         onSelectCard = {onSelectCard}
         clickByUser={clickByUser} 
@@ -937,7 +937,7 @@ const QuotesSidebar = ({
         <CheckOutPay
           bendAmountPrice={bendAmount}
           show={modalShowPay}
-          loadingPayId={loadingPayId}
+          loadingPayId={loadingPayId} 
           handleClose={handleClosePay}
           address={address}
           shippingInfo={shippingInfo}

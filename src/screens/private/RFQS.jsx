@@ -29,6 +29,7 @@ export default function RFQS() {
   const [loadingPay, setLoadingPay] = useState();
   const [loadingPayId, setLoadingPayID] = useState();
   const [PerPage, setPerPage] = useState(10);
+    const [savedCards , onSelectCard] = useState([]);
   const handleRowsPerPageChange = (newRowsPerPage, page) => {
     setPerPage(newRowsPerPage);
   };
@@ -50,8 +51,12 @@ export default function RFQS() {
 }, [currentPage, PerPage]);
 
   const [modalShowCard, setModalShowCard] = useState(false);
-
-  const handleShowCard = () => setModalShowCard(true);
+const [clickByUser,setclickByUser] = useState(false);
+  const handleShowCard = () => { 
+    setModalShowCard(true); 
+    setclickByUser(true);
+  };
+  // const handleShowCard = () => setModalShowCard(true);
   const handleCloseCard = () => setModalShowCard(false);
   const handleClosePay = () => setModalShowPay(false);
   const [modalShowPay, setModalShowPay] = useState(false);
@@ -81,6 +86,14 @@ export default function RFQS() {
       // setLoading(false);
     }
   };
+
+    useEffect(() => {
+      if (savedCards && !Array.isArray(savedCards)) {
+        setCards((prevCards) => [...prevCards, savedCards]);
+      } else if (Array.isArray(savedCards)) {
+        setCards((prevCards) => [...prevCards, ...savedCards]);
+      }
+    }, [savedCards]);
 
   useEffect(() => {
     loadData();
@@ -300,8 +313,10 @@ export default function RFQS() {
       <AddCard 
         show={modalShowCard}
         handleClose={handleCloseCard}
-        onCardAdded={loadCards}
+        onCardAdded={loadCards} 
         title="Add Card"
+        clickByUser={clickByUser} 
+        onSelectCard = {onSelectCard}
         isSetDefault={true}
       />
       <CheckOutPay

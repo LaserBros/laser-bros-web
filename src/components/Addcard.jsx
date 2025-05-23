@@ -96,13 +96,14 @@ const AddCardForm = ({
           toast.error("Error setting address as default:", error);
         }
         setGeneralError(null);
+        setLoading(false); 
         onCardAdded();
         handleClose();
       }
       else {
+        setLoading(false);
         onSelectCard(formData)
         setGeneralError(null);
-        onCardAdded();
         handleClose();
       }
     } 
@@ -169,12 +170,13 @@ const AddCardForm = ({
                 <Form.Check
                   type="checkbox"
                   id="saveCardCheckbox"
+                  label="Save card for future orders"
                   checked={saveCard}
                   onChange={(e) => setSaveCard(e.target.checked)}
                 />
-                <label htmlFor="saveCardCheckbox">
+                {/* <label htmlFor="saveCardCheckbox">
                   Save card for future orders
-                </label>
+                </label> */}
               </Col>
               }
             </Row>
