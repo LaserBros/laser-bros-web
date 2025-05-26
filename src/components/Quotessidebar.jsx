@@ -25,6 +25,8 @@ import CheckOutPay from "./checkOutPay";
 import AddAddressModal from "../screens/private/AddaddressModal";
 import AddCard from "./Addcard";
 import { Tooltip } from "react-tooltip";
+
+
 const QuotesSidebar = ({
   amount,
   showDiv,
@@ -36,19 +38,20 @@ const QuotesSidebar = ({
   loadId,
   bendAmount
 }) => {
+
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
   const [rateVal, setrateVal] = useState("");
   const [loadingPayId, setLoadingPayID] = useState();
+  const [modalShowCard, setModalShowCard] = useState(false);
+  const [clickByUser,setclickByUser] = useState(false);
   
-  
-    const [modalShowCard, setModalShowCard] = useState(false);
-    const [clickByUser,setclickByUser] = useState(false);
-    const handleShowCard = () => { 
+  const handleShowCard = () => { 
       setModalShowCard(true);
       setclickByUser(true);
     };
-    const handleCloseCard = () => setModalShowCard(false);
+    
+  const handleCloseCard = () => setModalShowCard(false);
 
   useEffect(() => {
     setquoteData(quoteData);
@@ -967,4 +970,5 @@ const QuotesSidebar = ({
     </>
   );
 };
+
 export default QuotesSidebar;
