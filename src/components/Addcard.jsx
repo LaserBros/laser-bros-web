@@ -14,13 +14,14 @@ import { useTheme } from "./Themecontext";
 // Your Stripe public key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
-const AddCardForm = ({
+const AddCardForm = ({ 
   show,
   handleClose,
   title,
   onCardAdded,
   isSetDefault,
   clickByUser,
+  onselectDefault,
   onSelectCard
 }) => {
   const { theme, togglenewTheme } = useTheme();
@@ -30,7 +31,7 @@ const AddCardForm = ({
   const [cardHolderName, setCardHolderName] = useState("");
   const [nameError, setNameError] = useState(null);
   const [generalError, setGeneralError] = useState(null);
-  const [saveCard, setSaveCard] = useState(false);
+  const [saveCard, setSaveCard] = useState(onselectDefault);
 
   const validateName = (name) => {
     if (!name.trim()) {
@@ -74,7 +75,7 @@ const AddCardForm = ({
         exp_month: token.card.exp_month,
         exp_year: token.card.exp_year,
         full_name: cardHolderName,
-        card_id: token.card.id,
+        card_id: saveCard ? token.card.id : token.id,
         card_token: token.id,
       };
 
