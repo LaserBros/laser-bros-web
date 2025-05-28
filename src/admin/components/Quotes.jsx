@@ -4,7 +4,7 @@ import DateFormat from "./DateFormat";
 import { Icon } from "@iconify/react";
 import MaterialBadge from "./MaterialBadge";
 
-const QuoteRow = ({ row, EditQuote }) => {
+const QuoteRow = ({ row, EditQuote ,DeleteQuote}) => {
   return (
     <tr>
       <td className="text-nowrap">
@@ -40,11 +40,16 @@ const QuoteRow = ({ row, EditQuote }) => {
       }  
       </td>
       <td className="text-end">
-        <div className="d-inline-flex align-items-center gap-3">
+        <div className="d-inline-flex align-items-center gap-1"> 
         {row.status === 5 ?
+        <>
           <Link className="btnedit" onClick={() => EditQuote(row._id,row.status)}>
           <Icon icon="iconamoon:edit" />
         </Link>
+        <Link className="btnedit" onClick={() => DeleteQuote(row._id,row.status)}>
+          <Icon icon="iconamoon:trash" />
+        </Link>
+       </> 
         :
           <Link className="btnedit" onClick={() => EditQuote(row._id)}>
             <Icon icon="teenyicons:eye-outline" />

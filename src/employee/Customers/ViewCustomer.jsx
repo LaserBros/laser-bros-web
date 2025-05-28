@@ -19,9 +19,9 @@ import {
   getParticularUserQuotes,
   updateCustomerTaxExempt,
   updateQuoteState,
-} from "../../../api/empApi";
+} from "../../api/empApi";
 import ConfirmationModal from "../../../components/ConfirmationModal";
-import QuoteRow from "../../components/Quotes";
+import QuoteRow from "../components/Quotes";
 import Pagination from "../../components/Pagination";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
@@ -312,7 +312,7 @@ const ViewCustomer = () => {
 
               <Button
                 as={Link}
-                to="/employee/customers/rfq-detail"
+                to="/admin/customers/rfq-detail"
                 className="flex-shrink-0 d-inline-flex align-items-center"
                 state={{
                   name: customer.full_name,

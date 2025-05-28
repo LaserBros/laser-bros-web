@@ -663,15 +663,15 @@ const CheckOutPay = ({
                     <Button
                       onClick={handleShowCard}
                       variant={null}
-                      className="btncstm p-0"
+                      className="btncustom btn-sm"
                     >
-                      <Icon
+                      
+                      Add Card<Icon
                         icon="mdi:add"
-                        className="me-1"
+                        className="ms-1"
                         width={17}
                         height={17}
-                      />{" "}
-                      Add New
+                      />
                     </Button>
                   </div>
                   {/* {shippingInfo?.requestQuoteDB?.} */}
@@ -714,6 +714,11 @@ const CheckOutPay = ({
                                   setSelectedCardPay(card.card_id)
                                 }
                               />
+                                    {selectedCardPay === card.card_id ? (
+                                                      <Icon icon="material-symbols:check-circle-rounded" color="#45a834" width={22} height={22}/>
+                                                      ) : (
+                                                      <Icon icon="material-symbols:circle-outline" color="#454545" width={22} height={22}/>
+                                                      )}
                               <div className="paymentSelectbox">
                                 <div className="card-info">
                                   {card.full_name.length > 10

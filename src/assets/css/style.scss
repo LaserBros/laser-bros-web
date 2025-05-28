@@ -3727,22 +3727,26 @@ textarea.form-control {
     cursor: pointer;
     width: 100%;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+gap:12px;
     input:checked {
         ~ {
             .paymentSelectbox {
-                
+              
                 border: 1px solid $primary-color;
-                background: $primary-color;
-                p , .card-info {
-                    color: $white-color;
-                }
+                // background: $primary-color;
+                // p , .card-info {
+                //     color: $white-color;
+                // }
             } 
         }
     }
     .paymentSelectbox {
         border       : 1px solid rgba($black-color, .1);
-        border-radius: 15px;
-        padding      : 20px;
+        border-radius: 12px;
+        padding      : 8px 15px;
+        flex-grow: 1;
         background   : $white-color;
         box-shadow   : 0px 0px 10px rgba($black-color, 0.08);
         height       : 100%; 
@@ -5364,4 +5368,14 @@ textarea.form-control {
     line-height: 25px;
     margin-bottom: 0px;
     border: 1px solid #ccc;
+}
+.btncustom {
+    background: rgba(78, 138, 200, 0.25)!important;
+    padding: 4px 10px!important;
+    color:$black-color;
+    border-radius: 30px!important;
+    &:hover{
+        background: $primary-color!important;
+        color:$white-color!important
+    }
 }

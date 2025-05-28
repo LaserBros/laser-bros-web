@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -80,7 +80,20 @@ const RFQS = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const debounceTimeout = useRef(null);
+  const [name, searchName] = useState("");
+  useEffect(() => {
+    // Debounce effect
+    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
 
+    debounceTimeout.current = setTimeout(() => {
+      setCurrentPage(1);
+      searchName(name);
+      loadData(1, name, sortOrder);
+    }, 500); // 500ms debounce delay
+
+    return () => clearTimeout(debounceTimeout.current); // Cleanup
+  }, [name]);
   const onPageChange = (pageNumber) => {
     // console.log(pageNumber, "response.data.");
     setCurrentPage(pageNumber);
@@ -118,7 +131,7 @@ const RFQS = () => {
 
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
-  const [name, searchName] = useState("");
+
   const [sortOrder, setSortOrder] = useState("");
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
@@ -174,11 +187,7 @@ const RFQS = () => {
                       type="text"
                       placeholder="Search WO"
                       value={name}
-                      onChange={(e) => {
-                        setCurrentPage(1);
-                        searchName(e.target.value);
-                        loadData(1, e.target.value, sortOrder);
-                      }}
+                      onChange={(e) => searchName(e.target.value)}
                       className="rounded-5"
                     />
                   </div>
