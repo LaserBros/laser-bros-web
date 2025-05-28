@@ -195,7 +195,7 @@ const CustomerCheckoutPopup = ({
         status: 1,
         billing_id: billingAddressId,
         address_id: selectedShippingAddressId,
-        type:ParamType
+        type:"rfq"
       };
 
       try {
