@@ -646,7 +646,7 @@ const QuotesSidebar = ({
                   </Button>
                 </div>
               </>
-            )}
+            )} 
             {/* <hr className="quotes-separator" /> */}
             {/* <p className="order-cont">Order in <b>5 hrs 45 mins</b> to ship on <b>May 30</b></p> */}
           </div>
