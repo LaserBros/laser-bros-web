@@ -11,8 +11,8 @@ import { toast } from "react-toastify";
 import PaymentDone from "./Paymentdone";
 const CheckOutPay = ({
   show,
-  loadingPayId, 
-  handleClose, 
+  loadingPayId,
+  handleClose,
   address,
   shippingInfo,
   cardsData,
@@ -24,6 +24,7 @@ const CheckOutPay = ({
   const [handleCloseTrigger, sethandleCloseTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedCardPay, setSelectedCardPay] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedRate, setSelectedRate] = useState("");
   const [taxPercentage, setaxPercentage] = useState(0);
@@ -48,8 +49,6 @@ const CheckOutPay = ({
       return cleaned;
     }
   };
-
-
 
   useEffect(() => {
     setSelectedAddress(null);
@@ -77,7 +76,7 @@ const CheckOutPay = ({
           : "0.00"
       );
     }
-    console.log("shippingInfo ::::::::::",shippingInfo)
+    console.log("shippingInfo ::::::::::", shippingInfo);
   }, [show]);
 
   useEffect(() => {
@@ -96,7 +95,7 @@ const CheckOutPay = ({
   const matchedRate = shippingInfo.shippingRates?.find(
     (rate) => rate.service_code === selectedRate
   );
-  
+
   const deliveryDays = matchedRate?.delivery_days;
   useEffect(() => {
     if (handleCloseTrigger) {
@@ -155,7 +154,7 @@ const CheckOutPay = ({
       }
       if (activeTab == "card") {
         if (shippingInfo?.requestQuoteDB?.check_status == 0) {
-          if (!selectedCard) {
+          if (!selectedCardPay) {
             toast.error("Please select a payment card.");
             return;
           }
@@ -206,6 +205,8 @@ const CheckOutPay = ({
           formData.append("po_number", poNumberText);
           formData.append("po_upload", fileUpload);
           formData.append("type", activeTab);
+          formData.append("card_token", selectedCardPay);
+
           const res = await payment(formData);
 
           try {
@@ -251,7 +252,6 @@ const CheckOutPay = ({
   const handleCheckboxChange = (event) => {
     setIsSameAsShipping(event.target.checked);
     if (event.target.checked) {
-      // Set the default shipping address as billing address
       const defaultShipping = address.find(
         (addr) => addr._id === selectedShippingAddress?._id
       );
@@ -276,7 +276,7 @@ const CheckOutPay = ({
       service_code: rate,
       id: loadingPayId,
       address_id: selectedShippingAddress?._id,
-       type :  shippingInfo?.requestQuoteDB?.check_status == 1 ? 'request' : ''
+      type: shippingInfo?.requestQuoteDB?.check_status == 1 ? "request" : "",
     };
     try {
       const res = await shippingCost(data);
@@ -284,7 +284,6 @@ const CheckOutPay = ({
       settaxAmount(res?.data?.tax_amount);
     } catch (error) {}
   };
-
 
   return (
     <React.Fragment>
@@ -321,17 +320,22 @@ const CheckOutPay = ({
                         }
                       </p>
                       <p className="mb-2">
-                        {
-                          formatPhoneNumber(shippingInfo?.requestQuoteDB?.address_details
-                            ?.phone_number)
-                        }
+                        {formatPhoneNumber(
+                          shippingInfo?.requestQuoteDB?.address_details
+                            ?.phone_number
+                        )}
                       </p>
                       <p className="mb-3">
                         {
                           shippingInfo?.requestQuoteDB?.address_details
                             ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.address_details?.city} {shippingInfo?.requestQuoteDB?.address_details?.state_code},{" "}
+                        , {shippingInfo?.requestQuoteDB?.address_details?.city}{" "}
+                        {
+                          shippingInfo?.requestQuoteDB?.address_details
+                            ?.state_code
+                        }
+                        ,{" "}
                         {shippingInfo?.requestQuoteDB?.address_details?.pincode}
                         ,{" "}
                         {shippingInfo?.requestQuoteDB?.address_details?.country}
@@ -355,7 +359,6 @@ const CheckOutPay = ({
                   <h2 className="shipping_head">Shipping Method</h2>
                   {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
                     <>
-                    
                       {selectedRate === "local_pickup" && (
                         <div className="rate-option">
                           <label>
@@ -367,121 +370,175 @@ const CheckOutPay = ({
                                 handleRateSelected("local_pickup", 0.0)
                               }
                             />
-                             <b>&nbsp;&nbsp;Local Pickup (FREE)</b>
+                            <b>&nbsp;&nbsp;Local Pickup (FREE)</b>
                           </label>
                         </div>
                       )}
                       {selectedRate === "ups_ground" && (
                         <div className="shippingbg_box">
-                        <div className="rate-option">
-                          <label className="d-flex align-items-start gap-2">
-                            <input
-                              type="checkbox"
-                              value="ups_ground"
-                              checked={selectedRate === "ups_ground"}
-                              onChange={() =>
-                                handleRateSelected(
-                                  "ups_ground",
-                                  shippingInfo?.requestQuoteDB
-                                    ?.shipping_upsground_price
-                                )
-                              }
-                            />
-                            <div className="flex-grow-1">
-                            <b>UPS Ground® -&nbsp;
-                            <Amount
-                              amount={
-                                shippingInfo?.requestQuoteDB
-                                  ?.shipping_upsground_price
-                              }
-                            /></b>
-                            
-                            <br/>
-                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_ground")?.delivery_days && (
-                                    <span>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_ground").delivery_days > 1 ? 's' : ""}
-                                    </span>
-                            )}
-                            </div>
-                          </label>
+                          <div className="rate-option">
+                            <label className="d-flex align-items-start gap-2">
+                              <input
+                                type="checkbox"
+                                value="ups_ground"
+                                checked={selectedRate === "ups_ground"}
+                                onChange={() =>
+                                  handleRateSelected(
+                                    "ups_ground",
+                                    shippingInfo?.requestQuoteDB
+                                      ?.shipping_upsground_price
+                                  )
+                                }
+                              />
+                              <div className="flex-grow-1">
+                                <b>
+                                  UPS Ground® -&nbsp;
+                                  <Amount
+                                    amount={
+                                      shippingInfo?.requestQuoteDB
+                                        ?.shipping_upsground_price
+                                    }
+                                  />
+                                </b>
 
-                        </div>
+                                <br />
+                                {shippingInfo.shippingRates?.find(
+                                  (rate) => rate.service_code === "ups_ground"
+                                )?.delivery_days && (
+                                  <span>
+                                    Time in transit :{" "}
+                                    {
+                                      shippingInfo.shippingRates.find(
+                                        (rate) =>
+                                          rate.service_code === "ups_ground"
+                                      ).delivery_days
+                                    }{" "}
+                                    Business day
+                                    {shippingInfo.shippingRates.find(
+                                      (rate) =>
+                                        rate.service_code === "ups_ground"
+                                    ).delivery_days > 1
+                                      ? "s"
+                                      : ""}
+                                  </span>
+                                )}
+                              </div>
+                            </label>
+                          </div>
                         </div>
                       )}
-                       {selectedRate === "ups_2nd_day_air" && (
+                      {selectedRate === "ups_2nd_day_air" && (
                         <div className="shippingbg_box">
-                        <div className="rate-option">
-                          <label className="d-flex align-items-start gap-2">
-                            <input
-                              type="checkbox"
-                              value="ups_2nd_day_air"
-                              checked={selectedRate === "ups_2nd_day_air"}
-                              onChange={() =>
-                                handleRateSelected("ups_2nd_day_air",  shippingInfo?.requestQuoteDB
-                                  ?.shipping_ups_2nd_day_air_price)
-                              }
-                            />
-                            <div className="flex-grow-1">
-                            <b>UPS 2nd Day Air® -&nbsp;
-                            <Amount
-                              amount={
-                                shippingInfo?.requestQuoteDB
-                                  ?.shipping_ups_2nd_day_air_price
-                              }
 
-                              /></b>
-                            
-                            <br/>
-                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_2nd_day_air")?.delivery_days && (
-                                    <span>
-                                      Time in transit :  {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_2nd_day_air").delivery_days > 1 ? 's' : ''}
-                                    </span>
-                            )}
-                            </div>
-                          </label>
- 
-                        </div>
+                          <div className="rate-option">
+                            <label className="d-flex align-items-start gap-2">
+                              <input
+                                type="checkbox"
+                                value="ups_2nd_day_air"
+                                checked={selectedRate === "ups_2nd_day_air"}
+                                onChange={() =>
+                                  handleRateSelected(
+                                    "ups_2nd_day_air",
+                                    shippingInfo?.requestQuoteDB
+                                      ?.shipping_ups_2nd_day_air_price
+                                  )
+                                }
+                              />
+                              <div className="flex-grow-1">
+                                <b>
+                                  UPS 2nd Day Air® -&nbsp;
+                                  <Amount
+                                    amount={
+                                      shippingInfo?.requestQuoteDB
+                                        ?.shipping_ups_2nd_day_air_price
+                                    }
+                                  />
+                                </b>
+
+                                <br />
+                                {shippingInfo.shippingRates?.find(
+                                  (rate) =>
+                                    rate.service_code === "ups_2nd_day_air"
+                                )?.delivery_days && (
+                                  <span>
+                                    Time in transit :{" "}
+                                    {
+                                      shippingInfo.shippingRates.find(
+                                        (rate) =>
+                                          rate.service_code ===
+                                          "ups_2nd_day_air"
+                                      ).delivery_days
+                                    }{" "}
+                                    Business day
+                                    {shippingInfo.shippingRates.find(
+                                      (rate) =>
+                                        rate.service_code === "ups_2nd_day_air"
+                                    ).delivery_days > 1
+                                      ? "s"
+                                      : ""}
+                                  </span>
+                                )}
+                              </div>
+                            </label>
+                          </div>
                         </div>
                       )}
                       {selectedRate === "ups_next_day_air" && (
                         <div className="shippingbg_box">
-                        <div className="rate-option">
-                          <label className="d-flex align-items-start gap-2">
-                            <input
-                              type="checkbox"
-                              value="ups_next_day_air"
-                              checked={selectedRate === "ups_next_day_air"}
-                              onChange={() =>
-                                handleRateSelected(
-                                  "ups_next_day_air",
-                                  shippingInfo?.requestQuoteDB
-                                    ?.shipping_upsair_price
-                                )
-                              }
-                            />
-                            <div className="flex-grow-1">
-
-                            <b> UPS Next Day Air® -&nbsp;
-
-                            <Amount
-                              amount={
-                                shippingInfo?.requestQuoteDB
-                                  ?.shipping_upsair_price
-                              }
-                            />
-                            </b>
-                            <br/>
-                            {shippingInfo.shippingRates?.find(rate => rate.service_code === "ups_next_day_air")?.delivery_days && (
-                                    <span>
-                                      Time in transit : {shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days} Business day{shippingInfo.shippingRates.find(rate => rate.service_code === "ups_next_day_air").delivery_days > 1 ? 's' : ''} 
-                                    </span>
-                            )}
+                          <div className="rate-option">
+                            <label className="d-flex align-items-start gap-2">
+                              <input
+                                type="checkbox"
+                                value="ups_next_day_air"
+                                checked={selectedRate === "ups_next_day_air"}
+                                onChange={() =>
+                                  handleRateSelected(
+                                    "ups_next_day_air",
+                                    shippingInfo?.requestQuoteDB
+                                      ?.shipping_upsair_price
+                                  )
+                                }
+                              />
+                              <div className="flex-grow-1">
+                                <b>
+                                  {" "}
+                                  UPS Next Day Air® -&nbsp;
+                                  <Amount
+                                    amount={
+                                      shippingInfo?.requestQuoteDB
+                                        ?.shipping_upsair_price
+                                    }
+                                  />
+                                </b>
+                                <br />
+                                {shippingInfo.shippingRates?.find(
+                                  (rate) =>
+                                    rate.service_code === "ups_next_day_air"
+                                )?.delivery_days && (
+                                  <span>
+                                    Time in transit :{" "}
+                                    {
+                                      shippingInfo.shippingRates.find(
+                                        (rate) =>
+                                          rate.service_code ===
+                                          "ups_next_day_air"
+                                      ).delivery_days
+                                    }{" "}
+                                    Business day
+                                    {shippingInfo.shippingRates.find(
+                                      (rate) =>
+                                        rate.service_code === "ups_next_day_air"
+                                    ).delivery_days > 1
+                                      ? "s"
+                                      : ""}
+                                  </span>
+                                )}
+                              </div>
+                            </label>
                           </div>
-                          </label>
-                        </div>
                         </div>
                       )}
-                      
+
                       {selectedRate === "custom_rates" &&
                         shippingInfo?.requestQuoteDB?.custom_rates !== 0 && (
                           <div className="rate-option">
@@ -497,18 +554,20 @@ const CheckOutPay = ({
                                   )
                                 }
                               />
-                               <b>&nbsp;&nbsp;Freight Shipping (
-                              <Amount
-                                amount={
-                                  shippingInfo?.requestQuoteDB?.custom_rates
-                                }
-                              />
-                              )</b>
+                              <b>
+                                &nbsp;&nbsp;Freight Shipping (
+                                <Amount
+                                  amount={
+                                    shippingInfo?.requestQuoteDB?.custom_rates
+                                  }
+                                />
+                                )
+                              </b>
                             </label>
                           </div>
                         )}
                     </>
-                  ) : ( 
+                  ) : (
                     <ShippingRates
                       shippingRates={shippingInfo.shippingRates}
                       divideWeight={shippingInfo.divideWeight}
@@ -568,17 +627,22 @@ const CheckOutPay = ({
                         }
                       </p>
                       <p className="mb-2">
-                        {
-                          formatPhoneNumber(shippingInfo?.requestQuoteDB?.billing_details
-                            ?.phone_number)
-                        }
+                        {formatPhoneNumber(
+                          shippingInfo?.requestQuoteDB?.billing_details
+                            ?.phone_number
+                        )}
                       </p>
                       <p className="mb-3">
                         {
                           shippingInfo?.requestQuoteDB?.billing_details
                             ?.address_line_1
                         }
-                        , {shippingInfo?.requestQuoteDB?.billing_details?.city} {shippingInfo?.requestQuoteDB?.billing_details?.state_code},{" "}
+                        , {shippingInfo?.requestQuoteDB?.billing_details?.city}{" "}
+                        {
+                          shippingInfo?.requestQuoteDB?.billing_details
+                            ?.state_code
+                        }
+                        ,{" "}
                         {shippingInfo?.requestQuoteDB?.billing_details?.pincode}
                         ,{" "}
                         {shippingInfo?.requestQuoteDB?.billing_details?.country}
@@ -596,12 +660,22 @@ const CheckOutPay = ({
               </Col>
               <Col lg={6}>
                 <div className="cards_sect paymentTab_div">
-                <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
-                  <h2 className="shipping_head mb-0">Payment Method </h2>
-                    <Button onClick={handleShowCard} variant={null} className="btncstm p-0">
-                                                  <Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add New
-                                                  </Button>
-                                                  </div> 
+                  <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+                    <h2 className="shipping_head mb-0">Payment Method </h2>
+                    <Button
+                      onClick={handleShowCard}
+                      variant={null}
+                      className="btncustom btn-sm"
+                    >
+                      
+                      Add Card<Icon
+                        icon="mdi:add"
+                        className="ms-1"
+                        width={17}
+                        height={17}
+                      />
+                    </Button>
+                  </div>
                   {/* {shippingInfo?.requestQuoteDB?.} */}
                   <Tabs
                     defaultActiveKey="card"
@@ -611,55 +685,59 @@ const CheckOutPay = ({
                     className="mb-3"
                   >
                     <Tab eventKey="card" title="Card">
-                      {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
-                        <>
-                          <div className="text-center mt-2">
-                            <b>
-                              Once your RFQ has been approved you can proceed
-                              with your payment.
-                            </b>
-                          </div>
-                        </>
-                      ) : cardsData.length === 0 ? (
-                        <Col>
-                          <p>No cards found</p>
-                        </Col>
-                      ) : (
-                        cardsData.map(
-                          (card) =>
-                            card.is_default === 1 && (
-                              <Col
-                                xl={12}
-                                lg={12}
-                                md={12}
-                                className="mb-4"
-                                key={card.id}
-                              >
-                                <div className="addresses-grids payment-grids">
-                                  {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
-                                  {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                                  {/* </div> */}
-                                  <p
-                                    className="mb-2 card-no"
-                                    style={{ fontSize: "13px" }}
-                                  >
-                                    **** **** **** {card.last4}
-                                  </p>
-                                  <div className="card-actions">
-                                    <div className="card-info">
-                                      <strong>Expiry Date</strong>{" "}
-                                      {card.exp_month}/{card.exp_year}
-                                    </div>
-                                    <div className="card-info">
-                                      <strong>Name</strong>{" "}
-                                      {card.full_name.toUpperCase()}
-                                    </div>
-                                  </div>
+                      <div className="scroll_cards">
+                        {shippingInfo?.requestQuoteDB?.check_status == 1 ? (
+                          <>
+                            <div className="text-center mt-2">
+                              <b>
+                                Once your RFQ has been approved you can proceed
+                                with your payment.
+                              </b>
+                            </div>
+                          </>
+                        ) : cardsData.length === 0 ? (
+                          <Col>
+                            <p>No cards found</p>
+                          </Col>
+                        ) : (
+                          cardsData.map((card, index) => (
+                            <label
+                              key={card.card_id || index}
+                              className="paymentSelectCard"
+                              htmlFor={`payment` + index}
+                            >
+                              <input
+                                id={`payment` + index}
+                                type="radio"
+                                name="selectedCard"
+                                value={card.card_id}
+                                style={{ display: "none" }}
+                                onChange={() =>
+                                  setSelectedCardPay(card.card_id)
+                                }
+                              />
+                                    {selectedCardPay === card.card_id ? (
+                                                      <Icon icon="material-symbols:check-circle-rounded" color="#45a834" width={22} height={22}/>
+                                                      ) : (
+                                                      <Icon icon="material-symbols:circle-outline" color="#454545" width={22} height={22}/>
+                                                      )}
+                              <div className="paymentSelectbox">
+                                <div className="card-info">
+                                  {card.full_name.length > 10
+                                    ? `${card.full_name
+                                        .slice(0, 10)
+                                        .toUpperCase()}..`
+                                    : card.full_name.toUpperCase()}
                                 </div>
-                              </Col>
-                            )
-                        )
-                      )}
+                                <p>**** {card.last4}</p>
+                                <div className="card-info">
+                                  {card.exp_month}/{card.exp_year}
+                                </div>
+                              </div>
+                            </label>
+                          ))
+                        )}
+                      </div>
                     </Tab>
                     {shippingInfo?.requestQuoteDB?.pay_type == "1" && (
                       <Tab eventKey="net_terms" title="NET TERMS">
@@ -706,7 +784,12 @@ const CheckOutPay = ({
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="quotesitem">Subtotal</span>
                 <span className="quotesitem quotesright">
-                  <Amount amount={shippingInfo?.requestQuoteDB?.total_amount + parseFloat(shippingInfo?.requestQuoteDB?.total_bend_price)} />{" "}
+                  <Amount
+                    amount={
+                      shippingInfo?.requestQuoteDB?.total_amount +
+                      parseFloat(shippingInfo?.requestQuoteDB?.total_bend_price)
+                    }
+                  />{" "}
                 </span>
               </div>
               {/* <div className="d-flex align-items-center justify-content-between mb-2">
@@ -727,9 +810,11 @@ const CheckOutPay = ({
               ) : (
                 ""
               )}
-               {taxAmount != "" ? (
+              {taxAmount != "" ? (
                 <div className="d-flex align-items-center justify-content-between mb-2">
-                  <span className="quotesitem">Tax <b>({taxPercentage}%)</b></span>
+                  <span className="quotesitem">
+                    Tax <b>({taxPercentage}%)</b>
+                  </span>
                   <span className="quotesitem quotesright">
                     <Amount amount={taxAmount || 0} />{" "}
                   </span>
@@ -748,7 +833,8 @@ const CheckOutPay = ({
                       parseFloat(
                         shippingInfo?.requestQuoteDB?.total_bend_price || 0
                       ) +
-                      parseFloat(rateVal == "" ? 0 : rateVal || 0) +  parseFloat(taxAmount == "" ? 0 : taxAmount || 0)
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0) +
+                      parseFloat(taxAmount == "" ? 0 : taxAmount || 0)
                     }
                   />
                 </span>
@@ -802,7 +888,10 @@ const CheckOutPay = ({
                                     shippingInfo?.requestQuoteDB
                                       ?.total_bend_price || 0
                                   ) +
-                                  parseFloat(rateVal == "" ? 0 : rateVal || 0) +  parseFloat(taxAmount == "" ? 0 : taxAmount || 0)
+                                  parseFloat(rateVal == "" ? 0 : rateVal || 0) +
+                                  parseFloat(
+                                    taxAmount == "" ? 0 : taxAmount || 0
+                                  )
                                 }
                               />
                             </b>

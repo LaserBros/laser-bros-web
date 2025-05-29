@@ -195,7 +195,7 @@ const CustomerCheckoutPopup = ({
         status: 1,
         billing_id: billingAddressId,
         address_id: selectedShippingAddressId,
-        type:ParamType
+        type:"rfq"
       };
 
       try {
@@ -365,7 +365,15 @@ const CustomerCheckoutPopup = ({
                 <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
                   <h2 className="shipping_head mb-0">Shipping Address</h2>
                   
-                  <Button onClick={handleShow}  variant={null} className="btncstm p-0"><Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add Address</Button>
+                  <Button onClick={handleShow}  variant={null} className="btncustom btn-sm"
+                                                        >
+                                                         
+                                                          Add Address<Icon
+                                                            icon="mdi:add"
+                                                            className="ms-1"
+                                                            width={17}
+                                                            height={17}
+                                                          /></Button>
                   <AddAddressModal show={showPopup} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} userId={userId} />
                   </div>
                   <Form.Select

@@ -1123,3 +1123,242 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
   };
   
   
+
+
+
+export const uploadQuoteCustomer = async (formData) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/uploadCustomerDxfAdmin`, formData);
+    // const response = await axiosInstance.post(`/users/uploaddxfFile`, formData);
+    // console.log("responseeee ------", response.data);
+    // return;
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerAddress = async (user_id) => {
+  return axiosEmployeeInstance.get("/getUserAddressDetails?user_id="+user_id);
+};
+
+export const CustomeraddNotes = async (id, text) => {
+  try {
+    const data = {
+      id: id,
+      notes_text: text,
+    };
+    const response = await axiosEmployeeInstance.post(`/addNotes`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error setting address as default:", error);
+    throw error;
+  }
+};
+
+export const CustomercopySubQuote = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/copySubQuote`, data);
+    // console.log("responseeee----", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerdeleteSubQuote = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/deleteSubQuote`, data);
+    // // console.log("delete result", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    // throw error;
+  }
+};
+
+export const CustomerfetchSelectedFinishes = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(
+      `/fetchFinishesAndCheck`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerbendQuotes = async (data) => {
+  try {
+    var response_api = await axiosEmployeeInstance.post(`/bendQuotes`, data);
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetMaterials = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.get(`/getMaterials`, data);
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetThickness = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/getThickness`, data);
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetThicknessMaterialFinish = async (data, type, params) => {
+  try {
+    var response_api = await axiosEmployeeInstance.post(
+      `/updateSubQuoteDetailsId`,
+      params
+    );
+    return response_api;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerupdateQuantity = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/updateQuantity`, data);
+    // // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerupdateSubQuoteDetails = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(
+      `/updateSubQuoteDetails`,
+      data
+    );
+    // console.log("responseeee", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerupdateDimensionStatus = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(
+      `/updateDimensionStatus`,
+      data 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomerdeleteBendQuoteImage = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(
+      `/deleteBendQuoteImage`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomeruploadBendingFile = async (data) => {
+  try {
+    var response_api = await axiosEmployeeInstance.post(`/uploadBendingFile`, data);
+    // // console.log("response_api", response_api);
+    // return;
+    return response_api.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomergetShippingRatesAll = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(
+      `/getShippingRatesAll`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const CustomershippingCost = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/shippingCost`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const CustomerDeleteQuote = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/deleteQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
+export const getEditQuotePay = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(
+      `/users/getParticularEditQuote`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+export const shippingCost = async (data) => {
+  try {
+    const response = await axiosEmployeeInstance.post(`/shippingCost`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};

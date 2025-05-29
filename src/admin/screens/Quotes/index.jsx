@@ -36,6 +36,17 @@ const Quotes = () => {
   const [itemsPerPage] = useState(10);
   const [name, searchName] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+
+useEffect(() => {
+  const delayDebounceFn = setTimeout(() => {
+    setCurrentPage(1);
+    searchName(searchTerm);
+    loadData(1, searchTerm, sortOrder);
+  }, 500);
+
+  return () => clearTimeout(delayDebounceFn);
+}, [searchTerm, sortOrder]);
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
     setSortOrder(selectedValue);
@@ -99,13 +110,9 @@ const Quotes = () => {
                     />
                     <Form.Control
                       type="text"
-                      value={name}
+                      value={searchTerm}
                       placeholder="Search WO"
-                      onChange={(e) => {
-                        setCurrentPage(1);
-                        searchName(e.target.value);
-                        loadData(1, e.target.value, sortOrder);
-                      }}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                       className="rounded-5"
                     />
                   </div>

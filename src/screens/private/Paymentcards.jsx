@@ -68,8 +68,9 @@ export default function PaymentCards() {
       const response = await getCard(); // Call your API function
       setCards(response.data); // Assuming the data is in response.data
     } catch (error) {
-      console.error("Error fetching cards:", error);
-    } finally {
+      setCards([]);
+      // console.error("Error fetching cards:", error);
+    } finally { 
       setLoading(false);
     }
   };
@@ -133,22 +134,22 @@ export default function PaymentCards() {
                           </div>
                         </div>
                         <div className="btn-bottom">
-                          {card.is_default === 0 && (
+                          {/* {card.is_default === 0 && ( */}
                             <Link
                               className="btn-address"
                               onClick={() => handleShowModal(card._id)}
                             >
                               <Icon icon="uiw:delete" />
                             </Link>
-                          )}
-                          {card.is_default === 0 && (
+                          {/* )} */}
+                          {/* {card.is_default === 0 && (
                             <Link
                               className="btn-set-default"
                               onClick={() => handleCardSetAsDefault(card._id)}
                             >
                               Set as Default
                             </Link>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </Col>
@@ -163,6 +164,7 @@ export default function PaymentCards() {
         show={modalShow}
         handleClose={handleClose}
         onCardAdded={loadCards}
+        onselectDefault={true}
         title="Add Card"
       />
 

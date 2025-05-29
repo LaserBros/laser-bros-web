@@ -14,6 +14,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   AdmingetEditQuote,
+  CustomerDeleteQuote,
   getParticularProfile,
   getParticularUserQuotes,
   updateCustomerTaxExempt,
@@ -37,6 +38,8 @@ const ViewCustomer = () => {
   const [loadingData, setLoadingData] = useState(true);
   const handleClose = () => setModalShow(false);
   const [modalShow, setModalShow] = useState(false);
+  const handleDeleteClose = () => setDeleteModalShow(false);
+  const [DeletemodalShow, setDeleteModalShow] = useState(false);
   const [title, setTitle] = useState("");
   const [Ids, setIds] = useState("");
   const [type, setType] = useState("");
@@ -60,6 +63,10 @@ const ViewCustomer = () => {
         6
       )}-${cleanInput.slice(6)}`; // Format as XXX-XXX-XXXX
     }
+  }
+  const DeleteQuote = async (id,status) => {
+    setDeleteModalShow(true)
+    setIds(id);
   }
 
   const EditQuote = async (id, status) => {
@@ -167,6 +174,28 @@ const ViewCustomer = () => {
     }
   };
 
+  const DeleteQuoteFunc = async () => {
+    const data = {
+      id : Ids
+    }
+    setLoadingRows((prevState) => ({
+      ...prevState, 
+      [userid]: true,
+    }));
+    try {
+      setDeleteModalShow(true);
+      setLoadingBtn(true);
+      await CustomerDeleteQuote(data);
+        toast.success("Quote deleted successfully");
+    } catch (error) {
+      console.error("Error updating status", error);
+    } finally {
+      setLoadingBtn(false);
+      setDeleteModalShow(false);
+      getParticularUser(currentPage, currentTab);
+    }
+  };
+
   const getParticularUser = async (page = 1, type = currentTab) => {
     try {
       const data = {
@@ -269,7 +298,6 @@ const ViewCustomer = () => {
                 </Col>
               </Row>
             </div>
-
             <div className="d-flex align-items-center justify-content-between flex-wrap g-3">
               <Tabs
                 activeKey={key}
@@ -282,7 +310,7 @@ const ViewCustomer = () => {
                 <Tab eventKey="orders" title="Orders" />
               </Tabs>
 
-              {/* <Button
+              <Button
                 as={Link}
                 to="/admin/customers/rfq-detail"
                 className="flex-shrink-0 d-inline-flex align-items-center"
@@ -294,7 +322,7 @@ const ViewCustomer = () => {
                 }}
               >
                 Create RFQ
-              </Button> */}
+              </Button>
             </div>
             {key === "quotes" && (
               <div className="wrapper">
@@ -329,6 +357,7 @@ const ViewCustomer = () => {
                                 key={row._id}
                                 row={row}
                                 EditQuote={EditQuote}
+                                DeleteQuote={DeleteQuote}
                               />
                             ))
                           )}
@@ -529,7 +558,6 @@ const ViewCustomer = () => {
                     <div className="card-body">
                       <div className="table-responsive">
                         <Table className="tablecustom pt-0">
-
                           <tbody>
                             {loadingData ? (
                               <>
@@ -650,6 +678,16 @@ const ViewCustomer = () => {
         yesBtnText={"Yes"}
         noBtnText={"No"}
         onConfirm={changeStatus}
+        loading={loadingBtn}
+      />
+      <ConfirmationModal
+        show={DeletemodalShow}
+        onHide={handleDeleteClose}
+        title={"Are you sure?"}
+        desc={"are you sure you want to delete this draft?"}
+        yesBtnText={"Yes"}
+        noBtnText={"No"}
+        onConfirm={DeleteQuoteFunc}
         loading={loadingBtn}
       />
     </React.Fragment>

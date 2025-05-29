@@ -150,6 +150,7 @@ import Offer from "./admin/screens/Offer";
 import MaterialForm from "./admin/screens/Material";
 import ViewMaterialPage from "./admin/screens/Material/ViewMaterial";
 import AdminCustomerRFQ from "./admin/screens/Customers/rfq";
+import EmpCustomerRFQ from "./employee/Customers/rfq";
 
 
 export default function RoutesFile({openPop,handleClose,setSuccessMessage}) {
@@ -654,6 +655,18 @@ return (
         </Layouts>
       }
     />
+    <Route
+      path="/employee/customers/rfq-detail"
+      element={
+        <EmployeRoute
+          element={
+            <Layouts title={"Request For Quote"}>
+              <EmpCustomerRFQ /> 
+            </Layouts>
+          }
+        />
+      }
+    />
 
     <Route
       path="/employee/payment-history"
@@ -797,7 +810,7 @@ return (
       }
     ></Route>
     <Route
-      path="/employee/customers/:id"
+      path="/employee/customers/:userid"
       element={
         <EmployeRoute
           element={

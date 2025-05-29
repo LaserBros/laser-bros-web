@@ -21,16 +21,16 @@ const CheckoutPopup = ({
   bendAmountPrice,
   handleClose,
   address,
-  shippingInfo, 
+  shippingInfo,
   cardsData,
   setSuccessMessage,
   handleShow,
   showPopup,
   handleCloseModal,
   modalShowCard,
-          handleShowCard,
-          handleCloseCard,
-          ParamType
+  handleShowCard,
+  handleCloseCard,
+  ParamType,
 }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isSameAsShipping, setIsSameAsShipping] = useState(false);
@@ -39,27 +39,27 @@ const CheckoutPopup = ({
   const [loading, setLoading] = useState(false);
   const shippingRates = [
     {
-        service_type: "UPS 2nd Day Air®",
-        carrier_friendly_name: "UPS",
-        service_code: "ups_2nd_day_air",
-        shipping_amount: { currency: "usd", amount: 25.43 },
-        estimated_delivery_date: "2025-04-03T23:00:00Z"
+      service_type: "UPS 2nd Day Air®",
+      carrier_friendly_name: "UPS",
+      service_code: "ups_2nd_day_air",
+      shipping_amount: { currency: "usd", amount: 25.43 },
+      estimated_delivery_date: "2025-04-03T23:00:00Z",
     },
     {
-        service_type: "UPS Ground®",
-        service_code: "ups_ground",
-        carrier_friendly_name: "UPS",
-        shipping_amount: { currency: "usd", amount: 11.32 },
-        estimated_delivery_date: "2025-04-02T23:00:00Z"
+      service_type: "UPS Ground®",
+      service_code: "ups_ground",
+      carrier_friendly_name: "UPS",
+      shipping_amount: { currency: "usd", amount: 11.32 },
+      estimated_delivery_date: "2025-04-02T23:00:00Z",
     },
     {
-        service_type: "UPS Next Day Air®",
-        carrier_friendly_name: "UPS",
-        service_code: "ups_next_day_air",
-        shipping_amount: { currency: "usd", amount: 42.42 },
-        estimated_delivery_date: "2025-04-02T10:30:00Z"
-    }
-];
+      service_type: "UPS Next Day Air®",
+      carrier_friendly_name: "UPS",
+      service_code: "ups_next_day_air",
+      shipping_amount: { currency: "usd", amount: 42.42 },
+      estimated_delivery_date: "2025-04-02T10:30:00Z",
+    },
+  ];
 
   const [rateVal, setrateVal] = useState("");
   const [taxPercentage, setaxPercentage] = useState(0);
@@ -68,22 +68,21 @@ const CheckoutPopup = ({
   const [ByDefaultShipping, setByDefaultShipping] = useState(false);
   const navigate = useNavigate();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedCardPay, setSelectedCardPay] = useState(null);
   const [shippingInfoData, setshippingInfo] = useState("");
-  
+
   useEffect(() => {
     setSelectedAddress(null);
     setShippingSelectedAddress(null);
     setShippingSelectedAddress(null);
     setIsSameAsShipping(false);
     setshippingInfo(shippingInfo);
-    if(ParamType == "rfq") {
+    if (ParamType == "rfq") {
       setaxAmount(0);
       setaxPercentage(0);
       setrateVal("");
     }
   }, [show]);
-
-
 
   useEffect(() => {
     if (cardsData.length > 0) {
@@ -162,9 +161,9 @@ const CheckoutPopup = ({
       if (rateVal === "") {
         toast.error("Please select a shipping method.");
         return;
-      } 
+      }
       if (shippingInfoData?.requestQuoteDB?.check_status == 0) {
-        if (!selectedCard) {
+        if (!selectedCardPay) {
           toast.error("Please select a payment card.");
           return;
         }
@@ -193,7 +192,7 @@ const CheckoutPopup = ({
         status: 1,
         billing_id: billingAddressId,
         address_id: selectedShippingAddressId,
-        type:ParamType
+        type: ParamType,
       };
 
       try {
@@ -215,6 +214,8 @@ const CheckoutPopup = ({
             id: loadingPayId?._id,
             billing_id: billingAddressId,
             address_id: selectedShippingAddressId,
+            card_token: selectedCardPay,
+
           };
           const res = await payment(data);
 
@@ -247,7 +248,7 @@ const CheckoutPopup = ({
   const [loadingShip, setloadingShip] = useState(false);
   const handleShippingAddressChange = async (event) => {
     const selectedId = event.target.value;
-    
+
     const selectedAddr = address.find((addr) => addr._id === selectedId);
     setShippingSelectedAddress(selectedAddr || null);
     if (isSameAsShipping && selectedAddress) {
@@ -256,13 +257,13 @@ const CheckoutPopup = ({
     // // console.log("Dsdsdsdssddsd");
     setByDefaultShipping(false);
     setloadingShip(true);
-    if(selectedId == "" || selectedId == null) {
+    if (selectedId == "" || selectedId == null) {
       // setshippingInfo("")
       setIsSameAsShipping(false);
       setaxPercentage(0);
       setaxAmount(0);
       setrateVal(0);
-      setSelectedAddress("")
+      setSelectedAddress("");
       setloadingShip(false);
       return;
     }
@@ -271,33 +272,34 @@ const CheckoutPopup = ({
         id: loadingPayId?._id,
         address_id: selectedId,
       };
-      
+
       const res = await getShippingRatesAll(data);
-      if(res.data.shippingRates.length == 0) {
+      if (res.data.shippingRates.length == 0) {
         setSelectedAddress(selectedAddress || null);
         setByDefaultShipping(true);
         setshippingInfo((prevShippingInfo) => ({
           ...prevShippingInfo,
-          shippingRates: shippingRates
-      }));
+          shippingRates: shippingRates,
+        }));
         setloadingShip(false);
-        return
+        return;
       }
       setshippingInfo(res.data);
-      if(ParamType == "rfq") {
-      const updatedShippingInfo = { 
-        ...res.data, 
-        requestQuoteDB: {
-          ...res.data.requestQuoteDB,
-          check_status: 1, 
-        }
-      };
-      setshippingInfo(updatedShippingInfo);
-    } 
+      if (ParamType == "rfq") {
+        const updatedShippingInfo = {
+          ...res.data,
+          requestQuoteDB: {
+            ...res.data.requestQuoteDB,
+            check_status: 1,
+          },
+        };
+        setshippingInfo(updatedShippingInfo);
+      }
     } catch (error) {
-     
       // setshippingInfo("")
-      toast.error(error.response.data.error[0]+ " Please select another address.");
+      toast.error(
+        error.response.data.error[0] + " Please select another address."
+      );
       // setshippingInfo("");
       setaxAmount(0);
       setShippingSelectedAddress(null);
@@ -306,7 +308,7 @@ const CheckoutPopup = ({
       setIsSameAsShipping(false);
       // setSelectedAddress("")
     }
-   
+
     setloadingShip(false);
   };
 
@@ -330,7 +332,7 @@ const CheckoutPopup = ({
 
   const handleRateSelected = async (rate, price) => {
     // // console.log("shippingInfo?.requestQuoteDB?.check_status",shippingInfoData?.requestQuoteDB?.check_status)
-   
+
     setrateVal(price);
     if (shippingInfoData?.requestQuoteDB?.check_status == 1) {
       setrateVal(0);
@@ -347,7 +349,8 @@ const CheckoutPopup = ({
       service_code: rate,
       id: loadingPayId?._id,
       address_id: selectedShippingAddress?._id,
-      type :  shippingInfoData?.requestQuoteDB?.check_status == 1 ? 'request' : ''
+      type:
+        shippingInfoData?.requestQuoteDB?.check_status == 1 ? "request" : "",
     };
     try {
       const res = await shippingCost(data);
@@ -358,7 +361,10 @@ const CheckoutPopup = ({
       if (shippingInfo?.userDBdata?.tax_exempt == 0) {
         setaxAmount(res.data.tax_amount);
         setaxPercentage(res.data.tax_percentage);
-        if (shippingInfoData?.requestQuoteDB?.check_status == 1 || ParamType == 'rfq') {
+        if (
+          shippingInfoData?.requestQuoteDB?.check_status == 1 ||
+          ParamType == "rfq"
+        ) {
           setrateVal(0);
           setaxAmount(0);
           setaxPercentage(0);
@@ -380,16 +386,32 @@ const CheckoutPopup = ({
         size="lg"
       >
         <Modal.Body className="w-100">
-          <div className="shipping_info">
+          <div className="shipping_info"> 
             <Row>
               <Col lg={6}>
                 {/* Shipping Address */}
                 <div className="shipping_addr_name bill_addr_name">
-                <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
-                  <h2 className="shipping_head mb-0">Shipping Address</h2>
-                  
-                  <Button onClick={handleShow}  variant={null} className="btncstm p-0"><Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add Address</Button>
-                  <AddAddressModal show={showPopup} handleClose={handleCloseModal} setSuccessMessage={setSuccessMessage} />
+                  <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+                    <h2 className="shipping_head mb-0">Shipping Address</h2>
+
+                    <Button
+                      onClick={handleShow}
+                      variant={null}
+                      className="btncustom btn-sm"
+                    >
+                     
+                      Add Address<Icon
+                        icon="mdi:add"
+                        className="ms-1"
+                        width={17}
+                        height={17}
+                      />
+                    </Button>
+                    <AddAddressModal
+                      show={showPopup}
+                      handleClose={handleCloseModal}
+                      setSuccessMessage={setSuccessMessage}
+                    />
                   </div>
                   <Form.Select
                     aria-label="Select Address"
@@ -415,24 +437,27 @@ const CheckoutPopup = ({
                           {selectedShippingAddress.nickname}
                         </p>
                         <p className="mb-2">
-                          {formatPhoneNumber(selectedShippingAddress.phone_number)} 
+                          {formatPhoneNumber(
+                            selectedShippingAddress.phone_number
+                          )}
                         </p>
                         <p className="mb-3">
                           {selectedShippingAddress.address_line_1},{" "}
-                          {selectedShippingAddress.city}  {selectedShippingAddress?.state_code},{" "}
+                          {selectedShippingAddress.city}{" "}
+                          {selectedShippingAddress?.state_code},{" "}
                           {selectedShippingAddress.pincode},{" "}
                           {selectedShippingAddress.country}
                         </p>
-                        {selectedShippingAddress?.permanent == 0 &&
-                        <div className="btn-bottom">
-                          <Link
-                            className="btn-address"
-                            to={`/my-address/edit-address/${selectedShippingAddress._id}`}
-                          >
-                            <Icon icon="mynaui:edit" />
-                          </Link>
-                        </div>
-                        }
+                        {selectedShippingAddress?.permanent == 0 && (
+                          <div className="btn-bottom">
+                            <Link
+                              className="btn-address"
+                              to={`/my-address/edit-address/${selectedShippingAddress._id}`}
+                            >
+                              <Icon icon="mynaui:edit" />
+                            </Link>
+                          </div>
+                        )}
                       </div>
                     </Col>
                   ) : (
@@ -461,16 +486,16 @@ const CheckoutPopup = ({
                     ></span>
                   ) : (
                     <>
-                    <ShippingRates
-                      shippingRates={shippingInfoData.shippingRates}
-                      divideWeight={shippingInfoData.divideWeight}
-                      onRateSelected={handleRateSelected}
-                      RequestQuote={
-                        shippingInfoData?.requestQuoteDB?.check_status
-                      }
-                      selectedShippingAddress={selectedShippingAddress}
-                      ByDefaultShipping={ByDefaultShipping}
-                    />
+                      <ShippingRates
+                        shippingRates={shippingInfoData.shippingRates}
+                        divideWeight={shippingInfoData.divideWeight}
+                        onRateSelected={handleRateSelected}
+                        RequestQuote={
+                          shippingInfoData?.requestQuoteDB?.check_status
+                        }
+                        selectedShippingAddress={selectedShippingAddress}
+                        ByDefaultShipping={ByDefaultShipping}
+                      />
                     </>
                   )}
                 </div>
@@ -498,12 +523,14 @@ const CheckoutPopup = ({
                       className="mb-3"
                     >
                       <option value="">Select Address</option>
-                      {address.map((addr) => (
-                        addr?.permanent == 0 &&
-                        <option key={addr?._id} value={addr?._id}>
-                          {addr?.full_name} - {addr?.nickname}
-                        </option>
-                      ))}
+                      {address.map(
+                        (addr) =>
+                          addr?.permanent == 0 && (
+                            <option key={addr?._id} value={addr?._id}>
+                              {addr?.full_name} - {addr?.nickname}
+                            </option>
+                          )
+                      )}
                     </Form.Select>
                   )}
                   {selectedAddress ? (
@@ -513,22 +540,24 @@ const CheckoutPopup = ({
                           <h2 className="mb-0">{selectedAddress.full_name}</h2>
                         </div>
                         <p className="mb-2">{selectedAddress.nickname}</p>
-                        <p className="mb-2">{formatPhoneNumber(selectedAddress.phone_number)}</p>
+                        <p className="mb-2">
+                          {formatPhoneNumber(selectedAddress.phone_number)}
+                        </p>
                         <p className="mb-3">
                           {selectedAddress.address_line_1},{" "}
-                          {selectedAddress.city} {selectedAddress?.state_code}, {selectedAddress.pincode},{" "}
-                          {selectedAddress.country}
+                          {selectedAddress.city} {selectedAddress?.state_code},{" "}
+                          {selectedAddress.pincode}, {selectedAddress.country}
                         </p>
-                        {selectedShippingAddress?.permanent == 0 &&
-                        <div className="btn-bottom">
-                          <Link
-                            className="btn-address"
-                            to={`/my-address/edit-address/${selectedAddress._id}`}
-                          >
-                            <Icon icon="mynaui:edit" />
-                          </Link>
-                        </div>
-                        }
+                        {selectedShippingAddress?.permanent == 0 && (
+                          <div className="btn-bottom">
+                            <Link
+                              className="btn-address"
+                              to={`/my-address/edit-address/${selectedAddress._id}`}
+                            >
+                              <Icon icon="mynaui:edit" />
+                            </Link>
+                          </div>
+                        )}
                       </div>
                     </Col>
                   ) : (
@@ -543,11 +572,24 @@ const CheckoutPopup = ({
               <Col lg={6}>
                 <div className="cards_sect">
                   <div className="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
-                  <h2 className="shipping_head mb-0">Payment Method </h2>
-                   <Button onClick={handleShowCard} variant={null} className="btncstm p-0">
-                                <Icon icon="mdi:add" className="me-1" width={17} height={17}/> Add New
-                                </Button>
-                  </div>  
+                    <h2 className="shipping_head mb-0">Payment Method </h2>
+                    {shippingInfoData?.requestQuoteDB?.check_status != 1 && (
+                      <Button
+                        onClick={handleShowCard}
+                        variant={null}
+                        className="btncustom btn-sm"
+                      >
+                        
+                        Add Card<Icon
+                          icon="mdi:add"
+                          className="ms-1"
+                          width={17}
+                          height={17}
+                        />
+                      </Button>
+                    )}
+                  </div>
+                  <div className="scroll_cards">
                   {shippingInfoData?.requestQuoteDB?.check_status == 1 ? (
                     <>
                       <div className="text-center mt-2">
@@ -562,41 +604,44 @@ const CheckoutPopup = ({
                       <p>No cards found</p>
                     </Col>
                   ) : (
-                    cardsData.map(
-                      (card) =>
-                        card.is_default === 1 && (
-                          <Col
-                            xl={12}
-                            lg={12}
-                            md={12}
-                            className="mb-4"
-                            key={card.id}
-                          >
-                            <div className="addresses-grids payment-grids">
-                              {/* <div className="d-flex align-items-center justify-content-between mb-3"> */}
-                              {/* <Image src={visa} className="img-fluid mb-3" alt="" /> */}
-                              {/* </div> */}
-                              <p
-                                className="mb-2 card-no"
-                                style={{ fontSize: "13px" }}
-                              >
-                                **** **** **** {card.last4}
-                              </p>
-                              <div className="card-actions">
-                                <div className="card-info">
-                                  <strong>Expiry Date</strong> {card.exp_month}/
-                                  {card.exp_year}
-                                </div>
-                                <div className="card-info">
-                                  <strong>Name</strong>{" "}
-                                  {card.full_name.toUpperCase()}
-                                </div>
-                              </div>
-                            </div>
-                          </Col>
-                        )
-                    )
+                    cardsData.map((card, index) => ( 
+                      <label
+                        key={card.card_id || index}
+                        className="paymentSelectCard"
+                        htmlFor={`payment`+index}
+                      >
+                        <input
+                        id={`payment`+index}
+                          type="radio"
+                          name="selectedCard"
+                          value={card.card_id}
+                          style={{ display:'none' }}
+                          onChange={() => setSelectedCardPay(card.card_id)} 
+                        />
+                        {selectedCardPay === card.card_id ? (
+                        <Icon icon="material-symbols:check-circle-rounded" color="#45a834" width={22} height={22}/>
+                        ) : (
+                        <Icon icon="material-symbols:circle-outline" color="#454545" width={22} height={22}/>
+                        )}
+                        <div className="paymentSelectbox">   
+                            <div className="card-info">
+                            
+                            {card.full_name.length > 10
+  ? `${card.full_name.slice(0, 10).toUpperCase()}..`
+  : card.full_name.toUpperCase()}
+                            </div> 
+                          <p>
+                            **** {card.last4}
+                          </p>                     
+                           <div className="card-info">
+                               {card.exp_month}/
+                              {card.exp_year}
+                            </div>  
+                        </div>
+                      </label>
+                    ))
                   )}
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -605,7 +650,10 @@ const CheckoutPopup = ({
                 <span className="quotesitem">Subtotal</span>
                 <span className="quotesitem quotesright">
                   <Amount
-                    amount={shippingInfoData?.requestQuoteDB?.total_amount + parseFloat(bendAmountPrice)}
+                    amount={
+                      shippingInfoData?.requestQuoteDB?.total_amount +
+                      parseFloat(bendAmountPrice)
+                    }
                   />{" "}
                 </span>
               </div>
@@ -652,9 +700,7 @@ const CheckoutPopup = ({
                       parseFloat(
                         shippingInfoData?.requestQuoteDB?.total_amount || 0
                       ) +
-                      parseFloat(
-                        bendAmountPrice || 0
-                      ) +
+                      parseFloat(bendAmountPrice || 0) +
                       parseFloat(rateVal == "" ? 0 : rateVal || 0) +
                       parseFloat(taxAmount || 0)
                     }
@@ -704,9 +750,7 @@ const CheckoutPopup = ({
                                 shippingInfoData?.requestQuoteDB
                                   ?.total_amount || 0
                               ) +
-                              parseFloat(
-                                bendAmountPrice || 0
-                              ) +
+                              parseFloat(bendAmountPrice || 0) +
                               parseFloat(rateVal == "" ? 0 : rateVal || 0)
                             }
                           />
@@ -729,7 +773,6 @@ const CheckoutPopup = ({
             </div>
           </div>
           <PaymentDone show={modalShow} handleClose={handleCloseTrigger} />
-          
         </Modal.Body>
       </Modal>
     </React.Fragment>

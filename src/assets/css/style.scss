@@ -3711,7 +3711,61 @@ textarea.form-control {
         }
     }
 }
-
+.scroll_cards {
+    max-height: 255px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+#saveCardCheckbox{
+    border: 1px solid #000;
+}
+.paymentSelectCard {
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+gap:12px;
+    input:checked {
+        ~ {
+            .paymentSelectbox {
+              
+                border: 1px solid $primary-color;
+                // background: $primary-color;
+                // p , .card-info {
+                //     color: $white-color;
+                // }
+            } 
+        }
+    }
+    .paymentSelectbox {
+        border       : 1px solid rgba($black-color, .1);
+        border-radius: 12px;
+        padding      : 8px 15px;
+        flex-grow: 1;
+        background   : $white-color;
+        box-shadow   : 0px 0px 10px rgba($black-color, 0.08);
+        height       : 100%; 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        p {
+            font-size  : 14px;
+            color      : $paragraph-color;
+            line-height: 1.75;
+            margin-bottom: 0px;
+        } 
+        .card-info {
+            color    : $paragraph-color;
+            font-size: 14px;
+        }             
+    }
+}
 .addresses-grids {
     border       : 1px solid rgba($black-color, .1);
     border-radius: 15px;
@@ -5305,8 +5359,7 @@ textarea.form-control {
     font-size: 14px;
     border-radius: 30px;
     min-width: 62px;
-    display: inline-flex
-;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     color: #635252;
@@ -5315,4 +5368,14 @@ textarea.form-control {
     line-height: 25px;
     margin-bottom: 0px;
     border: 1px solid #ccc;
+}
+.btncustom {
+    background: rgba(78, 138, 200, 0.25)!important;
+    padding: 4px 10px!important;
+    color:$black-color;
+    border-radius: 30px!important;
+    &:hover{
+        background: $primary-color!important;
+        color:$white-color!important
+    }
 }

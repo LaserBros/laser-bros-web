@@ -9,6 +9,7 @@ const RenamePart = ({ show3, handleClose3, title, quote, onSave }) => {
     setError(""); // Clear the error when the user starts typing
   };
   useEffect(() => {
+    console.log("Sdfghfddffgrfrt5t5t565656565ggtgr")
     // console.log("Received name quote:", quote);
     setName(quote); // Sync state with prop if it changes
   }, [quote]);

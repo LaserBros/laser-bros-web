@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../axios/axiosInstance";
 import { toast } from "react-toastify";
 import axiosAdminInstance from "../../admin/axios/axiosadminInstanse";
+import axiosEmployeeInstance from "../../employee/axios/axiosemployeeInstanse";
 
-export default function AddAddress({openPop,handleClose,setSuccessMessage,userId}) {
+export default function AddAddress({openPop,handleClose,setSuccessMessage,userId,type}) {
   const [formData, setFormData] = useState({ 
     full_name: "",
     nickname: "",
@@ -153,14 +154,20 @@ export default function AddAddress({openPop,handleClose,setSuccessMessage,userId
     e.preventDefault();
     if (validateForm()) {
       var response;
-      console.log("234567898765432346789876543456789098765434567890 ",userId)
       try {
         setLoading(true);
         if(userId) {
+          if(type == "emp") {
+            response = await axiosEmployeeInstance.post(
+              "/addUserAddressDetails",
+              formData
+            ); 
+          } else {
           response = await axiosAdminInstance.post(
             "/addUserAddressDetails",
             formData
-          );
+          ); 
+        }
         } else {
           response = await axiosInstance.post(
             "/users/addAddress",

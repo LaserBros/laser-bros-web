@@ -2374,3 +2374,14 @@ export const CustomershippingCost = async (data) => {
     throw error;
   }
 };
+
+
+export const CustomerDeleteQuote = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/deleteQuote`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};

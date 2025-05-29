@@ -14,7 +14,16 @@ import { useTheme } from "./Themecontext";
 // Your Stripe public key
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
 
-const AddCardForm = ({ show, handleClose, title, onCardAdded,isSetDefault }) => {
+const AddCardForm = ({ 
+  show,
+  handleClose,
+  title,
+  onCardAdded,
+  isSetDefault,
+  clickByUser,
+  onselectDefault,
+  onSelectCard
+}) => {
   const { theme, togglenewTheme } = useTheme();
   const stripe = useStripe();
   const elements = useElements();
@@ -22,6 +31,7 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded,isSetDefault }) => 
   const [cardHolderName, setCardHolderName] = useState("");
   const [nameError, setNameError] = useState(null);
   const [generalError, setGeneralError] = useState(null);
+  const [saveCard, setSaveCard] = useState(onselectDefault);
 
   const validateName = (name) => {
     if (!name.trim()) {
@@ -58,35 +68,47 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded,isSetDefault }) => 
     // // console.log(token);
     // return;
     if (error) {
-      setGeneralError(error.message); 
+      setGeneralError(error.message);
     } else {
       const formData = {
         last4: token.card.last4,
         exp_month: token.card.exp_month,
         exp_year: token.card.exp_year,
         full_name: cardHolderName,
-        card_id: token.card.id,
+        card_id: saveCard ? token.card.id : token.id,
         card_token: token.id,
       };
-      setLoading(true);
-      try {
-        const res = await addCard(formData);
-        if(isSetDefault) {
-          await setCardAsDefault(res.data._id); 
+
+      console.log("Save card for future orders:", saveCard,formData);
+      setLoading(true); 
+      if(saveCard) {
+
+        try {
+          const res = await addCard(formData);
+          if (isSetDefault) {
+            await setCardAsDefault(res.data._id);
+          }
+          toast.success("Card added successfully!");
+          setLoading(false);
+          setCardHolderName("");
+          handleClose();
+        } catch (error) {
+          setLoading(false);
+          toast.error("Error setting address as default:", error);
         }
-        toast.success("Card added successfully!");
-        setLoading(false);
-        setCardHolderName("");
+        setGeneralError(null);
+        setLoading(false); 
+        onCardAdded();
         handleClose();
-      } catch (error) {
-        setLoading(false);
-        toast.error("Error setting address as default:", error);
       }
-      // Handle the token as needed
-      setGeneralError(null);
-      onCardAdded();
-      handleClose();
-    }
+      else {
+        setLoading(false);
+        onSelectCard(formData)
+        setGeneralError(null);
+        handleClose();
+      }
+    } 
+      
   };
 
   return (
@@ -125,22 +147,39 @@ const AddCardForm = ({ show, handleClose, title, onCardAdded,isSetDefault }) => 
                 <Form.Group className="mb-3 form-group">
                   <Form.Label>Card Details</Form.Label>
                   <div className="paymentCard_border">
-                  <CardElement
-                    options={{
-                      style: {
-                        base: {
-                          color:theme =='dark' ? '#fff':'#000',
-                          "::placeholder": {
-                            color: theme === 'dark' ? '#bfbfbf' : 'rgba(0,0,0,0.5)' // adjust color as needed
+                    <CardElement
+                      options={{
+                        style: {
+                          base: {
+                            color: theme == "dark" ? "#fff" : "#000",
+                            "::placeholder": {
+                              color:
+                                theme === "dark"
+                                  ? "#bfbfbf"
+                                  : "rgba(0,0,0,0.5)", // adjust color as needed
+                            },
+                            fontSize: "16px",
                           },
-                          fontSize: "16px",
                         },
-                      },
-                    }}
-                  />
+                      }}
+                    />
                   </div>
                 </Form.Group>
               </Col>
+              {clickByUser &&
+              <Col md={12}>
+                <Form.Check
+                  type="checkbox"
+                  id="saveCardCheckbox"
+                  label="Save card for future orders"
+                  checked={saveCard}
+                  onChange={(e) => setSaveCard(e.target.checked)}
+                />
+                {/* <label htmlFor="saveCardCheckbox">
+                  Save card for future orders
+                </label> */}
+              </Col>
+              }
             </Row>
             {generalError && <div style={{ color: "red" }}>{generalError}</div>}
             <div className="text-center mt-3">

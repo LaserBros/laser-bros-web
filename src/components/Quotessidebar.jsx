@@ -25,6 +25,8 @@ import CheckOutPay from "./checkOutPay";
 import AddAddressModal from "../screens/private/AddaddressModal";
 import AddCard from "./Addcard";
 import { Tooltip } from "react-tooltip";
+
+
 const QuotesSidebar = ({
   amount,
   showDiv,
@@ -36,15 +38,20 @@ const QuotesSidebar = ({
   loadId,
   bendAmount
 }) => {
+
   const [modalShow, setModalShow] = useState(false);
   const [quoteDataVal, setquoteData] = useState(false);
   const [rateVal, setrateVal] = useState("");
   const [loadingPayId, setLoadingPayID] = useState();
-
-    const [modalShowCard, setModalShowCard] = useState(false);
+  const [modalShowCard, setModalShowCard] = useState(false);
+  const [clickByUser,setclickByUser] = useState(false);
   
-    const handleShowCard = () => setModalShowCard(true);
-    const handleCloseCard = () => setModalShowCard(false);
+  const handleShowCard = () => { 
+      setModalShowCard(true);
+      setclickByUser(true);
+    };
+    
+  const handleCloseCard = () => setModalShowCard(false);
 
   useEffect(() => {
     setquoteData(quoteData);
@@ -359,7 +366,7 @@ const QuotesSidebar = ({
       }
     }
   };
-
+  const [savedCards , onSelectCard] = useState([]);
   const [cardsData, setCards] = useState([]);
   const loadData = async () => {
     setLoading(true);
@@ -385,6 +392,13 @@ const QuotesSidebar = ({
       setLoading(false);
     }
   };
+  useEffect(() => {
+    if (savedCards && !Array.isArray(savedCards)) {
+      setCards((prevCards) => [...prevCards, savedCards]);
+    } else if (Array.isArray(savedCards)) {
+      setCards((prevCards) => [...prevCards, ...savedCards]);
+    }
+  }, [savedCards]);
 
   useEffect(() => {
     loadData();
@@ -836,7 +850,7 @@ const QuotesSidebar = ({
                           lg={12}
                           md={12}
                           className="mb-4"
-                          key={card.id}
+                          key={card.card_id}
                         >
                           <div className="addresses-grids payment-grids">
                             <div className="d-flex align-items-center justify-content-between mb-3">
@@ -924,15 +938,17 @@ const QuotesSidebar = ({
       <AddCard 
         show={modalShowCard}
         handleClose={handleCloseCard}
-        onCardAdded={loadCards}
+        onCardAdded={loadCards}  
         title="Add Card"
+        onSelectCard = {onSelectCard}
+        clickByUser={clickByUser} 
         isSetDefault={true} 
       />
       {isPayble ? (
         <CheckOutPay
           bendAmountPrice={bendAmount}
           show={modalShowPay}
-          loadingPayId={loadingPayId}
+          loadingPayId={loadingPayId} 
           handleClose={handleClosePay}
           address={address}
           shippingInfo={shippingInfo}
@@ -962,4 +978,5 @@ const QuotesSidebar = ({
     </>
   );
 };
+
 export default QuotesSidebar;
