@@ -214,6 +214,7 @@ const CheckoutPopup = ({
             id: loadingPayId?._id,
             billing_id: billingAddressId,
             address_id: selectedShippingAddressId,
+            quote_type : 'quote',
             card_token: selectedCardPay,
 
           };
