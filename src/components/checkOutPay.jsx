@@ -60,22 +60,22 @@ const CheckOutPay = ({
     setfileUpload("");
     setaxPercentage(shippingInfo?.tax?.tax_percentage);
     settaxAmount(shippingInfo?.tax?.tax_amount);
-    setSelectedRate(shippingInfo?.requestQuoteDB?.service_code);
+    // setSelectedRate(shippingInfo?.requestQuoteDB?.service_code);
     // console.log(shippingInfo.requestQuoteDB?.service_code,".requestQuoteDB")
-    if (shippingInfo?.requestQuoteDB?.service_code != null) {
-      handleRateSelected(
-        shippingInfo?.requestQuoteDB?.service_code,
-        shippingInfo?.requestQuoteDB?.service_code == "ups_next_day_air"
-          ? shippingInfo?.requestQuoteDB?.shipping_upsair_price
-          : shippingInfo?.requestQuoteDB?.service_code == "ups_ground"
-          ? shippingInfo?.requestQuoteDB?.shipping_upsground_price
-          : shippingInfo?.requestQuoteDB?.service_code == "ups_2nd_day_air"
-          ? shippingInfo?.requestQuoteDB?.shipping_ups_2nd_day_air_price
-          : shippingInfo?.requestQuoteDB?.service_code == "custom_rates"
-          ? shippingInfo?.requestQuoteDB?.custom_rates
-          : "0.00"
-      );
-    }
+    // if (shippingInfo?.requestQuoteDB?.service_code != null) {
+    //   handleRateSelected(
+    //     shippingInfo?.requestQuoteDB?.service_code,
+    //     shippingInfo?.requestQuoteDB?.service_code == "ups_next_day_air"
+    //       ? shippingInfo?.requestQuoteDB?.shipping_upsair_price
+    //       : shippingInfo?.requestQuoteDB?.service_code == "ups_ground"
+    //       ? shippingInfo?.requestQuoteDB?.shipping_upsground_price
+    //       : shippingInfo?.requestQuoteDB?.service_code == "ups_2nd_day_air"
+    //       ? shippingInfo?.requestQuoteDB?.shipping_ups_2nd_day_air_price
+    //       : shippingInfo?.requestQuoteDB?.service_code == "custom_rates"
+    //       ? shippingInfo?.requestQuoteDB?.custom_rates
+    //       : "0.00"
+    //   );
+    // }
     console.log("shippingInfo ::::::::::", shippingInfo);
   }, [show]);
 
@@ -147,8 +147,8 @@ const CheckOutPay = ({
       //   toast.error("Please select a billing address.");
       //   return;
       // }
-
-      if (rateVal === "") {
+      console.log("selectedRate",selectedRate)
+      if (selectedRate === "") {
         toast.error("Please select a shipping method.");
         return;
       }
@@ -265,12 +265,13 @@ const CheckOutPay = ({
   const [rateVal, setrateVal] = useState("");
 
   const handleRateSelected = async (rate, price) => {
-    setSelectedRate(rate);
+    
     if (shippingInfo?.requestQuoteDB?.check_status == 1) {
       setrateVal(0);
       return;
     }
     setrateVal(price);
+    setSelectedRate(rate);
     const elementId = localStorage.getItem("setItemelementData");
 
     const data = {
@@ -360,7 +361,7 @@ const CheckOutPay = ({
                   <h2 className="shipping_head">Shipping Method</h2>
                   {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
                     <>
-                      {selectedRate === "local_pickup" && (
+                      {shippingInfo?.requestQuoteDB?.isSelected_local_pickup === 1 && (
                         <div className="rate-option">
                           <label>
                             <input
@@ -375,7 +376,34 @@ const CheckOutPay = ({
                           </label>
                         </div>
                       )}
-                      {selectedRate === "ups_ground" && (
+                      {shippingInfo?.requestQuoteDB?.isSelected_custom_shipping === 1 &&
+                        shippingInfo?.requestQuoteDB?.custom_rates !== 0 && (
+                          <div className="rate-option">
+                            <label>
+                              <input
+                                type="checkbox"
+                                value="custom_rates"
+                                checked={selectedRate === "custom_rates"}
+                                onChange={() =>
+                                  handleRateSelected(
+                                    "custom_rates",
+                                    shippingInfo?.requestQuoteDB?.custom_rates
+                                  )
+                                }
+                              />
+                              <b>
+                                &nbsp;&nbsp;Freight Shipping (
+                                <Amount
+                                  amount={
+                                    shippingInfo?.requestQuoteDB?.custom_rates
+                                  }
+                                />
+                                )
+                              </b>
+                            </label>
+                          </div>
+                        )}
+                      {shippingInfo?.requestQuoteDB?.isSelected_ups_ground === 1 && (
                         <div className="shippingbg_box">
                           <div className="rate-option">
                             <label className="d-flex align-items-start gap-2">
@@ -428,7 +456,7 @@ const CheckOutPay = ({
                           </div>
                         </div>
                       )}
-                      {selectedRate === "ups_2nd_day_air" && (
+                      {shippingInfo?.requestQuoteDB?.isSelected_ups_2nd_day_air === 1 && (
                         <div className="shippingbg_box">
 
                           <div className="rate-option">
@@ -484,7 +512,7 @@ const CheckOutPay = ({
                           </div>
                         </div>
                       )}
-                      {selectedRate === "ups_next_day_air" && (
+                      {shippingInfo?.requestQuoteDB?.isSelected_ups_next_day_air === 1 && (
                         <div className="shippingbg_box">
                           <div className="rate-option">
                             <label className="d-flex align-items-start gap-2">
@@ -540,33 +568,7 @@ const CheckOutPay = ({
                         </div>
                       )}
 
-                      {selectedRate === "custom_rates" &&
-                        shippingInfo?.requestQuoteDB?.custom_rates !== 0 && (
-                          <div className="rate-option">
-                            <label>
-                              <input
-                                type="checkbox"
-                                value="custom_rates"
-                                checked={selectedRate === "custom_rates"}
-                                onChange={() =>
-                                  handleRateSelected(
-                                    "custom_rates",
-                                    shippingInfo?.requestQuoteDB?.custom_rates
-                                  )
-                                }
-                              />
-                              <b>
-                                &nbsp;&nbsp;Freight Shipping (
-                                <Amount
-                                  amount={
-                                    shippingInfo?.requestQuoteDB?.custom_rates
-                                  }
-                                />
-                                )
-                              </b>
-                            </label>
-                          </div>
-                        )}
+                      
                     </>
                   ) : (
                     <ShippingRates
