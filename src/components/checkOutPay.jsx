@@ -357,7 +357,7 @@ const CheckOutPay = ({
                 </div>
               </Col>
               <Col lg={6}>
-                <div className="ship_methods mb-4">
+                <div className="ship_methods mb-4"> 
                   <h2 className="shipping_head">Shipping Method</h2>
                   {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
                     <>
