@@ -181,7 +181,7 @@ export default function Bending() {
                             <h2>Other things to note in this chart.</h2>
                             <ul className="list-unstyled">
                                 <li><Icon icon="gg:check-o" /><b>Minimum flange length:</b> This is the smallest allowable flange based on the material you select. There can be some exceptions, but this is standard for 99% of bends.</li>
-                                <li><Icon icon="gg:check-o" /><b>Distortion Zone:</b> This is the area right next to the bend centerline that you won’t want any holes or features. If you need to have features in the “distortion zone” you could add a relief slot along the bend centerline of switch to a different thickness material.</li>
+                                <li><Icon icon="gg:check-o" /><b>Distortion Zone:</b> This is the area right next to the bend centerline that you won’t want any holes or features. If you need to have features in the “distortion zone” you could add a relief slot along the bend centerline or switch to a different thickness material.</li>
                                 <li><Icon icon="gg:check-o" /><b>Max Length Of Part:</b> This is the longest part we can bend with the selected material. As we upgrade our machines and tooling we can hopefully increase these numbers. But for now this is our limit for length.</li>
 
                             </ul>
