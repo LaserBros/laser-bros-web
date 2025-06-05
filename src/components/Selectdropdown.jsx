@@ -56,7 +56,7 @@ const SelectDropdowns = ({
         ...provided,
         display: "flex",
         alignItems: "center",
-        color: localStorage.getItem("theme") == "dark" ? "white" : "black",
+        color: localStorage.getItem("theme") == "darks" ? "white" : "black",
         backgroundColor: state.isFocused ? "#4F8CCA" : "transparent",
         ":before": {
           content: '""',

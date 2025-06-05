@@ -151,10 +151,10 @@ const AddCardForm = ({
                       options={{
                         style: {
                           base: {
-                            color: theme == "dark" ? "#fff" : "#000",
+                            color: theme == "darks" ? "#fff" : "#000",
                             "::placeholder": {
                               color:
-                                theme === "dark"
+                                theme === "darks"
                                   ? "#bfbfbf"
                                   : "rgba(0,0,0,0.5)", // adjust color as needed
                             },
