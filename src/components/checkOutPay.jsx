@@ -361,6 +361,7 @@ const CheckOutPay = ({
                   <h2 className="shipping_head">Shipping Method</h2>
                   {shippingInfo?.requestQuoteDB?.shipping_price_update == 1 ? (
                     <>
+                    <div className="shippingbg_box">
                       {shippingInfo?.requestQuoteDB?.isSelected_local_pickup === 1 && (
                         <div className="rate-option">
                           <label>
@@ -404,7 +405,7 @@ const CheckOutPay = ({
                           </div>
                         )}
                       {shippingInfo?.requestQuoteDB?.isSelected_ups_ground === 1 && (
-                        <div className="shippingbg_box">
+                        // <div className="shippingbg_box">
                           <div className="rate-option">
                             <label className="d-flex align-items-start gap-2">
                               <input
@@ -454,10 +455,10 @@ const CheckOutPay = ({
                               </div>
                             </label>
                           </div>
-                        </div>
+                        // </div>
                       )}
                       {shippingInfo?.requestQuoteDB?.isSelected_ups_2nd_day_air === 1 && (
-                        <div className="shippingbg_box">
+                        // <div className="shippingbg_box">
 
                           <div className="rate-option">
                             <label className="d-flex align-items-start gap-2">
@@ -510,10 +511,10 @@ const CheckOutPay = ({
                               </div>
                             </label>
                           </div>
-                        </div>
+                        // </div>
                       )}
                       {shippingInfo?.requestQuoteDB?.isSelected_ups_next_day_air === 1 && (
-                        <div className="shippingbg_box">
+                        // <div className="shippingbg_box">
                           <div className="rate-option">
                             <label className="d-flex align-items-start gap-2">
                               <input
@@ -565,9 +566,9 @@ const CheckOutPay = ({
                               </div>
                             </label>
                           </div>
-                        </div>
+                        // </div>
                       )}
-
+                    </div>
                       
                     </>
                   ) : (
