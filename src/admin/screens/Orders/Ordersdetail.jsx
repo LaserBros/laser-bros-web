@@ -830,9 +830,9 @@ const OrdersDetail = () => {
     control: (provided, state) => ({
       ...provided,
       border: `1px solid ${
-        theme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
+        theme === "darks" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
       }`,
-      background: theme == "dark" ? "#212121" : "#fff",
+      background: theme == "darks" ? "#212121" : "#fff",
       boxShadow: "none",
       minHeight: "50px",
       borderRadius: "40px",
@@ -840,7 +840,7 @@ const OrdersDetail = () => {
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: theme == "dark" ? "#bfbfbf" : "#6C6A72", // Text color change
+      color: theme == "darks" ? "#bfbfbf" : "#6C6A72", // Text color change
     }),
     multiValue: (provided, state) => ({
       ...provided,
