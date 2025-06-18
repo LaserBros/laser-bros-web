@@ -114,7 +114,7 @@ const CheckoutPopup = ({
 
 
   }, [show]);
-  const [priceVal,setPrice] = useState(0);
+  const [priceVal,setPrice] = useState(0);  
   // const [shippingMethods, setShippingMethods] = useState([
   //   {
   //     id: "local_pickup",
