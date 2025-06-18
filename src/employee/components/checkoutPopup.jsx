@@ -618,7 +618,7 @@ const CheckoutPopup = ({
             <div className="footer_btn">
               <Button className="mt-3" onClick={handleCheckout}>
                 {" "}
-                Save & Close
+                Save & Close 0
               </Button>
               <Button
                 className="mt-3"
