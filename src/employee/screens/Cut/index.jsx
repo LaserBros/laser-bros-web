@@ -30,9 +30,11 @@ const Cut = () => {
     control: (provided, state) => ({
       ...provided,
       border: `1px solid ${
+
         theme === "darks" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.15)"
       }`,
       background: theme == "darks" ? "#212121" : "#fff",
+
       boxShadow: "none",
       minHeight: "50px",
       borderRadius: "40px",

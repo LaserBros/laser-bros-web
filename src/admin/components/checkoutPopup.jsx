@@ -114,6 +114,7 @@ const CheckoutPopup = ({
 
 
   }, [show]);
+  const [priceVal,setPrice] = useState(0);
   // const [shippingMethods, setShippingMethods] = useState([
   //   {
   //     id: "local_pickup",
@@ -171,13 +172,41 @@ const CheckoutPopup = ({
       )
     );
   };
+
+  const [selectedServiceCodes, setSelectedServiceCodes] = useState([]);
+  const shippingSelections = {
+    isSelected_custom_shipping: addressDetail.shipping_price_update == 0 ? addressDetail.service_code == "custom_rates" ? 1 : addressDetail?.isSelected_custom_shipping  : addressDetail?.isSelected_custom_shipping,
+    isSelected_local_pickup: addressDetail.shipping_price_update == 0 ? addressDetail.service_code == "local_pickup" ? 1 : addressDetail?.isSelected_local_pickup :  addressDetail?.isSelected_local_pickup,
+    isSelected_ups_2nd_day_air: addressDetail.shipping_price_update == 0 ? addressDetail.service_code == "ups_2nd_day_air" ? 1 :addressDetail?.isSelected_ups_2nd_day_air : addressDetail?.isSelected_ups_2nd_day_air,
+    isSelected_ups_ground: addressDetail.shipping_price_update == 0 ? addressDetail.service_code == "ups_ground" ? 1 : addressDetail?.isSelected_ups_ground : addressDetail?.isSelected_ups_ground,
+    isSelected_ups_next_day_air: addressDetail.shipping_price_update == 0 ? addressDetail.service_code == "ups_next_day_air" ? 1 : addressDetail?.isSelected_ups_next_day_air : addressDetail?.isSelected_ups_next_day_air,
+  };
+  const [hasInitialized, setHasInitialized] = useState(false);
+
+
+  useEffect(() => {
+    if (shippingSelections && !hasInitialized) {
+    const selectedFromAPI = Object.entries(shippingSelections)
+    .filter(([key, value]) => value === 1)
+    .map(([key]) => {
+    const id = key.replace('isSelected_', '');
+        // Handle the custom_shipping special case
+        return id === 'custom_shipping' ? 'custom_rates' : id;
+      });
+    
+    setSelectedServiceCodes(selectedFromAPI);
+    setHasInitialized(true);
+  }}, [shippingSelections, hasInitialized]);
+
   // Function to handle checkbox selection (only one at a time)
   const handleCheckboxChange =async (id) => {
-    
-    setSelectedServiceCode(id);
-    const custom_rates = shippingMethods.find(
-      (method) => method.id === "custom_rates"
-    );
+    setSelectedServiceCodes((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter((code) => code !== id);
+      } else {
+        return [...prevSelected, id];
+      }
+    });
     const custom_ratesPrice = custom_rates ? custom_rates.price : 0;
 
     const ups_ground = shippingMethods.find(
@@ -200,35 +229,36 @@ const CheckoutPopup = ({
       shippingMethods.find((method) => method.isChecked)?.id || null;
     
 
-    try {
-      const data = {
-        id: addressDetail?._id,
-        pay_type: isNetTermSelected ? 1 : 0,
-        shipping_upsair_price: ups_next_day_airPrice,
-        shipping_upsground_price: ups_groundPrice,
-        shipping_ups_2nd_day_air_price: ups_2nd_day_airPrice,
-        custom_rates: custom_ratesPrice,
-        service_code: id,
-      };
+    // try {
+    //   const data = {
+    //     id: addressDetail?._id,
+    //     pay_type: isNetTermSelected ? 1 : 0,
+    //     shipping_upsair_price: ups_next_day_airPrice,
+    //     shipping_upsground_price: ups_groundPrice,
+    //     shipping_ups_2nd_day_air_price: ups_2nd_day_airPrice,
+    //     custom_rates: custom_ratesPrice,
+    //     service_code: id,
+    //   };
 
-      const res = await getShippingEstimatedCost(data);
-      setTaxRateVal(res?.data?.tax);
-    } catch {
+    //   const res = await getShippingEstimatedCost(data);
+    //   setTaxRateVal(res?.data?.tax);
+    // } catch {
 
-    }
-    setShippingMethods((prev) =>
-      prev.map((method) => {
-        const isSelected = method.id === id;
-        if (isSelected) {
-          setrateVal(method.price);
-        }
-        return {
-          ...method,
-          isChecked: isSelected, // Only the selected checkbox remains checked
-        };
-      })
-    );
+    // }
+    // setShippingMethods((prev) =>
+    //   prev.map((method) => {
+    //     const isSelected = method.id === id;
+    //     if (isSelected) {
+    //       setrateVal(method.price);
+    //     }
+    //     return {
+    //       ...method,
+    //       isChecked: isSelected, // Only the selected checkbox remains checked
+    //     };
+    //   })
+    // );
   };
+  
   const [selectedServiceCode, setSelectedServiceCode] = useState(
     addressDetail?.service_code || null
   );
@@ -269,6 +299,11 @@ const CheckoutPopup = ({
         shipping_ups_2nd_day_air_price:shipping_ups_2nd_day_airPrice,
         custom_rates: custom_ratesPrice,
         service_code: selectedServiceCode,
+        isSelected_ups_2nd_day_air: selectedServiceCodes.includes("ups_2nd_day_air") ? 1 : 0,
+        isSelected_ups_ground: selectedServiceCodes.includes("ups_ground") ? 1 : 0,
+        isSelected_ups_next_day_air: selectedServiceCodes.includes("ups_next_day_air") ? 1 : 0,
+        isSelected_local_pickup: selectedServiceCodes.includes("local_pickup") ? 1 : 0,
+        isSelected_custom_shipping: selectedServiceCodes.includes("custom_rates") ? 1 : 0,
       };
 
       const res = await updateShippingCost(data);
@@ -310,7 +345,7 @@ const CheckoutPopup = ({
     setShippingMethods((prev) =>
       prev.map((method) =>
         method.id === id
-          ? { ...method, price: parseFloat(newPrice) || 0 }
+          ? { ...method, price: parseFloat(newPrice) || 0,divideWeight:true }
           : method
       )
     );
@@ -388,7 +423,7 @@ const CheckoutPopup = ({
                   </Col>
                 </div>
               </Col>
-              <Col lg={6}>
+              <Col lg={6}> 
                 <div className="ship_methods mb-4">
                   <h2 className="shipping_head">Shipping Method</h2>
                   <div className="mt-3">
@@ -404,10 +439,7 @@ const CheckoutPopup = ({
                         <label>
                           <input
                             type="checkbox"
-                            checked={
-                              selectedServiceCode === method.id ||
-                              method.isChecked
-                            }
+                            checked={selectedServiceCodes.includes(method.id)}
                             onChange={() => handleCheckboxChange(method.id)}
                           />
                           &nbsp;&nbsp;
@@ -419,10 +451,11 @@ const CheckoutPopup = ({
                               <input
                                 type="number"
                                 className="addNumber_input"
-                                value={method.price}
-                                onChange={(e) =>
+                                value={priceVal}
+                                onChange={(e) => {
+                                  setPrice(e.target.value);
                                   handlePriceChange(method.id, e.target.value)
-                                }
+                                }}
                               />
                               {method.isEditing && (
                                 <>
@@ -451,7 +484,9 @@ const CheckoutPopup = ({
                               )}
                             </div>
                           ) : (
-                             <Amount amount={parseFloat(method.price) * parseFloat(divideWeight) } /> 
+                            <>
+                             <Amount amount={parseFloat(method.price) * parseFloat((method.divideWeight || addressDetail.shipping_price_update == 1) ? 1 : divideWeight) } />
+                            </> 
                           )}
                           )
                         </label>
@@ -460,9 +495,10 @@ const CheckoutPopup = ({
                           <Button
                             variant={null}
                             className="Edit-price-btn ms-2"
-                            onClick={() =>
+                            onClick={() => {
+                              setPrice(parseFloat(method.price) * parseFloat((method.divideWeight  || addressDetail.shipping_price_update == 1) ? 1 :divideWeight));
                               handleEditSaveClick(method.id, method.price)
-                            }
+                            }}
                           >
                             <Icon icon="mynaui:edit" />
                           </Button>
@@ -551,7 +587,7 @@ const CheckoutPopup = ({
               ) : (
                 ""
               )}
-               {TaxRateVal != "" ? (
+               {/* {TaxRateVal != "" ? (
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <span className="quotesitem">Tax ({TaxRateVal?.tax_percentage}%)</span>
                   <span className="quotesitem quotesright">
@@ -560,7 +596,7 @@ const CheckoutPopup = ({
                 </div>
               ) : (
                 ""
-              )}
+              )} */}
               <div className="d-flex align-items-center justify-content-between">
                 <span className="quotessubtotal">Total</span>
                 <span className="quotesprice">
@@ -568,8 +604,8 @@ const CheckoutPopup = ({
                     amount={
                       parseFloat(addressDetail?.total_amount || 0) +
                       parseFloat(addressDetail?.total_bend_price || 0) +
-                      parseFloat(rateVal == "" ? 0 : rateVal || 0) + 
-                      parseFloat(TaxRateVal?.tax_amount || 0)
+                      parseFloat(rateVal == "" ? 0 : rateVal || 0)  
+                      // parseFloat(TaxRateVal?.tax_amount || 0)
                     }
                   />
                 </span>
