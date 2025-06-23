@@ -41,10 +41,10 @@ const ShippingRates = ({
     setSelectedRate(newSelectedRate);
   
     if (isUnchecking) {
-      console.log("Checkbox unchecked for:", carrierId);
+      // console.log("Checkbox unchecked for:", carrierId);
       onRateSelected("", "");
     } else {
-      console.log("Checkbox checked for:", carrierId);
+      // console.log("Checkbox checked for:", carrierId);
       onRateSelected(rate, price);
     }
   };

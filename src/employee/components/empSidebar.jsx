@@ -147,8 +147,8 @@ const EmpQuotesSidebar = ({
     // console.log("loading od");
     
     for (const quote of updatedQuoteData) {
-      console.log("loading od");
-      console.log(quote.bend_count)
+      // console.log("loading od");
+      // console.log(quote.bend_count)
       if (!quote.material_id) {
         isValid = false;
         toast.error(`Please select Material.`);

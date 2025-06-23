@@ -77,7 +77,7 @@ const OTPForm = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       if (type == "forgot") {
-        console.log(type, "Dsdsdsdds-=-=");
+        // console.log(type, "Dsdsdsdds-=-=");
         try {
           const data = {
             otp_get: otp,
@@ -88,10 +88,10 @@ const OTPForm = () => {
 
           const response = await axiosInstance.post("/verifyotp", data);
           toast.success("OTP verified");
-          console.log(
-            " response.data.data.token",
-            response.data.data.otp_token
-          );
+          // console.log(
+          //   " response.data.data.token",
+          //   response.data.data.otp_token
+          // );
           navigate("/reset-password", {
             state: { token: response.data.data.otp_token },
           });

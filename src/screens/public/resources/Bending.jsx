@@ -26,7 +26,7 @@ export default function Bending() {
             return (materialPriority[a.material_grade] || 99) - (materialPriority[b.material_grade] || 99);
             });
             setMaterial(sortedData);
-            console.log("Sorted bending data:", sortedData);
+            // console.log("Sorted bending data:", sortedData);
     }
     useEffect (() => {
         getBending();

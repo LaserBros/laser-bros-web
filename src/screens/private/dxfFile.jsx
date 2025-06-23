@@ -24,16 +24,16 @@ const DxfAnalyzer = () => {
         const parsedData = helper.parsed
 
         // Debug the structure
-        console.log("DXF Structure:", {
-          header: parsedData.header ? "Present" : "Missing",
-          tables: parsedData.tables ? Object.keys(parsedData.tables) : "Missing",
-          blocks: parsedData.blocks ? Object.keys(parsedData.blocks) : "Missing",
-          entities: parsedData.entities ? `${parsedData.entities.length} entities` : "Missing",
-        })
+        // console.log("DXF Structure:", {
+        //   header: parsedData.header ? "Present" : "Missing",
+        //   tables: parsedData.tables ? Object.keys(parsedData.tables) : "Missing",
+        //   blocks: parsedData.blocks ? Object.keys(parsedData.blocks) : "Missing",
+        //   entities: parsedData.entities ? `${parsedData.entities.length} entities` : "Missing",
+        // })
 
         // Log a sample of entities for debugging
         if (parsedData.entities && parsedData.entities.length > 0) {
-          console.log("Sample entities:", parsedData.entities.slice(0, 3))
+          // console.log("Sample entities:", parsedData.entities.slice(0, 3))
         }
 
         const analysisResults = analyzeDxf(parsedData)
@@ -258,7 +258,7 @@ const DxfAnalyzer = () => {
         case "LINE":
           try {
             if (!entity.start || !entity.end) {
-              console.log("Line entity missing start/end:", entity)
+              // console.log("Line entity missing start/end:", entity)
               return null
             }
 
@@ -282,7 +282,7 @@ const DxfAnalyzer = () => {
         case "POLYLINE":
           try {
             if (!entity.vertices || entity.vertices.length === 0) {
-              console.log("Polyline entity missing vertices:", entity)
+              // console.log("Polyline entity missing vertices:", entity)
               return null
             }
 
@@ -504,7 +504,7 @@ const DxfAnalyzer = () => {
             } else if (entity.fitPoints && entity.fitPoints.length > 0) {
               points = entity.fitPoints
             } else {
-              console.log("Spline entity missing points:", entity)
+              // console.log("Spline entity missing points:", entity)
               return null
             }
 
@@ -567,7 +567,7 @@ const DxfAnalyzer = () => {
           }
 
         default:
-          console.log(`Unhandled entity type: ${entity.type}`)
+          // console.log(`Unhandled entity type: ${entity.type}`)
           return null
       }
     } catch (err) {

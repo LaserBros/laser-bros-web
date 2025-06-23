@@ -104,7 +104,7 @@ export default function AdminCustomerRFQ() {
     }
   };
   const handleUpload = async (file, id, quantities, pdf_url) => {
-    console.log(file, id, quantities, "pdf_urlpdf_urlpdf_urlpdf_url");
+    // console.log(file, id, quantities, "pdf_urlpdf_urlpdf_urlpdf_url");
     if (file.length == 0) {
       alert("Please upload a STEP or PDF file before saving.");
       return;
@@ -150,7 +150,7 @@ export default function AdminCustomerRFQ() {
       setModalShow2(false);
     } catch (error) {
       setaddLoading(false);
-      console.log("errororoor ----", error);
+      // console.log("errororoor ----", error);
     }
   };
  
@@ -229,7 +229,7 @@ export default function AdminCustomerRFQ() {
         id: quoteId,
       };
       const response = await CustomerfetchSelectedFinishes(data);
-      console.log("fetchSelectedFinishes", response.data);
+      // console.log("fetchSelectedFinishes", response.data);
       const res_status = response.data.data;
       const fetchedOptions = res_status.map((item) => ({ 
         value: item._id,
@@ -534,15 +534,15 @@ export default function AdminCustomerRFQ() {
           return;
         }
         for (const quote of quoteData) {
-          console.log(":quote-=-=-=-=",quote);
+          // console.log(":quote-=-=-=-=",quote);
           if (quote._id) {
-            console.log(
-              "calling function here -0-0-0-",
-              quote.price_check_status,
-              quote.finish_check_status,
-              quote.check_status,
-              quote.bend_count 
-            );
+            // console.log(
+            //   "calling function here -0-0-0-",
+            //   quote.price_check_status,
+            //   quote.finish_check_status,
+            //   quote.check_status,
+            //   quote.bend_count 
+            // );
             setbtnText(quote.check_status);
             if (quote.bend_count >= 1) {
               // console.log("bend_count", quote.bend_count);
@@ -703,7 +703,7 @@ export default function AdminCustomerRFQ() {
   useEffect(() => {
     setTimeout(async () => {
       if (quoteDataCon) {
-        console.log("quoteDataCon =-=-=-=- quoteDataCon",quoteDataCon)
+        // console.log("quoteDataCon =-=-=-=- quoteDataCon",quoteDataCon)
         if (Array.isArray(quoteData) && quoteData.length > 0) {
           const fetchAllThicknessOptions = async () => {
             for (const quote of quoteData) {
@@ -1038,7 +1038,7 @@ export default function AdminCustomerRFQ() {
       formData.append("quote_image", file);
 
       const res = await CustomeruploadBendingFile(formData);
-      console.log("Upload response:", res.data);
+      // console.log("Upload response:", res.data);
 
       if (res.data) {
         const updatedQuote = res.data;

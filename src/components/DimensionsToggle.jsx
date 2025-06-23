@@ -48,13 +48,13 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit, onApiResponse }) => {
         <p>
           Height :
           {isChecked
-            ? `${parseFloat(dimensions.height).toFixed(2)} in`
+            ? `${parseFloat(dimensions.height).toFixed(3)} in`
             : `${inchesToMm(parseFloat(dimensions.height).toFixed(2))} mm`}{" "}
         </p>
         <p>
           Width :{" "}
           {isChecked
-            ? `${parseFloat(dimensions.width).toFixed(2)} in`
+            ? `${parseFloat(dimensions.width).toFixed(3)} in`
             : `${inchesToMm(parseFloat(dimensions.width).toFixed(2))} mm`}
         </p>
         {isEdit && (

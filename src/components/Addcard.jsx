@@ -79,7 +79,7 @@ const AddCardForm = ({
         card_token: token.id,
       };
 
-      console.log("Save card for future orders:", saveCard,formData);
+      // console.log("Save card for future orders:", saveCard,formData);
       setLoading(true); 
       if(saveCard) {
 

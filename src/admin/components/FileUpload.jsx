@@ -57,7 +57,7 @@ const AdminFileUpload = ({
  
     //   try {
         const response = await uploadQuoteCustomer(formData);
-        console.log("response_api", response.data);
+        // console.log("response_api", response.data);
         localStorage.setItem(
           "CustomersetItemelementData",
           JSON.stringify(response.data.requestQuoteDB)
