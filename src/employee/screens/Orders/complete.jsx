@@ -108,7 +108,7 @@ const CompleteOrders = () => {
         searchName(value);
         loadOrders(1, value, sortOrder);
       }, 500), [sortOrder]
-    );
+    ); 
   
     const handleChange = (e) => {
       const value = e.target.value;
