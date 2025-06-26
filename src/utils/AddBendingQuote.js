@@ -9,6 +9,17 @@ export const getFormattedSubquote = (quote, subquoteNumber) => {
 };
 
 
+export const getRemoveFormattedSubquote = (quote, subquoteNumber) => {
+  if (!subquoteNumber || typeof subquoteNumber !== 'string') return subquoteNumber;
+
+  const prefix = quote.finishing_id && quote.binding_option !== "no" && quote.bend_count >= 1
+    ? ""
+    : "";
+
+  return subquoteNumber.replace(/^(\w+-\d+-)/, `$1${prefix}`);
+};
+
+
   export const getFormattedSubquoteNumber = (quote, subquoteNumber) => {
     const prefix = quote.finishing_id && quote.binding_option !== "no" && quote.bend_count >= 1 ? "B-" : "";
 

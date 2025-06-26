@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -22,6 +22,7 @@ import OrderStatus from "../../components/OrderStatus";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
 import Amount from "../../../components/Amount";
+import debounce from "lodash.debounce";
 const CompleteOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -100,6 +101,21 @@ const CompleteOrders = () => {
       }, 4000);
     }
   };
+
+  const debouncedSearch = useMemo(() => 
+    debounce((value) => {
+      searchName(value);
+      loadOrders(1, value, sortOrder);
+    }, 500), [sortOrder]
+  );
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setCurrentPage(1);
+    debouncedSearch(value);
+  };
+
+
   return (
     <React.Fragment>
       <Card>
@@ -124,11 +140,7 @@ const CompleteOrders = () => {
                       type="text"
                       placeholder="Search WO"
                       value={name}
-                      onChange={(e) => {
-                        setCurrentPage(1);
-                        searchName(e.target.value);
-                        loadOrders(1, e.target.value, sortOrder);
-                      }}
+                      onChange={handleChange}
                       className="rounded-5"
                     />
                   </div>

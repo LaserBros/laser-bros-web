@@ -1031,6 +1031,9 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
       }
     }, 1000);
   }, [quoteData]);
+  useEffect(() => {
+    console.log("2345678u7ytredfgbhgfdfbhgredfghgreds",quoteData)
+  },[quoteData])
   const uploadQuote = async (formData) => {
     try {
       await AdminupdateQuantity(formData);
@@ -1479,7 +1482,6 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                         </h2>
                         <p className="num-dim-main">
                           <span className="num-dim">
-                            
                             {quote.thickness_id
                               ? quote?.subquote_number?.includes(
                                   quoteList.search_quote +

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -250,6 +250,31 @@ const Orders = () => {
       }, 4000);
     }
   };
+
+  const debounceRef = useRef(null);
+  
+    const searchNameTrigger = (searchValue) => {
+      searchName(searchValue);
+  
+      // Clear previous timeout
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+  
+      // Set new debounce
+      debounceRef.current = setTimeout(() => {
+        setCurrentPage(1); 
+        loadOrders(
+          searchValue,
+          1,
+          operation,
+          operation === "cutting" ? selecttag : "",
+          Phase,
+          operation === "post_ops" ? selecttag : "",
+          SortVal
+        );
+      }, 500); // 500ms debounce delay
+    };
+
+
   return (
     <React.Fragment>
       <Card>
@@ -275,26 +300,7 @@ const Orders = () => {
                       type="text"
                       placeholder="Search WO"
                       value={name}
-                      onChange={(e) => {
-                        setCurrentPage(1);
-                        searchName(e.target.value);
-                        loadOrders(
-                          e.target.value,
-                          1,
-                          operation,
-                          operation == "cutting" ? selecttag : "",
-                          Phase,
-                          operation == "post_ops" ? selecttag : "",
-                          SortVal
-                        );
-                        // loadOrders(
-                        //   1,
-                        //   e.target.value,
-                        //   sortOrder,
-                        //   filter,
-                        //   filter_select
-                        // );
-                      }}
+                      onChange={(e) => searchNameTrigger(e.target.value)}
                       className="rounded-5"
                     />
                   </div>
