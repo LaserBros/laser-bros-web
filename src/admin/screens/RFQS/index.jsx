@@ -23,6 +23,7 @@ import CommonModal from "../../../components/Modal";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
+import RejectReason from "../../../components/RejectReason";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -36,10 +37,14 @@ const RFQS = () => {
     }));
   };
 
+  const [reasonText,setReason] = useState("");
+
   const [loadingRows, setLoadingRows] = useState({});
   const [loadingBtn, setLoadingBtn] = useState(false);
   const handleClose = () => setModalShow(false);
   const [modalShow, setModalShow] = useState(false);
+  const handleClose2 = () => setModalShow2(false);
+  const [modalShow2, setModalShow2] = useState(false);
   const [title, setTitle] = useState("");
   const [Ids, setIds] = useState("");
   const [type, setType] = useState("");
@@ -51,13 +56,14 @@ const RFQS = () => {
   const changeStatus = async () => {
     const id = Ids;
     const status = type;
+    const reason = reasonText;
     setLoadingRows((prevState) => ({
       ...prevState,
       [id]: true,
     }));
     try {
       setLoadingBtn(true);
-      const res = await updateQuoteState(id, status);
+      const res = await updateQuoteState(id, status , reason);
       if (status == 2) {
         toast.success("RFQ accepted successfully");
       }
@@ -77,7 +83,16 @@ const RFQS = () => {
       loadData(currentPage, name, sortOrder,true);
     }
   };
-
+  
+  const SubmitReason = (reason) => {
+    setReason(reason)
+    setModalShow(true);
+    setTitle(
+      "Are you sure you want to reject this quote?"
+    );
+    
+    setType(3);
+  }
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const debounceTimeout = useRef(null);
@@ -325,12 +340,13 @@ const RFQS = () => {
                                     className="btnreject"
                                     // onClick={() => changeStatus(3, row._id)}
                                     onClick={() => {
-                                      setModalShow(true);
-                                      setTitle(
-                                        "Are you sure you want to reject this quote?"
-                                      );
+                                      setModalShow2(true);
+                                      // setModalShow(true);
+                                      // setTitle(
+                                      //   "Are you sure you want to reject this quote?"
+                                      // );
                                       setIds(row._id);
-                                      setType(3);
+                                      // setType(3);
                                     }}
                                   >
                                     {loadingRows[row._id] ? (
@@ -422,7 +438,15 @@ const RFQS = () => {
         noBtnText={"No"}
         onConfirm={changeStatus}
         loading={loadingBtn}
-      />
+      /> 
+      <RejectReason
+        show3={modalShow2}
+        name={""}
+        handleClose3={handleClose2}
+        title={"Reason for Reject?"}
+        onSave={SubmitReason}
+        />
+
     </React.Fragment>
   );
 };

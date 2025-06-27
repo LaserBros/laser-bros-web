@@ -79,6 +79,7 @@ const navigate = useNavigate();
     stocked: "yes",
     bending: "yes",
     color_code: "#ff0000",
+    customer_visible:1,
     min_part_size: "",
     max_part_size: "",
   });
@@ -270,7 +271,7 @@ const navigate = useNavigate();
               <td>
                 <select
                   onChange={(e) => handleChange(e, "material_id")}
-                  className={`form-control ${
+                  className={`form-control form-select ${
                     errors.material_id ? "is-invalid" : ""
                   }`}
                 >
@@ -310,7 +311,7 @@ const navigate = useNavigate();
                 <select
                   value={material.stocked}
                   onChange={(e) => handleChange(e, "stocked")}
-                  className="form-control"
+                  className="form-control form-select"
                 >
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
@@ -323,7 +324,7 @@ const navigate = useNavigate();
                 <select
                   value={material.bending}
                   onChange={(e) => handleChange(e, "bending")}
-                  className="form-control"
+                  className="form-control form-select"
                 >
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
@@ -560,6 +561,19 @@ const navigate = useNavigate();
                  {errors.max_part_size && (
                   <div className="invalid-feedback">{errors.max_part_size}</div>
                 )}
+              </td>
+            </tr>
+            <tr>
+              <td>Customer Visible</td>
+              <td>
+              <select
+                  className="form-control form-select"
+                  value={material.customer_visible}
+                  onChange={(e) => handleChange(e, "customer_visible")}
+                >
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
               </td>
             </tr>
           </tbody>

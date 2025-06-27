@@ -74,6 +74,7 @@ const EditMaterial = () => {
     estimated_lead_time: "",
     rfq_dimension_shift: "",
     rfq_weight_shift: "",
+    customer_visible:"",
     stocked: "yes",
     bending: "yes",
   });
@@ -285,7 +286,7 @@ const EditMaterial = () => {
                   id="materialDropdown"
                   value={selectedOption}
                   onChange={handleDropdownChange}
-                  className="form-control"
+                  className="form-control form-select"
                 >
                   <option value="">Select an Option</option>
                   {dropdownOptions.map((option) => (
@@ -305,7 +306,7 @@ const EditMaterial = () => {
                 <select
                   value={material.stocked}
                   onChange={(e) => handleChange(e, "stocked")}
-                  className="form-control"
+                  className="form-control form-select"
                 >
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
@@ -318,7 +319,7 @@ const EditMaterial = () => {
                 <select
                   value={material.bending}
                   onChange={(e) => handleChange(e, "bending")}
-                  className="form-control"
+                  className="form-control form-select"
                 >
                   <option value="yes">Yes</option>
                   <option value="no">No</option>
@@ -504,6 +505,19 @@ const EditMaterial = () => {
                   onChange={(e) => handleChange(e, "rfq_weight_shift")}
                   className="form-control"
                 />
+              </td>
+            </tr>
+            <tr>
+              <td>Customer Visible</td>
+              <td>
+              <select
+                  className="form-control form-select"
+                  value={material.customer_visible}
+                  onChange={(e) => handleChange(e, "customer_visible")}
+                >
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
               </td>
             </tr>
           </tbody>

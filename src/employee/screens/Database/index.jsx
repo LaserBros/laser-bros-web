@@ -167,6 +167,7 @@ const DataBase = () => {
                               <th>Thickness</th>
                               <th>Stocked?</th>
                               <th>Bending?</th>
+                              <th>Customer Visible</th>
                               <th>Material Code</th>
                               <th style={{ minWidth: 150 }}>
                                 Material Density
@@ -232,6 +233,7 @@ const DataBase = () => {
                                 <td>{item.material_thickness}</td>
                                 <td>{item.stocked}</td>
                                 <td>{item.bending}</td>
+                                <td>{item.customer_visible == 1 ? 'Yes' : 'No'}</td>
                                 <td>{item.material_code}</td>
                                 <td>{item.material_density}</td>
                                 <td>{item.price}</td>
