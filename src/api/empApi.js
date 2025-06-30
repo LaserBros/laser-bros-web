@@ -166,11 +166,12 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
     }
   };
   
-  export const updateQuoteState = async (id, status) => {
+  export const updateQuoteState = async (id, status,reason) => {
     try {
       const data = {
         id: id,
         status: status,
+        reason:reason
       };
       const response = await axiosEmployeeInstance.post(`/updateQuoteState`, data);
       return response.data;

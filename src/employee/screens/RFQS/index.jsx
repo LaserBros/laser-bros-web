@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -23,6 +23,7 @@ import CommonModal from "../../../components/Modal";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
+import RejectReason from "../../../components/RejectReason";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -36,10 +37,15 @@ const RFQS = () => {
     }));
   };
 
+  const [reasonText, setReason] = useState("");
+
   const [loadingRows, setLoadingRows] = useState({});
   const [loadingBtn, setLoadingBtn] = useState(false);
   const handleClose = () => setModalShow(false);
   const [modalShow, setModalShow] = useState(false);
+  const handleClose2 = () => setModalShow2(false);
+  const [modalShow2, setModalShow2] = useState(false);
+
   const [title, setTitle] = useState("");
   const [Ids, setIds] = useState("");
   const [type, setType] = useState("");
@@ -51,13 +57,14 @@ const RFQS = () => {
   const changeStatus = async () => {
     const id = Ids;
     const status = type;
+    const reason = reasonText;
     setLoadingRows((prevState) => ({
       ...prevState,
       [id]: true,
     }));
     try {
       setLoadingBtn(true);
-      const res = await updateQuoteState(id, status);
+      const res = await updateQuoteState(id, status, reason);
       if (status == 2) {
         toast.success("RFQ accepted successfully");
       }
@@ -74,12 +81,42 @@ const RFQS = () => {
       }));
       setLoadingBtn(false);
       setModalShow(false);
-      loadData(currentPage, name, sortOrder,true);
+      loadData(currentPage, name, sortOrder, true);
     }
+  };
+
+  const SubmitReason = (reason) => {
+    setReason(reason);
+
+    setModalShow(true);
+
+    setTitle("Are you sure you want to reject this quote?");
+
+    setType(3);
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const debounceTimeout = useRef(null);
+
+  const [name, searchName] = useState("");
+
+  useEffect(() => {
+    // Debounce effect
+
+    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+
+    debounceTimeout.current = setTimeout(() => {
+      setCurrentPage(1);
+
+      searchName(name);
+
+      loadData(1, name, sortOrder);
+    }, 500); // 500ms debounce delay
+
+    return () => clearTimeout(debounceTimeout.current); // Cleanup
+  }, [name]);
 
   const onPageChange = (pageNumber) => {
     // console.log(pageNumber, "response.data.");
@@ -107,10 +144,7 @@ const RFQS = () => {
       "shippingRates",
       JSON.stringify(res.data.shippingRates)
     );
-    localStorage.setItem(
-      "taxRates",
-      JSON.stringify(res.data.tax)
-    );
+    localStorage.setItem("taxRates", JSON.stringify(res.data.tax));
     localStorage.setItem("divideWeight", JSON.stringify(res.data.divideWeight));
     setLoadingId("");
     navigate("/employee/rfqs/edit-quote");
@@ -118,7 +152,7 @@ const RFQS = () => {
 
   const [loading, setLoading] = useState(true);
   const [quotes, setQuotes] = useState([]);
-  const [name, searchName] = useState("");
+  // const [name, searchName] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const handleSortChange = (e) => {
     const selectedValue = e.target.value;
@@ -126,13 +160,13 @@ const RFQS = () => {
     loadData(1, name, selectedValue);
   };
 
-  const loadData = async (page, search = "", sortOrder = "",type) => {
-    if(!type) {
-    setLoading(true);
+  const loadData = async (page, search = "", sortOrder = "", type) => {
+    if (!type) {
+      setLoading(true);
     }
     try {
-      if(!type) {
-      setQuotes([]);
+      if (!type) {
+        setQuotes([]);
       }
       const [response] = await Promise.all([
         AdminfetchRFQ(page, search, sortOrder),
@@ -174,11 +208,7 @@ const RFQS = () => {
                       type="text"
                       placeholder="Search WO"
                       value={name}
-                      onChange={(e) => {
-                        setCurrentPage(1);
-                        searchName(e.target.value);
-                        loadData(1, e.target.value, sortOrder);
-                      }}
+                      onChange={(e) => searchName(e.target.value)}
                       className="rounded-5"
                     />
                   </div>
@@ -255,7 +285,7 @@ const RFQS = () => {
                       (sub) =>
                         sub && // Ensure sub is not null or undefined
                         ((sub.notes_text && sub.notes_text.trim().length > 0) ||
-                        (sub.notes_admin && sub.notes_admin.length > 0))
+                          (sub.notes_admin && sub.notes_admin.length > 0))
                     );
                     return (
                       <React.Fragment>
@@ -270,7 +300,9 @@ const RFQS = () => {
                                 WO#
                                 {row.search_quote}
                               </b>
-                              {hasNotes && <span className="expansion_tag_manage">!</span>}
+                              {hasNotes && (
+                                <span className="expansion_tag_manage">!</span>
+                              )}
                             </Link>
                           </td>
                           <td>
@@ -316,12 +348,13 @@ const RFQS = () => {
                                     className="btnreject"
                                     // onClick={() => changeStatus(3, row._id)}
                                     onClick={() => {
-                                      setModalShow(true);
-                                      setTitle(
-                                        "Are you sure you want to reject this quote?"
-                                      );
+                                      setModalShow2(true);
+                                      // setModalShow(true);
+                                      // setTitle(
+                                      //   "Are you sure you want to reject this quote?"
+                                      // );
                                       setIds(row._id);
-                                      setType(3);
+                                      // setType(3);
                                     }}
                                   >
                                     {loadingRows[row._id] ? (
@@ -384,7 +417,11 @@ const RFQS = () => {
                               currency: "USD", // Change to your desired currency
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
-                            }).format(row.total_amount + row.total_bend_price + row.shipping_price)}
+                            }).format(
+                              row.total_amount +
+                                row.total_bend_price +
+                                row.shipping_price
+                            )}
                           </td>
                         </tr>
                       </React.Fragment>
@@ -404,6 +441,13 @@ const RFQS = () => {
           )}
         </CardBody>
       </Card>
+      <RejectReason
+        show3={modalShow2}
+        name={""}
+        handleClose3={handleClose2}
+        title={"Reason for Reject?"}
+        onSave={SubmitReason}
+      />
       <ConfirmationModal
         show={modalShow}
         onHide={handleClose}

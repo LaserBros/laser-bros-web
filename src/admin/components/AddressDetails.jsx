@@ -288,6 +288,13 @@ const AddressDetails = ({
                 {addressDetail?.address_details?.email || addressDetail?.email}
               </p>
             )}
+           {addressDetail?.status == 3 && addressDetail?.reason?.trim() && (
+  <p className="mb-0">
+    <b>Reason for Reject: </b>{" "}
+    {addressDetail.reason}
+  </p>
+)}
+
             {/* {addressDetail?.address_details?.company_name} -- { addressDetail?.company_name} */}
             {isShowDownload &&
               (addressDetail?.address_details?.company_name ||

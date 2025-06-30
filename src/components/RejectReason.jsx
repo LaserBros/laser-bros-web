@@ -61,12 +61,13 @@ const RejectReason = ({ show3, name, handleClose3, title, onSave }) => {
                 </Form.Control.Feedback>
               )}
             </Form.Group>
+            <small className="text-center d-block mb-3"><i>Reason for reject will be visible to the customer!</i></small>
             <div className="text-center">
               <Button
                 as="input"
-                value="Submit"
+                value="Save and continue"
                 onClick={handleNotes}
-                className="btn-primary min-width-159 mx-2 mb-2"
+                className="btn-primary min-width-200 mx-2 mb-2"
                 variant={null}
               />
             </div>
