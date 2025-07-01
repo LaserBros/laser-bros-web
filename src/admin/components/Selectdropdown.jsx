@@ -9,6 +9,7 @@ const SelectDropdowns = ({
   disabled,
   type,
   id,
+  loading,
 }) => {
   const customStyles = {
     control: (provided, state) => ({
@@ -90,6 +91,7 @@ const SelectDropdowns = ({
     disabled,
     onOptionSelect,
     id,
+    loading,
   }) => {
     const [selectedOption, setSelectedOption] = useState(null);
 
@@ -111,6 +113,7 @@ const SelectDropdowns = ({
         className="selectdropdown"
         styles={customStyles}
         isSearchable={false}
+        isLoading={loading}
       />
     );
   };
@@ -125,6 +128,7 @@ const SelectDropdowns = ({
         onOptionSelect={onOptionSelect}
         type={type}
         id={id}
+        loading={loading}
       />
       {/* <SimpleSelect options={thickness} placeholder="Select a Thickness" /> */}
       {/* <ColorSelect /> */}

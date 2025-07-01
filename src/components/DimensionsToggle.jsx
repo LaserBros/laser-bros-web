@@ -12,7 +12,7 @@ const DimensionsToggle = ({ dimensions, id, type, isEdit, onApiResponse }) => {
     setIsInches(!isInches);
   };
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(type == 1 ? true : false);
   useEffect(() => {
     setIsChecked(type == 1 ? true : false);
   }, [type]);

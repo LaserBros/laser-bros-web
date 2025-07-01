@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Row, Col, Image, Form, Link } from "react-bootstrap";
-import { Icon } from "@iconify/react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { Row, Col, Image, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
+// import { FaRegEdit } from "react-icons/fa";
+// import { HiOutlineDocumentDuplicate } from "react-icons/hi";
+// import { MdDeleteOutline, MdClose, MdOutlineInfo } from "react-icons/md";
 import debounce from 'lodash.debounce';
 import QuantitySelector from "./Quantityselector";
 import SelectDropdowns from "./Selectdropdown";
@@ -18,6 +21,14 @@ import {
   getThicknessMaterialFinish,
   uploadBendingFile,
 } from "../api/api";
+import { Icon } from "@iconify/react";
+
+// Define memoized icons at the top level of QuoteLineItem
+const editIcon = <Icon icon="mynaui:edit" width={18} height={18} />;
+const duplicateIcon = <Icon icon="heroicons:document-duplicate" width={18} height={18} />;
+const deleteIcon = <Icon icon="uiw:delete" width={18} height={18} />;
+const closeIcon = <Icon icon="carbon:close-outline" color="#ff0000" width={18} height={18} className="ms-2" />;
+const infoIcon = <Icon icon="material-symbols-light:info-outline" width={22} height={22} color="#000" />;
 
 const QuoteLineItem = React.memo(({ 
   quote, 
@@ -36,6 +47,7 @@ const QuoteLineItem = React.memo(({
   onFileUpload,
   onFileRemove,
   loadingFiles,
+  loadingSelect,
   currentMonth,
   yearLastTwoDigits,
   quoteList,
@@ -59,6 +71,7 @@ const QuoteLineItem = React.memo(({
 
   // Update local state when quote prop changes
   useEffect(() => {
+    console.log(quote,"quote=-098767890----")
     setLocalQuote(quote);
     setLocalThicknessOptions(quote.thicknessOptions || []);
     setLocalFinishOptions(quote.finishOptions || []);
@@ -337,6 +350,90 @@ const QuoteLineItem = React.memo(({
     }
   }, [localQuote, onQuoteUpdate]);
 
+  // Memoize the right action buttons and quantity selector to prevent blinking
+  const ActionButtons = React.memo(
+    ({ localQuote, handleLocalQuantityChange, setSelectedNote, setSelectedPartId, setModalShow3, handleClick, setSelectedQuote, setModalShow, onDuplicateQuote, onDeleteQuote, index, quoteList, currentMonth, yearLastTwoDigits }) => {
+      return (
+        <>
+          <div className="quanityCount_btn">
+            {localQuote.finishing_id ? (
+              <QuantitySelector
+                quantity={localQuote.quantity}
+                onIncrement={() => handleLocalQuantityChange(localQuote._id, localQuote.quantity + 1)}
+                onDecrement={() => localQuote.quantity === 1 ? null : handleLocalQuantityChange(localQuote._id, localQuote.quantity - 1)}
+                onQuantityChange={(newQuantity) => handleLocalQuantityChange(localQuote._id, newQuantity)}
+              />
+            ) : (
+              <div></div>
+            )}
+          </div>
+          <span className="quote-off">
+            {localQuote.discount}% Saved
+          </span>
+          
+        </>
+      );
+    },
+    (prevProps, nextProps) =>
+      prevProps.localQuote.quantity === nextProps.localQuote.quantity &&
+      prevProps.localQuote.discount === nextProps.localQuote.discount &&
+      prevProps.localQuote._id === nextProps.localQuote._id &&
+      prevProps.localQuote.finishing_id === nextProps.localQuote.finishing_id &&
+      prevProps.localQuote.notes_text === nextProps.localQuote.notes_text &&
+      prevProps.localQuote.quote_name === nextProps.localQuote.quote_name
+  );
+
+  // Memoized right-quote section to prevent blinking
+  const RightQuote = React.memo(({ localQuote, handleLocalQuantityChange, setSelectedNote, setSelectedPartId, setModalShow3, handleClick, setSelectedQuote, setModalShow, onDuplicateQuote, onDeleteQuote, index, quoteList, currentMonth, yearLastTwoDigits }) => (
+    <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
+      <p className=" text-md-end">
+        <Amount amount={(localQuote.amount + (localQuote.bend_count >= 1 && localQuote.per_bend_price * localQuote.quantity))} /> total
+      </p>
+      <p className=" text-md-end">
+        <strong className="quotes-price">
+          <Amount amount={((localQuote.amount / localQuote.quantity) + (localQuote.bend_count >= 1 && localQuote.per_bend_price))} />
+        </strong>
+        /each 
+      </p>
+      <div className="d-flex align-item-center justify-content-end gap-2">
+        <ActionButtons
+          localQuote={localQuote}
+          handleLocalQuantityChange={handleLocalQuantityChange}
+          setSelectedNote={setSelectedNote}
+          setSelectedPartId={setSelectedPartId}
+          setModalShow3={setModalShow3}
+          handleClick={handleClick}
+          setSelectedQuote={setSelectedQuote}
+          setModalShow={setModalShow}
+          onDuplicateQuote={onDuplicateQuote}
+          onDeleteQuote={onDeleteQuote}
+          index={index}
+          quoteList={quoteList}
+          currentMonth={currentMonth}
+          yearLastTwoDigits={yearLastTwoDigits}
+        />
+      </div>
+      <p className="mb-0 text-md-end">
+        {localQuote.estimated_lead_time
+          ? "Typical Lead Time " +
+            localQuote.estimated_lead_time +
+            " days"
+          : "Typical Lead Time " +
+              localQuote?.type_option?.length > 0
+            ? localQuote.type_option[0]?.estimated_lead_time ?? "2-4"
+            : "Typical Lead Time 2-4" + " days"}
+      </p>
+    </div>
+  ), (prev, next) =>
+    prev.localQuote.quantity === next.localQuote.quantity &&
+    prev.localQuote.discount === next.localQuote.discount &&
+    prev.localQuote.amount === next.localQuote.amount &&
+    prev.localQuote.bend_count === next.localQuote.bend_count &&
+    prev.localQuote.per_bend_price === next.localQuote.per_bend_price &&
+    prev.localQuote.estimated_lead_time === next.localQuote.estimated_lead_time &&
+    prev.localQuote._id === next.localQuote._id
+  );
+
   return (
     <div className="list-quotes-main">
       <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
@@ -383,6 +480,7 @@ const QuoteLineItem = React.memo(({
               type="dimensions"
               id={localQuote._id}
               onOptionSelect={(option) => handleLocalDimensionChange(option, localQuote._id)}
+              loading={loadingSelect && loadingSelect[`${localQuote._id}_dimensions`]}
             />
             <SelectDropdowns
               options={materials}
@@ -391,22 +489,25 @@ const QuoteLineItem = React.memo(({
               type="material"
               id={localQuote._id}
               onOptionSelect={(option, type) => handleLocalOptionSelect(option, type, localQuote._id)}
+              loading={loadingSelect && loadingSelect[`${localQuote._id}_material`]}
             />
             <SelectDropdowns
               options={localThicknessOptions}
               value={localQuote.thickness_id}
+              placeholder={"Select a Thickness"}
               type="thickness"
               id={localQuote._id}
-              placeholder={"Select a Thickness"}
               onOptionSelect={(option, type) => handleLocalOptionSelect(option, type, localQuote._id)}
+              loading={loadingSelect && loadingSelect[`${localQuote._id}_thickness`]}
             />
             <SelectDropdowns
               options={localFinishOptions}
               value={localQuote.finishing_id}
+              placeholder={"Select a Finish"}
               type="finish"
               id={localQuote._id}
-              placeholder={"Select a Finish"}
               onOptionSelect={(option, type) => handleLocalOptionSelect(option, type, localQuote._id)}
+              loading={loadingSelect && loadingSelect[`${localQuote._id}_finish`]}
             />
           </div>
           <div className="quotes-services quote_div_main_sect mt-3 position-relative">
@@ -441,12 +542,7 @@ const QuoteLineItem = React.memo(({
                               className="cursor-pointer"
                               data-tooltip-id="custom-bending"
                             >
-                              <Icon
-                                icon="material-symbols-light:info-outline"
-                                width={22}
-                                height={22}
-                                color="#000"
-                              />
+                              {infoIcon}
                             </span>
                             <Tooltip
                               id="custom-bending"
@@ -497,13 +593,7 @@ const QuoteLineItem = React.memo(({
                                     className="remove-icon"
                                     onClick={() => handleLocalFileRemove('step_remove')}
                                   >
-                                    <Icon
-                                      icon="carbon:close-outline"
-                                      color="#ff0000"
-                                      width={18}
-                                      height={18}
-                                      className="ms-2"
-                                    />
+                                    {closeIcon}
                                   </Link>
                                 </div>
                               )}
@@ -518,7 +608,7 @@ const QuoteLineItem = React.memo(({
                               
                               {localQuote.drawing_file_bend == null || localQuote.drawing_file_bend == "" ? (
                                 <>
-                                {loadingFiles[`${localQuote._id}-optional`] ? (
+                                {loadingFiles?.[`${localQuote._id}-optional`] ? (
                                   <span>Uploading...</span>
                                 ) : (
                                 <input
@@ -539,13 +629,7 @@ const QuoteLineItem = React.memo(({
                                     className="remove-icon"
                                     onClick={() => handleLocalFileRemove("draw_remove")}
                                   >
-                                    <Icon
-                                      icon="carbon:close-outline"
-                                      color="#ff0000"
-                                      width={18}
-                                      height={18}
-                                      className="ms-2"
-                                    />
+                                    {closeIcon}
                                   </Link>
                                 </div>
                               )}
@@ -561,48 +645,22 @@ const QuoteLineItem = React.memo(({
           </div>
         </div>
 
-        <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
-          <p className=" text-md-end">
-            {" "}
-            <Amount amount={(localQuote.amount + (localQuote.bend_count >= 1 && localQuote.per_bend_price * localQuote.quantity))} /> total
-          </p>
-
-          <p className=" text-md-end">
-            <strong className="quotes-price">
-              <Amount amount={((localQuote.amount / localQuote.quantity) + (localQuote.bend_count >= 1 && localQuote.per_bend_price))} />
-            </strong>
-            /each 
-          </p>
-          <div className="d-flex align-item-center justify-content-end gap-2">
-            <div className="quanityCount_btn">
-              {localQuote.finishing_id ? (
-                <>
-                  <QuantitySelector
-                    quantity={localQuote.quantity}
-                    onIncrement={() => handleLocalQuantityChange(localQuote._id, localQuote.quantity + 1)}
-                    onDecrement={() => localQuote.quantity === 1 ? null : handleLocalQuantityChange(localQuote._id, localQuote.quantity - 1)}
-                    onQuantityChange={(newQuantity) => handleLocalQuantityChange(localQuote._id, newQuantity)}
-                  />
-                </>
-              ) : (
-                <div></div>
-              )}
-            </div>
-            <span className="quote-off">
-              {localQuote.discount}% Saved
-            </span>
-          </div>
-          <p className="mb-0 text-md-end">
-            {localQuote.estimated_lead_time
-              ? "Typical Lead Time " +
-                localQuote.estimated_lead_time +
-                " days"
-              : "Typical Lead Time " +
-                  localQuote?.type_option?.length > 0
-                ? localQuote.type_option[0]?.estimated_lead_time ?? "2-4"
-                : "Typical Lead Time 2-4" + " days"}
-          </p>
-        </div>
+        <RightQuote
+          localQuote={localQuote}
+          handleLocalQuantityChange={handleLocalQuantityChange}
+          setSelectedNote={setSelectedNote}
+          setSelectedPartId={setSelectedPartId}
+          setModalShow3={setModalShow3}
+          handleClick={handleClick}
+          setSelectedQuote={setSelectedQuote}
+          setModalShow={setModalShow}
+          onDuplicateQuote={onDuplicateQuote}
+          onDeleteQuote={onDeleteQuote}
+          index={index}
+          quoteList={quoteList}
+          currentMonth={currentMonth}
+          yearLastTwoDigits={yearLastTwoDigits}
+        />
       </div>
       <Row>
         <Col md={6}>
@@ -648,7 +706,11 @@ const QuoteLineItem = React.memo(({
                 }}
                 data-tooltip-id="edit-tooltip"
               >
-                <Icon icon="mynaui:edit" />
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 21h16M5.666 13.187A2.28 2.28 0 0 0 5 14.797V18h3.223c.604 0 1.183-.24 1.61-.668l9.5-9.505a2.28 2.28 0 0 0 0-3.22l-.938-.94a2.277 2.277 0 0 0-3.222.001z" />
+	</svg>
+
+
               </Link>
               <Tooltip
                 id="edit-tooltip"
@@ -664,7 +726,9 @@ const QuoteLineItem = React.memo(({
                 }}
                 data-tooltip-id="duplicate-tooltip"
               >
-                <Icon icon="heroicons:document-duplicate" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9 9 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9 9 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+	</svg>
               </Link>
               <Tooltip
                 id="duplicate-tooltip"
@@ -680,7 +744,9 @@ const QuoteLineItem = React.memo(({
                 }}
                 data-tooltip-id="delete-tooltip"
               >
-                <Icon icon="uiw:delete" />
+                	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+		<path fill="currentColor" d="m9.129 0l1.974.005c.778.094 1.46.46 2.022 1.078c.459.504.7 1.09.714 1.728h5.475a.69.69 0 0 1 .686.693a.69.69 0 0 1-.686.692l-1.836-.001v11.627c0 2.543-.949 4.178-3.041 4.178H5.419c-2.092 0-3.026-1.626-3.026-4.178V4.195H.686A.69.69 0 0 1 0 3.505c0-.383.307-.692.686-.692h5.47c.014-.514.205-1.035.554-1.55C7.23.495 8.042.074 9.129 0m6.977 4.195H3.764v11.627c0 1.888.52 2.794 1.655 2.794h9.018c1.139 0 1.67-.914 1.67-2.794zM6.716 6.34c.378 0 .685.31.685.692v8.05a.69.69 0 0 1-.686.692a.69.69 0 0 1-.685-.692v-8.05c0-.382.307-.692.685-.692m2.726 0c.38 0 .686.31.686.692v8.05a.69.69 0 0 1-.686.692a.69.69 0 0 1-.685-.692v-8.05c0-.382.307-.692.685-.692m2.728 0c.378 0 .685.31.685.692v8.05a.69.69 0 0 1-.685.692a.69.69 0 0 1-.686-.692v-8.05a.69.69 0 0 1 .686-.692M9.176 1.382c-.642.045-1.065.264-1.334.662c-.198.291-.297.543-.313.768l4.938-.001c-.014-.291-.129-.547-.352-.792c-.346-.38-.73-.586-1.093-.635z" />
+	</svg>
               </Link>
               <Tooltip
                 id="delete-tooltip"
@@ -695,4 +761,11 @@ const QuoteLineItem = React.memo(({
   );
 });
 
-export default QuoteLineItem; 
+// Memoize the entire QuoteLineItem with a custom comparison that ignores dropdown loading changes
+export default React.memo(QuoteLineItem, (prevProps, nextProps) =>
+  prevProps.quote === nextProps.quote &&
+  prevProps.index === nextProps.index &&
+  prevProps.materials === nextProps.materials &&
+  prevProps.getDimension === nextProps.getDimension &&
+  prevProps.quoteList === nextProps.quoteList
+); 
