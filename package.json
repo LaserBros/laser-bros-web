@@ -36,6 +36,7 @@
     "react-switch": "^7.0.0",
     "react-toastify": "^10.0.5",
     "react-tooltip": "^5.28.0",
+    "react-window": "^1.8.11",
     "recharts": "^2.12.7",
     "sass": "^1.77.6",
     "slick-carousel": "^1.8.1",

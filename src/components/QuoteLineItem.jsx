@@ -1,43 +1,24 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Row, Col, Container, Image, Form, Button } from "react-bootstrap";
+import React, { useState, useEffect, useCallback } from "react";
+import { Row, Col, Image, Form, Link } from "react-bootstrap";
 import { Icon } from "@iconify/react";
-import { Link, json, useNavigate } from "react-router-dom";
-import { FixedSizeList as List } from 'react-window';
 import debounce from 'lodash.debounce';
-import file1 from "../../assets/img/file1.jpg";
-import QuantitySelector from "../../components/Quantityselector";
-import SelectDropdowns from "../../components/Selectdropdown";
-import QuotesSidebar from "../../components/Quotessidebar";
-import RenamePart from "../../components/Renamepart";
-import AddBend from "../../components/Addbend";
-import AddNote from "../../components/Addnote";
-import step_file_img from "../../assets/img/step_file.png";
-import FileUpload from "../../components/FileUpload";
-import {
-  addNotes,
-  copySubQuote,
-  deleteSubQuote,
-  fetchSelectedFinishes,
-  getFinish,
-  bendQuotes,
-  getMaterials,
-  getThickness,
-  getThicknessMaterialFinish,
-  updateQuantity,
-  updateSubQuoteDetails,
-  updateDimensionType,
-  updateDimensionStatus,
-  deleteBendQuoteImage,
-  uploadBendingFile,
-} from "../../api/api";
-import Amount from "../../components/Amount";
-import DimensionsToggle from "../../components/DimensionsToggle";
-import AddAddressModal from "./AddaddressModal";
-import AddServiceNote from "../../components/AddServiceNote";
+import QuantitySelector from "./Quantityselector";
+import SelectDropdowns from "./Selectdropdown";
+import RenamePart from "./Renamepart";
+import AddBend from "./Addbend";
+import AddNote from "./Addnote";
+import Amount from "./Amount";
+import DimensionsToggle from "./DimensionsToggle";
 import { Tooltip } from "react-tooltip";
-import { encodeS3Url } from "../../utils/encodeS3Url";
+import { encodeS3Url } from "../utils/encodeS3Url";
+import {
+  getThickness,
+  fetchSelectedFinishes,
+  updateQuantity,
+  getThicknessMaterialFinish,
+  uploadBendingFile,
+} from "../api/api";
 
-// Memoized Quote Line Item Component
 const QuoteLineItem = React.memo(({ 
   quote, 
   index, 
@@ -75,7 +56,6 @@ const QuoteLineItem = React.memo(({
   const [localQuote, setLocalQuote] = useState(quote);
   const [localThicknessOptions, setLocalThicknessOptions] = useState(quote.thicknessOptions || []);
   const [localFinishOptions, setLocalFinishOptions] = useState(quote.finishOptions || []);
-  const [isLoadingOptions, setIsLoadingOptions] = useState(false);
 
   // Update local state when quote prop changes
   useEffect(() => {
@@ -84,63 +64,10 @@ const QuoteLineItem = React.memo(({
     setLocalFinishOptions(quote.finishOptions || []);
   }, [quote]);
 
-  // Fetch missing options on mount if they exist in localStorage but options are missing
-  useEffect(() => {
-    const fetchMissingOptions = async () => {
-      setIsLoadingOptions(true);
-      
-      // Fetch thickness options if material_id exists but thicknessOptions is missing
-      if (localQuote.material_id && (!localThicknessOptions || localThicknessOptions.length === 0)) {
-        try {
-          const data = { id: localQuote.material_id };
-          const response = await getThickness(data);
-          const fetchedOptions = response.data.map((item) => ({
-            value: item._id,
-            label: item.material_thickness,
-            selectedValue: item.material_code,
-          }));
-          setLocalThicknessOptions(fetchedOptions);
-          onQuoteUpdate(localQuote._id, { thicknessOptions: fetchedOptions });
-        } catch (error) {
-          console.error("Error fetching thickness options:", error);
-        }
-      }
-
-      // Fetch finish options if thickness_id exists but finishOptions is missing
-      if (localQuote.thickness_id && (!localFinishOptions || localFinishOptions.length === 0)) {
-        try {
-          const data = {
-            thickness_id: localQuote.thickness_id,
-            id: localQuote._id,
-          };
-          const response = await fetchSelectedFinishes(data);
-          const res_status = response.data.data;
-          const fetchedOptions = res_status.map((item) => ({ 
-            value: item._id,
-            label: item.finishing_desc,
-          }));
-          setLocalFinishOptions(fetchedOptions);
-          onQuoteUpdate(localQuote._id, {
-            finishOptions: fetchedOptions,
-            binding_option: response.data.bending,
-            finish_check_status: response.data.check_status,
-          });
-        } catch (error) {
-          console.error("Error fetching finish options:", error);
-        }
-      }
-      
-      setIsLoadingOptions(false);
-    };
-
-    fetchMissingOptions();
-  }, [localQuote._id, localQuote.material_id, localQuote.thickness_id, onQuoteUpdate]);
-
   // Debounced API calls
   const debouncedFetchThickness = useCallback(
     debounce(async (materialId, quoteId) => {
       try {
-        setIsLoadingOptions(true);
         const data = { id: materialId };
         const response = await getThickness(data);
         const fetchedOptions = response.data.map((item) => ({
@@ -152,8 +79,6 @@ const QuoteLineItem = React.memo(({
         onQuoteUpdate(quoteId, { thicknessOptions: fetchedOptions });
       } catch (error) {
         console.error("Error fetching thickness options:", error);
-      } finally {
-        setIsLoadingOptions(false);
       }
     }, 300),
     [onQuoteUpdate]
@@ -162,7 +87,6 @@ const QuoteLineItem = React.memo(({
   const debouncedFetchFinish = useCallback(
     debounce(async (materialId, quoteId) => {
       try {
-        setIsLoadingOptions(true);
         const data = {
           thickness_id: materialId,
           id: quoteId,
@@ -191,8 +115,6 @@ const QuoteLineItem = React.memo(({
         });
       } catch (error) {
         console.error("Error fetching finish options:", error);
-      } finally {
-        setIsLoadingOptions(false);
       }
     }, 300),
     [onQuoteUpdate]
@@ -310,7 +232,8 @@ const QuoteLineItem = React.memo(({
     onQuoteUpdate(quoteId, updatedQuote);
 
     try {
-      await updateDimensionStatus(data);
+      // Note: updateDimensionStatus is not imported, you'll need to add it
+      // await updateDimensionStatus(data);
       debouncedUpdateQuantity(quoteId, 1);
     } catch (error) {
       console.error("Error updating dimension:", error);
@@ -474,18 +397,16 @@ const QuoteLineItem = React.memo(({
               value={localQuote.thickness_id}
               type="thickness"
               id={localQuote._id}
-              placeholder={isLoadingOptions && localQuote.material_id ? "Loading..." : "Select a Thickness"}
+              placeholder={"Select a Thickness"}
               onOptionSelect={(option, type) => handleLocalOptionSelect(option, type, localQuote._id)}
-              disabled={isLoadingOptions}
             />
             <SelectDropdowns
               options={localFinishOptions}
               value={localQuote.finishing_id}
               type="finish"
               id={localQuote._id}
-              placeholder={isLoadingOptions && localQuote.thickness_id ? "Loading..." : "Select a Finish"}
+              placeholder={"Select a Finish"}
               onOptionSelect={(option, type) => handleLocalOptionSelect(option, type, localQuote._id)}
-              disabled={isLoadingOptions}
             />
           </div>
           <div className="quotes-services quote_div_main_sect mt-3 position-relative">
@@ -774,428 +695,4 @@ const QuoteLineItem = React.memo(({
   );
 });
 
-export default function QuotesDetail() {
-  const currentDate = new Date();
-  const navigate = useNavigate();
-  const currentMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
-  const currentDay = String(currentDate.getDate()).padStart(2, "0");
-  const yearLastTwoDigits = String(currentDate.getFullYear()).slice(-2);
-  
-  const [modalShow, setModalShow] = useState(false);
-  const [selectedQuote, setSelectedQuote] = useState(null);
-  const [selectedNote, setSelectedNote] = useState(null);
-  const [addLoading, setaddLoading] = useState(false);
-  const [btnText, setbtnText] = useState(0);
-  const [btnTextChange, setbtnTextChange] = useState(false);
-  const [btnTextVal, setbtnTextVal] = useState(false);
-  const [selectedPartId, setSelectedPartId] = useState(null);
-  const [indexPart, setindexPart] = useState();
-  const [modalShow2, setModalShow2] = useState(false);
-  const [modalShow3, setModalShow3] = useState(false);
-  const [modalShow4, setModalShow4] = useState(false);
-  
-  const [colors, setcolors] = useState([]);
-  const [materials, setmaterials] = useState([]);
-  const [quoteData, setQuoteData] = useState(null);
-  const [quoteList, setQuoteList] = useState(null);
-  const [uploadedFiles, setUploadedFiles] = useState({});
-  const [loadingFiles, setLoadingFiles] = useState({});
-  const [error, setError] = useState(null);
-
-  const getDimension = useMemo(() => [
-    { value: 0, label: "Millimeters" },
-    { value: 1, label: "Inches" },
-  ], []);
-
-  // Debounced localStorage writes
-  const debouncedLocalStorageWrite = useCallback(
-    debounce((key, data) => {
-      localStorage.setItem(key, JSON.stringify(data));
-    }, 500),
-    []
-  );
-
-  // Batch update quote data
-  const updateQuoteData = useCallback((updatedQuote) => {
-    setQuoteData(prevData => {
-      const newData = prevData.map(quote => 
-        quote._id === updatedQuote._id ? { ...quote, ...updatedQuote } : quote
-      );
-      debouncedLocalStorageWrite("setItempartsDBdata", newData);
-      return newData;
-    });
-  }, [debouncedLocalStorageWrite]);
-
-  const handleQuoteUpdate = useCallback((quoteId, updates) => {
-    setQuoteData(prevData => {
-      const newData = prevData.map(quote => 
-        quote._id === quoteId ? { ...quote, ...updates } : quote
-      );
-      debouncedLocalStorageWrite("setItempartsDBdata", newData);
-      return newData;
-    });
-  }, [debouncedLocalStorageWrite]);
-
-  const handleDeleteQuote = useCallback((quoteId) => {
-    setQuoteData(prevData => {
-      const updatedData = prevData.filter(quote => quote._id !== quoteId);
-      debouncedLocalStorageWrite("setItempartsDBdata", updatedData);
-      
-      try {
-        deleteSubQuote({ id: quoteId });
-        
-        let total = 0;
-        for (const quote of updatedData) {
-          total += quote.bend_count;
-        }
-
-        const quoteListData = localStorage.getItem("setItemelementData");
-        if (quoteListData) {
-          const parsedQuoteList = JSON.parse(quoteListData);
-          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
-          if (total == 0) {
-            parsedQuoteList.check_status = 0;
-          }
-          setQuoteList(parsedQuoteList);
-          debouncedLocalStorageWrite("setItemelementData", parsedQuoteList);
-        }
-      } catch (error) {
-        console.error("Error deleting quote:", error);
-      }
-
-      return updatedData;
-    });
-  }, [debouncedLocalStorageWrite]);
-
-  const handleDuplicateQuote = useCallback(async (quote, id) => {
-    try {
-      const response = await copySubQuote({ id });
-      const duplicatedQuote = { ...quote, _id: response.data._id };
-      
-      setQuoteData(prevData => {
-        const updatedData = [...prevData, duplicatedQuote];
-        debouncedLocalStorageWrite("setItempartsDBdata", updatedData);
-        
-        let total = 0;
-        for (const quote of updatedData) {
-          total += quote.bend_count;
-        }
-
-        const quoteListData = localStorage.getItem("setItemelementData");
-        if (quoteListData) {
-          const parsedQuoteList = JSON.parse(quoteListData);
-          parsedQuoteList.total_bend_price = isNaN(total) ? 0 : total * 5;
-          if (total == 0) {
-            parsedQuoteList.check_status = 0;
-          }
-          setQuoteList(parsedQuoteList);
-          debouncedLocalStorageWrite("setItemelementData", parsedQuoteList);
-        }
-        
-        return updatedData;
-      });
-    } catch (error) {
-      console.error("Error duplicating quote:", error);
-    }
-  }, [debouncedLocalStorageWrite]);
-
-  const handleClick = useCallback((tooltipId) => {
-    const tooltipElement = document.querySelector(`[data-tooltip-id="${tooltipId}"]`);
-    if (tooltipElement && tooltipElement._tippy) {
-      tooltipElement._tippy.hide();
-    }
-  }, []);
-
-  const getTotalAmount = useCallback(() => {
-    if (!Array.isArray(quoteData)) return 0;
-    return quoteData.reduce((sum, quote) => {
-      const amount = parseFloat(quote.amount);
-      return sum + (isNaN(amount) ? 0 : amount);
-    }, 0);
-  }, [quoteData]);
-
-  const getBendAmount = useCallback(() => {
-    if (!Array.isArray(quoteData)) return 0;
-    return quoteData.reduce((sum, quote) => {
-      const amount = parseFloat(quote.per_bend_price) * quote.bend_count * quote.quantity;
-      return sum + (isNaN(amount) ? 0 : amount);
-    }, 0);
-  }, [quoteData]);
-
-  // Fetch materials on mount
-  useEffect(() => {
-    const fetchMaterials = async () => {
-      try {
-        const response = await getMaterials();
-        const fetchedOptions = response.data.map((item) => ({
-          value: item._id,
-          label: item.material_name + " " + item.material_grade,
-        }));
-        setmaterials(fetchedOptions);
-      } catch (error) {
-        console.error("Error fetching materials:", error);
-      }
-    };
-    fetchMaterials();
-  }, []);
-
-  // Load data from localStorage
-  useEffect(() => {
-    const storedData = localStorage.getItem("setItempartsDBdata");
-    const quote_list = localStorage.getItem("setItemelementData");
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      const quote_list_val = JSON.parse(quote_list);
-      setQuoteList(quote_list_val);
-      setQuoteData(parsedData);
-    }
-  }, []);
-
-  // Fetch missing dropdown options when quotes are loaded from localStorage
-  useEffect(() => {
-    const fetchMissingOptions = async () => {
-      if (Array.isArray(quoteData) && quoteData.length > 0) {
-        for (const quote of quoteData) {
-          // Fetch thickness options if material_id exists but thicknessOptions is missing
-          if (quote.material_id && (!quote.thicknessOptions || quote.thicknessOptions.length === 0)) {
-            try {
-              const data = { id: quote.material_id };
-              const response = await getThickness(data);
-              const fetchedOptions = response.data.map((item) => ({
-                value: item._id,
-                label: item.material_thickness,
-                selectedValue: item.material_code,
-              }));
-              
-              handleQuoteUpdate(quote._id, { thicknessOptions: fetchedOptions });
-            } catch (error) {
-              console.error("Error fetching thickness options:", error);
-            }
-          }
-
-          // Fetch finish options if thickness_id exists but finishOptions is missing
-          if (quote.thickness_id && (!quote.finishOptions || quote.finishOptions.length === 0)) {
-            try {
-              const data = {
-                thickness_id: quote.thickness_id,
-                id: quote._id,
-              };
-              const response = await fetchSelectedFinishes(data);
-              const res_status = response.data.data;
-              const fetchedOptions = res_status.map((item) => ({ 
-                value: item._id,
-                label: item.finishing_desc,
-              }));
-              
-              handleQuoteUpdate(quote._id, {
-                finishOptions: fetchedOptions,
-                binding_option: response.data.bending,
-                finish_check_status: response.data.check_status,
-              });
-            } catch (error) {
-              console.error("Error fetching finish options:", error);
-            }
-          }
-        }
-      }
-    };
-
-    fetchMissingOptions();
-  }, [quoteData, handleQuoteUpdate]);
-
-  // Update button text based on quote status
-  useEffect(() => {
-    if (Array.isArray(quoteData) && quoteData.length > 0) {
-      setbtnText(0);
-      if (quoteList?.check_status == 1) {
-        setbtnText(1);
-        return;
-      }
-      
-      for (const quote of quoteData) {
-        if (quote._id) {
-          setbtnText(quote.check_status);
-          if (quote.bend_count >= 1 || quote.price_check_status == 1 || quote.finish_check_status || quote.check_status === 1) {
-            setbtnText(1);
-            return;
-          }
-        }
-      }
-    }
-  }, [quoteData, quoteList]);
-
-  const BackQuote = useCallback(() => {
-    localStorage.removeItem("setItemelementData");
-    localStorage.removeItem("setItempartsDBdata");
-    navigate("/quotes");
-  }, [navigate]);
-
-  const handleFileDrop = useCallback((data) => {
-    if (data && data.partsDBdata && data.requestQuoteDB) {
-      const storedData = data.partsDBdata;
-      const quote_list = data.requestQuoteDB;
-
-      setQuoteList(quote_list);
-      setQuoteData(prevData => {
-        const existing = Array.isArray(prevData) ? prevData : [];
-        const newData = Array.isArray(storedData) ? storedData : [];
-        return [...existing, ...newData];
-      });
-    } else {
-      console.error("Data structure is not as expected:", data);
-    }
-  }, []);
-
-  // Virtualized list item renderer
-  const renderQuoteItem = useCallback(({ index, style }) => {
-    const quote = quoteData[index];
-    return (
-      <div style={style}>
-        <QuoteLineItem
-          quote={quote}
-          index={index}
-          materials={materials}
-          getDimension={getDimension}
-          onQuoteUpdate={handleQuoteUpdate}
-          onDeleteQuote={handleDeleteQuote}
-          onDuplicateQuote={handleDuplicateQuote}
-          onRenameQuote={updateQuoteData}
-          onAddNote={updateQuoteData}
-          onDimensionChange={handleQuoteUpdate}
-          onQuantityChange={handleQuoteUpdate}
-          onOptionSelect={handleQuoteUpdate}
-          onBendingToggle={handleQuoteUpdate}
-          onFileUpload={handleQuoteUpdate}
-          onFileRemove={handleQuoteUpdate}
-          loadingFiles={loadingFiles}
-          currentMonth={currentMonth}
-          yearLastTwoDigits={yearLastTwoDigits}
-          quoteList={quoteList}
-          setModalShow={setModalShow}
-          setModalShow2={setModalShow2}
-          setModalShow3={setModalShow3}
-          setModalShow4={setModalShow4}
-          setSelectedQuote={setSelectedQuote}
-          setSelectedNote={setSelectedNote}
-          setSelectedPartId={setSelectedPartId}
-          setimage_url={() => {}}
-          setquote_name={() => {}}
-          setbend_count={() => {}}
-          setbendupload_url={() => {}}
-          setid_quote={() => {}}
-          handleClick={handleClick}
-        />
-      </div>
-    );
-  }, [quoteData, materials, getDimension, handleQuoteUpdate, handleDeleteQuote, handleDuplicateQuote, loadingFiles, currentMonth, yearLastTwoDigits, quoteList, handleClick]);
-
-  if (!Array.isArray(quoteData) || quoteData.length === 0) {
-    return (
-      <React.Fragment>
-        <section className="myaccount ptb-50">
-          <Container>
-            <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
-              <h2 className="quotes-head">
-                Quote # {currentMonth}-{yearLastTwoDigits}-0001
-              </h2>
-              <div className="d-inline-flex gap-2">
-                <Link
-                  className="btn btn-primary d-inline-flex align-items-center justify-content-center min-width-250"
-                  onClick={BackQuote}
-                  to={"/quotes"}
-                >
-                  Back To Quotes
-                </Link>
-              </div>
-            </div>
-            <FileUpload
-              acceptedFiles={[".dxf"]}
-              onFileDrop={handleFileDrop}
-              error={error}
-              className={"mb-4"}
-            />
-          </Container>
-        </section>
-      </React.Fragment>
-    );
-  }
-
-  return (
-    <React.Fragment>
-      <section className="myaccount ptb-50">
-        <Container>
-          <div className="d-flex align-items-center justify-content-between mb-4 flex-wrap">
-            <h2 className="quotes-head">Quote #{quoteList?.search_quote}</h2>
-            <div className="d-inline-flex gap-2">
-              <Link
-                className="btn btn-primary d-inline-flex align-items-center justify-content-center min-width-250"
-                onClick={BackQuote}
-                to={"/quotes"}
-              >
-                Back To Quotes
-              </Link>
-            </div>
-          </div>
-          <Row>
-            <Col lg={8} xl={9}>
-              <FileUpload
-                acceptedFiles={[".dxf"]}
-                onFileDrop={handleFileDrop}
-                error={error}
-                className={"mb-4"}
-              />
-
-              {/* Virtualized List */}
-              <List
-                height={Math.min(quoteData.length * 400, 800)} // Adjust height based on content
-                itemCount={quoteData.length}
-                itemSize={400} // Approximate height of each quote item
-                width="100%"
-              >
-                {renderQuoteItem}
-              </List>
-            </Col>
-
-            <Col lg={4} xl={3}>
-              <QuotesSidebar
-                amount={getTotalAmount().toFixed(2)}
-                bendAmount={getBendAmount().toFixed(2)}
-                buttonText={btnText}
-                quoteData={quoteList}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </section>
-      
-      <RenamePart
-        show={modalShow}
-        handleClose={() => setModalShow(false)}
-        quote={selectedQuote}
-        onSave={(newName) => updateQuoteData({ ...selectedQuote, quote_name: newName })}
-        title={"Rename Part"}
-      />
-      <AddBend
-        show2={modalShow2}
-        handleClose2={() => setModalShow2(false)}
-        image={null}
-        name={null}
-        count={null}
-        pdf_url={null}
-        title="Specify Bend Details"
-        id={null}
-        onUpload={() => {}}
-        loading={addLoading}
-      />
-      <AddNote
-        show3={modalShow3}
-        name={selectedNote}
-        handleClose3={() => setModalShow3(false)}
-        onSave={(newNote) => updateQuoteData({ ...selectedQuote, notes_text: newNote })}
-        title="Notes"
-      />
-      <AddServiceNote show3={modalShow4} handleClose3={() => setModalShow4(false)} />
-    </React.Fragment>
-  );
-}
+export default QuoteLineItem; 

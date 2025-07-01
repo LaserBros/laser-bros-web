@@ -622,9 +622,9 @@ const QuotesSidebar = ({
               </>
             ) : (
               <>
-                <div className="text-center">
+                {/* <div className="text-center">
                   <p className="order-cont-btm mb-0 mt-3 text-center">
-                    Price is for cutting only.
+                    Price is for cutting only. 
                   </p>
                   <p className="order-cont-btm mb-0 mt-1 text-center">
                     Please login or sign up to see shipping rates.
@@ -644,7 +644,7 @@ const QuotesSidebar = ({
                   >
                     Sign Up
                   </Button>
-                </div>
+                </div> */}
               </>
             )} 
             {/* <hr className="quotes-separator" /> */}

@@ -94,7 +94,7 @@ const SelectDropdowns = ({
     id,
   }) => {
     const [selectedOption, setSelectedOption] = useState(null);
-
+    console.log('SimpleSelect options:', options, 'value:', value);
     const handleChange = (selectedOption) => {
       setSelectedOption(selectedOption);
       if (onOptionSelect) {
@@ -103,35 +103,28 @@ const SelectDropdowns = ({
     };
 
     return (
-      <>
       <Select
         options={options}
-        value={options.find((option) => option.value === value)}
+        value={options.find((option) => option.value === value) || null}
         onChange={handleChange}
         isDisabled={disabled}
-        // value={selectedOption}
         placeholder={placeholder}
         className="selectdropdown"
         styles={customStyles}
         isSearchable={false}
       />
-      </>
     );
   };
   return (
-    <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
-      <SimpleSelect
-        options={options}
-        value={value}
-        disabled={disabled}
-        placeholder={placeholder}
-        onOptionSelect={onOptionSelect}
-        type={type}
-        id={id}
-      />
-      {/* <SimpleSelect options={thickness} placeholder="Select a Thickness" /> */}
-      {/* <ColorSelect /> */}
-    </div>
+    <SimpleSelect
+      options={options}
+      value={value}
+      disabled={disabled}
+      placeholder={placeholder}
+      onOptionSelect={onOptionSelect}
+      type={type}
+      id={id}
+    />
   );
 };
 export default SelectDropdowns;
