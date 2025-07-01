@@ -141,6 +141,20 @@ const DataBase = () => {
                 <Accordion.Item eventKey={index} className="mb-3">
                   <Accordion.Header>
                    <div className="flex-grow-1"> {data.material_name} {data.material_grade}{" "}</div>
+                   <Link
+                      className="btnview me-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTitle(
+                          "Are you sure you want to delete this material?"
+                        );
+                        setThickId(data.material_id);
+                        setType("material");
+                        setModalShow(true);
+                      }}
+                    >
+                   <Icon icon="mdi:eye-outline" />
+                   </Link>
                     <Link
                       className="btntrash me-2"
                       onClick={(e) => {
@@ -153,6 +167,7 @@ const DataBase = () => {
                         setModalShow(true);
                       }}
                     >
+                    
                       <Icon icon="tabler:trash" />
                     </Link>
                   </Accordion.Header>
