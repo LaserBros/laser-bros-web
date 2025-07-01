@@ -926,3 +926,18 @@ body {
     color: $secondary-color;
     font-weight: 600;
 }
+
+.btnviewEdits {
+background: #3c5b8a;
+align-items: center;
+border-radius: 50%;
+color: #ffffff;
+display: inline-flex
+;
+font-size: 15px;
+height: 24px;
+justify-content: center;
+margin: 0 3px;
+min-width: 24px;
+width: 24px;
+}

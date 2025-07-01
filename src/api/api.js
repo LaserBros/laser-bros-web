@@ -1779,6 +1779,17 @@ export const deleteThicknessDetails = async (data) => {
   }
 };
 
+export const updateMaterialDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/updateMaterialDetails`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
+
 export const deleteMaterialDetails = async (data) => {
   try {
     const response = await axiosAdminInstance.post(`/deleteMaterialDetails`, data);
