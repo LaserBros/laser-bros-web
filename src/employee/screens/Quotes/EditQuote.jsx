@@ -1899,7 +1899,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                 ))}
             </Col>
             {quoteData && quoteData.length > 0 && (
-              <Col lg={4} xl={3}>
+              <Col lg={4} xl={3}> 
                 <QuotesSidebar
                   amount={getTotalAmount().toFixed(2)}
                   quoteData={quoteList}
