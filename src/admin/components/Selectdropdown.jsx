@@ -47,6 +47,10 @@ const SelectDropdowns = ({
       ...provided,
       padding: 6,
     }),
+    loadingIndicator: (provided) => ({
+      ...provided,
+      color: "#000",
+    }),
     menu: (provided) => ({
       ...provided,
       fontSize: "12px",
@@ -102,19 +106,36 @@ const SelectDropdowns = ({
       }
     };
 
+    // Debug logging
+    console.log(`SelectDropdown ${id} loading:`, loading);
+
     return (
-      <Select
-        options={options}
-        value={options.find((option) => option.value === value)}
-        onChange={handleChange}
-        isDisabled={disabled}
-        // value={selectedOption}
-        placeholder={placeholder}
-        className="selectdropdown"
-        styles={customStyles}
-        isSearchable={false}
-        isLoading={loading}
-      />
+      <div style={{ position: 'relative' }}>
+        <Select
+          options={options}
+          value={options.find((option) => option.value === value)}
+          onChange={handleChange}
+          isDisabled={disabled || loading}
+          // value={selectedOption}
+          placeholder={loading ? "Loading..." : placeholder}
+          className="selectdropdown"
+          styles={customStyles}
+          isSearchable={false}
+          isLoading={loading}
+        />
+        {loading && (
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            right: '30px',
+            transform: 'translateY(-50%)',
+            zIndex: 10,
+            pointerEvents: 'none'
+          }}>
+            <div className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+          </div>
+        )}
+      </div>
     );
   };
   return (

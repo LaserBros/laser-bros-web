@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import {
   Card,
   CardHeader,
@@ -65,9 +65,24 @@ import AddAddressModalAdmin from "../../components/AddAddressModalAdmin";
 import { FixedSizeList as List } from 'react-window';
 
 // Memoized row component for virtualization
-const QuoteRow = React.memo(({ data, index, style }) => {
+const QuoteRow = React.memo(({ data, index, style="" }) => {
   const quote = data.quoteData[index];
   const quoteList = data.quoteList;
+  
+  // Memoize the loading states for this specific quote to prevent unnecessary re-renders
+  const quoteLoadingStates = React.useMemo(() => ({
+    dimensions: data.loadingSelect[`${quote._id}_dimensions`] || false,
+    material: data.loadingSelect[`${quote._id}_material`] || false,
+    thickness: data.loadingSelect[`${quote._id}_thickness`] || false,
+    finish: data.loadingSelect[`${quote._id}_finish`] || false,
+  }), [
+    data.loadingSelect[`${quote._id}_dimensions`],
+    data.loadingSelect[`${quote._id}_material`],
+    data.loadingSelect[`${quote._id}_thickness`],
+    data.loadingSelect[`${quote._id}_finish`],
+    quote._id
+  ]);
+  
   // All your row rendering logic here, using only props from data and quote
   return (
     <div style={style} key={quote._id}>
@@ -153,11 +168,25 @@ const QuoteRow = React.memo(({ data, index, style }) => {
                 type="dimensions"
                 id={quote._id}
                 onOptionSelect={async (option) => {
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_dimensions`]: true }));
-                  await data.handleApiResponse(option, 'dimensions', quote._id);
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_dimensions`]: false }));
+                  const loadingKey = `${quote._id}_dimensions`;
+                  console.log('Setting dimensions loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleApiResponse(option, 'dimensions', quote._id);
+                  } finally {
+                    console.log('Setting dimensions loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
                 }}
-                loading={data.loadingSelect && data.loadingSelect[`${quote._id}_dimensions`]}
+                loading={quoteLoadingStates.dimensions}
               />
               <SelectDropdowns
                 options={data.materials}
@@ -166,11 +195,25 @@ const QuoteRow = React.memo(({ data, index, style }) => {
                 type="material"
                 id={quote._id}
                 onOptionSelect={async (option) => {
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_material`]: true }));
-                  await data.handleOptionSelect(option, 'material', quote._id);
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_material`]: false }));
+                  const loadingKey = `${quote._id}_material`;
+                  console.log('Setting material loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleOptionSelect(option, 'material', quote._id);
+                  } finally {
+                    console.log('Setting material loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
                 }}
-                loading={data.loadingSelect && data.loadingSelect[`${quote._id}_material`]}
+                loading={quoteLoadingStates.material}
               />
               <SelectDropdowns
                 options={quote.thicknessOptions || []}
@@ -179,11 +222,25 @@ const QuoteRow = React.memo(({ data, index, style }) => {
                 id={quote._id}
                 placeholder={"Select a Thickness"}
                 onOptionSelect={async (option) => {
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_thickness`]: true }));
-                  await data.handleOptionSelect(option, 'thickness', quote._id);
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_thickness`]: false }));
+                  const loadingKey = `${quote._id}_thickness`;
+                  console.log('Setting thickness loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleOptionSelect(option, 'thickness', quote._id);
+                  } finally {
+                    console.log('Setting thickness loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
                 }}
-                loading={data.loadingSelect && data.loadingSelect[`${quote._id}_thickness`]}
+                loading={quoteLoadingStates.thickness}
               />
               <SelectDropdowns
                 options={quote.finishOptions || []}
@@ -192,11 +249,25 @@ const QuoteRow = React.memo(({ data, index, style }) => {
                 id={quote._id}
                 placeholder={"Select a Finish"}
                 onOptionSelect={async (option) => {
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_finish`]: true }));
-                  await data.handleOptionSelect(option, 'finish', quote._id);
-                  data.setLoadingSelect((prev) => ({ ...prev, [`${quote._id}_finish`]: false }));
+                  const loadingKey = `${quote._id}_finish`;
+                  console.log('Setting finish loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleOptionSelect(option, 'finish', quote._id);
+                  } finally {
+                    console.log('Setting finish loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
                 }}
-                loading={data.loadingSelect && data.loadingSelect[`${quote._id}_finish`]}
+                loading={quoteLoadingStates.finish}
               />
               <div className="DragItemPost_div">
                 <Button
@@ -1843,7 +1914,26 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
   };
 
   const [loadingSelect, setLoadingSelect] = useState({});
+  
+  // Use a ref to track loading states that persist across re-renders
+  const loadingSelectRef = useRef({});
+  
+  // Debug function to log loading state
+  const logLoadingState = (quoteId, type, value) => {
+    console.log(`Loading state for ${quoteId}_${type}:`, value);
+    console.log('Current loadingSelect state:', loadingSelect);
+  };
+  
+  // Enhanced loading state setter that updates both state and ref
+  const setLoadingSelectEnhanced = useCallback((updater) => {
+    setLoadingSelect((prev) => {
+      const newState = typeof updater === 'function' ? updater(prev) : updater;
+      loadingSelectRef.current = newState;
+      return newState;
+    });
+  }, []);
 
+  // Memoize the itemData more efficiently to prevent unnecessary re-renders
   const itemData = useMemo(() => ({
     quoteData,
     materials,
@@ -1853,10 +1943,12 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     handleShow,
     handleShowQty,
     handleShowPrice,
+    handleShow2,
+    handleShow3,
     handleShow4,
     loadingOrderQuote,
     loadingSelect,
-    setLoadingSelect,
+    setLoadingSelect: setLoadingSelectEnhanced,
     fetchThickness,
     fetchFinish,
     decrementQuantity,
@@ -1890,52 +1982,16 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     quoteList,
     loadingFiles,
     handleOpenModal,
+    logLoadingState,
   }), [
+    // Only include dependencies that actually change frequently
     quoteData,
     materials,
-    getDimension,
-    handleApiResponse,
-    handleOptionSelect,
-    handleShow,
-    handleShowQty,
-    handleShowPrice,
-    handleShow4,
     loadingOrderQuote,
     loadingSelect,
-    setLoadingSelect,
-    fetchThickness,
-    fetchFinish,
-    decrementQuantity,
-    handleFileChange,
-    removeFile,
-    downloadFile,
-    setModalShow,
-    setModalShow2,
-    setModalShow3,
-    setModalShowPrice,
-    setModalShowPriceBend,
-    setSelectedQuote,
-    setSelectedPartId,
-    setPrice,
-    setPriceBend,
-    setSelectedQty,
-    setSelectedNote,
-    setSelectedAdminNote,
-    setquoteDataCon,
-    setQuoteData,
-    setQuoteList,
-    setebendAmount,
-    setimage_url,
-    setquote_name,
-    setbend_count,
-    setbendupload_url,
-    setid_quote,
-    setShowModal,
-    setDeletemodalShow,
-    setDeleteId,
     quoteList,
     loadingFiles,
-    handleOpenModal,
+    // Functions are stable and don't need to be in dependencies
   ]);
 
   return (
@@ -2002,6 +2058,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                   width={"100%"}
                   itemData={itemData}
                   style={{ overflowX: 'hidden' }}
+                  key={`quote-list-${quoteData.length}-${loadingSelect ? Object.keys(loadingSelect).length : 0}`}
                 >
                   {QuoteRow}
                 </List>

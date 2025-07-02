@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import {
   Card,
   CardHeader,
@@ -59,6 +59,482 @@ import { Tooltip } from "react-tooltip";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import { encodeS3Url } from "../../../utils/encodeS3Url";
 import { getFormattedSubquote, getFormattedSubquoteNumber, getFormattedSubquoteNumberFirst } from "../../../utils/AddBendingQuote";
+import { FixedSizeList as List } from 'react-window';
+
+// Memoized row component for virtualization
+const QuoteRow = React.memo(({ data, index, style }) => {
+  const quote = data.quoteData[index];
+  const quoteList = data.quoteList;
+  
+  // Memoize the loading states for this specific quote to prevent unnecessary re-renders
+  const quoteLoadingStates = React.useMemo(() => ({
+    dimensions: data.loadingSelect[`${quote._id}_dimensions`] || false,
+    material: data.loadingSelect[`${quote._id}_material`] || false,
+    thickness: data.loadingSelect[`${quote._id}_thickness`] || false,
+    finish: data.loadingSelect[`${quote._id}_finish`] || false,
+  }), [
+    data.loadingSelect[`${quote._id}_dimensions`],
+    data.loadingSelect[`${quote._id}_material`],
+    data.loadingSelect[`${quote._id}_thickness`],
+    data.loadingSelect[`${quote._id}_finish`],
+    quote._id
+  ]);
+  
+  return (
+    <div style={style} className="listsdfgdsdfgdsdfgds" key={quote._id}>
+      <div className="list-quotes-main">
+        <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
+          <div className="flex-shrink-0">
+            <div className="img-quote mx-auto mx-md-0">
+              <Image
+                src={encodeS3Url(quote.image_url)}
+                className="img-fluid"
+                alt=""
+              />
+            </div>
+            <span className="num-dim">
+              <DimensionsToggle
+                dimensions={quote.dimensions}
+                id={quote._id}
+                type={quote.dimension_type}
+              />
+            </span>
+          </div>
+          <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
+            <h2>
+              {quote.quote_name}
+              <Icon
+                icon="material-symbols-light:download-sharp"
+                onClick={() =>
+                  data.downloadFile(encodeS3Url(quote?.dxf_url), quote.quote_name)
+                }
+              />
+            </h2>
+            <p className="num-dim-main">
+              <span className="num-dim">
+                {quote.thickness_id
+                  ? quote?.subquote_number?.includes(
+                      quoteList.search_quote +
+                        "-" +
+                        String(index + 1).padStart(3, "0")
+                    )
+                    ? getFormattedSubquote(quote, quote?.subquote_number)
+                    : quote.subquote_number +
+                      "-" +
+                      getFormattedSubquoteNumberFirst(quote,quoteList.search_quote) +
+                      "-" +
+                      String(index + 1).padStart(3, "0")
+                  : ""}
+              </span>
+            </p>
+            {(quote.thickness_id != null && quote.thickness_id != "") ?
+            <div className="datamain mb-2">
+              <Link
+                className="btndata"
+                onClick={() => {
+                  data.handleShow4(quote._id, quote.thickness_id,quote.thickness_id
+                    ? quote?.subquote_number?.includes(
+                        quoteList.search_quote +
+                          "-" +
+                          String(index + 1).padStart(3, "0")
+                      )
+                      ? quote?.subquote_number
+                      : quote.subquote_number +
+                        "-" +
+                        quoteList.search_quote +
+                        "-" +
+                        String(index + 1).padStart(3, "0")
+                    : "");
+                }}
+                style={{ minWidth: 42 }}
+              >
+                {data.loadingOrderQuote == quote._id ? (
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                ) : (
+                  "Data"
+                )}
+              </Link>
+            </div>
+            : null}
+            <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
+              <SelectDropdowns
+                options={data.getDimension}
+                value={quote.dimension_type}
+                placeholder={"Select Units"}
+                type="dimensions"
+                id={quote._id}
+                onOptionSelect={async (option) => {
+                  const loadingKey = `${quote._id}_dimensions`;
+                  console.log('Setting dimensions loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleApiResponse(option, 'dimensions', quote._id);
+                  } finally {
+                    console.log('Setting dimensions loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
+                }}
+                loading={quoteLoadingStates.dimensions}
+              />
+              <SelectDropdowns
+                options={data.materials}
+                value={quote.material_id}
+                placeholder={"Select a Material"}
+                type="material"
+                id={quote._id}
+                onOptionSelect={async (option) => {
+                  const loadingKey = `${quote._id}_material`;
+                  console.log('Setting material loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleOptionSelect(option, 'material', quote._id);
+                  } finally {
+                    console.log('Setting material loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
+                }}
+                loading={quoteLoadingStates.material}
+              />
+              <SelectDropdowns
+                options={quote.thicknessOptions || []}
+                value={quote.thickness_id}
+                type="thickness"
+                id={quote._id}
+                placeholder={"Select a Thickness"}
+                onOptionSelect={async (option) => {
+                  const loadingKey = `${quote._id}_thickness`;
+                  console.log('Setting thickness loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleOptionSelect(option, 'thickness', quote._id);
+                  } finally {
+                    console.log('Setting thickness loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
+                }}
+                loading={quoteLoadingStates.thickness}
+              />
+              <SelectDropdowns
+                options={quote.finishOptions || []}
+                value={quote.finishing_id}
+                type="finish"
+                id={quote._id}
+                placeholder={"Select a Finish"}
+                onOptionSelect={async (option) => {
+                  const loadingKey = `${quote._id}_finish`;
+                  console.log('Setting finish loading to true for:', quote._id);
+                  data.setLoadingSelect((prev) => {
+                    const newState = { ...prev, [loadingKey]: true };
+                    console.log('New loading state:', newState);
+                    return newState;
+                  });
+                  try {
+                    await data.handleOptionSelect(option, 'finish', quote._id);
+                  } finally {
+                    console.log('Setting finish loading to false for:', quote._id);
+                    data.setLoadingSelect((prev) => {
+                      const newState = { ...prev, [loadingKey]: false };
+                      console.log('New loading state:', newState);
+                      return newState;
+                    });
+                  }
+                }}
+                loading={quoteLoadingStates.finish}
+              />
+              <div className="DragItemPost_div">
+                <Button
+                  className="DragItemPostOps_btn"
+                  variant={null}
+                >
+                  Post Ops
+                </Button>
+                {quote?.post_ops?.length > 0 ? (
+                  <>
+                    <DraggableItem
+                      id={quote._id}
+                      dragoption={quote.post_ops}
+                    />
+                  </>
+                ) : (
+                  <p></p>
+                )}
+                <Button
+                  className="DragItemPostPlus_btn"
+                  variant={null}
+                  onClick={() =>
+                    data.handleOpenModal(quote._id, quote?.post_ops)
+                  }
+                >
+                  <Icon icon="ic:baseline-plus" />
+                </Button>
+              </div>
+            </div>
+            <div className="quotes-services quote_div_main_sect mt-3">
+              {quote.binding_option == "yes" ? (
+                <>
+                  <div
+                    className={`d-flex align-items-start main_service_clr${
+                      quote.bend_count < 1 ? "s" : "s"
+                    }`}
+                  >
+                    <>
+                      <div className="flex-shrink-0">
+                        <Form.Check
+                          type="checkbox"
+                          label="Add Bending"
+                          name={`options-${quote._id}`}
+                          value={`options-${quote._id}`}
+                          id={`options-${quote._id}`}
+                          className="d-inline-flex align-items-center me-2"
+                          onChange={(e) =>
+                            data.handleShow2(
+                              quote.image_url,
+                              quote.quote_name,
+                              quote.bend_count,
+                              quote.bendupload_url,
+                              quote._id,
+                              e.target.checked,
+                              quote.per_bend_price
+                            )
+                          }
+                          checked={quote.bend_count >= 1}
+                        />
+                      </div>
+                      {quote.bend_count == 1 && (
+                        <div className="baseratecustom">
+                          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <span className="baseratetitle">
+                              Base Rate: <Amount amount={quote.per_bend_price} />{' '}
+                              <Link
+                                onClick={() => {
+                                  data.setPriceBend(quote.per_bend_price);
+                                  data.setSelectedQuote(quote._id);
+                                  data.setSelectedPartId(quote._id);
+                                  data.setModalShowPriceBend(true);
+                                }}
+                              >
+                                <Icon icon="mynaui:edit" color="#000" width={16} height={16} />
+                              </Link>
+                            </span>
+                            <span className="cursor-pointer" data-tooltip-id="custom-bending">
+                              <Icon icon="material-symbols-light:info-outline" width={22} height={22} color="#000" />
+                            </span>
+                            <Tooltip
+                              id="custom-bending"
+                              place="right"
+                              content={
+                                <>
+                                  Bending requires review and approval. <br />
+                                  The base rate is just an estimate and <br />
+                                  will be adjusted during the review process. <br />
+                                  If you don't have a STEP file, please reach out <br />
+                                  directly to us via email.
+                                </>
+                              }
+                            />
+                          </div>
+                          <div>
+                            {/* First Upload Field */}
+                            <div className="mt-2 d-flex justify-content-start gap-2">
+                              <label className="labeltitle flex-shrink-0">
+                                Upload STEP File <small>(Required)</small>
+                              </label>
+                              {!quote.step_file_bend ? (
+                                <>
+                                  {data.loadingFiles[quote._id] ? (
+                                    <span className="color_white_make">Uploading...</span>
+                                  ) : (
+                                    <input
+                                      id={quote._id}
+                                      type="file"
+                                      accept=".step,.stp"
+                                      onChange={(e) =>
+                                        data.handleFileChange(e, `${quote._id}`, quote._id, 'step')
+                                      }
+                                      className="block w-full mt-1"
+                                    />
+                                  )}
+                                </>
+                              ) : (
+                                <div className="attachment-box">
+                                  <Link onClick={() => data.handleDownload(quote.step_file_bend, decodeURIComponent(quote.step_file_bend.split('/').pop().replace(/^\d+-/, '')))}>
+                                    <span className="attachmenttitle">Attachment</span>
+                                  </Link>
+                                  <Link
+                                    className="remove-icon"
+                                    onClick={() => data.removeFile(quote._id, 'step_remove')}
+                                  >
+                                    <Icon icon="carbon:close-outline" color="#ff0000" width={18} height={18} className="ms-2" />
+                                  </Link>
+                                </div>
+                              )}
+                            </div>
+                            {/* Second Upload Field */}
+                            <div className="mt-2 d-flex justify-content-start gap-2">
+                              <label className="labeltitle flex-shrink-0">
+                                Upload Drawing <small>(Optional)</small>
+                              </label>
+                              {!quote.drawing_file_bend ? (
+                                <>
+                                  {data.loadingFiles[`${quote._id}-optional`] ? (
+                                    <span>Uploading...</span>
+                                  ) : (
+                                    <input
+                                      id={`${quote._id}-optional`}
+                                      type="file"
+                                      accept=".pdf, .jpg, .jpeg, .png"
+                                      onChange={(e) =>
+                                        data.handleFileChange(e, `${quote._id}-optional`, quote._id, 'draw')
+                                      }
+                                      className="block w-full mt-1"
+                                    />
+                                  )}
+                                </>
+                              ) : (
+                                <div className="attachment-box">
+                                  <Link onClick={() => data.handleDownload(quote.drawing_file_bend, decodeURIComponent(quote.drawing_file_bend.split('/').pop().replace(/^\d+-/, '')))}>
+                                    <span className="attachmenttitle">Attachment</span>
+                                  </Link>
+                                  <Link
+                                    className="remove-icon"
+                                    onClick={() => data.removeFile(quote._id, 'draw_remove')}
+                                  >
+                                    <Icon icon="carbon:close-outline" color="#ff0000" width={18} height={18} className="ms-2" />
+                                  </Link>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  </div>
+                </>
+              ) : (
+                <p></p>
+              )}
+            </div>
+            <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
+              <p className=" text-md-end">
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format((quote.amount)  +  (quote.bend_count >= 1 && quote.per_bend_price * quote.quantity))} total
+              </p>
+              <p className=" text-md-end">
+                <strong className="quotes-price">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(((quote.amount / quote.quantity) + (quote.bend_count >= 1 && quote.per_bend_price) ))}
+                </strong>
+                /each{" "}
+                <Link
+                  className="btnicons"
+                  onClick={() =>
+                    data.handleShowPrice(
+                      quote.quote_name,
+                      quote._id,
+                      (quote.amount / quote.quantity).toFixed(2)
+                    )
+                  }
+                >
+                  <Icon icon="mynaui:edit" />
+                </Link>
+              </p>
+              <div className="d-flex align-items-center justify-content-end gap-2">
+                <p className="fw-bold">
+                  Qty : {quote.quantity}{" "}
+                  <Link
+                    className="btnicons"
+                    onClick={() =>
+                      data.handleShowQty(quote.quantity, quote._id)
+                    }
+                  >
+                    <Icon icon="mynaui:edit" />
+                  </Link>
+                </p>
+                <span className="quote-off">
+                  {quote.discount} % Saved
+                </span>
+              </div>
+              <p className="mb-0 text-md-end">
+                {quote?.estimated_lead_time
+                  ? `Typical Lead Time ${quote.estimated_lead_time} days`
+                  : `Typical Lead Time ${
+                      quote?.type_option?.[0]?.estimated_lead_time ??
+                      "2 - 3"
+                    } days`}
+              </p>
+              <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
+                <Link
+                  className="btnshare custom_expansion"
+                  onClick={() =>
+                    data.handleShow3(
+                      quote.notes_text,
+                      quote.notes_admin,
+                      quote._id
+                    )
+                  }
+                > 
+                  Add Note 
+                  {((quote.notes_text &&
+                      quote.notes_text.trim() !== "") || // checks if notes_text is not an empty string
+                      (Array.isArray(quote.notes_admin) &&
+                      quote.notes_admin.length > 0)) && (
+                      <span className="expansion_tag">!</span>
+                    )}
+                </Link>
+                <Link
+                  className="btnicon"
+                  onClick={() =>
+                    data.handleShow(quote.quote_name, quote._id)
+                  }
+                >
+                  <Icon icon="mynaui:edit" />
+                </Link>
+                <Link
+                  className="btnicon"
+                  onClick={() => {
+                    data.setDeletemodalShow(true);
+                    data.setDeleteId(quote._id);
+                  }}
+                >
+                  <Icon icon="uiw:delete" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 const EditRFQS = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]); 
@@ -433,7 +909,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     if (!Array.isArray(quoteData)) return 0;
     return quoteData.reduce((sum, quote) => {
       // Ensure quote.amount is a valid number
-      const amount = parseFloat(quote.amount);
+      const amount = parseFloat(quote.amount) || 0;
 
       return sum + (isNaN(amount) ? 0 : amount);
     }, 0);
@@ -758,6 +1234,20 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
   };
   const handleClose2 = () => setModalShow2(false);
   const [loadingFiles, setLoadingFiles] = useState({}); // Track loading state for each file
+  const [loadingSelect, setLoadingSelect] = useState({});
+  
+  // Use a ref to track loading states that persist across re-renders
+  const loadingSelectRef = useRef({});
+  
+  // Enhanced loading state setter that updates both state and ref
+  const setLoadingSelectEnhanced = useCallback((updater) => {
+    setLoadingSelect((prev) => {
+      const newState = typeof updater === 'function' ? updater(prev) : updater;
+      loadingSelectRef.current = newState;
+      return newState;
+    });
+  }, []);
+  
   const handleClose3 = () => setModalShow3(false);
   const [quantities, setQuantities] = useState({
     item1: 1,
@@ -1281,6 +1771,66 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
       .catch((error) => console.error("Error downloading the file:", error));
   };
 
+  // Memoize the itemData more efficiently to prevent unnecessary re-renders
+  const itemData = useMemo(() => ({
+    quoteData,
+    materials,
+    getDimension,
+    handleApiResponse,
+    handleOptionSelect,
+    handleShow,
+    handleShowQty,
+    handleShowPrice,
+    handleShow2,
+    handleShow3,
+    handleShow4,
+    loadingOrderQuote,
+    loadingSelect,
+    setLoadingSelect: setLoadingSelectEnhanced,
+    fetchThickness,
+    fetchFinish,
+    decrementQuantity,
+    handleFileChange,
+    removeFile,
+    downloadFile,
+    setModalShow,
+    setModalShow2,
+    setModalShow3,
+    setModalShowPrice,
+    setModalShowPriceBend,
+    setSelectedQuote,
+    setSelectedPartId,
+    setPrice,
+    setPriceBend,
+    setSelectedQty,
+    setSelectedNote,
+    setSelectedAdminNote,
+    setquoteDataCon,
+    setQuoteData,
+    setQuoteList,
+    setebendAmount,
+    setimage_url,
+    setquote_name,
+    setbend_count,
+    setbendupload_url,
+    setid_quote,
+    setShowModal,
+    setDeletemodalShow,
+    setDeleteId,
+    quoteList,
+    loadingFiles,
+    handleOpenModal,
+  }), [
+    // Only include dependencies that actually change frequently
+    quoteData,
+    materials,
+    loadingOrderQuote,
+    loadingSelect,
+    quoteList,
+    loadingFiles,
+    // Functions are stable and don't need to be in dependencies
+  ]);
+
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -1331,572 +1881,19 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
                 error={error}
                 className={"mb-4"} 
               />
-              {quoteData &&
-                quoteData.length > 0 &&
-                quoteData.map((quote, index) => (
-                  <div className="list-quotes-main">
-                    <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
-                      <div className="flex-shrink-0">
-                        <div className="img-quote mx-auto mx-md-0">
-                          <Image
-                            src={encodeS3Url(quote.image_url)}
-                            className="img-fluid"
-                            alt=""
-                          />
-                        </div>
-                        <span className="num-dim">
-                          <DimensionsToggle
-                            dimensions={quote.dimensions}
-                            id={quote._id}
-                            type={quote.dimension_type}
-                            // isEdit={true}
-                          />
-                        </span>
-                      </div>
-                      <div className="content-quotes text-center text-md-start mt-3 mt-md-0 ps-0 ps-md-3 pe-md-2 pe-0">
-                        <h2>
-                          {quote.quote_name}
-                          <Icon
-                            icon="material-symbols-light:download-sharp"
-                            onClick={() =>
-                              handleDownload(encodeS3Url(quote?.dxf_url), quote.quote_name)
-                            }
-                          />
-                        </h2>
-                        <p className="num-dim-main">
-                          <span className="num-dim">
-                            {quote.thickness_id
-                                                          ? quote?.subquote_number?.includes(
-                                                              quoteList.search_quote +
-                                                                "-" +
-                                                                String(index + 1).padStart(3, "0")
-                                                            )
-                                                            ? getFormattedSubquote(quote, quote?.subquote_number)
-                                                            : quote.subquote_number +
-                                                              "-" + 
-                                                              getFormattedSubquoteNumberFirst(quote,quoteList.search_quote) +
-                                                              "-" +
-                                                              String(index + 1).padStart(3, "0")
-                                                          : ""}
-                          </span>
-                          {/* {quote.pierce_count && (
-                            <>
-                              <br></br>
-                              <span
-                                className="num-dim mt-2"
-                                style={{ fontSize: "12px" }}
-                              >
-                                Pierce Count : {quote.pierce_count}
-                                
-                              </span>
-                            </>
-                          )} */}
-                        </p>
-                        {(quote.thickness_id != null && quote.thickness_id != "") ?
-                        <div className="datamain mb-2">
-                          <Link
-                            className="btndata"
-                            onClick={() => {
-                              handleShow4(quote._id, quote.thickness_id,quote.thickness_id
-                                ? quote?.subquote_number?.includes(
-                                    quoteList.search_quote +
-                                      "-" +
-                                      String(index + 1).padStart(3, "0")
-                                  )
-                                  ? quote?.subquote_number
-                                  : quote.subquote_number +
-                                    "-" +
-                                    quoteList.search_quote +
-                                    "-" +
-                                    String(index + 1).padStart(3, "0")
-                                : "");
-                            }}
-                            style={{ minWidth: 42 }}
-                          >
-                           
-                            <>
-                            {loadingOrderQuote == quote._id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                role="status"
-                                aria-hidden="true"
-                              ></span>
-                            ) : (
-                              "Data"
-                            )}
-                            </>
-                           
-
-                            
-                          </Link>
-                        </div>
-                         :
-                         null
-                         }
-                        <div className="quotes-dropdown flex-md-row d-flex align-item-center justify-content-md-start justify-content-center">
-                          <SelectDropdowns
-                            options={getDimension}
-                            value={quote.dimension_type}
-                            placeholder={"Select Units"}
-                            type="dimensions"
-                            id={quote._id}
-                            onOptionSelect={handleApiResponse}
-                          />
-                          <SelectDropdowns
-                            options={materials}
-                            value={quote.material_id}
-                            placeholder={"Select a Material"}
-                            type="material"
-                            id={quote._id}
-                            onOptionSelect={handleOptionSelect}
-                          />
-                          <SelectDropdowns
-                            options={quote.thicknessOptions || []}
-                            value={quote.thickness_id}
-                            type="thickness"
-                            id={quote._id}
-                            placeholder={"Select a Thickness"}
-                            onOptionSelect={handleOptionSelect}
-                          />
-                          <SelectDropdowns
-                            options={quote.finishOptions || []}
-                            value={quote.finishing_id}
-                            type="finish"
-                            id={quote._id}
-                            placeholder={"Select a Finish"}
-                            onOptionSelect={handleOptionSelect}
-                          />
-                          <div className="DragItemPost_div">
-                            <Button
-                              className="DragItemPostOps_btn"
-                              variant={null}
-                            >
-                              Post Ops
-                            </Button>
-                            {quote?.post_ops?.length > 0 ? (
-                              <>
-                                <DraggableItem
-                                  id={quote._id}
-                                  dragoption={quote.post_ops}
-                                />
-                              </>
-                            ) : (
-                              <p></p>
-                            )}
-
-                            <Button
-                              className="DragItemPostPlus_btn"
-                              variant={null}
-                              onClick={() =>
-                                handleOpenModal(quote._id, quote?.post_ops)
-                              }
-                            >
-                              <Icon icon="ic:baseline-plus" />
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="quotes-services quote_div_main_sect mt-3">
-                          {quote.binding_option == "yes" ? (
-                            <>
-                              <div
-                                className={`d-flex align-items-start main_service_clr${
-                                  quote.bend_count < 1 ? "s" : "s"
-                                }`}
-                              >
-                                <>
-                                  <div className="flex-shrink-0">
-                                    {/* <h4>Services</h4> */}
-
-                                    <Form.Check
-                                      type="checkbox"
-                                      label="Add Bending"
-                                      name={`options-${quote._id}`}
-                                      value={`options-${quote._id}`}
-                                      id={`options-${quote._id}`}
-                                      className="d-inline-flex align-items-center me-2"
-                                      // disabled={true}
-                                      onChange={(e) =>
-                                        handleShow2(
-                                          quote.image_url,
-                                          quote.quote_name,
-                                          quote.bend_count,
-                                          quote.bendupload_url,
-                                          quote._id,
-                                          e.target.checked,
-                                          quote.per_bend_price
-                                        )
-                                      }
-                                      checked={quote.bend_count >= 1}
-                                    />
-                                  </div>
-                                  
-                                  {quote.bend_count == 1 && (
-                                    <div className="baseratecustom">
-                                      <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                        <span className="baseratetitle">
-                                          Base Rate:{" "}
-                                          <Amount
-                                            amount={quote.per_bend_price}
-                                          />{" "}
-                                          <Link
-                                            onClick={() => {
-                                              setPriceBend(
-                                                quote.per_bend_price
-                                              );
-                                              setSelectedQuote(quote._id);
-                                              setSelectedPartId(quote._id);
-                                              setModalShowPriceBend(true);
-                                            }}
-                                          >
-                                            <Icon
-                                              icon="mynaui:edit"
-                                              color="#000"
-                                              width={16}
-                                              height={16}
-                                            />
-                                          </Link>
-                                        </span>
-                                        <span
-                                          className="cursor-pointer"
-                                          data-tooltip-id="custom-bending"
-                                        >
-                                          <Icon
-                                            icon="material-symbols-light:info-outline"
-                                            width={22}
-                                            height={22}
-                                            color="#000"
-                                          />
-                                        </span>
-                                        <Tooltip
-                                          id="custom-bending"
-                                          place="right"
-                                          content={
-                                            <>
-                                              Bending requires review and
-                                              approval. <br />
-                                              The base rate is just an estimate
-                                              and <br />
-                                              will be adjusted during the review
-                                              process. <br />
-                                              If you don’t have a STEP file,
-                                              please reach out <br />
-                                              directly to us via email.
-                                            </>
-                                          }
-                                        />
-                                      </div>
-
-                                      <div>
-                                        {/* First Upload Field */}
-                                        <div className="mt-2 d-flex justify-content-start gap-2">
-                                          <label className="labeltitle flex-shrink-0">
-                                            Upload STEP File{" "}
-                                            <small>(Required)</small>
-                                          </label>
-
-                                          {!quote.step_file_bend ? (
-                                            <>
-                                              {/* <span className="attachmenttitle">
-                                             No Attachment
-                                             </span> */}
-                                              {loadingFiles[quote._id] ? (
-                                                <span className="color_white_make">
-                                                  Uploading...
-                                                </span> // Show loader while uploading
-                                              ) : (
-                                                <input
-                                                  id={quote._id}
-                                                  type="file"
-                                                   accept=".step,.stp"
-                                                  onChange={(e) =>
-                                                    handleFileChange(
-                                                      e,
-                                                      `${quote._id}`,
-                                                      quote._id,
-                                                      "step"
-                                                    )
-                                                  }
-                                                  className="block w-full mt-1"
-                                                />
-                                              )}
-                                            </>
-                                          ) : (
-                                            <div className="attachment-box">
-                                              <Link  onClick={() =>  handleDownload(quote.step_file_bend, decodeURIComponent(quote.step_file_bend.split('/').pop().replace(/^\d+-/, ''))) }>                       
-                                                <span className="attachmenttitle">
-                                                  Attachment
-                                                  {/* {
-                                                                                              uploadedFiles[quote._id]
-                                                                                                .name
-                                                                                            } */}
-                                                </span>
-                                              </Link>
-                                              <Link
-                                                className="remove-icon"
-                                                onClick={() =>
-                                                  removeFile(
-                                                    quote._id,
-                                                    "step_remove"
-                                                  )
-                                                }
-                                              >
-                                                <Icon
-                                                  icon="carbon:close-outline"
-                                                  color="#ff0000"
-                                                  width={18}
-                                                  height={18}
-                                                  className="ms-2"
-                                                />
-                                              </Link>
-                                            </div>
-                                          )}
-                                        </div>
-
-                                        {/* Second Upload Field */}
-                                        <div className="mt-2 d-flex justify-content-start gap-2">
-                                          <label className="labeltitle flex-shrink-0">
-                                            Upload Drawing{" "}
-                                            <small>(Optional)</small>
-                                          </label>
-
-                                          {!quote.drawing_file_bend ? (
-                                            <>
-                                              {loadingFiles[
-                                                `${quote._id}-optional`
-                                              ] ? (
-                                                <span>Uploading...</span> // Loader for optional upload
-                                              ) : (
-                                                <input
-                                                  id={`${quote._id}-optional`}
-                                                  type="file"
-                                                  accept=".pdf, .jpg, .jpeg, .png"
-                                                  onChange={(e) =>
-                                                    handleFileChange(
-                                                      e,
-                                                      `${quote._id}-optional`,
-                                                      quote._id,
-                                                      "draw"
-                                                    )
-                                                  }
-                                                  className="block w-full mt-1"
-                                                />
-                                              )}
-                                            </>
-                                          ) : (
-                                            <div className="attachment-box">
-                                             <Link  onClick={() =>  handleDownload(quote.drawing_file_bend, decodeURIComponent(quote.drawing_file_bend.split('/').pop().replace(/^\d+-/, ''))) }>                       
-                                                <span className="attachmenttitle">
-                                                  {/* {
-                                                                                              uploadedFiles[
-                                                                                                `${quote._id}-optional`
-                                                                                              ].name
-                                                                                            } */}
-                                                  Attachment
-                                                </span>
-                                              </Link>
-                                              <Link
-                                                className="remove-icon"
-                                                onClick={() =>
-                                                  removeFile(
-                                                    quote._id,
-                                                    "draw_remove"
-                                                  )
-                                                }
-                                              >
-                                                <Icon
-                                                  icon="carbon:close-outline"
-                                                  color="#ff0000"
-                                                  width={18}
-                                                  height={18}
-                                                  className="ms-2"
-                                                />
-                                              </Link>
-                                            </div>
-                                          )}
-                                        </div>
-
-                                        {/* Error Message */}
-                                        {/* {Object.keys(uploadedFiles).length === 0 && <p className="text-red-500 text-xs mt-1">File is required.</p>} */}
-                                      </div>
-                                    </div>
-                                  )}
-                                  {/* <div className="custom_bend_div">
-                                      <p>
-                                        Number of bends : {quote.bend_count}
-                                      </p>
-                                      <p>
-                                        Price per bend :{" "}
-                                        <Amount amount={quote.per_bend_price} />
-                                      </p>
-                                      <p>
-                                        Total :{" "}
-                                        <Amount amount={quote.bend_price} />
-                                      </p>
-                                    </div> */}
-                                </>
-
-                                {/* )} */}
-                              </div>
-                              {/* {quote.bend_count != 0 && (
-                                <Link
-                                  className="btnicon flex-shrink-0"
-                                  onClick={() => {
-                                    // console.log(
-                                    //   quote.per_bend_price,
-                                    //   "quote.per_bend_price"
-                                    // );
-                                    setimage_url(quote.image_url);
-                                    setquote_name(quote.quote_name);
-                                    setbend_count(quote.bend_count);
-                                    setbendupload_url(quote.bendupload_url);
-                                    setid_quote(quote._id);
-                                    setModalShow2(true);
-                                    setebendAmount(quote.per_bend_price);
-                                  }}
-                                >
-                                  <Icon icon="mynaui:edit" />
-                                </Link>
-                              )} */}
-                            </>
-                          ) : (
-                            <p></p>
-                          )}
-                          {/* </> */}
-                          {/* )} */}
-                        </div>
-                        {/* <div className="quotes-services mt-3">
-                          <p style={{ fontSize: "12px" }}>
-                            Bending : {quote.bend_count >= 1 ? "Yes" : "No"}
-                            {"   "}
-                            {quote.bendupload_url?.length > 0 &&
-                              quote.bendupload_url?.map((url, index) => (
-                                <Link
-                                                                        // href={`${url}`}
-                                                                        // target="_blank"
-                                                                        onClick={() => downloadFile(url)}
-                                                                        style={{ paddingRight: "5px" }}
-                                                                      >
-                                  Attachment {String(index + 1)}
-                                </Link>
-                              ))}
-                          </p>
-                        </div> */}
-                      </div>
-                      <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
-                        <p className=" text-md-end">
-                          {new Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD",
-                          }).format((quote.amount)  +  (quote.bend_count >= 1 && quote.per_bend_price * quote.quantity))}{" "}
-                          total
-                        </p>
-                        <p className=" text-md-end">
-                          <strong className="quotes-price">
-                            {new Intl.NumberFormat("en-US", {
-                              style: "currency",
-                              currency: "USD",
-                            }).format(((quote.amount / quote.quantity) + (quote.bend_count >= 1 && quote.per_bend_price) ))}
-                            {/* ${.toFixed(2)} */}
-                          </strong>
-                          /each{" "}
-                          <Link
-                            className="btnicons"
-                            onClick={() =>
-                              handleShowPrice(
-                                quote.quote_name,
-                                quote._id,
-                                (quote.amount / quote.quantity).toFixed(2)
-                              )
-                            }
-                          >
-                            <Icon icon="mynaui:edit" />
-                          </Link>
-                        </p>
-                        <div className="d-flex align-items-center justify-content-end gap-2">
-                          <p className="fw-bold">
-                            Qty : {quote.quantity}{" "}
-                            <Link
-                              className="btnicons"
-                              onClick={() =>
-                                handleShowQty(quote.quantity, quote._id)
-                              }
-                            >
-                              <Icon icon="mynaui:edit" />
-                            </Link>
-                          </p>
-                          <span className="quote-off">
-                            {quote.discount} % Saved
-                          </span>
-                        </div>
-                        <p className="mb-0 text-md-end">
-                          {quote?.estimated_lead_time
-                            ? `Typical Lead Time ${quote.estimated_lead_time} days`
-                            : `Typical Lead Time ${
-                                quote?.type_option?.[0]?.estimated_lead_time ??
-                                "2 - 3"
-                              } days`}
-                        </p>
-
-                        <div className="rightbtns gap-2 d-inline-flex flex-wrap mt-5">
-                          <Link
-                                                      className="btnshare custom_expansion"
-                                                      onClick={() =>
-                                                        handleShow3(
-                                                          quote.notes_text,
-                                                          quote.notes_admin,
-                                                          quote._id
-                                                        )
-                                                      }
-                                                    > 
-                                                      Add Note 
-                                                      {((quote.notes_text &&
-                                                          quote.notes_text.trim() !== "") || // checks if notes_text is not an empty string
-                                                          (Array.isArray(quote.notes_admin) &&
-                                                          quote.notes_admin.length > 0)) && (
-                                                          <span className="expansion_tag">!</span>
-                                                        )}
-                                                    </Link>
-                          <Link
-                            className="btnicon"
-                            onClick={() =>
-                              handleShow(quote.quote_name, quote._id)
-                            }
-                          >
-                            <Icon icon="mynaui:edit" />
-                          </Link>
-                          <Link
-                            className="btnicon"
-                            // onClick={() => handleDeleteQuote(quote._id)}
-                            onClick={() => {
-                              setDeletemodalShow(true);
-                              setDeleteId(quote._id);
-                            }}
-                          >
-                            <Icon icon="uiw:delete" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* <div className="d-flex align-items-center justify-content-between ps-lg-3 ps-0 mt-3 gap-2"> */}
-                    {/* <QuantitySelector
-                        quantity={quote.quantity}
-                        onIncrement={() =>
-                          handleQuantityChange(quote._id, true)
-                        }
-                        onDecrement={() =>
-                          quote.quantity === 1
-                            ? null
-                            : handleQuantityChange(quote._id, false)
-                        }
-                        updateQuantityAPI={(price) => {
-                          updateQuantityAPI(price, quote._id);
-                        }}
-                      /> */}
-
-                    {/* </div> */}
-                  </div>
-                ))}
+              {quoteData && quoteData.length > 0 && (
+                <List
+                  height={700}
+                  itemCount={quoteData.length}
+                  itemSize={500}
+                  width={"100%"}
+                  itemData={itemData}
+                  key="quote-list"
+                  itemKey={index => quoteData[index]._id}
+                >
+                  {QuoteRow}
+                </List>
+              )}
             </Col>
             {quoteData && quoteData.length > 0 && (
               <Col lg={4} xl={3}>
