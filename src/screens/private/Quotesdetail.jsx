@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Row, Col, Container, Image, Form, Button } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 import { Link, json, useNavigate } from "react-router-dom";
@@ -1179,6 +1179,85 @@ export default function QuotesDetail() {
     });
   };
 
+  // Add useMemo for itemData to prevent unnecessary re-renders
+  const listItemData = useMemo(() => ({
+    quoteData,
+    materials,
+    getDimension,
+    handleApiResponse,
+    handleOptionSelect,
+    handleQuantityChange,
+    handleQuantityChangeAPI,
+    handleShow,
+    handleShow2,
+    handleShow3,
+    handleDuplicateQuote,
+    handleDeleteQuote,
+    handleClick,
+    loadingSelect,
+    loadingFiles: loadingFiles || {},
+    quoteList,
+    currentMonth,
+    yearLastTwoDigits,
+    setModalShow,
+    setModalShow2,
+    setModalShow3,
+    setModalShow4,
+    setSelectedQuote,
+    setSelectedNote,
+    setSelectedPartId,
+    setimage_url,
+    setquote_name,
+    setbend_count,
+    setbendupload_url,
+    setid_quote,
+  }), [
+    quoteData,
+    materials,
+    getDimension,
+    handleApiResponse,
+    handleOptionSelect,
+    handleQuantityChange,
+    handleQuantityChangeAPI,
+    handleShow,
+    handleShow2,
+    handleShow3,
+    handleDuplicateQuote,
+    handleDeleteQuote,
+    handleClick,
+    loadingSelect,
+    loadingFiles,
+    quoteList,
+    currentMonth,
+    yearLastTwoDigits,
+    setModalShow,
+    setModalShow2,
+    setModalShow3,
+    setModalShow4,
+    setSelectedQuote,
+    setSelectedNote,
+    setSelectedPartId,
+    setimage_url,
+    setquote_name,
+    setbend_count,
+    setbendupload_url,
+    setid_quote,
+  ]);
+
+  // Track and restore scroll position using outerRef
+  const listOuterRef = useRef(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const handleOuterScroll = () => {
+    if (listOuterRef.current) {
+      setScrollTop(listOuterRef.current.scrollTop);
+    }
+  };
+  useEffect(() => {
+    if (listOuterRef.current) {
+      listOuterRef.current.scrollTop = scrollTop;
+    }
+  }, [quoteData && quoteData.length]);
+
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -1223,44 +1302,17 @@ export default function QuotesDetail() {
                 Array.isArray(quoteData) &&
                 (
                   <List
+                    outerRef={listOuterRef}
                     height={Math.min(quoteData.length * 340)}
                     itemCount={quoteData.length}
                     itemSize={350}
                     width={"100%"}
-                    itemData={{
-                      quoteData,
-                      materials,
-                      getDimension,
-                      handleApiResponse,
-                      handleOptionSelect,
-                      handleQuantityChange,
-                      handleQuantityChangeAPI,
-                      handleShow,
-                      handleShow2,
-                      handleShow3,
-                      handleDuplicateQuote,
-                      handleDeleteQuote,
-                      handleClick,
-                      loadingSelect,
-                      loadingFiles: loadingFiles || {},
-                      quoteList,
-                      currentMonth,
-                      yearLastTwoDigits,
-                      setModalShow,
-                      setModalShow2,
-                      setModalShow3,
-                      setModalShow4,
-                      setSelectedQuote,
-                      setSelectedNote,
-                      setSelectedPartId,
-                      setimage_url,
-                      setquote_name,
-                      setbend_count,
-                      setbendupload_url,
-                      setid_quote,
-                    }}
-                    // style={{ overflowX: 'hidden' }}
+                    itemData={listItemData}
+                    itemKey={index => quoteData[index]._id}
                     className="quote_scroll_cls"
+                    outerElementType={React.forwardRef((props, ref) => (
+                      <div {...props} ref={ref} onScroll={handleOuterScroll} />
+                    ))}
                   >
                     {({ index, style, data }) => {
                       const quote = data.quoteData[index];
