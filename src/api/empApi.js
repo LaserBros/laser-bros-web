@@ -924,6 +924,15 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
       throw error;
     }
   };
+  export const updateMaterialDetails = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(`/updateMaterialDetails`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
   
   
   export const deleteThicknessDetails = async (data) => {
