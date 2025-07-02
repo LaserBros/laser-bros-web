@@ -5379,3 +5379,15 @@ gap:12px;
         color:$white-color!important
     }
 }
+.quote_scroll_cls{
+    scrollbar-width: none;
+        height: auto !important;
+        overflow: visible!important;
+        > div{
+                height: auto !important;
+        }
+      .quotelist {
+    position: initial !important;
+    height: auto !important;
+}
+}

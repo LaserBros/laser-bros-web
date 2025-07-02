@@ -65,7 +65,7 @@ import AddAddressModalAdmin from "../../components/AddAddressModalAdmin";
 import { FixedSizeList as List } from 'react-window';
 
 // Memoized row component for virtualization
-const QuoteRow = React.memo(({ data, index, style="" }) => {
+const QuoteRow = React.memo(({ data, index, style }) => {
   const quote = data.quoteData[index];
   const quoteList = data.quoteList;
   
@@ -85,7 +85,7 @@ const QuoteRow = React.memo(({ data, index, style="" }) => {
   
   // All your row rendering logic here, using only props from data and quote
   return (
-    <div style={style} key={quote._id}>
+    <div style={style} key={quote._id} className="quote_lisiting_pge"> 
       <div className="list-quotes-main">
         <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
           <div className="flex-shrink-0">
@@ -465,6 +465,7 @@ const QuoteRow = React.memo(({ data, index, style="" }) => {
                 <p></p>
               )}
             </div>
+          </div>
             <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
               <p className=" text-md-end">
                 {new Intl.NumberFormat("en-US", {
@@ -555,7 +556,6 @@ const QuoteRow = React.memo(({ data, index, style="" }) => {
                 </Link>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
@@ -2052,13 +2052,14 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
               />
               {quoteData && quoteData.length > 0 && (
                 <List
-                  height={Math.min(quoteData.length * 340, 800)}
-                  itemCount={quoteData.length}
+                  height={Math.min(quoteData.length * 340)}
+                  itemCount={quoteData?.length} 
                   itemSize={340}
                   width={"100%"}
                   itemData={itemData}
-                  style={{ overflowX: 'hidden' }}
-                  key={`quote-list-${quoteData.length}-${loadingSelect ? Object.keys(loadingSelect).length : 0}`}
+                  // style={{ overflowX: 'hidden' }}
+                  className="quote_scroll_clss"
+                  // key={`quote-list-${quoteData.length}-${loadingSelect ? Object.keys(loadingSelect).length : 0}`}
                 >
                   {QuoteRow}
                 </List>

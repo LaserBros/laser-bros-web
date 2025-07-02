@@ -81,7 +81,7 @@ const QuoteRow = React.memo(({ data, index, style }) => {
   ]);
   
   return (
-    <div style={style} className="listsdfgdsdfgdsdfgds" key={quote._id}>
+    <div style={style} className="quote_lisiting_pge" key={quote._id}>
       <div className="list-quotes-main">
         <div className="list-quotes flex-column flex-md-row d-flex flex-wrap flex-md-nowrap">
           <div className="flex-shrink-0">
@@ -438,6 +438,7 @@ const QuoteRow = React.memo(({ data, index, style }) => {
                 <p></p>
               )}
             </div>
+          </div>
             <div className="right-quote flex-shrink-0 text-center text-md-end flex-grow-1 flex-md-grow-0">
               <p className=" text-md-end">
                 {new Intl.NumberFormat("en-US", {
@@ -528,7 +529,6 @@ const QuoteRow = React.memo(({ data, index, style }) => {
                 </Link>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
@@ -1883,12 +1883,13 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
               />
               {quoteData && quoteData.length > 0 && (
                 <List
-                  height={700}
-                  itemCount={quoteData.length}
+                    height={Math.min(quoteData.length * 340)}
+                  itemCount={quoteData?.length} 
                   itemSize={500}
                   width={"100%"}
                   itemData={itemData}
                   key="quote-list"
+                  className="quote_scroll_clss"
                   itemKey={index => quoteData[index]._id}
                 >
                   {QuoteRow}

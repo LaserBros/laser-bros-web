@@ -2013,4 +2013,17 @@ body {
   --bs-btn-close-bg:url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23ffffff%27%3e%3cpath d=%27M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414%27/%3e%3c/svg%3e");
   border-radius: 50%;
   background-size: 10px;
+}
+
+.quote_scroll_clss {
+  scrollbar-width: none;
+  height: auto !important;
+  overflow: visible !important;
+}
+.quote_scroll_clss > div {
+  height: auto !important;
+}
+.quote_scroll_clss .quote_lisiting_pge {
+  position: initial !important;
+  height: auto !important;
 }/*# sourceMappingURL=style.css.map */

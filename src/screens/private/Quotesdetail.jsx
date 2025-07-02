@@ -1223,9 +1223,9 @@ export default function QuotesDetail() {
                 Array.isArray(quoteData) &&
                 (
                   <List
-                    height={Math.min(quoteData.length * 340, 800)}
+                    height={Math.min(quoteData.length * 340)}
                     itemCount={quoteData.length}
-                    itemSize={340}
+                    itemSize={350}
                     width={"100%"}
                     itemData={{
                       quoteData,
@@ -1259,12 +1259,13 @@ export default function QuotesDetail() {
                       setbendupload_url,
                       setid_quote,
                     }}
-                    style={{ overflowX: 'hidden' }}
+                    // style={{ overflowX: 'hidden' }}
+                    className="quote_scroll_cls"
                   >
                     {({ index, style, data }) => {
                       const quote = data.quoteData[index];
                       return (
-                        <div style={style} key={quote._id}>
+                        <div style={style} key={quote._id} className="quotelist">
                           <QuoteLineItem
                             quote={quote}
                             index={index}
