@@ -64,6 +64,7 @@ const AddMaterial = () => {
   const [material, setMaterial] = useState({
     material_name: "",
     material_grade: "",
+    customer_visible:1,
     bending: "yes",
   });
 
@@ -218,6 +219,18 @@ const AddMaterial = () => {
                 {errors.material_grade && (
                   <div className="invalid-feedback">{errors.material_grade}</div>
                 )}
+              </td>
+            </tr>
+            <tr>
+              <td>Customer Visible</td>
+              <td>
+              <select
+                  className="form-control form-select"
+                  onChange={(e) => handleChange(e, "customer_visible")}
+                >
+                  <option value="1">Yes</option>
+                  <option value="0">No</option>
+                </select>
               </td>
             </tr>
            

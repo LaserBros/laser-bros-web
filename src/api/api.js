@@ -923,11 +923,12 @@ export const Adminupdatepassword = async (newPassword, oldPassword) => {
   }
 };
 
-export const updateQuoteState = async (id, status) => {
+export const updateQuoteState = async (id, status,reason = "") => {
   try {
     const data = {
       id: id,
       status: status,
+      reason: reason
     };
     const response = await axiosAdminInstance.post(`/updateQuoteState`, data);
     return response.data;
@@ -1777,6 +1778,17 @@ export const deleteThicknessDetails = async (data) => {
     throw error;
   }
 };
+
+export const updateMaterialDetails = async (data) => {
+  try {
+    const response = await axiosAdminInstance.post(`/updateMaterialDetails`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Something wents wrong.", error);
+    throw error;
+  }
+};
+
 
 export const deleteMaterialDetails = async (data) => {
   try {

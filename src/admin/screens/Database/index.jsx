@@ -26,6 +26,7 @@ import {
   discount,
   getFinishAdmin,
   getMaterialsAndThickness,
+  updateMaterialDetails,
 } from "../../../api/api";
 import Amount from "../../../components/Amount";
 import ConfirmationModal from "../../../components/ConfirmationModal";
@@ -40,9 +41,24 @@ const DataBase = () => {
   const [title, setTitle] = useState("");
   const [thickId, setThickId] = useState("");
   const [type, setType] = useState("");
+  const [DisableBtn, setDisableBtn] = useState("");
   const [loadingBtn, setloadingBtn] = useState(false);
   const changeStatus = async () => {
     setloadingBtn(true);
+    if (type == "disable") {
+      try {
+        const data = {
+          id: thickId,
+          customer_visible: DisableBtn,
+        };
+        const res = await updateMaterialDetails(data); 
+        handleTabSelect("materials");
+        setModalShow(false);
+        setloadingBtn(false);
+      } catch (error) {
+        toast.error("Something wents wrong..");
+      }
+    }
     if (type == "thickness") {
       try {
         const data = {
@@ -141,6 +157,23 @@ const DataBase = () => {
                 <Accordion.Item eventKey={index} className="mb-3">
                   <Accordion.Header>
                    <div className="flex-grow-1"> {data.material_name} {data.material_grade}{" "}</div>
+                   <Link
+                      className="btnviewEdits me-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTitle(`Are you sure you want to ${data.customer_visible == 1 ? 'disable' : 'enable'} this material?`);
+                        setThickId(data.material_id);
+                        setType("disable");
+                        setDisableBtn(data.customer_visible == 1 ? 0 : 1)
+                        setModalShow(true);
+                      }}
+                    >
+                   {data.customer_visible == 0 ?
+                    <Icon icon="iconamoon:eye-off-light" />
+                    :
+                    <Icon icon="mdi:eye-outline" />
+                    }   
+                   </Link>
                     <Link
                       className="btntrash me-2"
                       onClick={(e) => {
@@ -153,6 +186,7 @@ const DataBase = () => {
                         setModalShow(true);
                       }}
                     >
+                    
                       <Icon icon="tabler:trash" />
                     </Link>
                   </Accordion.Header>
@@ -167,6 +201,7 @@ const DataBase = () => {
                               <th>Thickness</th>
                               <th>Stocked?</th>
                               <th>Bending?</th>
+                              <th>Customer Visible</th>
                               <th>Material Code</th>
                               <th style={{ minWidth: 150 }}>
                                 Material Density
@@ -232,6 +267,7 @@ const DataBase = () => {
                                 <td>{item.material_thickness}</td>
                                 <td>{item.stocked}</td>
                                 <td>{item.bending}</td>
+                                <td>{item.customer_visible == 1 ? 'Yes' : 'No'}</td>
                                 <td>{item.material_code}</td>
                                 <td>{item.material_density}</td>
                                 <td>{item.price}</td>

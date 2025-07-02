@@ -166,11 +166,12 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
     }
   };
   
-  export const updateQuoteState = async (id, status) => {
+  export const updateQuoteState = async (id, status,reason) => {
     try {
       const data = {
         id: id,
         status: status,
+        reason:reason
       };
       const response = await axiosEmployeeInstance.post(`/updateQuoteState`, data);
       return response.data;
@@ -917,6 +918,15 @@ export const AdmingetUnAllRequestQuotes = async (page, search, sort) => {
     try {
       const response = await axiosEmployeeInstance.post(`/updateQuantity`, data);
       // // console.log("responseeee", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Something wents wrong.", error);
+      throw error;
+    }
+  };
+  export const updateMaterialDetails = async (data) => {
+    try {
+      const response = await axiosEmployeeInstance.post(`/updateMaterialDetails`, data);
       return response.data;
     } catch (error) {
       console.error("Something wents wrong.", error);
