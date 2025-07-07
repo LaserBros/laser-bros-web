@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -24,6 +25,8 @@ import ConfirmationModal from "../../../components/ConfirmationModal";
 import DateFormat from "../../components/DateFormat";
 import MaterialBadge from "../../components/MaterialBadge";
 import RejectReason from "../../../components/RejectReason";
+
+import debounce from "lodash.debounce";
 const RFQS = () => {
   const navigate = useNavigate();
   const [checkedItems, setCheckedItems] = useState({});
@@ -184,6 +187,17 @@ const RFQS = () => {
     loadData(currentPage);
   }, [currentPage]);
 
+  const debouncedSearch = useMemo(() => 
+  debounce((value) => {
+    setCurrentPage(1);
+    searchName(value);
+    loadData(1, value, sortOrder);
+  }, 300) // adjust delay as needed
+, [sortOrder]);
+
+const handleChange = (e) => {
+  debouncedSearch(e.target.value);
+};
   return (
     <React.Fragment>
       <Card>
@@ -208,7 +222,8 @@ const RFQS = () => {
                       type="text"
                       placeholder="Search WO"
                       value={name}
-                      onChange={(e) => searchName(e.target.value)}
+                      onChange={handleChange}
+
                       className="rounded-5"
                     />
                   </div>

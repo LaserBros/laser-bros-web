@@ -2260,3 +2260,15 @@ html {
         background-size: 10px;
     }
 }
+.quote_scroll_clss{
+    scrollbar-width: none;
+        height: auto !important;
+        overflow: visible!important;
+        > div{
+                height: auto !important;
+        }
+      .quote_lisiting_pge {
+    position: initial !important;
+    height: auto !important;
+}
+}

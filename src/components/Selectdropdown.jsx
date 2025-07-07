@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import { Spinner } from 'react-bootstrap';
 
 const SelectDropdowns = ({
   options,
@@ -9,6 +10,7 @@ const SelectDropdowns = ({
   disabled,
   type,
   id,
+  loading
 }) => {
   const customStyles = {
     control: (provided, state) => ({
@@ -92,6 +94,7 @@ const SelectDropdowns = ({
     disabled,
     onOptionSelect,
     id,
+    loading
   }) => {
     const [selectedOption, setSelectedOption] = useState(null);
     console.log('SimpleSelect options:', options, 'value:', value);
@@ -103,16 +106,34 @@ const SelectDropdowns = ({
     };
 
     return (
-      <Select
-        options={options}
-        value={options.find((option) => option.value === value) || null}
-        onChange={handleChange}
-        isDisabled={disabled}
-        placeholder={placeholder}
-        className="selectdropdown"
-        styles={customStyles}
-        isSearchable={false}
-      />
+      <div style={{ position: 'relative' }}>
+        <Select
+          options={options}
+          value={options.find((option) => option.value === value) || null}
+          onChange={handleChange}
+          isDisabled={disabled || loading}
+          placeholder={placeholder}
+          className="selectdropdown"
+          styles={customStyles}
+          isSearchable={false}
+        />
+        {loading && (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(255,255,255,0.5)',
+            zIndex: 2
+          }}>
+            <Spinner animation="border" size="sm" />
+          </div>
+        )}
+      </div>
     );
   };
   return (
@@ -124,6 +145,7 @@ const SelectDropdowns = ({
       onOptionSelect={onOptionSelect}
       type={type}
       id={id}
+      loading={!!loading}
     />
   );
 };

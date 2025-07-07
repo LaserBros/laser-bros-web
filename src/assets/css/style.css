@@ -4816,4 +4816,17 @@ textarea.form-control {
 .btncustom:hover {
   background: #3c5b8a !important;
   color: #ffffff !important;
+}
+
+.quote_scroll_cls {
+  scrollbar-width: none;
+  height: auto !important;
+  overflow: visible !important;
+}
+.quote_scroll_cls > div {
+  height: auto !important;
+}
+.quote_scroll_cls .quotelist {
+  position: initial !important;
+  height: auto !important;
 }/*# sourceMappingURL=style.css.map */
