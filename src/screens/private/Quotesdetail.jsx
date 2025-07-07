@@ -1625,7 +1625,7 @@ export default function QuotesDetail() {
                               place="bottom"
                               content="Delete This Part"
                             />
-                          </div>
+                          </div> 
                         </div>
                       </Col>
                     </Row>
