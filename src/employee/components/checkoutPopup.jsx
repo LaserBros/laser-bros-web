@@ -74,7 +74,7 @@ const CheckoutPopup = ({
       isEditing: false,
     },
   ];
-
+  const [selectedOptions, setSelectedOptions] = useState([]);
   useEffect(() => {
     // console.log("shipping_ups_2nd_day_air_price",shipping_ups_2nd_day_air_price, UserData)
     // console.log("addressDetail ---=-=-=-",addressDetail.custom_rates)
@@ -85,7 +85,10 @@ const CheckoutPopup = ({
     //   isChecked: false,
     //   isEditing: false,
     // }));
-
+    console.log("adressDetails",addressDetail?.pay_type);
+    if(addressDetail?.pay_type == 1) {
+       setSelectedOptions([...selectedOptions, "NET Term"]);
+    }
     // Combine the transformed methods with existing ones
     const mergedMethods = [...existingShippingMethods];
     setTaxRateVal(TaxRatesVal);
@@ -145,7 +148,7 @@ const CheckoutPopup = ({
   //     isEditing: false,
   //   },
   // ]);
-  const [selectedOptions, setSelectedOptions] = useState([]); // State to hold selected options
+   // State to hold selected options
   const [oldPrice, setOldPrice] = useState("");
   // Handle checkbox change
   const handleOptionChange = (option) => {
