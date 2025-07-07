@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Row, Col, Container, Image, Form, Button } from "react-bootstrap";
 import { Icon } from "@iconify/react";
@@ -35,9 +34,9 @@ import AddAddressModal from "./AddaddressModal";
 import AddServiceNote from "../../components/AddServiceNote";
 import { Tooltip } from "react-tooltip";
 import { encodeS3Url } from "../../utils/encodeS3Url";
-
 import { FixedSizeList as List } from 'react-window';
 import QuoteLineItem from '../../components/QuoteLineItem';
+
 export default function QuotesDetail() {
   const currentDate = new Date();
   const navigate = useNavigate();
@@ -184,9 +183,7 @@ export default function QuotesDetail() {
   // useEffect(() => {
   // Fetch options from the API when the parent component mounts
   const fetchThickness = async (materialId, quoteId) => {
-
     setLoadingSelect((prev) => ({ ...prev, [`${quoteId}_thickness`]: true }));
-
     try {
       const data = {
         id: materialId,
@@ -208,14 +205,12 @@ export default function QuotesDetail() {
       );
     } catch (error) {
       console.error("Error fetching options:", error);
-
     } finally {
       setLoadingSelect((prev) => ({ ...prev, [`${quoteId}_thickness`]: false }));
     }
   };
   const fetchFinish = async (materialId, quoteId) => {
     setLoadingSelect((prev) => ({ ...prev, [`${quoteId}_finish`]: true }));
-
     try {
       const data = {
         thickness_id: materialId,
@@ -259,10 +254,8 @@ export default function QuotesDetail() {
       );
     } catch (error) {
       console.error("Error fetching options:", error);
-
     } finally {
       setLoadingSelect((prev) => ({ ...prev, [`${quoteId}_finish`]: false }));
-
     }
   };
 
@@ -637,10 +630,8 @@ export default function QuotesDetail() {
 
   const [apiResponse, setApiResponse] = useState(null);
   const handleApiResponse = async (selectedOption, type, id) => {
-
     setLoadingSelect((prev) => ({ ...prev, [`${id}_${type}`]: true }));
     try {
-
     const data = {
       id: id,
       dimension_type: selectedOption.value,
@@ -692,7 +683,6 @@ export default function QuotesDetail() {
       "setItempartsDBdata",
       JSON.stringify(updatedLocalStorageData)
     );
-
     let formData = "";
 
     formData = {
@@ -701,11 +691,9 @@ export default function QuotesDetail() {
     };
 
     await uploadQuote(formData);
-
     } finally {
       setLoadingSelect((prev) => ({ ...prev, [`${id}_${type}`]: false }));
     }
-
   };
 
   const [quoteDataCon, setquoteDataCon] = useState(true);
@@ -752,7 +740,6 @@ export default function QuotesDetail() {
       const discount = response.data.updateQuantity.discount;
       const price = response.data.updateQuantity.amount;
       const price_status = response.data.updatedPrice.check_status;
-
       const finalQuoteData = quoteData.map((quote) =>
         quote._id === Id
           ? {
@@ -764,8 +751,6 @@ export default function QuotesDetail() {
             }
           : quote
       );
-
-
       setQuoteData(finalQuoteData);
       localStorage.setItem(
         "setItempartsDBdata",
@@ -890,9 +875,7 @@ export default function QuotesDetail() {
   };
 
   const handleOptionSelect = async (selectedOption, type, id) => {
-
     setLoadingSelect((prev) => ({ ...prev, [`${id}_${type}`]: true }));
-
     try {
       const data = {
         id: selectedOption.value,
@@ -996,10 +979,8 @@ export default function QuotesDetail() {
       // console.log("Updated totalAmount:", totalAmount);
     } catch (error) {
       console.error("Error fetching price:", error);
-
     } finally {
       setLoadingSelect((prev) => ({ ...prev, [`${id}_${type}`]: false }));
-
     }
   };
 
@@ -1277,134 +1258,6 @@ export default function QuotesDetail() {
     }
   }, [quoteData && quoteData.length]);
 
-      const formData = new FormData();
-      formData.append("id", quote_id);
-      formData.append("bend_count", 1);
-      formData.append("type", type_param);
-      formData.append("quote_image", file);
-
-      const res = await uploadBendingFile(formData);
-      console.log("Upload response:", res.data);
-
-      if (res.data) {
-        const updatedQuote = res.data;
-
-        if (updatedQuote) {
-          // Update quoteData state: only update fields step_file_bend and drawing_file_bend
-          setQuoteData((prevData) =>
-            prevData.map((quote) =>
-              quote._id === quote_id
-                ? {
-                    ...quote,
-                    step_file_bend: updatedQuote.step_file_bend,
-                    drawing_file_bend: updatedQuote.drawing_file_bend,
-                  }
-                : quote
-            )
-          );
-
-          // Update localStorage setItempartsDBdata similarly
-          const storedData = localStorage.getItem("setItempartsDBdata");
-          const parsedData = storedData ? JSON.parse(storedData) : [];
-
-          const updatedData = parsedData.map((quote) =>
-            quote._id === quote_id
-              ? {
-                  ...quote,
-                  step_file_bend: updatedQuote.step_file_bend,
-                  drawing_file_bend: updatedQuote.drawing_file_bend,
-                }
-              : quote
-          );
-
-          localStorage.setItem(
-            "setItempartsDBdata",
-            JSON.stringify(updatedData)
-          );
-        } else {
-          // If specific quote not found, fall back to full update
-          localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
-          setQuoteData(res.data);
-        }
-      } else {
-        // Unexpected response, fallback to full update
-        localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
-        setQuoteData(res.data);
-      }
-
-      setLoadingFiles((prev) => ({ ...prev, [id]: false }));
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      setLoadingFiles((prev) => ({ ...prev, [id]: false }));
-    }
-  };
-
-  const removeFile = async (id, type_param) => {
-    try {
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("bend_count", 1);
-      formData.append("type", type_param);
-
-      const res = await uploadBendingFile(formData);
-
-      // Update only the specific quote that changed instead of triggering a full refresh
-      if (res.data) {
-        const updatedQuote = res.data;
-
-        if (updatedQuote) {
-          // Update quoteData state: only update fields step_file_bend and drawing_file_bend
-          setQuoteData((prevData) =>
-            prevData.map((quote) =>
-              quote._id === id
-                ? {
-                    ...quote,
-                    step_file_bend: updatedQuote.step_file_bend,
-                    drawing_file_bend: updatedQuote.drawing_file_bend,
-                  }
-                : quote
-            )
-          );
-
-          // Update localStorage setItempartsDBdata similarly
-          const storedData = localStorage.getItem("setItempartsDBdata");
-          const parsedData = storedData ? JSON.parse(storedData) : [];
-
-          const updatedData = parsedData.map((quote) =>
-            quote._id === id
-              ? {
-                  ...quote,
-                  step_file_bend: updatedQuote.step_file_bend,
-                  drawing_file_bend: updatedQuote.drawing_file_bend,
-                }
-              : quote
-          );
-
-          localStorage.setItem(
-            "setItempartsDBdata",
-            JSON.stringify(updatedData)
-          );
-        } else {
-          // If specific quote not found, fall back to full update
-          localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
-          setQuoteData(res.data);
-        }
-      } else {
-        // Unexpected response, fallback to full update
-        localStorage.setItem("setItempartsDBdata", JSON.stringify(res.data));
-        setQuoteData(res.data);
-      }
-    } catch (error) {
-      console.error("Error removing file:", error);
-    }
-  };
-  const BackQuote = () => {
-    localStorage.removeItem("setItemelementData");
-
-    localStorage.removeItem("setItempartsDBdata");
-    // console.log("SDdsd");
-    navigate("/quotes");
-  };
   return (
     <React.Fragment>
       <section className="myaccount ptb-50">
@@ -1447,7 +1300,6 @@ export default function QuotesDetail() {
               {quoteData &&
                 quoteData.length > 0 &&
                 Array.isArray(quoteData) &&
-
                 (
                   <List
                     outerRef={listOuterRef}
@@ -1504,7 +1356,6 @@ export default function QuotesDetail() {
                     }}
                   </List>
                 )}
-
             </Col>
 
             {quoteData && quoteData.length > 0 && (
