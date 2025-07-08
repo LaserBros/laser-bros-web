@@ -1790,6 +1790,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     fetchThickness,
     fetchFinish,
     decrementQuantity,
+    handleDownload,
     handleFileChange,
     removeFile,
     downloadFile,

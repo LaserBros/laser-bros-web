@@ -906,6 +906,27 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
   };
 
 
+  const handleDownload = async (url, name) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.setAttribute("download", name);
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl); // Revoke the blob URL after the download
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  };
   const removeFile = (id,type) => {
     if(type == "step_remove") {
       const parsedQuoteList = quoteData;
@@ -1656,27 +1677,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
       console.error("Error updating quote:", response);
     }
   };
-  const handleDownload = async (url, name) => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-
-      const blobUrl = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.setAttribute("download", name);
-
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl); // Revoke the blob URL after the download
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
-  };
+  
   // const handleQuantityChange = async (Id, increment = true) => {
   //   let data = "";
   //   let type = "";
@@ -1954,6 +1955,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     decrementQuantity,
     handleFileChange,
     removeFile,
+    handleDownload,
     downloadFile,
     setModalShow,
     setModalShow2,
