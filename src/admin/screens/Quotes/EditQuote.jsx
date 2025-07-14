@@ -1491,7 +1491,7 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     // Save the updated array back to localStorage
     localStorage.setItem(
       "setItempartsDBdataAdmin",
-      JSON.stringify(updatedData)
+      JSON.stringify(updatedData) 
     );
     setQuoteData(updatedData);
 
@@ -1889,10 +1889,14 @@ const handleFileChange = async (event, id,quote_id,type_param) => {
     // Extract file name and extension from URL
     const fileNameWithParams = url.split("/").pop(); // Get everything after the last "/"
     const [fileName] = fileNameWithParams.split("?"); // Remove query parameters if present
-    const extension = fileName.split(".").pop(); // Get the file extension
+    
+    // Decode URL-encoded characters (like %20 for spaces)
+    const decodedFileName = decodeURIComponent(fileName);
+    
+    const extension = decodedFileName.split(".").pop(); // Get the file extension
 
     // Clean the file name (remove digits and unwanted patterns at the start of the name)
-    const cleanFileName = fileName
+    const cleanFileName = decodedFileName
       .replace(/^\d+-/, "") // Remove timestamp or numerical prefix (e.g., "1734240670591-")
       .replace(/(\s*\(\d+\))?\.[^.]+$/, `.${extension}`); // Clean trailing patterns like "(5)" before the extension
 

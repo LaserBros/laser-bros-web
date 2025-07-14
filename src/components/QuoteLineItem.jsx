@@ -20,6 +20,7 @@ import {
   updateQuantity,
   getThicknessMaterialFinish,
   uploadBendingFile,
+  updateDimensionStatus,
 } from "../api/api";
 import { Icon } from "@iconify/react";
 
@@ -246,7 +247,7 @@ const QuoteLineItem = React.memo(({
 
     try {
       // Note: updateDimensionStatus is not imported, you'll need to add it
-      // await updateDimensionStatus(data);
+      await updateDimensionStatus(data);
       debouncedUpdateQuantity(quoteId, 1);
     } catch (error) {
       console.error("Error updating dimension:", error);
@@ -669,7 +670,7 @@ const QuoteLineItem = React.memo(({
               dimensions={localQuote.dimensions}
               id={localQuote._id}
               type={localQuote.dimension_type}
-              onApiResponse={(option) => handleLocalDimensionChange(option, localQuote._id)}
+              onApiResponse={(option) => handleLocalDimensionChange(option, localQuote._id)} 
             />
           </span>
         </Col>
