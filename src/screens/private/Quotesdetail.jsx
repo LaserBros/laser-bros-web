@@ -50,6 +50,7 @@ export default function QuotesDetail() {
   const [btnText, setbtnText] = useState(0);
   const [btnTextChange, setbtnTextChange] = useState(false);
   const [btnTextVal, setbtnTextVal] = useState(false);
+  const [focusedQuoteId, setFocusedQuoteId] = useState(null);
 
   const [selectedPartId, setSelectedPartId] = useState(null);
   const [indexPart, setindexPart] = useState();
@@ -57,6 +58,19 @@ export default function QuotesDetail() {
   const [modalShow2, setModalShow2] = useState(false);
   const [modalShow3, setModalShow3] = useState(false);
   const [modalShow4, setModalShow4] = useState(false);
+
+  // Only clear focus if the blurred input is the currently focused one
+  const handleBlurQuantity = (quoteId = null) => {
+    if (quoteId && focusedQuoteId === quoteId) {
+      setFocusedQuoteId(null);
+    }
+  };
+
+  // Only set focus for direct input editing
+  const onSetFocus = (quoteId) => {
+    setFocusedQuoteId(quoteId);
+  };
+
   const handleShow = (quote, id) => {
     setSelectedQuote(quote);
     setSelectedPartId(id);
@@ -1199,6 +1213,8 @@ export default function QuotesDetail() {
     quoteList,
     currentMonth,
     yearLastTwoDigits,
+    focusedQuoteId,
+    onSetFocus,
     setModalShow,
     setModalShow2,
     setModalShow3,
@@ -1211,6 +1227,7 @@ export default function QuotesDetail() {
     setbend_count,
     setbendupload_url,
     setid_quote,
+    handleBlurQuantity,
   }), [
     quoteData,
     materials,
@@ -1230,6 +1247,7 @@ export default function QuotesDetail() {
     quoteList,
     currentMonth,
     yearLastTwoDigits,
+    focusedQuoteId,
     setModalShow,
     setModalShow2,
     setModalShow3,
@@ -1242,6 +1260,7 @@ export default function QuotesDetail() {
     setbend_count,
     setbendupload_url,
     setid_quote,
+    handleBlurQuantity,
   ]);
 
   // Track and restore scroll position using outerRef
@@ -1332,6 +1351,9 @@ export default function QuotesDetail() {
                             onDeleteQuote={data.handleDeleteQuote}
                             onRenameQuote={data.handleShow}
                             onAddNote={data.handleShow3}
+                            onSetFocus={data.onSetFocus}
+                            focusedQuoteId={data.focusedQuoteId}
+                            onBlurQuantity={data.handleBlurQuantity}
                             loadingSelect={data.loadingSelect}
                             loadingFiles={data.loadingFiles}
                             quoteList={data.quoteList}

@@ -47,6 +47,9 @@ const QuoteLineItem = React.memo(({
   onBendingToggle,
   onFileUpload,
   onFileRemove,
+  onSetFocus,
+  focusedQuoteId,
+  onBlurQuantity,
   loadingFiles,
   loadingSelect,
   currentMonth,
@@ -163,10 +166,13 @@ const QuoteLineItem = React.memo(({
     [onQuoteUpdate]
   );
 
-  const handleLocalQuantityChange = useCallback((quoteId, newQuantity) => {
+  const handleLocalQuantityChange = useCallback((quoteId, newQuantity, options = { focus: true }) => {
     setLocalQuote(prev => ({ ...prev, quantity: newQuantity }));
     debouncedUpdateQuantity(quoteId, newQuantity);
-  }, [debouncedUpdateQuantity]);
+    if (options.focus) {
+      onSetFocus(quoteId);
+    }
+  }, [debouncedUpdateQuantity, onSetFocus]);
 
   const handleLocalOptionSelect = useCallback(async (selectedOption, type, quoteId) => {
     try {
@@ -353,16 +359,20 @@ const QuoteLineItem = React.memo(({
 
   // Memoize the right action buttons and quantity selector to prevent blinking
   const ActionButtons = React.memo(
-    ({ localQuote, handleLocalQuantityChange, setSelectedNote, setSelectedPartId, setModalShow3, handleClick, setSelectedQuote, setModalShow, onDuplicateQuote, onDeleteQuote, index, quoteList, currentMonth, yearLastTwoDigits }) => {
+    ({ localQuote, handleLocalQuantityChange, setSelectedNote, setSelectedPartId, setModalShow3, handleClick, setSelectedQuote, setModalShow, onDuplicateQuote, onDeleteQuote, index, quoteList, currentMonth, yearLastTwoDigits, shouldFocus }) => {
+      console.log("[DEBUG] QuoteLineItem render", { localQuoteId: localQuote._id, shouldFocus });
       return (
         <>
           <div className="quanityCount_btn">
             {localQuote.finishing_id ? (
               <QuantitySelector
                 quantity={localQuote.quantity}
-                onIncrement={() => handleLocalQuantityChange(localQuote._id, localQuote.quantity + 1)}
-                onDecrement={() => localQuote.quantity === 1 ? null : handleLocalQuantityChange(localQuote._id, localQuote.quantity - 1)}
-                onQuantityChange={(newQuantity) => handleLocalQuantityChange(localQuote._id, newQuantity)}
+                onIncrement={() => handleLocalQuantityChange(localQuote._id, localQuote.quantity + 1, { focus: false })}
+                onDecrement={() => localQuote.quantity === 1 ? null : handleLocalQuantityChange(localQuote._id, localQuote.quantity - 1, { focus: false })}
+                onQuantityChange={(newQuantity) => handleLocalQuantityChange(localQuote._id, newQuantity, { focus: true })}
+                shouldFocus={shouldFocus}
+                key={localQuote._id}
+                onBlurQuantity={onBlurQuantity}
               />
             ) : (
               <div></div>
@@ -381,7 +391,8 @@ const QuoteLineItem = React.memo(({
       prevProps.localQuote._id === nextProps.localQuote._id &&
       prevProps.localQuote.finishing_id === nextProps.localQuote.finishing_id &&
       prevProps.localQuote.notes_text === nextProps.localQuote.notes_text &&
-      prevProps.localQuote.quote_name === nextProps.localQuote.quote_name
+      prevProps.localQuote.quote_name === nextProps.localQuote.quote_name &&
+      prevProps.shouldFocus === nextProps.shouldFocus
   );
 
   // Memoized right-quote section to prevent blinking
@@ -412,6 +423,7 @@ const QuoteLineItem = React.memo(({
           quoteList={quoteList}
           currentMonth={currentMonth}
           yearLastTwoDigits={yearLastTwoDigits}
+          shouldFocus={focusedQuoteId === localQuote._id}
         />
       </div>
       <p className="mb-0 text-md-end">

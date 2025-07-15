@@ -2,12 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
 import { Icon } from "@iconify/react";
 
-const QuantitySelector = ({
+const QuantitySelector = ({ 
   quantity,
   onIncrement,
   onDecrement,
   onQuantityChange,
+  shouldFocus, // <-- new prop
+  onBlurQuantity,
 }) => {
+  console.log("[DEBUG] Render QuantitySelector", { shouldFocus, quantity });
   const [inputQuantity, setInputQuantity] = useState(quantity);
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef(null);
@@ -22,6 +25,12 @@ const QuantitySelector = ({
     const newQuantity = e.target.value;
     setInputQuantity(newQuantity);
     setIsEditing(true);
+
+    // Only call onQuantityChange if it's a valid positive integer
+    const parsed = parseInt(newQuantity, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      onQuantityChange(parsed);
+    }
   };
 
   const handleInputBlur = () => {
@@ -32,15 +41,14 @@ const QuantitySelector = ({
     onQuantityChange(finalQuantity);
   };
 
-  const handleInputFocus = () => {
-    setIsEditing(true);
-  };
+  // const handleInputFocus = () => {
+  //   setIsEditing(true);
+  // };
 
   const handleIncrement = () => {
     const currentQty = parseInt(inputQuantity) || 1;
     const newQty = currentQty + 1;
     setInputQuantity(newQty);
-    setIsEditing(false);
     onQuantityChange(newQty);
   };
 
@@ -49,20 +57,23 @@ const QuantitySelector = ({
     if (currentQty > 1) {
       const newQty = currentQty - 1;
       setInputQuantity(newQty);
-      setIsEditing(false);
       onQuantityChange(newQty);
     }
   };
 
-  // Restore focus after re-render if user was editing
+  // Restore focus after re-render if shouldFocus is true
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      // Restore cursor position to end of input
-      const length = inputRef.current.value.length;
-      inputRef.current.setSelectionRange(length, length);
+    if (shouldFocus && inputRef.current) {
+      console.log("[DEBUG] Focus effect running", { shouldFocus, quantity, ref: inputRef.current });
+      const timer = setTimeout(() => {
+        inputRef.current.focus();
+        const length = inputRef.current.value.length;
+        inputRef.current.setSelectionRange(length, length);
+      }, 10);
+      return () => clearTimeout(timer);
     }
-  }, [isEditing]);
+    
+  }, [shouldFocus, quantity]);
 
   return (
     <div className="d-flex">
@@ -78,8 +89,11 @@ const QuantitySelector = ({
           value={inputQuantity}
           style={{ textAlign: "center" }}
           onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          onFocus={handleInputFocus}
+          // onBlur={e => {
+          //   handleInputBlur(e);
+          //   if (onBlurQuantity) onBlurQuantity();
+          // }}
+          // onFocus={handleInputFocus}
           min={1}
         />
         <Button variant={null} onClick={handleIncrement}>

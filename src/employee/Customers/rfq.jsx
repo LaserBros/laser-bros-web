@@ -639,12 +639,14 @@ export default function EmpCustomerRFQ() {
 
   const [apiResponse, setApiResponse] = useState(null);
   const handleApiResponse = async (selectedOption, type, id) => {
-    // console.log(selectedOption, type, id);
     const data = {
-      id: id,
+      id,
       dimension_type: selectedOption.value,
     };
-    let quoteData = JSON.parse(localStorage.getItem("CustomersetItempartsDBdata"));
+   
+    const quoteData = JSON.parse(localStorage.getItem("CustomersetItempartsDBdata")) || [];
+  
+    // Prepare updated localStorage data
     const updatedQuoteData = quoteData.map((quote) =>
       quote._id === id
         ? {
@@ -661,44 +663,50 @@ export default function EmpCustomerRFQ() {
           }
         : quote
     );
-
-    localStorage.setItem(
-      "CustomersetItempartsDBdata",
-      JSON.stringify(updatedQuoteData)
-    );
+  
     const res = await CustomerupdateDimensionStatus(data);
     const response = res.data;
-    const storedData = localStorage.getItem("CustomersetItempartsDBdata");
-    const parsedData = storedData ? JSON.parse(storedData) : [];
-
-    // Check if data exists and update based on _id match
-    const updatedLocalStorageData = parsedData.map((quote) => {
-      if (quote._id === response._id) {
-        // // console.log(
-        //   "response.updateSubQuote.amount",
-        //   response.updateSubQuote.amount
-        // );
-        const update_amount = 0;
-        return {
-          ...quote,
-          amount: update_amount,
-        };
-      }
-      return quote; // Return unchanged if no match
-    });
-    setQuoteData(updatedLocalStorageData);
+  
+    const updatedLocalStorageData = updatedQuoteData.map((quote) =>
+      quote._id === response._id
+        ? {
+            ...quote,
+            amount: 0,
+          }
+        : quote
+    );
+  
+    // Save to localStorage
     localStorage.setItem(
       "CustomersetItempartsDBdata",
       JSON.stringify(updatedLocalStorageData)
     );
-    setquoteDataCon(true);
-    let formData = "";
-
-    formData = {
-      id: id,
+  
+    // ✅ Update only the specific quote in React state
+    setQuoteData(prev =>
+      prev.map(quote =>
+        quote._id === response._id
+          ? {
+              ...quote,
+              dimension_type: selectedOption.value,
+              material_id: "",
+              thickness_id: "",
+              finishing_id: "",
+              thicknessOptions: [],
+              finishOptions: [],
+              amount: 0,
+              quantity: 1,
+              discount: 0,
+            }
+          : quote
+      )
+    );
+  
+    const formData = {
+      id,
       quantity: 1,
     };
-
+  
     await uploadQuote(formData);
   };
 
